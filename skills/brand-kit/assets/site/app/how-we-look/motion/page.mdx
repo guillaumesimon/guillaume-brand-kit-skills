@@ -1,0 +1,25 @@
+export const metadata = { title: "Motion" }
+
+<PageHero label="How we look" title="Motion" provenance="inferred"
+  lead="Quiet and quick. Motion confirms a change; it never performs." />
+
+<SectionBar />
+
+<Block id="principles" title="Principles">
+  <TokenPrinciples path="motion.principles" />
+</Block>
+
+<Block id="feel" title="Feel it" tone="sunken" lead="Hover or tap a lane. Each one is a role, at its real duration and easing.">
+  <Motion />
+</Block>
+
+<Block id="tokens" title="Durations and easing">
+  <Split even>
+    <TokenTable path="motion.duration" prefix="duration" />
+    <TokenTable path="motion.easing" prefix="ease" />
+  </Split>
+</Block>
+
+<Block id="rules" title="Rules" tone="sunken">
+  <Rules path="motion" />
+</Block>

@@ -1,0 +1,72 @@
+export const metadata = { title: "Our brand" }
+
+{/* OUR BRAND — the strategic core. Written in the brand's own voice, short
+    blocks, one idea each. Every line here came from the founder or is marked
+    inferred. Never a values wall; never anything a competitor could sign. */}
+
+<PageHero label="Our brand" title="Know your house." tone="accent" provenance="stated"
+  lead="Why Perch exists, who it is for, and the one idea that every screen, sentence and photograph follows." />
+
+<SectionBar />
+
+<Block id="tension" title="Why we exist" label="The tension">
+  <Split>
+    <Statement>The GM who most needs to act is the one with the <em>least time to look</em>.</Statement>
+    <Prose>
+      A hotel's best week and its worst week look identical in the software.
+
+      Everyone in this category sells dashboards to people who do not have time to read dashboards. The tools are built for analysts and sold to operators, and the gap between the two is where the money goes.
+    </Prose>
+  </Split>
+</Block>
+
+<Block id="idea" title="The idea" label="Said by the founder" tone="inverse"
+  lead="Not more data. The three numbers that tell a GM whether today is normal, and why.">
+  <Grid>
+    <Card label="We build">One screen that answers the morning question. Every number links to the bookings that produced it.</Card>
+    <Card label="We say">Occupancy, rate, the week ahead. Never “insights”, never “intelligence” as a noun.</Card>
+    <Card label="We do">Publish the setup time honestly, including the properties where it took an hour.</Card>
+    <Card label="We refuse">We will never ship a feature whose purpose is to make the dashboard look busier.</Card>
+  </Grid>
+</Block>
+
+<Block id="audience" title="Who it is for" label="One audience"
+  lead="The general manager of an independent hotel with 20 to 120 rooms — who is also the revenue manager, the ops lead and often the person on the desk at seven in the morning.">
+  <Split>
+    <div>
+      <p className="t-label">The moment they need us</p>
+      <Statement>A week goes badly and nobody can say why.</Statement>
+    </div>
+    <Prose>
+      Occupancy fell, or the rate held while the town filled up, and by the time it is visible in the monthly report it is three weeks old. That is when someone goes looking.
+
+      **Secondary, and deliberately so.** Owners of two to five properties buy, but they buy because the GM asked. Group revenue managers are not our buyer and we do not design for them. That is the sacrifice this audience makes, and it is why the product can stay at three numbers instead of forty.
+    </Prose>
+  </Split>
+</Block>
+
+<Block id="position" title="Where we stand" label="Positioning" tone="sunken">
+  <Grid cols={3}>
+    <Card label="Frame" title="Operations intelligence">Compared to the GM's spreadsheet and their own instinct — not to enterprise revenue management.</Card>
+    <Card label="Difference" title="Runs without a specialist">The only tool in the category a GM can run alone, because it answers three questions instead of offering forty.</Card>
+    <Card label="Reason to believe" title="Eleven minutes">Average setup time, measured across 340 properties. Enterprise onboarding runs six to twelve weeks.</Card>
+  </Grid>
+</Block>
+
+<Block id="personality" title="Our personality" label="Contrast pairs"
+  lead="Each one is a pair, and the second half is the instruction. “Warm” is useless; “warm, not soft” tells you cream paper and a serif with real modulation, and no rounded corners.">
+  <IsNot />
+</Block>
+
+<Block id="enemy" title="What we stand against" tone="accent">
+  <Statement>The belief that a hotelier should have to become an analyst to understand their own building.</Statement>
+  <Prose>Not a company. Everything we refuse traces back to this line.</Prose>
+</Block>
+
+<Block id="refused" title="What we refused" label="Boundaries"
+  lead="What the founders turned down while choosing. These are part of the brand: they stop it drifting back toward something already refused.">
+  <Grid cols={2}>
+    <Card label="Refused" title="The control room">Dark screens, mono everywhere, a signal green on near-black. Competent, and exactly what every revenue tool looks like. It flatters the software, not the person using it.</Card>
+    <Card label="Refused" title="The hotel brochure">Full-bleed hospitality photography, a warm coral, rounded type. Likeable — and unable to carry a dense table or bad news. Its honesty about real buildings survived into our photography.</Card>
+  </Grid>
+</Block>

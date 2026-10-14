@@ -1,0 +1,38 @@
+export const metadata = { title: "Photography" }
+
+<PageHero label="How we look" title="Photography" tone="inverse" provenance="assumed"
+  check="The recipe has not met a real shoot. Commission one weekday-morning shoot at a customer property and replace the generated samples before anything ships."
+  lead="Documentary, never staged. A real house on a real morning, before anyone performs for the camera." />
+
+<SectionBar />
+
+<Block id="pov" title="Point of view">
+  <Statement><T path="imagery.photography.point_of_view" /></Statement>
+</Block>
+
+<Block id="types" title="What we shoot" tone="sunken" lead="Three kinds of image, each with one job.">
+  <PhotoTypes />
+</Block>
+
+<Block id="recipe" title="The recipe" lead="Six decisions, made once. A photographer can brief a shoot from this list alone.">
+  <Recipe path="imagery.photography.recipe" labels={{ subject_state: "subject" }} />
+</Block>
+
+<Block id="gallery" title="In practice" tone="sunken">
+  <ImageWall />
+</Block>
+
+<Block id="never" title="What we never shoot" tone="accent">
+  <Split>
+    <Statement>If any hotel software company could have taken it, it is not ours.</Statement>
+    <List path="imagery.photography.never" />
+  </Split>
+</Block>
+
+<Block id="misuse" title="Misuse">
+  <ImageRules path="imagery.photography.misuse" />
+</Block>
+
+<Block id="source" title="Where images come from" tone="sunken">
+  <Prose><T path="imagery.photography.source" /></Prose>
+</Block>

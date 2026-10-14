@@ -1,0 +1,61 @@
+export const metadata = { title: "Toolkit" }
+
+<PageHero label="Toolkit" title="Everything to build with." provenance="inferred"
+  lead="The files, the variables and the wiring. If you are an agent, stop here: read ../BRAND.md and ../tokens.json, never this site." />
+
+<SectionBar />
+
+<Block id="files" title="The files" lead="Five files plus assets. tokens.json is the source of truth; everything else is written from it or about it.">
+  <Grid>
+    <Card label="Always read" title="BRAND.md">Numbered, checkable rules. Imported into every agent session through CLAUDE.md.</Card>
+    <Card label="Source of truth" title="tokens.json">Every value, typed once, with its rule beside it.</Card>
+    <Card label="For people" title="site/">This site. Built from tokens.json and the pages in site/app.</Card>
+    <Card label="For builds" title="theme.css">Every token as a CSS variable, light and dark. Written by sync.py — import it, never edit it.</Card>
+    <Card label="History" title="CHANGELOG.md">What changed, why, and the version.</Card>
+  </Grid>
+</Block>
+
+<Block id="css" title="CSS variables" tone="sunken" lead="Paste into the project's global stylesheet. Dark mode re-points the colour roles under [data-theme=dark].">
+  <RootCss />
+</Block>
+
+<Block id="tailwind" title="Tailwind" lead="Tailwind v4 reads the same variables. The utility names are new on purpose — reusing the token names would make each variable point at itself.">
+  <Code text={`@import "tailwindcss";
+@import "../brand/theme.css";
+
+@theme inline {
+  --color-brand: var(--color-accent-base);
+  --color-brand-hover: var(--color-accent-hover);
+  --color-body: var(--color-ink-base);
+  --color-paper: var(--color-surface-page);
+  --font-serif: var(--font-display);
+  --font-sans: var(--font-text);
+  --spacing: 0.25rem;
+}`} />
+</Block>
+
+<Block id="agents" title="Wiring for agents" tone="inverse" lead="Add this to the project's CLAUDE.md. The import puts the rules in context from the first turn.">
+  <Code text={`## Brand
+@brand/BRAND.md
+
+Values live in brand/tokens.json — read it when writing CSS or config.
+Never read brand/site/: it is generated for people and costs ~60k tokens.`} />
+</Block>
+
+<Block id="tables" title="Every token">
+  <div className="stack">
+    <TokenTable path="color.semantic.light" prefix="color" />
+    <TokenTable path="space" prefix="space" />
+    <TokenTable path="radius" prefix="radius" />
+  </div>
+</Block>
+
+<Block id="maintain" title="Keeping it true" tone="sunken">
+  <Prose>
+    Change a value in `tokens.json`, then ask an agent to sync the kit — the `brand-kit-update` skill rewrites `theme.css` and the core block of `BRAND.md` — and rebuild this site. Never hand-edit a value on a page: the pages read every value from the tokens, so a hex typed into a page is how a brand starts to rot.
+
+    When an agent makes something off-brand, do not just fix the output. Add the rule that would have caught it to `BRAND.md`, and log it in `CHANGELOG.md`. The `brand-kit-update` skill does this.
+
+    <T path="provenance.expires" />
+  </Prose>
+</Block>

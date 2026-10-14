@@ -1,0 +1,44 @@
+export const metadata = { title: "Logo" }
+
+<PageHero label="How we look" title="Logo" provenance="inferred"
+  lead="A set-and-kerned wordmark with one drawn detail. Cheap, distinctive enough, and it teaches the name." />
+
+<SectionBar />
+
+<Block id="lockups" title="Lockups" lead="Three colourways, and only these three.">
+  <Grid cols={3}>
+    <Logo which="primary" tone="page" />
+    <Logo which="primary" tone="inverse" />
+    <Logo which="primary" tone="accent" />
+  </Grid>
+</Block>
+
+<Block id="made" title="How it is made" tone="sunken">
+  <Split>
+    <Statement><T path="logo.construction" /></Statement>
+    <Prose>
+      One idea, executed completely — and nothing else in the system does it, which is what makes it read as deliberate rather than as an error.
+
+      Kerned optically, not metrically. The area between letters should look equal, not the distance. Watch *Pe* and *ch*.
+    </Prose>
+  </Split>
+</Block>
+
+<Block id="space" title="Clear space and minimum size">
+  <ClearSpace />
+</Block>
+
+<Block id="rules" title="Rules" tone="sunken">
+  <Rules path="logo" />
+</Block>
+
+<Block id="misuse" title="Misuse" lead="Six, each against a mistake this mark actually invites.">
+  <DoDontGrid>
+    <DoDont kind="do" caption="Fraunces 400 at −0.03em, ink on paper. The SVG, never a live font."><span className="logo-fallback">Perch</span></DoDont>
+    <DoDont kind="dont" caption="Don't track the wordmark open — because it destroys word-shape recognition. Instead keep it at −0.03em."><span className="logo-fallback" style={{ letterSpacing: "0.3em" }}>Perch</span></DoDont>
+    <DoDont kind="dont" caption="Don't re-set it in a live font — because the shortened h is the only drawn thing we own. Instead use the SVG."><span className="logo-fallback" style={{ fontFamily: "var(--font-text)", fontWeight: 700 }}>Perch</span></DoDont>
+    <DoDont kind="dont" caption="Don't put it on a gradient — because it dies in one colour, in embroidery and in print. Instead a flat permitted colour." bg="linear-gradient(135deg, var(--color-accent-base), var(--color-state-info))"><span className="logo-fallback" style={{ color: "var(--color-accent-on)" }}>Perch</span></DoDont>
+    <DoDont kind="dont" caption="Don't recolour it to a state colour — because clay means something needs attention, and the logo never does."><span className="logo-fallback" style={{ color: "var(--color-state-warning)" }}>Perch</span></DoDont>
+    <DoDont kind="dont" caption="Don't solve the avatar with a circle and use the circle everywhere — because a container we never chose becomes the device."><span className="logo-fallback" style={{ display: "grid", placeItems: "center", width: "7rem", height: "7rem", borderRadius: "50%", background: "var(--color-accent-base)", color: "var(--color-accent-on)" }}>P</span></DoDont>
+  </DoDontGrid>
+</Block>

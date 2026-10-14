@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Type systems</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://api.fontshare.com" crossorigin>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#FFFFFF; --soft:#F6F8FA; --ink:#1A1F36; --text:#3C4257; --muted:#697386; --line:#E3E8EE;
+  --accent:#635BFF;
+  --ring:0 0 0 1px rgba(60,66,87,.10),0 1px 2px rgba(60,66,87,.08);
+  --sans:"Geist",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  --mono:"Geist Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0E1016; --soft:#161922; --ink:#F3F5F9; --text:#C5CAD8; --muted:#8891A6; --line:#252A38;
+  --accent:#938EFF; --ring:0 0 0 1px rgba(255,255,255,.09);
+}}
+:root[data-theme="dark"]{
+  --bg:#0E1016; --soft:#161922; --ink:#F3F5F9; --text:#C5CAD8; --muted:#8891A6; --line:#252A38;
+  --accent:#938EFF; --ring:0 0 0 1px rgba(255,255,255,.09);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:var(--sans);font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1280px;margin:0 auto;padding:40px 24px 80px}
+h1{font-size:1.5rem;line-height:1.25;font-weight:600;letter-spacing:-.018em;color:var(--ink);margin:0 0 8px}
+.sub{margin:0 0 22px;color:var(--muted);max-width:64ch}
+
+.words{display:flex;flex-wrap:wrap;gap:10px;align-items:flex-end;margin:0 0 26px;padding:14px 16px;background:var(--soft);border:1px solid var(--line);border-radius:10px}
+.words .f{display:flex;flex-direction:column;gap:5px;flex:1 1 220px;min-width:0}
+.words label{font-size:.75rem;font-weight:500;color:var(--muted)}
+.words input{font:inherit;font-size:.8125rem;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:7px;padding:7px 10px;width:100%}
+.words input:focus{outline:2px solid var(--accent);outline-offset:-1px}
+.words button{font:inherit;font-size:.78rem;font-weight:500;color:var(--muted);background:none;border:1px solid var(--line);border-radius:7px;padding:8px 12px;cursor:pointer}
+.words button:hover{color:var(--ink);border-color:var(--muted)}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px}
+.card{border-radius:12px;box-shadow:var(--ring);overflow:hidden;background:var(--bg);display:flex;flex-direction:column}
+
+/* The specimen. Two surfaces, always both: the headline everyone chooses on,
+   and the small row with a number in it where the reader actually lives. */
+.sp{background:var(--card-bg);color:var(--card-ink);padding:26px 22px 22px;flex:1}
+.sp .disp{font-family:var(--d);font-weight:var(--dw);font-style:var(--ds,normal);font-size:36px;line-height:var(--dl);letter-spacing:var(--dt);font-variation-settings:var(--dv,normal);margin:0 0 12px;word-break:break-word}
+.sp .lede{font-family:var(--t);font-weight:400;font-size:14.5px;line-height:1.55;margin:0 0 20px;max-width:32ch;color:var(--card-muted)}
+.sp .row{display:flex;align-items:baseline;gap:9px;margin:0 0 7px}
+.sp .met{font-family:var(--mf);font-weight:var(--mw);font-size:28px;line-height:1;letter-spacing:-.022em;color:var(--card-ink);font-variant-numeric:tabular-nums lining-nums;font-variation-settings:var(--mv,normal)}
+.sp .delta{font-family:var(--t);font-weight:600;font-size:13px;color:var(--card-accent);font-variant-numeric:tabular-nums}
+.sp .item{font-family:var(--t);font-weight:400;font-size:13px;line-height:1.45;color:var(--card-muted);font-variant-numeric:tabular-nums}
+
+.nm{display:flex;align-items:baseline;gap:10px;padding:12px 16px 14px;border-top:1px solid var(--line)}
+.nm .num{font-family:var(--mono);font-size:.9375rem;font-weight:500;line-height:1;color:var(--muted);opacity:.5;letter-spacing:-.02em;flex:none}
+.nm h2{font-size:1rem;font-weight:600;color:var(--ink);margin:0;letter-spacing:-.014em}
+.nm .src{margin-left:auto;font-family:var(--mono);font-size:.68rem;color:var(--muted);white-space:nowrap;flex:none}
+@media (max-width:640px){.wrap{padding:24px 16px 56px}.sp .disp{font-size:31px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1 id="t">Type systems</h1>
+  <p class="sub" id="sub"></p>
+
+  <div class="words">
+    <div class="f"><label for="w1">Your headline</label><input id="w1" type="text" autocomplete="off" spellcheck="false"></div>
+    <div class="f"><label for="w2">The line under it</label><input id="w2" type="text" autocomplete="off" spellcheck="false"></div>
+    <button type="button" id="reset">Reset</button>
+  </div>
+
+  <div class="grid" id="grid"></div>
+</div>
+
+<!-- =====================================================================
+  A wall of type and nothing else. Every card sets the SAME words in a
+  different system, on two surfaces: the 36px headline people choose on,
+  and the small row with a number in it where they will actually live.
+
+  Everything you might want to SAY about a system — what it costs, what it
+  ships as, how it ages, which licence — is in the JSON below and in
+  references/typography.md. Say it in chat. It does not go on this page:
+  the moment there is prose next to a specimen, people read instead of look.
+
+  Before showing it:
+    1. Put the brand palette into "palette".
+    2. Cut "shortlist" to six or eight off the axis ledger, and never put
+       two neutral grotesks in the same shortlist — they read as one card
+       shown twice and waste a slot.
+    3. Set "words" to the company's own headline, or type it into the two
+       fields at the top of the page.
+
+  Three sources, loaded per family and only for the shortlist:
+    Google Fonts  fonts.googleapis.com/css2   — "fonts"
+    Fontshare     api.fontshare.com/v2/css    — "cdn"  (ITF licence, not OFL)
+    Fontsource    cdn.jsdelivr.net/fontsource — "cdn"  (self-host route)
+====================================================================== -->
+<script id="systems" type="application/json">
+{
+  "title": "Type systems",
+  "sub": "The same words in every system — the headline you choose on, and the small row you will actually live in. Which two could be yours?",
+  "palette": {
+    "ground": "#FBF9F6",
+    "ink": "#1E1B18",
+    "muted": "#6E6459",
+    "line": "#E2DCD3",
+    "accent": "#1F5D45"
+  },
+  "words": {
+    "display": "Everything you shipped this week.",
+    "lede": "One page per release, written in the words your customers already use.",
+    "metric": "£12,480",
+    "delta": "+18.2%",
+    "item": "Auto-captions · 12 languages · 14 Sep, 09:41"
+  },
+  "shortlist": ["system", "inter", "runde", "clash", "instrument", "young", "bricolage", "redaction"],
+  "systems": [
+    {
+      "key": "system", "name": "The system stack", "src": "Built in", "source": "platform", "trend": null,
+      "says": "No webfont at all. system-ui on the web, San Francisco on iOS, Roboto on Android.",
+      "costs": "Nothing about the type is yours, and it looks slightly different on every platform.",
+      "best": "Dense tools, v1 apps, anything where first paint and Dynamic Type beat being recognised.",
+      "ship": "No licence, no files, 0 kB · native everywhere by definition",
+      "dates": "No fashion signal either way. Ages exactly as fast as the operating system.",
+      "fonts": {},
+      "css": { "display": "-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,system-ui,sans-serif", "text": "-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,system-ui,sans-serif", "dw": 600, "dl": 1.08, "dt": "-0.022em", "metric": "display", "mw": 600 }
+    },
+    {
+      "key": "inter", "name": "Inter", "src": "Google Fonts", "source": "google", "trend": null,
+      "says": "One neutral grotesk for the whole system, optical-size axis doing the display work.",
+      "costs": "Correct and completely anonymous. Distinctiveness must come from colour, layout or the device.",
+      "best": "Product-led SaaS where the interface is the brand and the type should get out of the way.",
+      "ship": "SIL OFL 1.1 · 1 variable file, ~48 kB subset · bundles cleanly on iOS and Android",
+      "dates": "Peaked around 2021 and never left. Reads as 'software' rather than as any year.",
+      "fonts": { "Inter": "Inter:opsz,wght@14..32,400..700" },
+      "css": { "display": "'Inter',system-ui,sans-serif", "text": "'Inter',system-ui,sans-serif", "dw": 600, "dl": 1.06, "dt": "-0.026em", "dv": "'opsz' 32", "metric": "display", "mw": 600 }
+    },
+    {
+      "key": "runde", "name": "Open Runde + Uncut Sans", "src": "Fontsource", "source": "fontsource", "trend": "Soft geometric · 2026",
+      "says": "Inter's skeleton with every terminal rounded, over a plain contemporary grotesk. Friendly without a single quirk you have to defend.",
+      "costs": "Rounded is a ceiling as well as a floor: it cannot do austere, and at small sizes the rounding disappears so you are paying for it only at display.",
+      "best": "Consumer apps, education, health, fintech aimed at people who find fintech intimidating.",
+      "ship": "SIL OFL 1.1 · not on Google Fonts · Fontsource CDN or npm, ~90 kB",
+      "dates": "Rounded-geometric is mid-curve now. The Inter bones underneath are the hedge.",
+      "cdn": ["https://cdn.jsdelivr.net/fontsource/css/open-runde@latest/latin.min.css", "https://cdn.jsdelivr.net/fontsource/css/uncut-sans@latest/latin.min.css"],
+      "fonts": {},
+      "css": { "display": "'Open Runde',system-ui,sans-serif", "text": "'Uncut Sans',system-ui,sans-serif", "dw": 700, "dl": 1.04, "dt": "-0.026em", "metric": "display", "mw": 700 }
+    },
+    {
+      "key": "clash", "name": "Clash Display + Switzer", "src": "Fontshare", "source": "fontshare", "trend": "Wide heavy display · 2026",
+      "says": "Letterforms that push into ultra-wide at heavy weights, with sharp deliberate stroke contrast, over a tall plain sans for everything else.",
+      "costs": "Needs room and breaks first on a phone. It is a shout, and a brand that shouts on every screen is not heard on any of them.",
+      "best": "Creator tools, events, sport, culture — brands that are confident out loud.",
+      "ship": "ITF Free Font Licence — free commercially, not OFL · Fontshare CDN or self-hosted · check terms before bundling in an app",
+      "dates": "The defining free display face of the mid-twenties. Very current, and it will read as exactly this moment later.",
+      "cdn": ["https://api.fontshare.com/v2/css?f%5B%5D=clash-display@400,500,600,700&f%5B%5D=switzer@400,500,700&display=swap"],
+      "fonts": {},
+      "css": { "display": "'Clash Display',system-ui,sans-serif", "text": "'Switzer',system-ui,sans-serif", "dw": 600, "dl": 1.0, "dt": "-0.022em", "metric": "display", "mw": 600 }
+    },
+    {
+      "key": "instrument", "name": "Instrument Serif + Sans", "src": "Google Fonts", "source": "google", "trend": "Editorial-modern · peaked",
+      "says": "A high-contrast serif for the one big line, over its own sans with a width axis for labels.",
+      "costs": "The most copied look of 2024–26, so it arrives carrying associations you did not choose. Unusable below 32px, so it does nothing inside the app.",
+      "best": "AI tooling, design-adjacent B2B, anything that wants to sound like it has a point of view.",
+      "ship": "SIL OFL 1.1 · 2 families, 3 files, ~80 kB · display face has one weight only",
+      "dates": "Already at the top of its curve. Will read as 'an AI startup, circa now' for years.",
+      "fonts": { "Instrument Serif": "Instrument+Serif:ital@0;1", "Instrument Sans": "Instrument+Sans:ital,wdth,wght@0,75..100,400..700;1,75..100,400..700" },
+      "css": { "display": "'Instrument Serif',Georgia,serif", "text": "'Instrument Sans',system-ui,sans-serif", "dw": 400, "dl": 1.02, "dt": "-0.018em", "metric": "text", "mw": 700 }
+    },
+    {
+      "key": "young", "name": "Young Serif + Instrument", "src": "Google Fonts", "source": "google", "trend": "Funky curvy serif · 2026",
+      "says": "A chunky, soft-cornered serif with bracketed slab terminals, over a clean sans with a width axis.",
+      "costs": "One weight, no italic, no small sizes. Everything below a headline is carried by the sans.",
+      "best": "Food, hospitality, culture, consumer products with an opinion.",
+      "ship": "SIL OFL 1.1 · 2 families, 2 files, ~72 kB · display face is single-weight, upright only",
+      "dates": "The centre of the 2026 curvy-serif wave. Display only, so restating it later is one token.",
+      "fonts": { "Young Serif": "Young+Serif", "Instrument Sans": "Instrument+Sans:ital,wdth,wght@0,75..100,400..700;1,75..100,400..700" },
+      "css": { "display": "'Young Serif',Georgia,serif", "text": "'Instrument Sans',system-ui,sans-serif", "dw": 400, "dl": 1.04, "dt": "-0.018em", "metric": "text", "mw": 700 }
+    },
+    {
+      "key": "bricolage", "name": "Bricolage Grotesque", "src": "Google Fonts", "source": "google", "trend": "Perfectly imperfect · 2026",
+      "says": "One family from display to text, with width and optical-size axes and deliberate irregularities — the made-by-a-person look in a single file.",
+      "costs": "The character that makes it interesting is what will date it, and there is no quieter sibling to retreat to.",
+      "best": "Indie products, cultural and editorial-tech, anyone who wants one file and a point of view.",
+      "ship": "SIL OFL 1.1 · 1 variable file, three axes, ~74 kB",
+      "dates": "Riding the 2026 reaction against machine-smooth design. It is your text face too, so restating it means touching every screen.",
+      "fonts": { "Bricolage Grotesque": "Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,200..800" },
+      "css": { "display": "'Bricolage Grotesque',system-ui,sans-serif", "text": "'Bricolage Grotesque',system-ui,sans-serif", "dw": 700, "dl": 0.97, "dt": "-0.03em", "dv": "'opsz' 96, 'wdth' 88", "metric": "display", "mw": 700, "mv": "'opsz' 40" }
+    },
+    {
+      "key": "redaction", "name": "Redaction + Uncut Sans", "src": "Fontsource", "source": "fontsource", "trend": "Mutant heritage · 2026",
+      "says": "A classical face deliberately degraded, as if printed and photocopied — drawn at several levels of decay, of which this is the middle one.",
+      "costs": "The most extreme thing here. It has one voice, it cannot be quiet, and the degradation is baked in rather than adjustable.",
+      "best": "Culture, publishing, activism, anything with an argument to make. Never a dashboard.",
+      "ship": "SIL OFL 1.1 · not on Google Fonts · Fontsource CDN or npm · display only",
+      "dates": "Hacked-classical is the 2026 move. Take it on the display face and expect to restate it.",
+      "cdn": ["https://cdn.jsdelivr.net/fontsource/css/redaction-35@latest/latin.min.css", "https://cdn.jsdelivr.net/fontsource/css/uncut-sans@latest/latin.min.css"],
+      "fonts": {},
+      "css": { "display": "'Redaction 35',Georgia,serif", "text": "'Uncut Sans',system-ui,sans-serif", "dw": 400, "dl": 1.04, "dt": "-0.012em", "metric": "text", "mw": 600 }
+    },
+
+    {
+      "key": "uncut", "name": "Uncut Sans", "src": "Fontsource", "source": "fontsource", "trend": "Quiet sans · current",
+      "says": "A contemporary grotesk with slightly narrow proportions and a large x-height. Neutral, but drawn this decade.",
+      "costs": "Neutral in the way Inter is neutral, so it buys recency rather than identity.",
+      "best": "Product teams who want a workhorse that is not the same workhorse as everyone else's.",
+      "ship": "SIL OFL 1.1 · not on Google Fonts · Fontsource CDN or npm, ~55 kB",
+      "dates": "Low fashion risk. Quiet faces do not date, they just stop being new.",
+      "cdn": ["https://cdn.jsdelivr.net/fontsource/css/uncut-sans@latest/latin.min.css"],
+      "fonts": {},
+      "css": { "display": "'Uncut Sans',system-ui,sans-serif", "text": "'Uncut Sans',system-ui,sans-serif", "dw": 700, "dl": 1.04, "dt": "-0.028em", "metric": "display", "mw": 700 }
+    },
+    {
+      "key": "bluu", "name": "Bluu Next + Uncut", "src": "Fontsource", "source": "fontsource", "trend": "Mutant heritage · 2026",
+      "says": "A contemporary redrawing of a Renaissance face, with sharp entry strokes and real weight, over a plain modern grotesk.",
+      "costs": "One weight, bold only. It is a display face and cannot do anything else.",
+      "best": "Culture, publishing, restaurants, anything that wants to look older and more serious than it is.",
+      "ship": "SIL OFL 1.1 · Velvetyne, via Fontsource · display only, single weight",
+      "dates": "Classical bones, contemporary drawing. The hedge is that the original is five centuries old.",
+      "cdn": ["https://cdn.jsdelivr.net/fontsource/css/bluu-next@latest/latin.min.css", "https://cdn.jsdelivr.net/fontsource/css/uncut-sans@latest/latin.min.css"],
+      "fonts": {},
+      "css": { "display": "'Bluu Next',Georgia,serif", "text": "'Uncut Sans',system-ui,sans-serif", "dw": 700, "dl": 1.02, "dt": "-0.016em", "metric": "text", "mw": 600 }
+    },
+    {
+      "key": "apfel", "name": "Apfel Grotezk", "src": "Fontsource", "source": "fontsource", "trend": null,
+      "says": "A neutral grotesk with quietly odd details that only show at large sizes — a workhorse with one secret.",
+      "costs": "Two weights only, so the hierarchy has to come from size and space rather than from the ladder.",
+      "best": "Studios, portfolios, products that want to look considered without looking designed.",
+      "ship": "SIL OFL 1.1 · not on Google Fonts · Fontsource CDN or npm",
+      "dates": "Understated enough to have no curve to fall off.",
+      "cdn": ["https://cdn.jsdelivr.net/fontsource/css/apfel-grotezk@latest/latin.min.css", "https://cdn.jsdelivr.net/fontsource/css/uncut-sans@latest/latin.min.css"],
+      "fonts": {},
+      "css": { "display": "'Apfel Grotezk',system-ui,sans-serif", "text": "'Uncut Sans',system-ui,sans-serif", "dw": 700, "dl": 1.04, "dt": "-0.026em", "metric": "display", "mw": 700 }
+    },
+    {
+      "key": "cabinet", "name": "Cabinet Grotesk + General", "src": "Fontshare", "source": "fontshare", "trend": "Soft grotesk · current",
+      "says": "A grotesk with softened terminals and a little optical variety, over a compact geometric sans.",
+      "costs": "Friendlier than a strict grotesk and less memorable than a real display face — it sits in the middle on purpose.",
+      "best": "Product marketing, agencies, B2B that wants warmth without whimsy.",
+      "ship": "ITF Free Font Licence — free commercially, not OFL · check terms before bundling",
+      "dates": "Steady. Neither the newest nor the oldest thing in the Fontshare catalogue.",
+      "cdn": ["https://api.fontshare.com/v2/css?f%5B%5D=cabinet-grotesk@400,500,700,800&f%5B%5D=general-sans@400,500,600&display=swap"],
+      "fonts": {},
+      "css": { "display": "'Cabinet Grotesk',system-ui,sans-serif", "text": "'General Sans',system-ui,sans-serif", "dw": 700, "dl": 1.02, "dt": "-0.026em", "metric": "display", "mw": 700 }
+    },
+    {
+      "key": "zodiak", "name": "Zodiak + General Sans", "src": "Fontshare", "source": "fontshare", "trend": "Sturdy serif · current",
+      "says": "A serif with heavy, blunt brackets and real weight in the stems, over a compact geometric sans.",
+      "costs": "Sturdy reads as dependable and also as a little old-fashioned. It has no lightness in it at all.",
+      "best": "Finance, law, property, whisky — categories where solidity is the product.",
+      "ship": "ITF Free Font Licence — free commercially, not OFL · check terms before bundling",
+      "dates": "Serif revival territory, which has been running long enough to count as durable.",
+      "cdn": ["https://api.fontshare.com/v2/css?f%5B%5D=zodiak@400,700&f%5B%5D=general-sans@400,500,600&display=swap"],
+      "fonts": {},
+      "css": { "display": "'Zodiak',Georgia,serif", "text": "'General Sans',system-ui,sans-serif", "dw": 700, "dl": 1.02, "dt": "-0.018em", "metric": "text", "mw": 600 }
+    },
+    {
+      "key": "sentient", "name": "Sentient + Switzer", "src": "Fontshare", "source": "fontshare", "trend": "Editorial serif · current",
+      "says": "A high-contrast serif with a calligraphic axis and a genuinely good italic, over a tall plain sans.",
+      "costs": "Fine strokes, so it thins on dark and below about 20px. An editorial face doing editorial work only.",
+      "best": "Publishing, fashion, hospitality, long-form products.",
+      "ship": "ITF Free Font Licence — free commercially, not OFL · check terms before bundling",
+      "dates": "The quieter alternative to Instrument Serif, and less exposed for exactly that reason.",
+      "cdn": ["https://api.fontshare.com/v2/css?f%5B%5D=sentient@400,500,700&f%5B%5D=switzer@400,500,700&display=swap"],
+      "fonts": {},
+      "css": { "display": "'Sentient',Georgia,serif", "text": "'Switzer',system-ui,sans-serif", "dw": 400, "dl": 1.04, "dt": "-0.016em", "metric": "text", "mw": 600 }
+    },
+    {
+      "key": "gambarino", "name": "Gambarino + General", "src": "Fontshare", "source": "fontshare", "trend": "Funky curvy serif · 2026",
+      "says": "An expressive display serif with swelling strokes and unusual, almost hand-cut shapes, over a plain geometric sans.",
+      "costs": "One weight, display only, and strange enough that some words set badly in it. Check the company name in it before committing.",
+      "best": "Restaurants, drinks, beauty, culture — anything sold on appetite.",
+      "ship": "ITF Free Font Licence — free commercially, not OFL · single weight, display only",
+      "dates": "Squarely in the 2026 expressive-serif wave. Display only, so cheap to restate.",
+      "cdn": ["https://api.fontshare.com/v2/css?f%5B%5D=gambarino@400&f%5B%5D=general-sans@400,500,600&display=swap"],
+      "fonts": {},
+      "css": { "display": "'Gambarino',Georgia,serif", "text": "'General Sans',system-ui,sans-serif", "dw": 400, "dl": 1.02, "dt": "-0.014em", "metric": "text", "mw": 600 }
+    },
+    {
+      "key": "satoshi", "name": "Satoshi + Switzer", "src": "Fontshare", "source": "fontshare", "trend": "Free-tier default · 2024–26",
+      "says": "The two faces most independent product teams reach for when they will not pay for type.",
+      "costs": "Not OFL — the ITF licence is free commercially but has its own redistribution terms. Read them before bundling into an app.",
+      "best": "Independent product teams who want something more considered than Inter without a type budget.",
+      "ship": "ITF Free Font Licence — free commercially, not OFL · check terms before bundling",
+      "dates": "Current and visibly so to other designers. A date stamp by about 2030.",
+      "cdn": ["https://api.fontshare.com/v2/css?f%5B%5D=satoshi@400,500,700&f%5B%5D=switzer@400,500,700&display=swap"],
+      "fonts": {},
+      "css": { "display": "'Satoshi',system-ui,sans-serif", "text": "'Switzer',system-ui,sans-serif", "dw": 700, "dl": 1.02, "dt": "-0.03em", "metric": "display", "mw": 700 }
+    },
+    {
+      "key": "fraunces", "name": "Fraunces + Public Sans", "src": "Google Fonts", "source": "google", "trend": "Expressive axes · 2026",
+      "says": "A soft old-style serif with four variable axes — weight, optical size, SOFT and WONK — over a plain civic sans.",
+      "costs": "The wonk is the value and must be dialled off below 24px, so it is two configurations of one face. High contrast thins on dark.",
+      "best": "Consumer, craft, food, health — anywhere being liked matters more than being impressive.",
+      "ship": "SIL OFL 1.1 · 2 families, 2 variable files, ~110 kB · request SOFT and WONK explicitly",
+      "dates": "The clearest demonstration of what a variable face can do. The idea is peaking; Fraunces itself has become a classic.",
+      "fonts": { "Fraunces": "Fraunces:opsz,wght,SOFT,WONK@9..144,400..700,0..100,0..1", "Public Sans": "Public+Sans:wght@400;600;700" },
+      "css": { "display": "'Fraunces',Georgia,serif", "text": "'Public Sans',system-ui,sans-serif", "dw": 600, "dl": 1.05, "dt": "-0.02em", "dv": "'opsz' 144, 'SOFT' 40, 'WONK' 1", "metric": "display", "mw": 600, "mv": "'opsz' 72, 'SOFT' 20, 'WONK' 0" }
+    },
+    {
+      "key": "archivo", "name": "Archivo Expanded + Archivo", "src": "Google Fonts", "source": "google", "trend": "Width extremes · current",
+      "says": "One family, two widths. Expanded at 700 for display, normal for text — drama from width, not a second face.",
+      "costs": "Expanded needs room and breaks first on a phone. Uppercase at this width is hard to keep from shouting.",
+      "best": "Sport, creator tools, events — brands that are confident out loud.",
+      "ship": "SIL OFL 1.1 · 1 variable file with a width axis, ~62 kB",
+      "dates": "Width contrast has been the reliable way to be loud since 2022 and shows no sign of turning.",
+      "fonts": { "Archivo": "Archivo:wdth,wght@62..125,400..700" },
+      "css": { "display": "'Archivo',system-ui,sans-serif", "text": "'Archivo',system-ui,sans-serif", "dw": 700, "dl": 0.98, "dt": "-0.018em", "dv": "'wdth' 125", "metric": "display", "mw": 700, "mv": "'wdth' 125" }
+    },
+    {
+      "key": "googlesans", "name": "Google Sans Flex", "src": "Google Fonts", "source": "google", "trend": "Newly opened · late 2025",
+      "says": "Google's own brand sans, released openly in November 2025 with weight and width axes.",
+      "costs": "It is Google's voice and about to be everywhere. Next to any Google surface it reads as platform chrome.",
+      "best": "Teams who want Inter's neutrality with more warmth, and do not mind sharing it with the largest brand on earth.",
+      "ship": "SIL OFL 1.1 · 1 variable file, weight and width axes · very broad language coverage",
+      "dates": "Too new to have a curve. The safe read: it becomes the next Roboto — ubiquitous rather than dated.",
+      "fonts": { "Google Sans Flex": "Google+Sans+Flex:wdth,wght@75..125,300..1000" },
+      "css": { "display": "'Google Sans Flex',system-ui,sans-serif", "text": "'Google Sans Flex',system-ui,sans-serif", "dw": 600, "dl": 1.05, "dt": "-0.026em", "metric": "display", "mw": 600 }
+    },
+    {
+      "key": "mona", "name": "Mona Sans + Hubot Sans", "src": "Google Fonts", "source": "google", "trend": "Industrial grotesque · current",
+      "says": "GitHub's pair, both variable across weight and width. Enough range to set a 96px hero and a 12px table from one family.",
+      "costs": "Carries developer-tool associations whether or not you are one, and Hubot's quirks get loud large.",
+      "best": "Developer tools, documentation-heavy platforms, infrastructure.",
+      "ship": "SIL OFL 1.1 · on Google Fonts and GitHub · 2 variable files, ~90 kB",
+      "dates": "Open since 2022 and steadily adopted rather than fashionable.",
+      "fonts": { "Mona Sans": "Mona+Sans:ital,wdth,wght@0,75..125,200..900;1,75..125,200..900", "Hubot Sans": "Hubot+Sans:ital,wdth,wght@0,75..125,200..900;1,75..125,200..900" },
+      "css": { "display": "'Hubot Sans',system-ui,sans-serif", "text": "'Mona Sans',system-ui,sans-serif", "dw": 700, "dl": 1.0, "dt": "-0.03em", "dv": "'wdth' 112", "metric": "text", "mw": 700 }
+    },
+    {
+      "key": "bodoni", "name": "Bodoni Moda + Host", "src": "Google Fonts", "source": "google", "trend": "Mutant heritage · 2026",
+      "says": "A didone with a real optical-size axis — hairlines that stay hairlines at 96px — over a contemporary grotesk.",
+      "costs": "Thin strokes vanish on dark, on low-density screens and on uncoated stock. One register only: expensive.",
+      "best": "Beauty, fashion, luxury, high-end hospitality — sold on desire rather than utility.",
+      "ship": "SIL OFL 1.1 · 2 families, 3 files, ~115 kB · use the opsz axis or it looks broken",
+      "dates": "Classical faces in contemporary layouts is the 2026 move. The Bodoni underneath is 230 years old.",
+      "fonts": { "Bodoni Moda": "Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..700", "Host Grotesk": "Host+Grotesk:ital,wght@0,300..800;1,300..800" },
+      "css": { "display": "'Bodoni Moda',Georgia,serif", "text": "'Host Grotesk',system-ui,sans-serif", "dw": 600, "dl": 1.0, "dt": "-0.02em", "dv": "'opsz' 96", "metric": "text", "mw": 700 }
+    },
+    {
+      "key": "winky", "name": "Winky Sans + Figtree", "src": "Google Fonts", "source": "google", "trend": "Anti-AI wobble · short half-life",
+      "says": "A hand-drawn sans with a genuine wobble in every stroke, display only, over a plain geometric workhorse.",
+      "costs": "The shortest half-life here, and it cannot carry bad news. Numbers in it are unusable.",
+      "best": "Community products, creative tools, anything whose brand problem is that it looks like software.",
+      "ship": "SIL OFL 1.1 · 2 families, 2 files, ~80 kB · display only, never below 24px",
+      "dates": "Peak 2026, deliberately. Display face only, and expect to restate inside three years.",
+      "fonts": { "Winky Sans": "Winky+Sans:ital,wght@0,300..900;1,300..900", "Figtree": "Figtree:ital,wght@0,300..900;1,300..900" },
+      "css": { "display": "'Winky Sans',system-ui,sans-serif", "text": "'Figtree',system-ui,sans-serif", "dw": 700, "dl": 1.02, "dt": "-0.018em", "metric": "text", "mw": 800 }
+    },
+    {
+      "key": "funnel", "name": "Funnel Display + Funnel Sans", "src": "Google Fonts", "source": "google", "trend": "Friendly geometric · 2025",
+      "says": "A recent superfamily: a slightly quirky geometric display face with a matching, plainer text sans.",
+      "costs": "Friendly is a ceiling as well as a floor. It cannot do austere and it cannot do expensive.",
+      "best": "Consumer apps, education, fintech aimed at people who find fintech intimidating.",
+      "ship": "SIL OFL 1.1 · 2 variable files, ~86 kB",
+      "dates": "New enough to feel fresh, plain enough underneath to survive.",
+      "fonts": { "Funnel Display": "Funnel+Display:wght@300..800", "Funnel Sans": "Funnel+Sans:ital,wght@0,300..800;1,300..800" },
+      "css": { "display": "'Funnel Display',system-ui,sans-serif", "text": "'Funnel Sans',system-ui,sans-serif", "dw": 700, "dl": 1.02, "dt": "-0.026em", "metric": "display", "mw": 700 }
+    },
+    {
+      "key": "inclusive", "name": "Inclusive Sans", "src": "Google Fonts", "source": "google", "trend": "Accessibility-led · 2025",
+      "says": "Drawn from legibility research: wide apertures, unmistakable I, l and 1, no mirrored letterforms.",
+      "costs": "Quiet by design and wider than a neutral grotesk, so it sets longer and fills a table faster. Weight stops at 700.",
+      "best": "Healthcare, government, education, insurance — where the reader did not choose to be there.",
+      "ship": "SIL OFL 1.1 · 1 variable file, ~52 kB · documented, citable accessibility story",
+      "dates": "Legibility does not go out of fashion. The only dated thing will be how unusual this choice currently is.",
+      "fonts": { "Inclusive Sans": "Inclusive+Sans:ital,wght@0,300..700;1,300..700" },
+      "css": { "display": "'Inclusive Sans',system-ui,sans-serif", "text": "'Inclusive Sans',system-ui,sans-serif", "dw": 700, "dl": 1.06, "dt": "-0.018em", "metric": "display", "mw": 700 }
+    },
+    {
+      "key": "geist", "name": "Geist + Geist Mono", "src": "Google Fonts", "source": "google", "trend": "Quiet sans · current",
+      "says": "A contemporary neutral sans with a matching mono. Reads more current than Inter while staying just as quiet.",
+      "costs": "Buys recency rather than identity — and recency is the thing that expires.",
+      "best": "Developer products, infrastructure dashboards, anything that should not look like 2021.",
+      "ship": "SIL OFL 1.1 · 2 families, 2 variable files, ~84 kB",
+      "dates": "Vercel's, and read as such by the people who would notice.",
+      "fonts": { "Geist": "Geist:wght@400;500;600", "Geist Mono": "Geist+Mono:wght@400;500" },
+      "css": { "display": "'Geist',system-ui,sans-serif", "text": "'Geist',system-ui,sans-serif", "dw": 600, "dl": 1.04, "dt": "-0.03em", "metric": "display", "mw": 600 }
+    },
+    {
+      "key": "grotesk", "name": "Space Grotesk + Plex Mono", "src": "Google Fonts", "source": "google", "trend": null,
+      "says": "A grotesk with a genuinely strange g and a, with mono carrying labels, data and anything with a number.",
+      "costs": "The personality that works in a headline gets tiring across a paragraph.",
+      "best": "Developer tools, infrastructure, fintech back-ends — technical with a pulse.",
+      "ship": "SIL OFL 1.1 · 2 families, 2 variable files, ~96 kB",
+      "dates": "The default technical look since 2020. Settled rather than fashionable.",
+      "fonts": { "Space Grotesk": "Space+Grotesk:wght@400;500;700", "IBM Plex Mono": "IBM+Plex+Mono:wght@400;500" },
+      "css": { "display": "'Space Grotesk',system-ui,sans-serif", "text": "'Space Grotesk',system-ui,sans-serif", "dw": 500, "dl": 1.03, "dt": "-0.032em", "metric": "display", "mw": 500 }
+    },
+    {
+      "key": "garamond", "name": "EB Garamond + Work Sans", "src": "Google Fonts", "source": "google", "trend": null,
+      "says": "An old-style serif with the best free italic available, over a neutral humanist sans.",
+      "costs": "Small on the page for its size, so it wants a larger base and a generous measure.",
+      "best": "Heritage, cultural institutions, education, research.",
+      "ship": "SIL OFL 1.1 · 2 families, 3 files, ~120 kB · check figure style before using it in tables",
+      "dates": "The design is from the 1500s. It has already outlasted everything else here.",
+      "fonts": { "EB Garamond": "EB+Garamond:ital,wght@0,400..600;1,400..500", "Work Sans": "Work+Sans:wght@400;500;600" },
+      "css": { "display": "'EB Garamond',Georgia,serif", "text": "'Work Sans',system-ui,sans-serif", "dw": 500, "dl": 1.06, "dt": "-0.014em", "metric": "display", "mw": 500 }
+    },
+    {
+      "key": "newsreader", "name": "Newsreader + Schibsted", "src": "Google Fonts", "source": "google", "trend": null,
+      "says": "A screen-drawn text serif with an optical-size axis for reading, and a crisp grotesk for the interface.",
+      "costs": "Built for length. With no long-form text it reads as borrowed authority.",
+      "best": "Publishing, research, newsletters, long-form product docs.",
+      "ship": "SIL OFL 1.1 · 2 families, 3 files, ~128 kB · the heaviest set here",
+      "dates": "Drawn for reading rather than for a moment. Ages at the speed of newspapers.",
+      "fonts": { "Newsreader": "Newsreader:ital,opsz,wght@0,6..72,400..600;1,6..72,400..500", "Schibsted Grotesk": "Schibsted+Grotesk:wght@400;500;700" },
+      "css": { "display": "'Newsreader',Georgia,serif", "text": "'Newsreader',Georgia,serif", "dw": 500, "ds": "italic", "dl": 1.08, "dt": "-0.016em", "dv": "'opsz' 72", "metric": "text", "mw": 500 }
+    },
+    {
+      "key": "franklin", "name": "Libre Franklin + Lora", "src": "Google Fonts", "source": "google", "trend": null,
+      "says": "A journalistic grotesk for headlines and interface, with a warm serif for anything long.",
+      "costs": "Reads as civic, which is not the same as neutral — a slight air of the public sector.",
+      "best": "Healthcare, public interest, government, insurance.",
+      "ship": "SIL OFL 1.1 · 2 families, 2 variable files, ~102 kB · excellent language coverage",
+      "dates": "A 1910 design, redrawn. It has no fashion to lose.",
+      "fonts": { "Libre Franklin": "Libre+Franklin:wght@400;500;700", "Lora": "Lora:ital,wght@0,400..600;1,400..500" },
+      "css": { "display": "'Libre Franklin',system-ui,sans-serif", "text": "'Libre Franklin',system-ui,sans-serif", "dw": 700, "dl": 1.04, "dt": "-0.022em", "metric": "display", "mw": 700 }
+    },
+    {
+      "key": "plex", "name": "IBM Plex trio", "src": "Google Fonts", "source": "google", "trend": null,
+      "says": "Three registers drawn as one superfamily — the cheapest honest route to a sans, a mono and a serif that agree.",
+      "costs": "It is IBM's, visibly, and a decade of enterprise software has trained people to read it that way.",
+      "best": "Enterprise with a conscience, engineered products, documentation-heavy platforms.",
+      "ship": "SIL OFL 1.1 · 3 families, 4 files, ~140 kB · load the serif only where it is used",
+      "dates": "Eight years old and unchanged in status. Neither current nor dated — institutional.",
+      "fonts": { "IBM Plex Sans": "IBM+Plex+Sans:wght@400;500;600", "IBM Plex Mono": "IBM+Plex+Mono:wght@400;500", "IBM Plex Serif": "IBM+Plex+Serif:wght@400;600" },
+      "css": { "display": "'IBM Plex Sans',system-ui,sans-serif", "text": "'IBM Plex Sans',system-ui,sans-serif", "dw": 600, "dl": 1.06, "dt": "-0.024em", "metric": "display", "mw": 600 }
+    }
+  ]
+}
+</script>
+
+<script>
+(function(){
+  var S={}; try{ S=JSON.parse(document.getElementById('systems').textContent); }catch(e){ return; }
+  var P=S.palette||{}, W=S.words||{}, ALL=S.systems||[];
+  var list=(S.shortlist&&S.shortlist.length)
+    ? S.shortlist.map(function(k){ return ALL.filter(function(s){return s.key===k;})[0]; }).filter(Boolean)
+    : ALL;
+
+  function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
+
+  // One stylesheet per family, deduped, only for what is on the board — so an
+  // unshown system costs nothing and a bad spec breaks one card, not the page.
+  var seen={};
+  function sheet(href){
+    if(seen[href]) return; seen[href]=1;
+    var l=document.createElement('link'); l.rel='stylesheet'; l.href=href; document.head.appendChild(l);
+  }
+  list.forEach(function(s){
+    (s.cdn||[]).forEach(sheet);
+    Object.keys(s.fonts||{}).forEach(function(fam){
+      sheet('https://fonts.googleapis.com/css2?family='+s.fonts[fam]+'&display=swap');
+    });
+  });
+
+  // Readable text on the accent, so a dark brand colour does not get white on yellow.
+  function onAccent(hex){
+    var h=String(hex||'#000').replace('#',''); if(h.length===3){h=h[0]+h[0]+h[1]+h[1]+h[2]+h[2];}
+    var n=parseInt(h,16); if(isNaN(n)) return '#fff';
+    var c=[(n>>16&255)/255,(n>>8&255)/255,(n&255)/255].map(function(v){
+      return v<=0.03928 ? v/12.92 : Math.pow((v+0.055)/1.055,2.4);
+    });
+    return (0.2126*c[0]+0.7152*c[1]+0.0722*c[2])>0.42 ? (P.ink||'#1E1B18') : '#FFFFFF';
+  }
+
+  document.getElementById('t').textContent=S.title||'Type systems';
+  document.getElementById('sub').textContent=S.sub||'';
+
+  var on=onAccent(P.accent);
+  document.getElementById('grid').innerHTML=list.map(function(s,i){
+    var c=s.css||{};
+    var mf=c.metric==='text' ? c.text : c.display;
+    var vars=[
+      '--card-bg:'+esc(P.ground||'#FBF9F6'),
+      '--card-ink:'+esc(P.ink||'#1E1B18'),
+      '--card-muted:'+esc(P.muted||'#6E6459'),
+      '--card-accent:'+esc(P.accent||'#1F5D45'),
+      '--card-on:'+esc(on),
+      '--d:'+esc(c.display), '--t:'+esc(c.text), '--mf:'+esc(mf),
+      '--dw:'+(c.dw||600), '--dl:'+(c.dl||1.05), '--dt:'+esc(c.dt||'-0.02em'),
+      '--mw:'+(c.mw||600)
+    ];
+    if(c.ds) vars.push('--ds:'+esc(c.ds));
+    if(c.dv) vars.push('--dv:'+esc(c.dv));
+    if(c.mv) vars.push('--mv:'+esc(c.mv));
+
+    return '<div class="card" style="'+vars.join(';')+'">'+
+      '<div class="sp">'+
+        '<p class="disp" data-w="display">'+esc(W.display)+'</p>'+
+        '<p class="lede" data-w="lede">'+esc(W.lede)+'</p>'+
+        '<div class="row"><span class="met">'+esc(W.metric)+'</span><span class="delta">'+esc(W.delta)+'</span></div>'+
+        '<div class="item">'+esc(W.item)+'</div>'+
+      '</div>'+
+      '<div class="nm"><span class="num">'+String(i+1).padStart(2,'0')+'</span>'+
+        '<h2>'+esc(s.name)+'</h2><span class="src">'+esc(s.src)+'</span></div>'+
+    '</div>';
+  }).join('');
+
+  // Their own words. A face chosen on a stranger's headline is chosen on a stranger's brand.
+  var i1=document.getElementById('w1'), i2=document.getElementById('w2');
+  i1.value=W.display||''; i2.value=W.lede||'';
+  function put(which,val){
+    var t=val.trim()||W[which]||'';
+    [].forEach.call(document.querySelectorAll('[data-w="'+which+'"]'),function(el){ el.textContent=t; });
+  }
+  i1.addEventListener('input',function(){ put('display',i1.value); });
+  i2.addEventListener('input',function(){ put('lede',i2.value); });
+  document.getElementById('reset').addEventListener('click',function(){
+    i1.value=W.display||''; i2.value=W.lede||''; put('display',i1.value); put('lede',i2.value);
+  });
+})();
+</script>
+</body>
+</html>

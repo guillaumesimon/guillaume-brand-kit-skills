@@ -1,0 +1,46 @@
+export const metadata = { title: "Colour" }
+
+<PageHero label="How we look" title="Colour" provenance="inferred"
+  lead="Paper and ink carry the brand. Moss marks the one thing you can act on. That is the whole palette, and the restraint is the point." />
+
+<SectionBar />
+
+<Block id="roles" title="Roles, not swatches" lead="Every colour has a job. Click any swatch to copy its value. The badge is its contrast against the page.">
+  <Swatches />
+</Block>
+
+<Block id="ratio" title="How much of each" lead="On a typical surface. Moss is under five percent of anything — a second green thing on a screen is one too many." tone="sunken">
+  <Dominance />
+</Block>
+
+<Block id="pair" title="Light and dark" lead="Dark mode re-points the roles. It is not an inversion — moss steps up a shade, because moss.600 fails contrast on near-black.">
+  <ThemePair />
+</Block>
+
+<Block id="palette" title="The raw palette" lead="Raw material. Components never use these names directly — they use the roles above.">
+  <Ramps />
+</Block>
+
+<Block id="rules" title="Rules" tone="sunken">
+  <Rules path="color" />
+</Block>
+
+<Block id="misuse" title="Misuse" lead="The mistakes this palette invites.">
+  <DoDontGrid>
+    <DoDont kind="do" caption="One moss action on a paper page. Everything else is ink and hairline.">
+      <div style={{ padding: "var(--space-5)", width: "100%" }}>
+        <p className="t-label">Fig. 01 — Thursday</p>
+        <p className="t-metric" style={{ margin: "var(--space-3) 0" }}>81%</p>
+        <span className="btn">Open the week</span>
+      </div>
+    </DoDont>
+    <DoDont kind="dont" caption="Don't use moss for decoration — because it stops meaning “act here”. Instead ink, paper and hairline carry the page.">
+      <div style={{ padding: "var(--space-5)", width: "100%", display: "grid", gap: "var(--space-2)" }}>
+        <span className="btn">Occupancy</span><span className="btn">Rate</span><span className="btn">Week</span>
+      </div>
+    </DoDont>
+    <DoDont kind="dont" caption="Don't use clay as a highlight — because clay means something needs attention. If nothing does, nothing is clay." bg="var(--color-state-warning)">
+      <p className="t-h2" style={{ color: "var(--color-accent-on)" }}>New this week</p>
+    </DoDont>
+  </DoDontGrid>
+</Block>

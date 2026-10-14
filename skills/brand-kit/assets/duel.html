@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Duels</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* Deliberately almost invisible. Every pixel of chrome here is a pixel
+   competing with the two things the user is supposed to be comparing. */
+:root{
+  --bg:#FFFFFF; --soft:#F6F8FA; --ink:#1A1F36; --text:#3C4257; --muted:#697386; --line:#E3E8EE;
+  --ring:0 0 0 1px rgba(60,66,87,.10),0 1px 2px rgba(60,66,87,.08);
+  --sans:"Geist",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  --mono:"Geist Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0E1016; --soft:#161922; --ink:#F3F5F9; --text:#C5CAD8; --muted:#8891A6; --line:#252A38;
+  --ring:0 0 0 1px rgba(255,255,255,.09);
+}}
+:root[data-theme="dark"]{
+  --bg:#0E1016; --soft:#161922; --ink:#F3F5F9; --text:#C5CAD8; --muted:#8891A6; --line:#252A38;
+  --ring:0 0 0 1px rgba(255,255,255,.09);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:var(--sans);font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1200px;margin:0 auto;padding:40px 16px 72px}
+h1{font-size:1.375rem;line-height:1.25;font-weight:600;letter-spacing:-.018em;color:var(--ink);margin:0 0 6px}
+.sub{margin:0 0 32px;color:var(--muted);max-width:60ch}
+.duel{margin:0 0 40px}
+.n{font-family:var(--mono);font-size:.6875rem;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0 0 10px}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.side{min-width:0;margin:0}
+.shot{display:block;width:100%;height:auto;border-radius:10px;box-shadow:var(--ring);background:var(--soft)}
+.side figcaption{margin-top:8px;font-size:.8125rem;color:var(--ink);font-weight:500}
+.side a{color:var(--muted);font-weight:400;text-decoration:none;border-bottom:1px solid var(--line)}
+.side a:hover{color:var(--ink)}
+.foot{margin-top:8px;padding-top:20px;border-top:1px solid var(--line);font-size:.875rem;color:var(--muted);max-width:66ch}
+@media (max-width:720px){.pair{grid-template-columns:1fr}.wrap{padding:24px 16px 48px}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1 id="title">Celui-ci ou celui-là ?</h1>
+  <p class="sub" id="sub"></p>
+  <div id="duels"></div>
+  <p class="foot" id="foot"></p>
+</div>
+
+<!-- =====================================================================
+  Fill this block and nothing else.
+
+  RULES, because this template is trivially easy to ruin:
+  · Two images, and no explanation next to them. No "this one reads as
+    trustworthy". People read the paragraph and pick the best description.
+  · `src` is a LOCAL file you downloaded. Mobbin's image_url expires after
+    30 days and the board is dead after that.
+  · `name` is the site, small. `url` is its mobbin_url, so the user can open it.
+  · Never write the axis you are testing anywhere on this page.
+====================================================================== -->
+<script id="board" type="application/json">
+{
+  "title": "Celui-ci ou celui-là ?",
+  "sub": "Rien à lire. Regarde, et dis-moi lequel te parle le plus — dans chaque paire.",
+  "foot": "Il n'y a pas de bonne réponse, et je ne te dirai pas ce que chaque choix veut dire — c'est mon travail, pas le tien.",
+  "duels": [
+    {
+      "n": "Duel 1",
+      "a": { "src": "duel/1a.webp", "name": "Stripe", "url": "https://mobbin.com/sites/…" },
+      "b": { "src": "duel/1b.webp", "name": "Oatly",  "url": "https://mobbin.com/sites/…" }
+    }
+  ]
+}
+</script>
+
+<script>
+(function(){
+  var B={}; try{ B=JSON.parse(document.getElementById('board').textContent); }catch(e){ return; }
+  function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
+  document.getElementById('title').textContent=B.title||'Celui-ci ou celui-là ?';
+  document.getElementById('sub').textContent=B.sub||'';
+  document.getElementById('foot').textContent=B.foot||'';
+  document.title=B.title||'Duels';
+  function side(s){
+    s=s||{};
+    var cap=esc(s.name||'');
+    if(s.url) cap='<a href="'+esc(s.url)+'" target="_blank" rel="noopener">'+cap+'</a>';
+    return '<figure class="side"><img class="shot" src="'+esc(s.src||'')+'" alt="'+esc(s.name||'')+'" loading="lazy">'+
+           '<figcaption>'+cap+'</figcaption></figure>';
+  }
+  document.getElementById('duels').innerHTML=(B.duels||[]).map(function(d){
+    return '<section class="duel"><p class="n">'+esc(d.n||'')+'</p>'+
+           '<div class="pair">'+side(d.a)+side(d.b)+'</div></section>';
+  }).join('');
+})();
+</script>
+</body>
+</html>

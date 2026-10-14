@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Motion</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#FFFFFF; --soft:#F6F8FA; --ink:#1A1F36; --text:#3C4257; --muted:#697386; --line:#E3E8EE;
+  --ring:0 0 0 1px rgba(60,66,87,.10),0 1px 2px rgba(60,66,87,.08);
+  --sans:"Geist",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  --mono:"Geist Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  --b-ground:#F4F1EA; --b-surface:#FFFFFF; --b-ink:#1A1F36; --b-accent:#635BFF; --b-on:#FFFFFF; --b-font:var(--sans);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0E1016; --soft:#161922; --ink:#F3F5F9; --text:#C5CAD8; --muted:#8891A6; --line:#252A38; --ring:0 0 0 1px rgba(255,255,255,.09);
+}}
+:root[data-theme="dark"]{ --bg:#0E1016; --soft:#161922; --ink:#F3F5F9; --text:#C5CAD8; --muted:#8891A6; --line:#252A38; --ring:0 0 0 1px rgba(255,255,255,.09); }
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:var(--sans);font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1280px;margin:0 auto;padding:40px 24px 80px}
+h1{font-size:1.5rem;line-height:1.25;font-weight:600;letter-spacing:-.018em;color:var(--ink);margin:0 0 8px}
+.sub{margin:0 0 12px;color:var(--muted);max-width:64ch}
+.bar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:28px}
+.ask{font-size:.8125rem;font-weight:500;color:var(--ink);background:var(--soft);border:1px solid var(--line);border-radius:8px;padding:8px 12px}
+button.replay{font:inherit;font-size:.8125rem;font-weight:500;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:8px 12px;cursor:pointer}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+.card{border-radius:12px;box-shadow:var(--ring);overflow:hidden;background:var(--bg);cursor:pointer}
+.stage{background:var(--b-ground);height:240px;display:grid;place-items:center;padding:24px;overflow:hidden;font-family:var(--b-font)}
+.ui{width:100%;max-width:230px;background:var(--b-surface);color:var(--b-ink);border-radius:10px;padding:16px;box-shadow:0 1px 2px rgba(0,0,0,.06),0 8px 24px rgba(0,0,0,.06)}
+.ui .l{font-size:11px;letter-spacing:.06em;text-transform:uppercase;opacity:.6}
+.ui .n{font-size:34px;font-weight:600;letter-spacing:-.03em;line-height:1.1;margin:6px 0 2px}
+.ui .s{font-size:12px;opacity:.7}
+.ui .btn{display:inline-block;margin-top:14px;font-size:12px;font-weight:600;padding:7px 12px;border-radius:7px;background:var(--b-accent);color:var(--b-on)}
+.txt{padding:13px 16px 15px;border-top:1px solid var(--line);display:flex;align-items:baseline;gap:11px}
+.num{font-family:var(--mono);font-size:1rem;font-weight:500;color:var(--muted);opacity:.5;flex:none}
+.txt h2{font-size:1rem;font-weight:600;color:var(--ink);margin:0;letter-spacing:-.012em}
+.txt p{margin:0;font-size:.78rem;color:var(--muted);font-family:var(--mono)}
+.notes{display:none;padding:0 16px 15px;font-size:.8125rem;line-height:1.5}
+.show-notes .notes{display:block}
+.notes b{color:var(--ink);font-weight:500}
+.foot{margin-top:34px;padding-top:20px;border-top:1px solid var(--line);font-size:.875rem;color:var(--muted);max-width:74ch}
+.foot button{font:inherit;font-size:.8125rem;color:var(--ink);background:var(--soft);border:1px solid var(--line);border-radius:6px;padding:4px 10px;cursor:pointer}
+@media (max-width:640px){.wrap{padding:24px 16px 56px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1 id="title">Motion</h1>
+  <p class="sub" id="sub"></p>
+  <div class="bar"><span class="ask" id="ask"></span><button class="replay" id="replay" type="button">Replay all</button></div>
+  <div class="grid" id="grid"></div>
+  <div class="foot"><p id="foot"></p><button id="toggle" type="button">Show notes</button></div>
+</div>
+
+<!-- =====================================================================
+  The same card enters six ways. Only the temperament varies.
+
+  Brand it through the hash before showing it:
+    motion-styles.html#ground=FBF7F1&surface=FFFFFF&ink=241E1A&accent=1F5D45&on=FBF7F1&font=Inter&metric=81%25&label=Occupancy&cta=Open%20the%20week
+
+  Each style's `tokens` block is what goes into tokens.json → motion once
+  chosen. Click a card to replay it; "Replay all" runs them together, which
+  is the honest comparison.
+====================================================================== -->
+<script id="board" type="application/json">
+{
+  "title": "Motion",
+  "sub": "The same card arriving six ways. Watch them together, then one at a time. Nothing here is about speed alone — it is about what kind of company moves like that.",
+  "ask": "Which one moves like you? Then: which one would embarrass you?",
+  "foot": "Motion is the cheapest place to look expensive and the easiest place to look cheap. Most brands need one temperament, used for everything, and a rule for when nothing moves at all.",
+  "styles": [
+    { "key": "still", "name": "Still", "spec": "0ms · no motion",
+      "tokens": { "duration": { "base": "0ms" }, "easing": { "standard": "linear" }, "_rules": ["Nothing animates. State changes are instant."] },
+      "notes": "<b>Says</b> a tool, not a show. <b>Costs</b> changes can be missed; you need another way to signal them. <b>Fits</b> dense pro tools, finance, anything people use for hours." },
+    { "key": "quiet", "name": "Quiet", "spec": "200ms · fade + 8px rise",
+      "tokens": { "duration": { "fast": "150ms", "base": "200ms", "slow": "280ms" }, "easing": { "standard": "cubic-bezier(.2, 0, 0, 1)" }, "_rules": ["Fade and rise 8px. No scale, no bounce."] },
+      "notes": "<b>Says</b> calm, considered. <b>Costs</b> nothing much — which is also why it is everywhere. <b>Fits</b> most products; the safe default." },
+    { "key": "snappy", "name": "Snappy", "spec": "140ms · scale from 96%",
+      "tokens": { "duration": { "fast": "100ms", "base": "140ms", "slow": "200ms" }, "easing": { "standard": "cubic-bezier(.3, 0, 0, 1)" }, "_rules": ["Scale from 0.96 and fade. Everything under 200ms."] },
+      "notes": "<b>Says</b> fast, responsive, engineered. <b>Costs</b> it can feel nervous on large surfaces. <b>Fits</b> developer tools, productivity, keyboard-first products." },
+    { "key": "springy", "name": "Springy", "spec": "420ms · overshoot",
+      "tokens": { "duration": { "fast": "240ms", "base": "420ms", "slow": "480ms" }, "easing": { "standard": "cubic-bezier(.34, 1.56, .64, 1)" }, "_rules": ["Enter with a small overshoot. Never on exits, never on errors."] },
+      "notes": "<b>Says</b> friendly, physical, alive. <b>Costs</b> it cannot carry bad news, and it slows every interaction. <b>Fits</b> consumer apps, onboarding, celebrations." },
+    { "key": "editorial", "name": "Editorial", "spec": "700ms · masked reveal · marketing only",
+      "tokens": { "duration": { "fast": "300ms", "base": "700ms", "slow": "1000ms" }, "easing": { "standard": "cubic-bezier(.16, 1, .3, 1)" }, "_rules": ["Type reveals through a mask, line by line, 80ms apart. Marketing only — product UI uses the fast duration."] },
+      "notes": "<b>Says</b> premium, cinematic, art-directed. <b>Costs</b> too slow for product UI; it needs a second, faster rule there. <b>Fits</b> fashion, culture, launch pages." },
+    { "key": "playful", "name": "Playful", "spec": "600ms · staggered pop",
+      "tokens": { "duration": { "fast": "200ms", "base": "600ms", "slow": "800ms" }, "easing": { "standard": "cubic-bezier(.68, -0.6, .32, 1.6)" }, "_rules": ["Elements pop in one after another with a slight tilt. Reserved for moments of delight."] },
+      "notes": "<b>Says</b> fun, irreverent, young. <b>Costs</b> it gets tiring by the third time; ration it. <b>Fits</b> games, social, creator tools, mascot brands." }
+  ]
+}
+</script>
+
+<script>
+(function(){
+  var B={}; try{ B=JSON.parse(document.getElementById('board').textContent); }catch(e){ return; }
+  var h={}; location.hash.replace(/^#/,'').split('&').forEach(function(kv){ var p=kv.split('='); if(p[0]) h[p[0]]=decodeURIComponent(p[1]||''); });
+  var r=document.documentElement.style;
+  [['ground','--b-ground'],['surface','--b-surface'],['ink','--b-ink'],['accent','--b-accent'],['on','--b-on']].forEach(function(m){ if(h[m[0]]) r.setProperty(m[1],'#'+h[m[0]].replace('#','')); });
+  if(h.font){ r.setProperty('--b-font','"'+h.font+'",var(--sans)'); var l=document.createElement('link'); l.rel='stylesheet'; l.href='https://fonts.googleapis.com/css2?family='+encodeURIComponent(h.font)+':wght@400;600&display=swap'; document.head.appendChild(l); }
+  function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
+  document.getElementById('title').textContent=B.title;
+  document.getElementById('sub').textContent=B.sub;
+  document.getElementById('ask').textContent=B.ask;
+  document.getElementById('foot').textContent=B.foot;
+  var ui='<div class="ui"><div class="l a1">'+esc(h.label||'This week')+'</div><div class="n a2">'+esc(h.metric||'81%')+'</div>'+
+         '<div class="s a3">'+esc(h.sub||'Up 4 points on last week')+'</div><div class="btn a4">'+esc(h.cta||'Open')+'</div></div>';
+  var grid=document.getElementById('grid');
+  grid.innerHTML=B.styles.map(function(st,i){
+    return '<article class="card" data-key="'+st.key+'"><div class="stage">'+ui+'</div>'+
+      '<div class="txt"><span class="num">'+String(i+1).padStart(2,'0')+'</span><div><h2>'+esc(st.name)+'</h2><p>'+esc(st.spec)+'</p></div></div>'+
+      '<div class="notes">'+st.notes+'</div></article>';
+  }).join('');
+
+  var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var play={
+    still:function(c){ c.querySelector('.ui').animate([{opacity:0},{opacity:1}],{duration:1}); },
+    quiet:function(c){ c.querySelector('.ui').animate([{opacity:0,transform:'translateY(8px)'},{opacity:1,transform:'none'}],{duration:200,easing:'cubic-bezier(.2,0,0,1)',fill:'both'}); },
+    snappy:function(c){ c.querySelector('.ui').animate([{opacity:0,transform:'scale(.96)'},{opacity:1,transform:'none'}],{duration:140,easing:'cubic-bezier(.3,0,0,1)',fill:'both'}); },
+    springy:function(c){ c.querySelector('.ui').animate([{opacity:0,transform:'translateY(28px) scale(.98)'},{opacity:1,transform:'none'}],{duration:420,easing:'cubic-bezier(.34,1.56,.64,1)',fill:'both'}); },
+    editorial:function(c){
+      c.querySelector('.ui').animate([{opacity:0},{opacity:1}],{duration:400,easing:'cubic-bezier(.16,1,.3,1)',fill:'both'});
+      ['.a1','.a2','.a3','.a4'].forEach(function(s,i){ c.querySelector(s).animate([{clipPath:'inset(0 0 100% 0)',transform:'translateY(60%)'},{clipPath:'inset(0 0 0 0)',transform:'none'}],{duration:700,delay:120+i*80,easing:'cubic-bezier(.16,1,.3,1)',fill:'both'}); });
+    },
+    playful:function(c){
+      c.querySelector('.ui').animate([{opacity:0,transform:'scale(.6) rotate(-6deg)'},{opacity:1,transform:'none'}],{duration:600,easing:'cubic-bezier(.68,-0.6,.32,1.6)',fill:'both'});
+      ['.a1','.a2','.a3','.a4'].forEach(function(s,i){ c.querySelector(s).animate([{opacity:0,transform:'scale(.4) rotate(8deg)'},{opacity:1,transform:'none'}],{duration:500,delay:200+i*110,easing:'cubic-bezier(.68,-0.6,.32,1.6)',fill:'both'}); });
+    }
+  };
+  function run(card){ if(reduce) return; card.getAnimations({subtree:true}).forEach(function(a){a.cancel();}); play[card.dataset.key](card); }
+  function all(){ grid.querySelectorAll('.card').forEach(run); }
+  grid.addEventListener('click',function(e){ var c=e.target.closest('.card'); if(c) run(c); });
+  document.getElementById('replay').onclick=all;
+  setTimeout(all,400);
+  var t=document.getElementById('toggle');
+  t.onclick=function(){ document.body.classList.toggle('show-notes'); t.textContent=document.body.classList.contains('show-notes')?'Hide notes':'Show notes'; };
+})();
+</script>
+</body>
+</html>

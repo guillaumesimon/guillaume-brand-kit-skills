@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Icon styles</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* Same chrome as the other boards: almost invisible, so the icons are the
+   only thing being compared. */
+:root{
+  --bg:#FFFFFF; --soft:#F6F8FA; --ink:#1A1F36; --text:#3C4257; --muted:#697386; --line:#E3E8EE;
+  --ring:0 0 0 1px rgba(60,66,87,.10),0 1px 2px rgba(60,66,87,.08);
+  --sans:"Geist",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  --mono:"Geist Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  --card:#FFFFFF; --icon:#1A1F36; --accent:#635BFF;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0E1016; --soft:#161922; --ink:#F3F5F9; --text:#C5CAD8; --muted:#8891A6; --line:#252A38;
+  --ring:0 0 0 1px rgba(255,255,255,.09);
+}}
+:root[data-theme="dark"]{
+  --bg:#0E1016; --soft:#161922; --ink:#F3F5F9; --text:#C5CAD8; --muted:#8891A6; --line:#252A38;
+  --ring:0 0 0 1px rgba(255,255,255,.09);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:var(--sans);font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1280px;margin:0 auto;padding:40px 24px 80px}
+h1{font-size:1.5rem;line-height:1.25;font-weight:600;letter-spacing:-.018em;color:var(--ink);margin:0 0 8px}
+.sub{margin:0 0 12px;color:var(--muted);max-width:64ch}
+.ask{display:inline-block;font-size:.8125rem;font-weight:500;color:var(--ink);background:var(--soft);border:1px solid var(--line);border-radius:8px;padding:8px 12px;margin-bottom:28px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
+.card{border-radius:12px;box-shadow:var(--ring);overflow:hidden;background:var(--bg)}
+.art{background:var(--card);padding:22px 20px 18px}
+.icons{display:grid;grid-template-columns:repeat(4,1fr);gap:20px 0;justify-items:center}
+.icons span,.row span.i{display:block;background:var(--icon);-webkit-mask:var(--src) center/contain no-repeat;mask:var(--src) center/contain no-repeat}
+.icons span{width:30px;height:30px}
+.icons span.a{background:var(--accent)}
+.row{display:flex;align-items:center;gap:8px;margin-top:20px;padding-top:14px;border-top:1px solid color-mix(in srgb,var(--icon) 12%,transparent);color:var(--icon);font-size:14px}
+.row span.i{width:16px;height:16px;flex:none}
+.row b{font-weight:500}
+.row em{margin-left:auto;font-style:normal;font-size:12px;opacity:.6}
+.txt{padding:13px 16px 15px;border-top:1px solid var(--line);display:flex;align-items:baseline;gap:11px}
+.num{font-family:var(--mono);font-size:1rem;font-weight:500;color:var(--muted);opacity:.5;flex:none}
+.txt h2{font-size:1rem;font-weight:600;color:var(--ink);margin:0;letter-spacing:-.012em}
+.txt p{margin:0;font-size:.78rem;color:var(--muted)}
+.notes{display:none;padding:0 16px 15px;font-size:.8125rem;line-height:1.5}
+.show-notes .notes{display:block}
+.notes b{color:var(--ink);font-weight:500}
+.foot{margin-top:34px;padding-top:20px;border-top:1px solid var(--line);font-size:.875rem;color:var(--muted);max-width:74ch}
+.foot button{font:inherit;font-size:.8125rem;color:var(--ink);background:var(--soft);border:1px solid var(--line);border-radius:6px;padding:4px 10px;cursor:pointer}
+@media (max-width:640px){.wrap{padding:24px 16px 56px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1 id="title">Icon styles</h1>
+  <p class="sub" id="sub"></p>
+  <span class="ask" id="ask"></span>
+  <div class="grid" id="grid"></div>
+  <div class="foot"><p id="foot"></p><button id="toggle" type="button">Show notes</button></div>
+</div>
+
+<!-- =====================================================================
+  Same twelve concepts, seven icon languages. Only the drawing varies.
+
+  Show it in the brand's colours by putting them in the URL hash:
+    icon-styles.html#ink=241E1A&accent=1F5D45&card=FBF7F1&label=Occupancy
+  `label` is the word set beside the 16px icon — use a word from the
+  product, because the small size is where most icon styles fail.
+
+  Icons are drawn live from Iconify's open sets (api.iconify.design), so
+  the board needs a network connection. Each card's `iconify` is exactly
+  what goes into tokens.json → icon.iconify once a style is chosen.
+
+  Notes are hidden by default on purpose: a paragraph beside a specimen
+  gets read instead of the specimen. Reveal them only when asked.
+====================================================================== -->
+<script id="board" type="application/json">
+{
+  "title": "Icon styles",
+  "sub": "The same twelve things, drawn seven ways. Look at the big ones, then at the small one beside a word — that is where most of them live.",
+  "ask": "Which two could be yours? Then: which one is definitely not?",
+  "foot": "Icons label things. The right set is the one that disappears at 16px next to your own words, not the prettiest at 30px.",
+  "concepts": ["home","search","user","calendar","bell","chat","heart","settings","bag","chart","lock","arrow"],
+  "accent": [6],
+  "styles": [
+    { "key": "fine", "name": "Fine line", "library": "Phosphor Light",
+      "iconify": { "prefix": "ph", "suffix": "-light" },
+      "names": ["house","magnifying-glass","user","calendar-blank","bell","chat-circle","heart","gear-six","shopping-bag","chart-bar","lock","arrow-right"],
+      "notes": "<b>Says</b> precise, quiet, premium. <b>Costs</b> it thins out to nothing below 20px on low-density screens. <b>Fits</b> editorial and premium brands with large UI." },
+    { "key": "neutral", "name": "Neutral outline", "library": "Lucide",
+      "iconify": { "prefix": "lucide", "suffix": "" },
+      "names": ["house","search","user","calendar","bell","message-circle","heart","settings","shopping-bag","chart-column","lock","arrow-right"],
+      "notes": "<b>Says</b> clear and familiar. <b>Costs</b> familiarity — it is the default of half the internet. <b>Fits</b> almost any product; pair it with a stroke weight that is yours." },
+    { "key": "bold", "name": "Bold outline", "library": "Phosphor Bold",
+      "iconify": { "prefix": "ph", "suffix": "-bold" },
+      "names": ["house","magnifying-glass","user","calendar-blank","bell","chat-circle","heart","gear-six","shopping-bag","chart-bar","lock","arrow-right"],
+      "notes": "<b>Says</b> confident, friendly, legible. <b>Costs</b> it shouts beside light type. <b>Fits</b> consumer apps and brands with heavy headlines." },
+    { "key": "sharp", "name": "Sharp and square", "library": "Material Symbols Sharp",
+      "iconify": { "prefix": "material-symbols", "suffix": "-sharp" },
+      "names": ["home-outline","search","person-outline","calendar-today-outline","notifications-outline","chat-bubble-outline","favorite-outline","settings-outline","shopping-bag-outline","bar-chart","lock-outline","arrow-forward"],
+      "notes": "<b>Says</b> engineered, systematic. <b>Costs</b> it can read as cold, and as Google. <b>Fits</b> technical tools, square-cornered systems." },
+    { "key": "solid", "name": "Solid", "library": "Phosphor Fill",
+      "iconify": { "prefix": "ph", "suffix": "-fill" },
+      "names": ["house","magnifying-glass","user","calendar-blank","bell","chat-circle","heart","gear-six","shopping-bag","chart-bar","lock","arrow-right"],
+      "notes": "<b>Says</b> bold, graphic, instant. <b>Costs</b> no room left to show an active state. <b>Fits</b> navigation bars, signage, brands with flat colour fields." },
+    { "key": "duotone", "name": "Duotone", "library": "Phosphor Duotone",
+      "iconify": { "prefix": "ph", "suffix": "-duotone" },
+      "names": ["house","magnifying-glass","user","calendar-blank","bell","chat-circle","heart","gear-six","shopping-bag","chart-bar","lock","arrow-right"],
+      "notes": "<b>Says</b> crafted, warm, a little illustrated. <b>Costs</b> two colours on every icon — it spends the accent fast. <b>Fits</b> marketing and onboarding more than dense UI." },
+    { "key": "pixel", "name": "Pixel", "library": "Pixelarticons",
+      "iconify": { "prefix": "pixelarticons", "suffix": "" },
+      "names": ["home","search","user","calendar","notification","chat","heart","sliders","shopping-bag","chart-bar","lock","arrow-right"],
+      "notes": "<b>Says</b> playful, nostalgic, made by people who make games. <b>Costs</b> it is a statement, and statements date. <b>Fits</b> developer and creator brands with a sense of humour." }
+  ]
+}
+</script>
+
+<script>
+(function(){
+  var B={}; try{ B=JSON.parse(document.getElementById('board').textContent); }catch(e){ return; }
+  var h={}; location.hash.replace(/^#/,'').split('&').forEach(function(kv){ var p=kv.split('='); if(p[0]) h[p[0]]=decodeURIComponent(p[1]||''); });
+  var r=document.documentElement.style;
+  if(h.ink) r.setProperty('--icon','#'+h.ink.replace('#',''));
+  if(h.accent) r.setProperty('--accent','#'+h.accent.replace('#',''));
+  if(h.card) r.setProperty('--card','#'+h.card.replace('#',''));
+  var label=h.label||'Calendar';
+  function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
+  function url(st,n){ return 'url("https://api.iconify.design/'+st.iconify.prefix+'/'+n+st.iconify.suffix+'.svg")'; }
+  document.getElementById('title').textContent=B.title;
+  document.getElementById('sub').textContent=B.sub;
+  document.getElementById('ask').textContent=B.ask;
+  document.getElementById('foot').textContent=B.foot;
+  document.getElementById('grid').innerHTML=B.styles.map(function(st,i){
+    var icons=st.names.map(function(n,j){
+      var a=(B.accent||[]).indexOf(j)>=0?' class="a"':'';
+      return '<span'+a+' style=\'--src:'+url(st,n)+'\' title="'+esc(B.concepts[j])+'"></span>';
+    }).join('');
+    return '<article class="card"><div class="art"><div class="icons">'+icons+'</div>'+
+      '<div class="row"><span class="i" style=\'--src:'+url(st,st.names[3])+'\'></span><b>'+esc(label)+'</b><em>16px</em></div></div>'+
+      '<div class="txt"><span class="num">'+String(i+1).padStart(2,'0')+'</span><div><h2>'+esc(st.name)+'</h2><p>'+esc(st.library)+'</p></div></div>'+
+      '<div class="notes">'+st.notes+'</div></article>';
+  }).join('');
+  var t=document.getElementById('toggle');
+  t.onclick=function(){ document.body.classList.toggle('show-notes'); t.textContent=document.body.classList.contains('show-notes')?'Hide notes':'Show notes'; };
+})();
+</script>
+</body>
+</html>

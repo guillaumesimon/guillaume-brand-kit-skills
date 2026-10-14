@@ -1,0 +1,36 @@
+export const metadata = { title: "Art direction" }
+
+{/* ART DIRECTION — how every element is combined. The concept, the formula a
+    shoot or a layout is briefed against, and which element carries which job. */}
+
+<PageHero label="How we look" title="The house at work." tone="inverse" provenance="inferred"
+  lead="Art direction is how type, photography, colour and the ledger rule combine — so that a slide, a billboard and a screen are obviously the same company." />
+
+<SectionBar />
+
+<Block id="concept" title="The concept" label="Brief everything against this">
+  <Split>
+    <Statement><T path="art_direction.concept" /></Statement>
+    <Prose><T path="art_direction._concept_use" /></Prose>
+  </Split>
+</Block>
+
+<Block id="principles" title="Principles" tone="sunken">
+  <TokenPrinciples path="art_direction.principles" />
+</Block>
+
+<Block id="formula" title="The formula" lead="Five ingredients. Get all five right and the work is ours without the logo.">
+  <Recipe path="art_direction.formula" labels={{ type_on_image: "type on image" }} />
+</Block>
+
+<Block id="in-practice" title="In practice" tone="sunken" lead="What the formula produces. These are direction, not a library — see Photography for the source.">
+  <ImageWall />
+</Block>
+
+<Block id="hierarchy" title="Who does what" lead="Every visual element has one job. When two compete for the same job, the one higher in this list wins.">
+  <Table path="art_direction.hierarchy" cols="element:Element,job:Job,share:How much" />
+</Block>
+
+<Block id="rules" title="Rules" tone="accent">
+  <Rules path="art_direction" />
+</Block>

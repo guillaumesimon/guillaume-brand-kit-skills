@@ -1,0 +1,43 @@
+export const metadata = { title: "Layout" }
+
+<PageHero label="How we look" title="Layout" provenance="inferred"
+  lead="Left-aligned to a twelve-column grid, ruled like a ledger, with one deliberate asymmetry per page." />
+
+<SectionBar />
+
+<Block id="grid" title="The grid" lead="Switch to Grid setup to see what the example is built on.">
+  <LayoutGrid>
+    <div className="card" style={{ borderRadius: 0, padding: "var(--space-7)", display: "grid", gridTemplateColumns: "repeat(12, 1fr)", gap: "var(--space-5)", minHeight: "22rem", alignItems: "end" }}>
+      <div style={{ gridColumn: "span 7" }}>
+        <p className="t-label">Ref 2026-A</p>
+        <hr style={{ margin: "var(--space-3) 0 var(--space-5)" }} />
+        <p className="t-h1">Know your house.</p>
+        <p className="t-lead" style={{ marginTop: "var(--space-4)" }}>The three numbers you run the house on, every morning.</p>
+      </div>
+      <div style={{ gridColumn: "span 5" }}><div className="placeholder" style={{ aspectRatio: "4/5", minHeight: 0 }}>Photograph · 4:5</div></div>
+    </div>
+  </LayoutGrid>
+</Block>
+
+<Block id="spec" title="Numbers" tone="sunken">
+  <Split even>
+    <LayoutSpec />
+    <SpaceBars />
+  </Split>
+</Block>
+
+<Block id="formats" title="Formats" lead="The surfaces we make most, at their true ratio, with the one rule that sets each.">
+  <Formats />
+</Block>
+
+<Block id="shape" title="Shape and depth" tone="sunken" lead="Corners and shadows are part of the voice. Ours are small and few.">
+  <div className="stack">
+    <Radii />
+    <Shadows />
+  </div>
+</Block>
+
+<Block id="rules" title="Rules">
+  <Rules path="layout" />
+  <Rules path="space" />
+</Block>

@@ -1,0 +1,25 @@
+export const metadata = { title: "How we look" }
+
+{/* HOW WE LOOK — the hub. Inspiration first, rules on the pages behind it. */}
+
+<PageHero label="How we look" title="A page from a well-kept book." provenance="inferred"
+  lead="Ruled, quiet and exact. The system is mostly paper, ink and hairline — so the few things that are not, matter." />
+
+<Block id="principle" title="The organising principle" tone="inverse" label="Even without the logo">
+  <Statement><T path="meta.organising_principle" /></Statement>
+</Block>
+
+<Block id="detail" title="The one weird detail" label="Never tidy this away" lead="Every system that looks like a studio made it has exactly one decision that is slightly strange and completely committed to. This is ours.">
+  <Split>
+    <div className="card" style={{ minHeight: "14rem" }}>
+      <p className="t-label">Fig. 04 — Occupancy</p>
+      <p className="t-metric" style={{ marginTop: "var(--space-6)" }}>81%</p>
+      <p className="t-caption">Thursday 18 September · 52 of 64 rooms</p>
+    </div>
+    <Prose><T path="meta.weird_detail" /></Prose>
+  </Split>
+</Block>
+
+<Block id="system" title="The system" tone="sunken">
+  <Tiles />
+</Block>

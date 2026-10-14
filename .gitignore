@@ -1,0 +1,13 @@
+# Local test runs, dev sandboxes and eval outputs — not part of the skills
+brand-kit-workspace/
+.claude/
+
+# Node and Next.js build output, if the site template is ever run in place
+node_modules/
+.next/
+out/
+next-env.d.ts
+*.tsbuildinfo
+skills/brand-kit/assets/site/public/brand
+
+.DS_Store

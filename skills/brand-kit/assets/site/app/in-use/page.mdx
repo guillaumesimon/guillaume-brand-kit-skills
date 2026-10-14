@@ -1,0 +1,88 @@
+export const metadata = { title: "In use" }
+
+<PageHero label="In use" title="The other ninety percent." tone="accent" provenance="inferred"
+  lead="A logo is a tenth of what anyone sees. These surfaces are rendered from the tokens, with real copy, so they move when the brand moves." />
+
+<SectionBar />
+
+<Block id="web" title="Website and product">
+  <Grid cols={2}>
+    <figure style={{ margin: 0 }}>
+      <div className="mock">
+        <div className="mock-bar"><i /><i /><i /></div>
+        <div style={{ padding: "var(--space-7)", background: "var(--color-surface-page)" }}>
+          <p className="t-label">Ref 2026-A</p>
+          <hr style={{ margin: "var(--space-3) 0 var(--space-6)" }} />
+          <p className="t-h1">Know your house.</p>
+          <p className="t-lead" style={{ margin: "var(--space-4) 0 var(--space-6)" }}>The three numbers you run the house on, every morning. Connects to your PMS in about ten minutes.</p>
+          <span className="btn">Start free</span> <span className="btn btn--ghost">See a live property</span>
+        </div>
+      </div>
+      <figcaption className="t-caption" style={{ marginTop: "var(--space-3)" }}>Homepage hero. One display line, one lead paragraph, one filled button.</figcaption>
+    </figure>
+    <figure style={{ margin: 0 }}>
+      <div className="mock">
+        <div className="mock-bar"><i /><i /><i /></div>
+        <div style={{ padding: "var(--space-6)", background: "var(--color-surface-sunken)" }}>
+          <div className="card" style={{ borderRadius: 0 }}>
+            <p className="t-label">Fig. 01 — Thursday</p>
+            <hr style={{ margin: "var(--space-3) 0 var(--space-5)" }} />
+            <div style={{ display: "flex", gap: "var(--space-7)" }}>
+              <div><p className="t-caption">Occupancy</p><p className="t-metric">81%</p></div>
+              <div><p className="t-caption">Rate</p><p className="t-metric">£148</p></div>
+            </div>
+            <p style={{ marginTop: "var(--space-5)", fontSize: "var(--step-sm)" }}>Up 4 points on last Thursday. Rate held while the town filled — 12 rooms sold below your Tuesday floor.</p>
+          </div>
+        </div>
+      </div>
+      <figcaption className="t-caption" style={{ marginTop: "var(--space-3)" }}>Product card. Square corners, hairline rule, tabular figures, no accent at all.</figcaption>
+    </figure>
+  </Grid>
+</Block>
+
+<Block id="social" title="Social and print" tone="sunken">
+  <Grid cols={2}>
+    <figure style={{ margin: 0 }}>
+      <div style={{ aspectRatio: "1", background: "var(--color-accent-base)", color: "var(--color-accent-on)", padding: "var(--space-6)", display: "flex", flexDirection: "column", justifyContent: "space-between", borderRadius: "var(--radius-card)" }}>
+        <p className="t-label" style={{ color: "inherit" }}>Fig. 12 — Setup</p>
+        <p className="t-h1" style={{ color: "inherit" }}>Eleven minutes to set up. We have measured it 340 times.</p>
+        <p style={{ fontFamily: "var(--font-display)", fontSize: "1.75rem", margin: 0 }}>Perch</p>
+      </div>
+      <figcaption className="t-caption" style={{ marginTop: "var(--space-3)" }}>Social square. The accent takes the whole canvas here — the ratio depends on the surface.</figcaption>
+    </figure>
+    <figure style={{ margin: 0 }}>
+      <div className="card" style={{ aspectRatio: "85/55", display: "flex", flexDirection: "column", justifyContent: "space-between", padding: "var(--space-6)" }}>
+        <p style={{ fontFamily: "var(--font-display)", fontSize: "1.75rem", margin: 0, color: "var(--color-ink-strong)" }}>Perch</p>
+        <div>
+          <hr style={{ margin: "0 0 var(--space-3)" }} />
+          <p style={{ margin: 0, color: "var(--color-ink-strong)", fontWeight: 600 }}>Ama Boateng · Founder</p>
+          <p className="t-caption">ama@perch.co · Bristol</p>
+        </div>
+      </div>
+      <figcaption className="t-caption" style={{ marginTop: "var(--space-3)" }}>Business card. The hairline and the left alignment do all the work.</figcaption>
+    </figure>
+  </Grid>
+</Block>
+
+<Block id="sombre" title="The sombre test" lead="A system that cannot carry bad news is a costume, not an identity. This is the outage notice.">
+  <div className="card" style={{ maxWidth: "40rem" }}>
+    <p className="t-label">Status</p>
+    <hr style={{ margin: "var(--space-3) 0 var(--space-5)" }} />
+    <p className="t-h2">Your figures are four hours old</p>
+    <p style={{ marginTop: "var(--space-3)" }}>We lost the connection to Mews at 09:14 and have not got it back. Nothing you see after 08:00 is current. We are retrying every ten minutes and will email the moment it syncs.</p>
+  </div>
+</Block>
+
+<Block id="system" title="Do and don't" tone="sunken" lead="The system-level mistakes, beyond the logo.">
+  <DoDontGrid>
+    <DoDont kind="do" caption="Left alignment, the ledger rule, body under 68ch.">
+      <div style={{ padding: "var(--space-5)", width: "100%" }}><p className="t-label">Fig. 02</p><hr style={{ margin: "var(--space-2) 0 var(--space-3)" }} /><p className="t-h3">Occupancy</p><p style={{ fontSize: "var(--step-sm)", margin: 0 }}>Left-aligned, one hairline, one size for the body.</p></div>
+    </DoDont>
+    <DoDont kind="dont" caption="Don't centre body copy — because it breaks the return sweep and reads as a page builder. Instead left-align. Exception: empty states and auth screens.">
+      <div style={{ padding: "var(--space-5)", width: "100%", textAlign: "center" }}><p className="t-h3">Occupancy</p><p style={{ fontSize: "var(--step-sm)", margin: 0 }}>Centred body copy that runs the full width with nothing to stop the eye.</p></div>
+    </DoDont>
+    <DoDont kind="dont" caption="Don't put type on a photograph — because the image and the sentence fight for the same job. Instead set the line on paper beside it.">
+      <div className="placeholder" style={{ display: "grid", alignContent: "end", justifyItems: "start", padding: "var(--space-5)" }}><span className="t-h2" style={{ color: "var(--color-ink-strong)" }}>Know your house.</span></div>
+    </DoDont>
+  </DoDontGrid>
+</Block>

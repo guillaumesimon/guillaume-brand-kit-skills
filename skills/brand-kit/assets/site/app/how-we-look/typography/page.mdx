@@ -1,0 +1,36 @@
+export const metadata = { title: "Typography" }
+
+<PageHero label="How we look" title="Typography" provenance="inferred"
+  lead="A variable serif with real modulation for what we announce, a plain workhorse sans for what we explain, and a mono for the index." />
+
+<SectionBar />
+
+<Block id="faces" title="Our faces">
+  <TypeFamilies />
+</Block>
+
+<Block id="hierarchy" title="Hierarchy" tone="sunken" lead="Every role at its real size, with the numbers beside it. The sample text is the brand's own.">
+  <TypeRoles />
+</Block>
+
+<Block id="platforms" title="Website and app" lead="Two decisions, not one. The brand face is a display face — in the app, the system face carries the interface.">
+  <TypePlatforms />
+</Block>
+
+<Block id="rules" title="Rules" tone="sunken">
+  <Rules path="type" />
+</Block>
+
+<Block id="misuse" title="Misuse">
+  <DoDontGrid>
+    <DoDont kind="do" caption="Display at −0.024em, leading 1.06. Tight and calm.">
+      <p className="t-h1" style={{ padding: "var(--space-5)" }}>Thursday looks busier</p>
+    </DoDont>
+    <DoDont kind="dont" caption="Don't set display type at default tracking and loose leading — because it is the most visible amateur tell. Instead −0.024em and leading under 1.1.">
+      <p className="t-h1" style={{ padding: "var(--space-5)", letterSpacing: "0.02em", lineHeight: 1.6 }}>Thursday looks busier</p>
+    </DoDont>
+    <DoDont kind="dont" caption="Don't use Fraunces bold or below 1.375rem — because the modulation turns to noise. Instead Inter for anything small.">
+      <p style={{ padding: "var(--space-5)", fontFamily: "var(--font-display)", fontWeight: 700, fontSize: "0.875rem" }}>Updated 18 September, 09:14 — 52 of 64 rooms occupied, three out of service, rate held at £148.</p>
+    </DoDont>
+  </DoDontGrid>
+</Block>

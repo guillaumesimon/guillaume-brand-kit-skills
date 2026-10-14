@@ -1,0 +1,36 @@
+export const metadata = { title: "Illustration" }
+
+{/* ILLUSTRATION — when the answer is "none", this page states it as a
+    decision, with what replaces it. When there is a style, add an
+    <ImageWall path="imagery.illustration.samples" /> block, the construction
+    rules, the subject boundary and where the next one comes from. */}
+
+<PageHero label="How we look" title="We do not illustrate." provenance="stated"
+  lead="A decision, not a gap. Type, the ledger rule, a chart or a photograph carry every surface." />
+
+<SectionBar />
+
+<Block id="decision" title="The decision" tone="inverse">
+  <Split>
+    <Statement><T path="imagery.illustration._rule" /></Statement>
+    <Prose>
+      Six consistent drawings read as a system; six inconsistent ones read as clip art. With nobody to draw the seventh, the honest answer was none — and it costs less than it looks, because the ledger rule and the index label already make the work recognisable.
+    </Prose>
+  </Split>
+</Block>
+
+<Block id="instead" title="What we use instead">
+  <Grid cols={3}>
+    <Card title="A chart" label="When there is a number">The product's answer, drawn plainly. One accent series at most.</Card>
+    <Card title="A photograph" label="When there is a place">A real room on a real morning. See Photography.</Card>
+    <Card title="More space" label="When a page feels empty">The fix is fewer elements and more paper — never a drawing.</Card>
+  </Grid>
+</Block>
+
+<Block id="never" title="Never drawn" tone="sunken">
+  <Prose><T path="imagery.illustration.never" /></Prose>
+</Block>
+
+<Block id="next" title="If this changes" lead="Revisit when there is a budget for a commissioned set of twenty and someone who will draw the twenty-first.">
+  <Prose><T path="imagery.illustration.next_one" /></Prose>
+</Block>

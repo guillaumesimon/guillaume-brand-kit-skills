@@ -1,0 +1,971 @@
+{
+  "meta": {
+    "name": "Perch",
+    "legal_name": "Perch Technologies Ltd",
+    "version": "1.0.0",
+    "updated": "2026-09-21",
+    "site_locale": "en",
+    "tagline": "Know your house.",
+    "category": "Operations intelligence for independent hotels",
+    "territory": "Front Desk",
+    "organising_principle": "Every surface is ruled like a ledger: a hairline under each heading and a mono index label in the top-left corner. Even without the logo, our work is recognisable because it looks like a page from a well-kept book.",
+    "personality": [
+      "plain",
+      "specific",
+      "warm",
+      "unfussy"
+    ],
+    "anti_personality": [
+      "playful",
+      "disruptive",
+      "enterprise-corporate",
+      "opulent"
+    ],
+    "reference_points": "Muji signage, Monocle's charts, a hotel's front-desk ledger, Swiss railway timetables. Not: SaaS gradient marketing, crypto dashboards, boutique-hotel gold foil, illustrated blob people.",
+    "weird_detail": "The mono index label in the top-left of every surface (FIG. 04, REF 2026-A). It is never explained and never removed."
+  },
+  "color": {
+    "palette": {
+      "ink": {
+        "900": "#141110",
+        "800": "#241E1A",
+        "700": "#3A332D",
+        "500": "#6E6156",
+        "300": "#A79D92",
+        "100": "#DDD2C2"
+      },
+      "paper": {
+        "000": "#FFFFFF",
+        "50": "#FBF7F1",
+        "100": "#F4EDE3",
+        "200": "#E8DFD1",
+        "300": "#D6CCBE"
+      },
+      "moss": {
+        "700": "#153F2E",
+        "600": "#1F5D45",
+        "500": "#2E7A5C",
+        "300": "#86B9A4",
+        "100": "#DCEBE4"
+      },
+      "clay": {
+        "600": "#B4562B",
+        "500": "#C8761B",
+        "100": "#F6E5D2"
+      },
+      "rose": {
+        "600": "#9E2B25",
+        "500": "#BE4039",
+        "100": "#F7DFDD"
+      },
+      "slate": {
+        "600": "#2C5E8A",
+        "500": "#3D77A8",
+        "100": "#DCE8F2"
+      }
+    },
+    "semantic": {
+      "light": {
+        "surface": {
+          "page": {
+            "value": "#FBF7F1",
+            "_ref": "paper.50",
+            "_use": "Body background. Never pure white."
+          },
+          "raised": {
+            "value": "#FFFFFF",
+            "_ref": "paper.000",
+            "_use": "Cards, panels, modals."
+          },
+          "sunken": {
+            "value": "#F4EDE3",
+            "_ref": "paper.100",
+            "_use": "Wells, table headers, code blocks."
+          },
+          "inverse": {
+            "value": "#141110",
+            "_ref": "ink.900",
+            "_use": "Footer, dark sections, tooltips."
+          }
+        },
+        "ink": {
+          "strong": {
+            "value": "#141110",
+            "_ref": "ink.900",
+            "_use": "Headings and key numbers."
+          },
+          "base": {
+            "value": "#241E1A",
+            "_ref": "ink.800",
+            "_use": "Body copy."
+          },
+          "muted": {
+            "value": "#6E6156",
+            "_ref": "ink.500",
+            "_use": "Captions, labels, metadata."
+          },
+          "faint": {
+            "value": "#A79D92",
+            "_ref": "ink.300",
+            "_use": "Placeholders and disabled text."
+          },
+          "inverse": {
+            "value": "#FBF7F1",
+            "_ref": "paper.50",
+            "_use": "Text on inverse and accent surfaces."
+          }
+        },
+        "accent": {
+          "base": {
+            "value": "#1F5D45",
+            "_ref": "moss.600",
+            "_use": "Primary action, links, active nav."
+          },
+          "hover": {
+            "value": "#153F2E",
+            "_ref": "moss.700"
+          },
+          "subtle": {
+            "value": "#DCEBE4",
+            "_ref": "moss.100",
+            "_use": "Tag backgrounds, selected rows."
+          },
+          "on": {
+            "value": "#FBF7F1",
+            "_use": "Foreground on accent.base. 8.4:1."
+          }
+        },
+        "border": {
+          "hairline": {
+            "value": "#E8DFD1",
+            "_ref": "paper.200",
+            "_use": "Table rules and dividers. The ledger line."
+          },
+          "base": {
+            "value": "#D6CCBE",
+            "_ref": "paper.300",
+            "_use": "Inputs and cards."
+          },
+          "strong": {
+            "value": "#A79D92",
+            "_ref": "ink.300",
+            "_use": "Input hover, focus ring track."
+          }
+        },
+        "state": {
+          "info": {
+            "value": "#2C5E8A",
+            "_use": "Informational. Background slate.100."
+          },
+          "success": {
+            "value": "#153F2E",
+            "_use": "Confirmed. Background moss.100."
+          },
+          "warning": {
+            "value": "#B4562B",
+            "_use": "Needs attention. Background clay.100. Never decorative."
+          },
+          "danger": {
+            "value": "#9E2B25",
+            "_use": "Failed or destructive. Background rose.100."
+          },
+          "focus": {
+            "value": "#2E7A5C",
+            "_use": "Focus ring. 2px, 2px offset, always visible."
+          }
+        }
+      },
+      "dark": {
+        "surface": {
+          "page": {
+            "value": "#141110"
+          },
+          "raised": {
+            "value": "#1E1A17"
+          },
+          "sunken": {
+            "value": "#0D0B0A"
+          },
+          "inverse": {
+            "value": "#FBF7F1"
+          }
+        },
+        "ink": {
+          "strong": {
+            "value": "#FBF7F1"
+          },
+          "base": {
+            "value": "#E4DDD3"
+          },
+          "muted": {
+            "value": "#A79D92"
+          },
+          "faint": {
+            "value": "#6E6156"
+          },
+          "inverse": {
+            "value": "#141110"
+          }
+        },
+        "accent": {
+          "base": {
+            "value": "#2E7A5C",
+            "_ref": "moss.500",
+            "_note": "moss.600 fails contrast on dark. Always step up."
+          },
+          "hover": {
+            "value": "#86B9A4"
+          },
+          "subtle": {
+            "value": "#17342A"
+          },
+          "on": {
+            "value": "#FBF7F1"
+          }
+        },
+        "border": {
+          "hairline": {
+            "value": "#2A2420"
+          },
+          "base": {
+            "value": "#3A332D"
+          },
+          "strong": {
+            "value": "#6E6156"
+          }
+        },
+        "state": {
+          "info": {
+            "value": "#9DC2E0"
+          },
+          "success": {
+            "value": "#86B9A4"
+          },
+          "warning": {
+            "value": "#E0A268"
+          },
+          "danger": {
+            "value": "#E09A95"
+          },
+          "focus": {
+            "value": "#86B9A4"
+          }
+        }
+      }
+    },
+    "_ratio": "surface.page:72, ink.base:16, border.hairline:8, accent.base:4",
+    "_rules": [
+      "Accent appears at most twice per viewport: one primary action and one active nav state. Everything else is ink, paper or hairline.",
+      "The page is never pure white and the ink is never pure black. #FBF7F1 and #241E1A carry the whole brand.",
+      "State colours are never decorative. Clay means something needs attention; if nothing does, nothing is clay.",
+      "Charts run moss.600, slate.600, clay.500, ink.500, moss.300. Never a rainbow, never more than five series.",
+      "In dark mode, separate raised surfaces with border.base. Shadows are invisible on dark."
+    ],
+    "contrast_floor": {
+      "body": 4.5,
+      "large_text": 3.0,
+      "ui": 3.0
+    }
+  },
+  "type": {
+    "webfonts": {
+      "href": "https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,300..700,30,1;1,9..144,300..700,30,1&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600;700&display=swap",
+      "_use": "The one stylesheet that loads every brand face on the web. The brand site and any web build link it once in <head>."
+    },
+    "family": {
+      "display": {
+        "stack": "'Fraunces', 'Iowan Old Style', Georgia, serif",
+        "source": "Google Fonts",
+        "license": "SIL OFL 1.1",
+        "axes": {
+          "wght": [
+            300,
+            700
+          ],
+          "opsz": [
+            24,
+            144
+          ],
+          "SOFT": 30,
+          "WONK": 1
+        },
+        "_use": "h1 and h2, pull quotes, deck titles, the wordmark. Never body, never UI. WONK on above 24px, off below."
+      },
+      "text": {
+        "stack": "'Inter', -apple-system, 'Segoe UI', sans-serif",
+        "source": "Google Fonts",
+        "license": "SIL OFL 1.1",
+        "axes": {
+          "wght": [
+            400,
+            700
+          ]
+        },
+        "_use": "All body copy, all UI, h3 and below."
+      },
+      "mono": {
+        "stack": "'IBM Plex Mono', ui-monospace, 'SF Mono', monospace",
+        "source": "Google Fonts",
+        "license": "SIL OFL 1.1",
+        "_use": "The index labels, confirmation numbers, tabular figures in dense tables. This is the device."
+      }
+    },
+    "scale": {
+      "_ratio": 1.25,
+      "_base_px": 16,
+      "_note": "Display sizes break the ratio deliberately. They are set by eye.",
+      "step": {
+        "xs": "0.75rem",
+        "sm": "0.875rem",
+        "base": "1rem",
+        "md": "1.125rem",
+        "lg": "1.375rem",
+        "xl": "1.75rem",
+        "2xl": "2.25rem",
+        "3xl": "3rem",
+        "4xl": "4rem"
+      }
+    },
+    "role": {
+      "display": {
+        "family": "display",
+        "size": "4xl",
+        "weight": 400,
+        "leading": 1.02,
+        "tracking": "-0.028em",
+        "_use": "Hero and deck cover. One per page.",
+        "_sample": "Know your house."
+      },
+      "h1": {
+        "family": "display",
+        "size": "3xl",
+        "weight": 400,
+        "leading": 1.06,
+        "tracking": "-0.024em",
+        "_sample": "Thursday looks busier than last week"
+      },
+      "h2": {
+        "family": "display",
+        "size": "xl",
+        "weight": 400,
+        "leading": 1.18,
+        "tracking": "-0.016em",
+        "_sample": "Occupancy and rate"
+      },
+      "h3": {
+        "family": "text",
+        "size": "lg",
+        "weight": 600,
+        "leading": 1.3,
+        "tracking": "-0.008em",
+        "_sample": "Rooms out of service"
+      },
+      "lead": {
+        "family": "text",
+        "size": "md",
+        "weight": 400,
+        "leading": 1.5,
+        "tracking": "-0.004em",
+        "_use": "One paragraph under an h1. Never two.",
+        "_sample": "The three numbers you run the house on, every morning."
+      },
+      "body": {
+        "family": "text",
+        "size": "md",
+        "weight": 400,
+        "leading": 1.6,
+        "tracking": "0",
+        "_use": "Default for prose. 1.125rem, not 1rem — GMs read this on a desk monitor. Measure capped at 68ch.",
+        "_sample": "Occupancy dropped four points against the same week last year."
+      },
+      "body-sm": {
+        "family": "text",
+        "size": "sm",
+        "weight": 400,
+        "leading": 1.55,
+        "tracking": "0",
+        "_sample": "Updated 18 September, 09:14"
+      },
+      "label": {
+        "family": "mono",
+        "size": "xs",
+        "weight": 500,
+        "leading": 1.2,
+        "tracking": "0.10em",
+        "case": "uppercase",
+        "_use": "The index label, form labels, table headers. Never a sentence.",
+        "_sample": "FIG. 04 — OCCUPANCY"
+      },
+      "caption": {
+        "family": "text",
+        "size": "xs",
+        "weight": 400,
+        "leading": 1.4,
+        "tracking": "0.008em",
+        "_sample": "Source: Mews, synced 09:14"
+      },
+      "button": {
+        "family": "text",
+        "size": "sm",
+        "weight": 600,
+        "leading": 1,
+        "tracking": "0.004em",
+        "_sample": "Start free"
+      },
+      "metric": {
+        "family": "display",
+        "size": "2xl",
+        "weight": 500,
+        "leading": 1,
+        "tracking": "-0.03em",
+        "_use": "The one big number on a dashboard card. Tabular figures always.",
+        "_sample": "81%"
+      },
+      "quote": {
+        "family": "display",
+        "size": "lg",
+        "weight": 300,
+        "leading": 1.35,
+        "tracking": "-0.01em",
+        "style": "italic",
+        "_sample": "We stopped guessing on a Monday."
+      }
+    },
+    "platform": {
+      "pattern": "brand-display-system-text",
+      "web": "Both families. Fraunces above 1.375rem only; Inter everywhere else.",
+      "ios": "Fraunces bundled, display above 24px only. SF Pro for all UI, so Dynamic Type keeps working.",
+      "android": "Fraunces bundled, display above 24px only. Roboto for all UI.",
+      "email_pdf": "System serif and sans. Never a webfont — it will not load in a mail client, and a PDF needs the file embedded.",
+      "_rule": "The brand face never appears below 24px in a native app. If a screen needs character below that size, it comes from colour or spacing, not from a second face.",
+      "_why": "Chosen over one-face-everywhere because there is nobody to own font loading and the Dynamic Type ladder in the app, and GMs read this on a phone in a corridor."
+    },
+    "_rules": [
+      "Never more than two type sizes in one card. If you need a third, split the card.",
+      "Body text is never centred. Exception: empty states, auth screens, deck covers, the 404.",
+      "Fraunces is never used below 1.375rem and never at weight 700.",
+      "Measure is capped at 68ch. A full-bleed paragraph is a bug.",
+      "Numbers in tables and metrics use tabular figures and are right-aligned."
+    ]
+  },
+  "space": {
+    "_base_px": 4,
+    "_note": "Absolute numeric scale. Never invent an intermediate value — pick the nearer step.",
+    "1": "0.25rem",
+    "2": "0.5rem",
+    "3": "0.75rem",
+    "4": "1rem",
+    "5": "1.5rem",
+    "6": "2rem",
+    "7": "3rem",
+    "8": "4rem",
+    "9": "6rem",
+    "10": "8rem",
+    "role": {
+      "inline-gap": "space.2",
+      "stack-gap": "space.4",
+      "card-padding": "space.5",
+      "section-y": "space.9",
+      "page-gutter": "space.5",
+      "control-x": "space.4",
+      "control-y": "space.3"
+    },
+    "_rules": [
+      "Section rhythm is space.9 on desktop and space.7 below 768px.",
+      "The gap around a group is always at least two steps larger than the gap inside it.",
+      "Density setting: standard. Body 1.125rem, section padding 6rem, component padding 1.5rem."
+    ]
+  },
+  "radius": {
+    "none": "0",
+    "sm": "0.25rem",
+    "md": "0.5rem",
+    "lg": "0.75rem",
+    "pill": "999px",
+    "role": {
+      "button": "radius.md",
+      "input": "radius.md",
+      "card": "radius.lg",
+      "tag": "radius.pill",
+      "avatar": "radius.pill",
+      "image": "radius.md",
+      "table": "radius.none"
+    },
+    "_rules": [
+      "Pill radius is for tags, avatars and count badges only. A pill-shaped button is off-brand.",
+      "Tables and data grids are square. Sharpness signals precision.",
+      "Nested radii decrease inward: an 12px card holds an 8px control, never another 12."
+    ]
+  },
+  "shadow": {
+    "_philosophy": "Perch prefers a 1px hairline to a shadow. The ledger line is the device; a shadow competes with it.",
+    "none": "none",
+    "sm": "0 1px 2px rgba(20,17,16,.06)",
+    "md": "0 2px 8px rgba(20,17,16,.08), 0 1px 2px rgba(20,17,16,.04)",
+    "role": {
+      "card": "shadow.none",
+      "card-hover": "shadow.sm",
+      "dropdown": "shadow.md",
+      "modal": "shadow.md"
+    },
+    "dark_note": "Shadows are invisible on dark. Use border.base to separate raised surfaces."
+  },
+  "motion": {
+    "duration": {
+      "instant": "80ms",
+      "fast": "150ms",
+      "base": "240ms",
+      "slow": "320ms"
+    },
+    "easing": {
+      "standard": "cubic-bezier(.16, 1, .3, 1)",
+      "exit": "cubic-bezier(.7, 0, .84, 0)",
+      "move": "cubic-bezier(.65, 0, .35, 1)"
+    },
+    "role": {
+      "hover": "fast standard",
+      "dropdown": "base standard",
+      "modal": "slow standard",
+      "exit": "fast exit"
+    },
+    "_rules": [
+      "Nothing animates for longer than 320ms.",
+      "No bounce, no overshoot, no spring. Perch does not bounce.",
+      "Entrances fade and rise 12px. Nothing flies in, slides across or scales from zero.",
+      "Honour prefers-reduced-motion: collapse duration to zero, keep opacity."
+    ],
+    "principles": [
+      {
+        "name": "Calm",
+        "rule": "Nothing moves unless it explains a change. A number that updated may fade in; a card that did not change stays still."
+      },
+      {
+        "name": "Quick",
+        "rule": "Everything finishes inside 320ms. A GM with eleven minutes should never wait for an animation."
+      },
+      {
+        "name": "Straight",
+        "rule": "Things fade and rise 12px. No bounce, no spring, no overshoot — the house does not bounce."
+      }
+    ],
+    "temperament": "Quiet and quick. Motion confirms; it never performs."
+  },
+  "layout": {
+    "breakpoint": {
+      "sm": "640px",
+      "md": "768px",
+      "lg": "1024px",
+      "xl": "1280px"
+    },
+    "container": {
+      "prose": "42rem",
+      "content": "72rem",
+      "wide": "88rem"
+    },
+    "grid": {
+      "columns": 12,
+      "gutter": "space.5",
+      "margin": {
+        "mobile": "space.5",
+        "desktop": "space.7"
+      }
+    },
+    "_rules": [
+      "Content is left-aligned to a 12-column grid. One deliberate asymmetric split per page — 7/5, not 6/6.",
+      "Never centre a layout except for empty states and auth screens.",
+      "Margin is space.7 (3rem) on desktop and space.5 below 768px. The gutter is space.5 on every size."
+    ],
+    "formats": [
+      {
+        "name": "Web hero",
+        "ratio": "16:9",
+        "rule": "Display line on the left five columns, one image on the right seven. Never centred."
+      },
+      {
+        "name": "Social square",
+        "ratio": "1:1",
+        "rule": "Accent fills the canvas. One sentence, the index label top-left, the wordmark bottom-left."
+      },
+      {
+        "name": "Portrait story",
+        "ratio": "9:16",
+        "rule": "Paper ground. Photograph in the top half, the sentence below it, under a hairline."
+      },
+      {
+        "name": "Slide",
+        "ratio": "16:9",
+        "rule": "One idea per slide. Index label top-left, a hairline under the title, the number set in the metric role."
+      }
+    ]
+  },
+  "icon": {
+    "library": "Lucide",
+    "iconify": {
+      "prefix": "lucide",
+      "suffix": "",
+      "_use": "The Iconify set the site and any build renders from. Phosphor Light would be {prefix: ph, suffix: -light}."
+    },
+    "style": "outline",
+    "stroke_width": 1.5,
+    "grid": 24,
+    "live_area": 20,
+    "corner_radius": 2,
+    "caps": "round",
+    "joins": "round",
+    "perspective": "Straight-on or profile only. Never 3D, never isometric.",
+    "size": {
+      "sm": "16px",
+      "base": "20px",
+      "lg": "24px"
+    },
+    "set": [
+      "bed-double",
+      "calendar-days",
+      "pound-sterling",
+      "trending-up",
+      "key-round",
+      "users",
+      "clipboard-list",
+      "bell",
+      "door-open",
+      "chart-column",
+      "settings",
+      "circle-alert"
+    ],
+    "metaphors": {
+      "occupancy": "bed-double",
+      "the week ahead": "calendar-days",
+      "rate": "pound-sterling",
+      "forecast": "trending-up",
+      "check-in": "key-round",
+      "staff": "users",
+      "housekeeping": "clipboard-list",
+      "alerts": "bell",
+      "rooms": "door-open",
+      "reports": "chart-column"
+    },
+    "_rules": [
+      "One library only. Never mix Lucide with another set, and never with emoji.",
+      "An icon without a label or a tooltip is a bug.",
+      "No emoji in product UI, marketing or headings.",
+      "Filled icons are reserved for the active and selected state. Everything else is outline.",
+      "One concept, one icon. Occupancy is always bed-double — never a person, never a percent sign.",
+      "A 16px icon beside 16px text is drawn at 18–20px to look optically equal."
+    ]
+  },
+  "logo": {
+    "primary": "assets/logo/perch-lockup.svg",
+    "mark": "assets/logo/perch-mark.svg",
+    "wordmark": "assets/logo/perch-wordmark.svg",
+    "construction": "Fraunces 400 at -0.03em tracking, the 'h' ascender shortened to cap height. That is the whole mark.",
+    "min_width_px": {
+      "lockup": 120,
+      "mark": 24
+    },
+    "clearspace": "The height of the mark on all sides",
+    "permitted_colors": [
+      "ink.900",
+      "paper.50",
+      "moss.600"
+    ],
+    "_rules": [
+      "Never recolour outside the three permitted values.",
+      "Never place the lockup on a photograph without a solid plate behind it.",
+      "Never stretch, rotate, outline, add a shadow to, or re-set the wordmark in a live font.",
+      "The mark alone is used at 32px and below, and as an avatar. Never as a decorative watermark."
+    ]
+  },
+  "art_direction": {
+    "concept": "The house at work.",
+    "_concept_use": "The one line every shoot, layout and campaign is briefed against. If an image does not show the house working, it is not ours.",
+    "principles": [
+      {
+        "name": "Ruled, not decorated",
+        "rule": "Structure carries the brand. A hairline under every heading and the index label in the corner do more than any colour or ornament."
+      },
+      {
+        "name": "Colour marks consequence",
+        "rule": "Moss appears where something can be acted on. Everywhere else the page is paper, ink and hairline. Clay appears only when something needs attention."
+      },
+      {
+        "name": "The real building",
+        "rule": "Every image is a real property on a real morning. No renders, no stock interiors, no product floating in a void."
+      }
+    ],
+    "formula": {
+      "subject": "Back of house and quiet rooms: linen cupboards, the front desk at 07:00, a corridor between turns. People only as staff, mid-task.",
+      "light": "Available light from a window, mid-morning. Never flash, never golden hour.",
+      "colour": "Paper and ink dominate every composition. Moss appears once at most, and only where it is real in the scene.",
+      "framing": "Eye level, straight on. Square to the architecture. One clear subject, generous negative space on the side the type will sit.",
+      "type_on_image": "Never. Type sits on paper beside or below the image, under a hairline."
+    },
+    "hierarchy": [
+      {
+        "element": "Type and the ledger rule",
+        "job": "Carries the brand on every surface. The default when in doubt.",
+        "share": "Always"
+      },
+      {
+        "element": "Photography",
+        "job": "Proves the building is real. Marketing and onboarding only.",
+        "share": "One image per surface at most"
+      },
+      {
+        "element": "Charts",
+        "job": "Show the product's answer. Product and sales material.",
+        "share": "Where there is a number to show"
+      },
+      {
+        "element": "Illustration",
+        "job": "None. Perch does not illustrate.",
+        "share": "Never"
+      }
+    ],
+    "weird_detail": "The mono index label in the top-left of every surface (FIG. 04, REF 2026-A). It is never explained and never removed.",
+    "_rules": [
+      "One image per surface, at most. Two photographs side by side read as a hotel brochure.",
+      "Type never sits on a photograph. If a headline must be near an image, it sits on paper beside it, under a hairline.",
+      "The index label appears in the top-left of every substantial surface, including social, slides and print.",
+      "When nothing in this list decides it, pick the option that looks more like a well-kept ledger and less like an app."
+    ]
+  },
+  "voice": {
+    "attributes": [
+      {
+        "is": "plain",
+        "not": "simplistic",
+        "means": "Short words for real things. 'Your occupancy dropped four points last week' beats 'Occupancy metrics indicate negative variance.'"
+      },
+      {
+        "is": "specific",
+        "not": "confident",
+        "means": "Give the number, the date, the room. Never 'significantly', 'dramatically', 'a lot'."
+      },
+      {
+        "is": "warm",
+        "not": "chummy",
+        "means": "We speak like a good head of housekeeping, not a chatbot. No exclamation marks, no 'Hey there'."
+      },
+      {
+        "is": "calm",
+        "not": "passive",
+        "means": "We never manufacture urgency. No countdowns, no 'limited spots', no red banner for a non-urgent thing."
+      }
+    ],
+    "person": "We and you. Never 'Perch does X' in product copy — 'We'll email you when the forecast is ready.'",
+    "tense": "Present. Past only for things that happened.",
+    "sentence_length": "Average under 18 words. Vary it. One-word sentences are allowed.",
+    "reading_level": "Grade 9. Users are hoteliers, not analysts.",
+    "locale": "en-GB. -ise not -ize. DD Month YYYY. 24-hour clock. £ before the number, no space. No Oxford comma.",
+    "capitalisation": "Sentence case for every heading, button, label and menu item. 'Save changes', not 'Save Changes'.",
+    "punctuation": "No exclamation marks in product UI or marketing. Spaced en dash, not em dash. Ellipsis only for truncation.",
+    "vocabulary": {
+      "use": [
+        "property",
+        "house",
+        "guest",
+        "rate",
+        "occupancy",
+        "front desk",
+        "set up",
+        "we'll",
+        "turn on"
+      ],
+      "avoid": {
+        "hotel asset": "property",
+        "customer": "guest",
+        "reception team": "front desk",
+        "utilise": "use",
+        "leverage": "use",
+        "reach out": "email us",
+        "learnings": "what we learned",
+        "solution": "name the thing — the forecast, the report",
+        "seamless": "delete it",
+        "revolutionary": "delete it",
+        "unlock": "delete it",
+        "empower": "delete it",
+        "best-in-class": "delete it",
+        "game-changing": "delete it",
+        "AI-powered": "say what it does — 'forecasts your occupancy'"
+      }
+    },
+    "core": "en-GB · Sentence case everywhere · No exclamation marks"
+  },
+  "messaging": {
+    "one_liner": "Perch turns your PMS data into the three numbers you actually run the house on.",
+    "elevator": "Independent hotels run on spreadsheets and instinct. Perch connects to your property management system and gives the GM a single daily read on occupancy, rate and the week ahead — with the reasons behind each move, not just the chart.",
+    "positioning": "For independent hotels of 20 to 120 rooms who cannot justify a revenue manager, Perch is operations intelligence that reads their existing PMS and answers the daily questions. Unlike enterprise revenue management platforms, which need a specialist to operate.",
+    "pillars": [
+      {
+        "name": "Plain answers",
+        "proof": "Every number links to the bookings that produced it."
+      },
+      {
+        "name": "No new work",
+        "proof": "Connects to your PMS in ten minutes. No data entry, ever."
+      },
+      {
+        "name": "Built for the desk",
+        "proof": "Designed for a GM with eleven minutes, not an analyst with an afternoon."
+      }
+    ],
+    "proof_points": [
+      "Used by 340 independent properties across the UK and Ireland.",
+      "Connects to Mews, Cloudbeds, Guestline and Apaleo.",
+      "Average setup time: eleven minutes."
+    ],
+    "boilerplate": "Perch is operations intelligence for independent hotels. Founded in 2023 and based in Bristol, Perch connects to a property's existing PMS and gives general managers a daily read on occupancy, rate and the week ahead. perch.co",
+    "cta": {
+      "primary": "Start free",
+      "secondary": "See a live property",
+      "never": [
+        "Get started now!",
+        "Book a demo today",
+        "Sign up free — limited spots"
+      ]
+    },
+    "email_signoff": "— The Perch team"
+  },
+  "imagery": {
+    "photography": {
+      "point_of_view": "The camera is a guest who arrived early: it notices how the house runs before anyone performs for it. Documentary, never staged.",
+      "types": [
+        {
+          "name": "The house",
+          "job": "Rooms, corridors and the front desk, empty or nearly so. Proves the product is about real buildings.",
+          "ratio": "4:5",
+          "src": "assets/photography/house.webp",
+          "prompt": "An empty guest room in a small independent British hotel between guests: a made bed with white linen, a wooden chair, a sash window, morning light falling across the floor. Shot square to the wall, eye level, space on the left side."
+        },
+        {
+          "name": "At work",
+          "job": "Staff mid-task: folding, checking in, reading a printout. Shows who the product serves.",
+          "ratio": "4:5",
+          "src": "assets/photography/at-work.webp",
+          "prompt": "A housekeeper in her fifties folding white towels on a trolley in a hotel corridor, mid-task, looking down at her hands, not at the camera. Plain uniform, real and unglamorous."
+        },
+        {
+          "name": "Detail",
+          "job": "Close objects that carry the ledger idea: a key rack, a handwritten rota, a stack of folded linen.",
+          "ratio": "4:5",
+          "src": "assets/photography/detail.webp",
+          "prompt": "Close detail of an old wooden key rack behind a hotel front desk, brass room keys on numbered hooks, a handwritten paper rota pinned beside it."
+        }
+      ],
+      "recipe": {
+        "light": "Available window light, mid-morning. Soft, directional, never flash, never golden hour.",
+        "framing": "Medium or wide, eye level, square to the architecture. Verticals stay vertical.",
+        "subject_state": "Mid-task or empty. Nobody looks at the camera. Nobody smiles at a laptop.",
+        "casting": "Real staff of real properties, of every age. Never models, never guests posing.",
+        "colour": "Natural, slight warm balance (+200K). Paper whites stay warm, never blue.",
+        "depth": "Moderate. The room stays readable; no creamy bokeh.",
+        "treatment": "No filters, no duotone, no accent overlay. Fine grain, as shot.",
+        "ratios": [
+          "4:5",
+          "16:9"
+        ]
+      },
+      "samples": [
+        {
+          "src": "assets/photography/hero.webp",
+          "caption": "Front desk, 07:10. Available light, empty, square to the counter.",
+          "ratio": "16:9",
+          "size": "wide",
+          "prompt": "The front desk of a small independent hotel at ten past seven in the morning, nobody there yet: a worn wooden counter, a closed ledger, a desk lamp off, a bell, window light from the side. Square to the counter, wide, quiet."
+        },
+        {
+          "src": "assets/photography/detail.webp",
+          "caption": "The key rack. Detail carries the ledger idea.",
+          "ratio": "4:5",
+          "prompt": "Close detail of an old wooden key rack behind a hotel front desk, brass room keys on numbered hooks, a handwritten paper rota pinned beside it."
+        },
+        {
+          "src": "assets/photography/at-work.webp",
+          "caption": "Turn-down, mid-task. Nobody looks at the camera.",
+          "ratio": "4:5",
+          "prompt": "A housekeeper in her fifties folding white towels on a trolley in a hotel corridor, mid-task, looking down at her hands, not at the camera. Plain uniform, real and unglamorous."
+        },
+        {
+          "src": "assets/photography/house.webp",
+          "caption": "A room between guests. One subject, space for type beside it.",
+          "ratio": "4:5",
+          "prompt": "An empty guest room in a small independent British hotel between guests: a made bed with white linen, a wooden chair, a sash window, morning light falling across the floor. Shot square to the wall, eye level, space on the left side."
+        },
+        {
+          "src": "assets/photography/corridor.webp",
+          "caption": "Back of house. The building is the subject.",
+          "ratio": "16:9",
+          "size": "wide",
+          "prompt": "A back-of-house service corridor in a small hotel: a linen cupboard door ajar, stacked folded sheets on shelves, a laundry trolley, plain painted walls, window light at the far end."
+        }
+      ],
+      "misuse": [
+        {
+          "kind": "dont",
+          "src": "assets/photography/dont-stock.webp",
+          "caption": "Don't use stock hotel photography — because every competitor does, and it shows a hotel nobody runs. Instead shoot a real property on a weekday morning.",
+          "prompt": "Generic glossy stock photograph of a luxury hotel lobby with marble floors, gold fixtures, a chandelier, and a smiling receptionist in a suit posing for the camera, over-lit, perfect, corporate."
+        },
+        {
+          "kind": "dont",
+          "src": "assets/photography/dont-golden.webp",
+          "caption": "Don't shoot golden hour or add a warm grade — because it turns operations into a holiday advert. Instead mid-morning window light.",
+          "prompt": "A hotel terrace at golden hour with an orange sunset glow, heavy warm Instagram filter, lens flare, cocktails on the table, holiday advertising mood."
+        },
+        {
+          "kind": "dont",
+          "src": "assets/photography/dont-laptop.webp",
+          "caption": "Don't show people smiling at laptops — because it is the category's oldest cliché and says nothing about the house. Instead staff mid-task, away from screens.",
+          "prompt": "Cliché stock photo: a smiling businesswoman at a laptop in a bright office, giving a thumbs up at the screen, coffee cup beside her, overhead fluorescent light."
+        }
+      ],
+      "never": [
+        "Stock hotel photography",
+        "Gold, marble and luxury tropes",
+        "Overhead laptop-and-coffee shots",
+        "Smiling headsets",
+        "Drone shots of skylines",
+        "Type set over a photograph"
+      ],
+      "source": "Commissioned shoot of three customer properties, one weekday morning each. Until then, the generated samples on this page are direction only — never publish them as real properties.",
+      "_rule": "Photography is documentary: real properties, available mid-morning light, staff mid-task or empty rooms. One image per surface. Never stock, never golden hour, never type on the image."
+    },
+    "illustration": {
+      "style": "none",
+      "accent_style": null,
+      "accent_context": null,
+      "source": "Not applicable. Perch does not illustrate.",
+      "palette": "Brand palette only. Illustration would never introduce a colour.",
+      "subjects": "Objects, places and systems. People only at work, never posed.",
+      "never": "Character illustration of any kind. Corporate-Memphis figures. Drawn metaphors for abstract concepts.",
+      "next_one": "If a page feels empty, the fix is more space and fewer elements, not a drawing. Use a chart or a photograph.",
+      "_rule": "Perch does not illustrate. Use a chart, a photograph, or nothing. The ledger rule and the index label carry recognisability instead.",
+      "samples": []
+    },
+    "charts": "Axis labels in ink.muted, gridlines in border.hairline, one accent series maximum, direct labels over a legend where they fit."
+  },
+  "provenance": {
+    "_legend": "stated = the founder said it · inferred = derived from what they said · assumed = filled to make the kit work, go and check",
+    "meta.tagline": "stated",
+    "meta.organising_principle": "inferred",
+    "color.semantic": "inferred",
+    "type.family": "inferred",
+    "messaging.positioning": "stated",
+    "messaging.proof_points": "stated",
+    "imagery.photography": "assumed",
+    "voice.attributes": "stated",
+    "breaks_if": [
+      "A second competitor starts pricing on recovered revenue rather than per property.",
+      "The primary buyer moves from the GM to the owner or the finance lead.",
+      "You move upmarket to groups above 200 rooms, where a revenue manager already exists."
+    ],
+    "expires": "Revisit at the next funding round, the first marketing hire, or 3× revenue — whichever comes first.",
+    "validate": [
+      "Read your last 20 closed-lost reasons and check the competitive frame.",
+      "Screenshot five competitor homepages and check the difference is not category wallpaper.",
+      "Ask three customers why they chose you over the obvious alternative, verbatim, and compare their sentence to the positioning."
+    ],
+    "art_direction": "inferred",
+    "icon": "inferred"
+  }
+}

@@ -1,0 +1,38 @@
+{/* The home page takes its title from the layout: "<name> · <Brand>". */}
+
+{/* HOME — a manifesto, not a table of contents. Klarna's pattern: giant type,
+    the background switching through the brand colours as you scroll, rules
+    nowhere. Replace every line with the brand's own words. */}
+
+<section className="manifesto">
+  <div className="wrap">
+    <span className="t-label">Perch · Brand guidelines</span>
+    <h1 className="t-display" style={{ marginTop: "var(--space-5)" }}><T path="meta.tagline" /></h1>
+    <p className="t-lead"><T path="messaging.one_liner" /></p>
+  </div>
+</section>
+
+<Block id="belief" title="Hoteliers should not have to become analysts." tone="inverse" label="What we believe">
+  <Split>
+    <div />
+    <Prose>
+      Everyone in this category sells dashboards to people who do not have time to read dashboards. The tools are built for analysts and sold to operators, and the gap between the two is where the money goes.
+
+      So we do the opposite. Three numbers, every morning, with the bookings behind each one.
+    </Prose>
+  </Split>
+</Block>
+
+<Block id="feel" title="Plain. Specific. Warm. Calm." tone="accent" label="How it should feel">
+  <Prose>
+    Like a page from a well-kept book. Ruled, quiet, exact, and written by someone who has worked a front desk at seven in the morning.
+  </Prose>
+</Block>
+
+<Block id="explore" title="Explore the guidelines" label="Inside">
+  <Tiles hrefs={["/our-brand/", "/how-we-speak/", "/how-we-look/", "/in-use/", "/toolkit/"]} accentFirst />
+</Block>
+
+<Block id="honest" title="What this kit is, and is not" tone="sunken" label="Read this first" lead="It was built in one session. That makes it a well-formed hypothesis, not a defended position. Here is how it breaks, and how to check it.">
+  <Limits />
+</Block>

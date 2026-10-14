@@ -1,0 +1,44 @@
+export const metadata = { title: "How we speak" }
+
+<PageHero label="How we speak" title="Like a good head of housekeeping." tone="inverse" provenance="stated"
+  lead="Plain, specific, warm and calm. Never a chatbot, never a brochure." />
+
+<SectionBar />
+
+<Block id="voice" title="Our voice" lead="Four attributes, each with the nearest plausible wrong answer. The second word is the one to watch.">
+  <IsNot />
+</Block>
+
+<Block id="instead" title="Instead of… we say…" tone="accent" lead="Jargon has a plain word underneath it. Use that one.">
+  <InsteadOf limit={9} />
+</Block>
+
+<Block id="rewrites" title="Rewrites" tone="sunken" lead="Three real sentences, before and after. These teach more than the attributes do.">
+  <Rewrite before="Perch helps you transform your property data into a powerful growth engine."
+    after="Last week your guests booked 312 nights. Perch tells you which 40 you nearly lost." />
+  <Rewrite before="Oops! Something went wrong. Please try again later!"
+    after="We could not reach Mews at 09:14. Your figures are from 08:00. We will retry every ten minutes." />
+  <Rewrite before="We're excited to announce our revolutionary new AI-powered forecasting solution!"
+    after="Perch now forecasts the week ahead. It reads the last two years of your own bookings, and it shows its working." />
+</Block>
+
+<Block id="pressure" title="When it gets hard" lead="The voice holds still; the dials move. These are the four moments that test it.">
+  <Grid>
+    <Card title="An error">Say the fault, say the fix, say the time. No apology paragraph before the facts.</Card>
+    <Card title="A price">State it once, in full, with what is included. Never “just”, never “only”.</Card>
+    <Card title="Bad news">Plainer, not softer. The plainness is what makes it land.</Card>
+    <Card title="A win">Give the number and stop. No exclamation mark — the number is the celebration.</Card>
+  </Grid>
+</Block>
+
+<Block id="words" title="Words" lead="The words we use, and the ones we never do — with what to write instead.">
+  <Lexicon />
+</Block>
+
+<Block id="mechanics" title="Mechanics" tone="sunken">
+  <VoiceMechanics />
+</Block>
+
+<Block id="messaging" title="What we say about ourselves" lead="Copy these exactly. Press, app stores, bios and investor updates all start here.">
+  <Messaging />
+</Block>

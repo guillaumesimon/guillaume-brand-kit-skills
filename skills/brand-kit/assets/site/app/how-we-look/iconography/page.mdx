@@ -1,0 +1,30 @@
+export const metadata = { title: "Iconography" }
+
+<PageHero label="How we look" title="Iconography" provenance="inferred"
+  lead="One set, one stroke, one grid. Icons label things; they never decorate." />
+
+<SectionBar />
+
+<Block id="set" title="The set" lead="Each icon is named for what it means here, not for what it draws.">
+  <IconWall />
+</Block>
+
+<Block id="anatomy" title="Anatomy" tone="sunken" lead="Drawn on the grid below. A custom icon that cannot be drawn on it does not belong in the set.">
+  <IconAnatomy />
+</Block>
+
+<Block id="sizes" title="Sizes">
+  <IconSizes />
+</Block>
+
+<Block id="rules" title="Rules" tone="sunken">
+  <Rules path="icon" />
+</Block>
+
+<Block id="misuse" title="Misuse">
+  <DoDontGrid>
+    <DoDont kind="do" caption="Outline, 1.5px, with a label."><span style={{ display: "flex", gap: "var(--space-3)", alignItems: "center" }}><Icon name="bed-double" size={24} /> Occupancy</span></DoDont>
+    <DoDont kind="dont" caption="Don't use an icon without a label — because nobody agrees what a bed-with-a-graph means. Instead label it, or use the word."><span style={{ display: "flex", gap: "var(--space-4)" }}><Icon name="bed-double" size={24} /><Icon name="trending-up" size={24} /><Icon name="key-round" size={24} /></span></DoDont>
+    <DoDont kind="dont" caption="Don't mix stroke weights or sets — because the system reads as assembled. Instead one set at 1.5px."><span style={{ display: "flex", gap: "var(--space-4)" }}><Icon name="bed-double" size={24} stroke={1} /><Icon name="calendar-days" size={24} stroke={2.75} /><span style={{ fontSize: "1.5rem" }}>📅</span></span></DoDont>
+  </DoDontGrid>
+</Block>
