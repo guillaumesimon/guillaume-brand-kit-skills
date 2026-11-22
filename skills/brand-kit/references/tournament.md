@@ -44,6 +44,38 @@ Note what that pool is and is not. It is what the design community is looking at
 
 If the Mobbin server is not connected, say so plainly and fall back to the browser: open six to eight real sites you can name, screenshot each, and run the identical tournament. Do not fall back to fabricating specimens — that is the failure this file exists to prevent.
 
+## The pool, in order, and the minimum of three
+
+This section applies in normal mode. Quick mode keeps its three duels and its free "aucun des deux", and enforces no minimum.
+
+### Before the first duel: one question about what they already look at
+
+> "Il y a des sites ou des marques que tu regardes en te disant *j'aimerais que ça ressemble à ça* ? Aucun, c'est une réponse aussi."
+
+Ask it once, as the opening line of the act, and never again. It costs one decision and it is worth it: people who have references usually have them ready, and a name they bring is a better seed than anything a query returns. If the answer is "aucun" or a hesitation, take it and go straight to the first duel.
+
+A name they give is **stated**, not yet behavioural. Fetch it (`search_sections` with the site name, or a browser screenshot if Mobbin does not have it) and put it in a duel against something far from it. If they pick it, it counts as a reference. If they pick the other side, that is the attraction/fit split described below, and it is worth more than the reference would have been. Never put two of their own names in the same duel.
+
+### Where each duel's pair comes from
+
+1. **Duels 1 and 2: the popular pool, any category.** The Mobbin ranking above (re-read it if you can, otherwise the snapshot). Widest gap available. These orient taste and appetite for risk before the category gets in the way. Put at least one product site in each pair, so a studio portfolio never wins only for being a portfolio.
+2. **Duels 3 onwards: the project's own space.** `search_sections` with the category and its adjacents in plain words (*"accounting software for freelancers"*, *"hotel booking"*), plus the competitors named in Act 1. This is where the user actually lives, and it is also the in-category pass of `references/territories.md`: note the category's defaults as they show up, so the system can comply with or break them on purpose.
+3. **Their own names** go in from duel 2 or 3, each against a far opposite from whichever pool is current.
+
+### The minimum: three sites chosen
+
+**The tournament does not close until the user has picked at least three sites.** A reference is a site they chose in a duel. "Aucun des deux" is still a real answer and still moves the ledger, but it does not count towards the three. "Six is usually enough" describes the ledger; the three references are a separate gate, and the gate wins.
+
+The reason is downstream: the kit needs real "looks like" points for `meta.reference_points` (`references/kit.md`, reference-point triangulation), and three refusals with no choice give you only the "does not look like" half. A brand defined only by what it refused is a template with exclusions.
+
+When the picks do not come:
+
+- **After two "aucun des deux" in a row with fewer than three picks**, change the pool rather than repeating it: move to the next pool in the order above, or to an out-of-category pair (`references/territories.md`) if both have been tried.
+- **After four refusals in total**, drop the third option for the next pair: *"Aucun n'est toi, je sais. Lequel est le moins loin ?"* A pick made this way counts, at lower confidence, and its reason is usually sharp.
+- **The decision ceiling still holds** (12, hard stop at 14, `references/session.md`). Extra duels come out of the later boards: assert type, photography, illustration, icons or motion with a reason and a free undo instead of running their board.
+
+Record the three (or more) in the scratch file with the duel that produced each and what it was paired against. They become the "looks like" line of `reference_points`; the refusals become the "does not look like" line.
+
 ## How to build a duel
 
 Build it from `assets/duel.html`: fill its JSON block, put it in the scratchpad directory, and show it. Download each `image_url` to a local file first — the URL expires after 30 days and a board that dies in a month is not a kit asset.
@@ -54,7 +86,7 @@ Build it from `assets/duel.html`: fill its JSON block, put it in the scratchpad 
 
 **Hold the category constant, not the product.** Both sides should be roughly the same kind of thing (two landing pages, or two app screens), or the user judges the category rather than the design.
 
-**Six duels, adaptive.** The first two are wide open and orient. Each subsequent pair is chosen against whatever is still uncertain in the ledger — if the first two answers both leaned warm, stop spending duels on temperature and spend them on density, or on how much personality the type carries.
+**Six duels, adaptive, and never fewer than three sites chosen** (see "The minimum: three sites chosen" above). The first two are wide open and orient. Each subsequent pair is chosen against whatever is still uncertain in the ledger — if the first two answers both leaned warm, stop spending duels on temperature and spend them on density, or on how much personality the type carries.
 
 **Offer "neither" as a real third option.** It looks like an escape hatch and it is the opposite: a refusal eliminates *two* worlds in one second, where a choice only ranks two. In testing, half the answers came back "aucun des deux", and the session moved faster for it — it is how you learn that illustrated characters, precious editorial line-work, saturated colour fields, stark black-on-white and documentary photography of people are all out, in three clicks. Take it at face value, do not ask why, and re-pair against what is left.
 
@@ -89,7 +121,7 @@ Two readings matter more than the table.
 
 ## Closing the tournament
 
-State the universe you deduced in **plain words, no axis names, with a free undo**:
+Close only when the ledger has stopped moving **and** at least three sites have been chosen. Then state the universe you deduced in **plain words, no axis names, with a free undo**:
 
 > "Alors si je lis bien : du clair plutôt que du sombre, une typo qui porte la chaleur plutôt que la couleur, peu de choses à l'écran, et une voix qui parle normalement. Si l'un des quatre est faux, dis lequel."
 

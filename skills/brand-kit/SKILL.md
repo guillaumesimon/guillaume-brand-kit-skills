@@ -20,7 +20,7 @@ Not "serif or sans?" but "should they feel they've found something established, 
 **3 · Never ask a question you could answer with over 70% confidence.**
 Assert it instead, with a one-line reason and a free undo. When you are right it costs the user nothing; when you are wrong the correction is better data than an answer would have been, because reacting to a wrong claim is easier than generating a right one.
 
-**Budget: about 20 to 25 minutes in normal mode, four in quick mode.** In normal mode, two questions at the start, two at the end, and everything in between is looking at two things and pointing. Count the cost, not the count: a duel costs a second, a question in words costs a minute, and a question that asks someone to describe a feeling costs the session.
+**Budget: about 20 to 25 minutes in normal mode, four in quick mode.** In normal mode, two questions at the start, one about the sites they already admire, two at the end, and everything in between is looking at two things and pointing. Count the cost, not the count: a duel costs a second, a question in words costs a minute, and a question that asks someone to describe a feeling costs the session.
 
 ## Two modes
 
@@ -47,7 +47,7 @@ Verbatim matters more than it sounds. The dominant failure mode of a model doing
 
 ## The flow
 
-Four acts. **Two questions, a pile of duels, two more questions, then you build.** Everything the user does is either looking at two things and pointing, or answering something about their own business in one sentence. Nothing else earns a turn.
+Four acts. **Two questions, one about references, a pile of duels, two more questions, then you build.** Everything the user does is either looking at two things and pointing, or answering something about their own business in one sentence. Nothing else earns a turn.
 
 Ask **one question per turn**, and never ask twice in a row without putting something new on screen.
 
@@ -64,7 +64,7 @@ Never open with "tell me about your business", and never open with a question ab
 
 ### Act 2 · Regarder (4–8 min, and it decides almost everything)
 
-**Read `references/tournament.md` and run it.** Duels of real, screenshotted sites — two images side by side, one line: *"celui-ci ou celui-là ?"* Six is usually enough. "Aucun des deux" is a real answer and eliminates twice as fast.
+**Read `references/tournament.md` and run it.** Duels of real, screenshotted sites — two images side by side, one line: *"celui-ci ou celui-là ?"* Open the act with one question, *are there sites or brands you look at and wish you looked like*, then run the duels: the popular Mobbin pool first, the project's own space after. Six is usually enough. "Aucun des deux" is a real answer and eliminates twice as fast, but it does not count as a choice: the act does not close until the user has picked at least three sites.
 
 **Type, photography, illustration, icons and motion are more duels, not separate acts.** Same mechanic, same question — *which two could be yours, which one is definitely not* — and the same discipline: run a board only while the ledger is genuinely open on it. Where the answer follows from what they already chose with more than 70% confidence, assert it with a reason and a free undo instead. A session that runs every board has stopped listening.
 
