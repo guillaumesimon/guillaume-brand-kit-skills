@@ -1,6 +1,6 @@
 ---
 name: brand-kit
-description: Build a brand universe and its guidelines from a guided conversation, and publish them as a Klarna-style brand guidelines website (Our brand, How we speak, How we look - art direction, colour, typography, layout, photography, iconography, illustration, motion) plus machine-readable tokens and an agent instruction file. Use this skill whenever someone wants to create a brand, a visual identity, brand guidelines, a brand book, a brand site, a style guide, a charte graphique, une identité de marque, un univers de marque, or says they need to define how their product or company should look and sound. Also use it when a new project is starting and nothing about its brand has been decided, when a project needs a brand so that agents can build on-brand pages, decks and screens, and when someone asks for a colour palette, a typographic system, a tone of voice, a photography direction, an icon style, an illustration style or a logo direction for a real company. Do not use it to update a kit that already exists - use brand-kit-update for that.
+description: Build a brand universe and its guidelines from a guided conversation, in a quick mode (four minutes, five decisions: tokens, BRAND.md and theme.css an agent can build from today) or a normal mode (twenty minutes), and in normal mode publish them as a Klarna-style brand guidelines website (Our brand, How we speak, How we look - art direction, colour, typography, layout, photography, iconography, illustration, motion) plus machine-readable tokens and an agent instruction file. Use this skill whenever someone wants to create a brand, a visual identity, brand guidelines, a brand book, a brand site, a style guide, a charte graphique, une identité de marque, un univers de marque, or says they need to define how their product or company should look and sound. Also use it when a new project is starting and nothing about its brand has been decided, when a project needs a brand so that agents can build on-brand pages, decks and screens, and when someone asks for a colour palette, a typographic system, a tone of voice, a photography direction, an icon style, an illustration style or a logo direction for a real company. Also use it to turn a quick kit into a full identity. Do not use it to update a kit that already exists - use brand-kit-update for that.
 ---
 
 # Build a brand kit
@@ -20,11 +20,26 @@ Not "serif or sans?" but "should they feel they've found something established, 
 **3 · Never ask a question you could answer with over 70% confidence.**
 Assert it instead, with a one-line reason and a free undo. When you are right it costs the user nothing; when you are wrong the correction is better data than an answer would have been, because reacting to a wrong claim is easier than generating a right one.
 
-**Budget: about 20 to 25 minutes.** Two questions at the start, two at the end, and everything in between is looking at two things and pointing. Count the cost, not the count: a duel costs a second, a question in words costs a minute, and a question that asks someone to describe a feeling costs the session.
+**Budget: about 20 to 25 minutes in normal mode, four in quick mode.** In normal mode, two questions at the start, two at the end, and everything in between is looking at two things and pointing. Count the cost, not the count: a duel costs a second, a question in words costs a minute, and a question that asks someone to describe a feeling costs the session.
+
+## Two modes
+
+| | Quick | Normal |
+|---|---|---|
+| User's time | about 4 minutes | 20 to 25 minutes |
+| Decisions | 5: three duels, one change, one refusal | about 12 |
+| Output | `tokens.json`, `BRAND.md`, `theme.css` | the same, plus the brand site and imagery |
+| Status | v0.1.0, a first hypothesis, mostly `assumed` | v1.0.0, provenance per page |
+
+Both write the same files in the same schema, so a quick kit is upgraded later, never redone.
+
+Pick the mode before the first question. If the user or the calling skill named one, use it. If a project is being set up and the user wants to start building, it is quick. Otherwise ask once, with `AskUserQuestion`, giving the time each costs and what each leaves out - it is the only question in this skill about the session itself.
+
+**Quick mode: read `references/quick.md` and follow it instead of the four acts below.** The three rules above and "Showing things" still apply. The rest of this file describes the normal mode.
 
 ## Before you start
 
-Check whether `brand/` already exists. If it does, this is not the right skill — use `brand-kit-update`.
+Check whether `brand/` already exists. If it does, this is not the right skill — use `brand-kit-update`. One exception: a kit whose `tokens.json` has `meta.mode: "quick"`, when the user wants the full identity. That is this skill in normal mode, resumed - `references/quick.md` → *Resuming in normal mode*.
 
 Create a scratch file for the session (in the scratchpad directory, not in the project) and keep three things in it as you go: **verbatim** (their exact words, never paraphrased), the **axis ledger** (six axes, each with a position −2…+2, a confidence 0–1, and whether it came from something they *said* or something they *chose*), and **provenance** (which facts are stated, inferred, or assumed).
 
@@ -125,12 +140,19 @@ Every *show* turn is a real rendered page, never a description. Build it from `a
 
 Then ask the question **in chat**, with `AskUserQuestion` where the answer space is genuinely small and you can write the options better than the user can write prose. A board may carry its question as a caption so the user knows what to look for, but the answer is taken in the conversation, never in the page — you need it there to act on it.
 
+### The brand board, when it is there
+
+If a tool named `mcp__brand-board__show` is among your tools, the user has the brand-board mod: a pane beside the chat that shows what is decided so far - the palette, a headline in their words, the button shape, what they refused, and how many decisions are left - and repeats it above each question. Call it with the whole current state after every decision and every time the asserted system changes, in both modes, and with `isLive: false` once the kit is written. Leave out what is not decided yet rather than guessing a value to fill the board.
+
+It shows **state**, never a choice. A duel is still two real screenshots in the browser, and the artefact is still a real rendered page: the board's specimen is drawn from one template and only names the kind of typeface, so asking the user to judge the brand on it is the fabricated-board failure `references/tournament.md` describes. If the tool is not there, nothing changes: the session runs exactly as written.
+
 ## Language
 
 Follow the user's language in conversation and on the brand site (`meta.site_locale`, page prose in their language, translated token prose in `site/locale.json` — `references/site.md`). Write `BRAND.md` and `tokens.json` in **English** whatever the conversation language, unless the user asks otherwise: they are read by agents and by people who may not share the team's language. If the user wants them in another language, follow them and say so in the maintenance page so later updates stay consistent.
 
 ## Files in this skill
 
+- `references/quick.md` — the quick mode: five decisions, what is asserted, what is written, and how the normal mode resumes from it
 - `references/tournament.md` — the visual tournament: where the screenshots come from, how to build a duel, and how to read the answers without ever naming an axis
 - `references/discovery.md` — the interview: the questions that work, the refuse-the-first-answer loop, provenance, and the tests a positioning must pass
 - `references/session.md` — the turn-by-turn script, showing options well, handling "I don't know", and telling a real answer from a polite one

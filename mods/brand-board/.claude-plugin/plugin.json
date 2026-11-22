@@ -1,0 +1,6 @@
+{
+  "name": "brand-board",
+  "version": "0.1.0",
+  "description": "A brand board beside the chat during a brand-kit session: palette, type, refusals and progress, with a specimen above each question.",
+  "types": "./types/index.d.ts"
+}

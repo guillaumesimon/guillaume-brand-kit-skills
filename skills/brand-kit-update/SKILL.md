@@ -7,6 +7,10 @@ description: Keep an existing brand kit true, and extend it. Use this skill when
 
 A brand kit that nothing maintains is wrong within two months and nobody notices. This skill is how it stays true, and how it gets better.
 
+## Quick kits
+
+A kit whose `tokens.json` has `meta.mode: "quick"` came from the four-minute session of `brand-kit`: tokens, `BRAND.md` and `theme.css`, no site, version 0.x, most of it `assumed`. Update it like any kit - every step about `site/` simply does not apply. When the user wants the site, the imagery or the boards that were skipped, that is not an update: hand over to `brand-kit`, which resumes in normal mode from `brand/session.md`.
+
 ## The loop that matters
 
 **The strongest signal that a rule needs to exist is that an agent broke it.**
