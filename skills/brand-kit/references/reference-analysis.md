@@ -22,13 +22,14 @@ Cap it at **three references and three competitors**, and at about a minute each
 
 Never announce it as a step and never make the user wait for it. If a reference is not back when you need it, go without and say so in the provenance.
 
-## Three sources, in order of evidence
+## Four sources, in order of evidence
 
 | Source | What it is | How it is marked |
 |---|---|---|
 | **Measured** | The live site, read by `assets/inspect-site.cjs` | `measured`, with the date |
 | **Read** | The brand's own public guidelines, press kit or design-system site | `read`, with the URL |
-| **Recalled** | What you know about the brand without looking | `recalled`: the weakest, and it never overrules the other two |
+| **Reported** | What others have published about the identity: the agency's case study, the type foundry's page, the design press | `reported`, with the URL and the date of the piece |
+| **Recalled** | What you know about the brand without looking | `recalled`: the weakest, and it never overrules the other three |
 
 ### Measured: the live site
 
@@ -42,7 +43,7 @@ Three things to know when reading the card:
 
 - **Look at the capture as well.** The numbers say how much, not what. "Pictures cover 83% of the first screen" is a hero photograph on one site and a product screenshot on another, and that difference is the imagery decision.
 - **The first screen is not the brand.** It is the brand at its most deliberate. For a product-led reference, run it again on a pricing or product page: that is where the system shows how it behaves when nobody is art-directing.
-- **A blocked page is reported as blocked**, not measured. Some sites refuse automated browsers; the script says so and writes no capture.
+- **A blocked page is reported as blocked**, not measured. Some sites refuse automated browsers; the script says so and writes no capture. That is the moment to search what has been published about the brand: *Reported*, below.
 
 No Playwright in the environment: `node assets/inspect-site.cjs --snippet` prints the in-page function. Open the site in the browser pane, run that in its JavaScript tool, and take a screenshot the usual way. You lose only the pixel count.
 
@@ -54,7 +55,31 @@ Many brands publish theirs, and it is the only place that states the intent behi
 2. the usual addresses: `brand.<name>.com`, `<name>.com/brand`, `/press`, `/media-kit`, `design.<name>.com`;
 3. one web search, `<name> brand guidelines`.
 
-Take the brand's own pages only. An aggregator listing "the hex codes of 500 brands" is `recalled` at best. From the guidelines, read three things and leave the rest: the stated principles (what they say they are and are not), the rules on colour share and on type, and anything about imagery or voice that a homepage cannot show. Most references will have no public guidelines. That is normal; write "none found" and move on.
+Take the brand's own pages only. They do not have to be on the main site: a press release announcing a rebrand, a partner or marketing guidelines PDF on a documentation host, or the design team's own blog are all the brand speaking, and they are often reachable when the homepage is not. An aggregator listing "the hex codes of 500 brands" is `recalled` at best. From the guidelines, read three things and leave the rest: the stated principles (what they say they are and are not), the rules on colour share and on type, and anything about imagery or voice that a homepage cannot show. Most references will have no public guidelines. That is normal; write "none found" and move on.
+
+### Reported: what others have published
+
+A site that refuses the script has usually been written about. Search for it **whenever a reference is blocked**, and once for a measured reference that has no public guidelines, because a case study states the intent that a measurement cannot.
+
+Two searches, three pages read, then stop:
+
+- `"<name>" rebrand case study` or `"<name>" brand identity agency`
+- `"<name>" typeface` (a custom face almost always has a foundry page)
+
+What is worth reading, best first:
+
+1. **The people who made it.** The agency's or studio's case study, the type foundry's project page, the illustrator's or motion studio's write-up. They state the idea, name the faces and say why the previous system was replaced. This is the strongest thing a search returns.
+2. **The dated design press.** Creative Review, It's Nice That, Brand New, Fonts In Use, an interview with the brand's design lead. Reliable on what changed and when, and they usually show the work.
+3. **Everything else is not a source.** Logo-history sites, hex-code aggregators, generated "design system of X" pages and unsigned brand breakdowns are somebody else's recall, often a machine's. Read them at most to learn what to look for, and never cite them.
+
+How to use what comes back:
+
+- **Date every piece, and check it against the brand's last redesign.** A thorough article about the identity before the current one describes a brand the user is not looking at. If you cannot tell which version a piece describes, it does not go on the card.
+- **When two pieces disagree, write the disagreement or drop the line.** Searches on well-known brands return confident, contradictory claims about the same wordmark. Do not pick the one that suits the direction.
+- **Take the structure, never the values.** "A single amber-brown on cream, no second accent" is usable. A hex quoted by a third party is not a fact, and neither is a size or a ratio: those only come from measuring.
+- **Look at a picture as well.** Use the Mobbin capture of the site, or the images in the case study, and check each reported claim against it. A claim you cannot see in any picture stays off the card.
+
+No search tool in the environment: say so, and the reference falls to `recalled`.
 
 ### Recalled: what you already know
 
@@ -83,9 +108,28 @@ Leave: the face (theirs to wear) · the dark ground (the user refused dark twice
 Their words: "c'est net, on dirait que rien n'a été ajouté"
 ```
 
+The same card when the site could not be opened, built from what was published:
+
+```markdown
+## Klarna
+Named by the user · not yet in a duel
+Sources: blocked 2026-11-24 (HTTP 403) · reported colophon-foundry.org/custom-projects/klarna ·
+reported creativereview.co.uk/klarna-brand-refresh (2024) · picture: Mobbin capture
+
+- Type: two custom families drawn by Colophon Foundry, one for headlines and one for text. Not licensable.
+- Colour: one pink, used as a ground rather than as an accent (seen on the capture).
+- Idea: the refresh was led in-house, to "elevate the shopping experience" (Creative Review).
+- Sizes, ratios, shares: not measured.
+
+What makes it look like itself: one colour owned so completely that it works as a logo.
+Take: a single hue used as a ground, not as decoration
+Leave: the pink · both faces (theirs, and custom)
+```
+
 Rules for filling it:
 
 - **Every line is a mechanism with a number or a countable fact.** If a line could be written without having opened the site, delete it.
+- **A card built from reports has fewer lines, and each carries its source.** No sizes, no ratios, no shares: write what the pieces establish (the kind of face and who drew it, the structure of the palette, the stated idea, the imagery) and leave the rest blank rather than estimating it. A short card that is true is worth more than a full one that is half remembered.
 - **"What makes it look like itself" is one sentence**, written as an organising principle. If you cannot write it, you have a list of observations and not yet a reading.
 - **Take: three at most.** Leave: at least one, and always whatever is identifiably theirs.
 - **Their words** only if they said any. Never ask "pourquoi tu l'aimes ?" to fill the line: it is the abstract question this skill does not ask.
@@ -132,7 +176,15 @@ Two more, about the fetching itself:
 
 ## When it cannot be fetched
 
-In order: the script reports a block → open the site in the browser pane and use `--snippet` → use the Mobbin capture for the picture and mark every line `recalled` → say plainly that the reference stays a picture. A card built from memory is allowed and is labelled as such. A card built from memory and presented as measured is the fabricated reason to believe that `SKILL.md` forbids.
+In order:
+
+1. the script reports a block;
+2. open the site in the browser pane and use `--snippet`: a real browser often gets through where a headless one does not;
+3. search what has been published and build the card from it (*Reported*, above), with the Mobbin capture as the picture;
+4. fall back to what you recall, every line marked `recalled`;
+5. say plainly that the reference stays a picture.
+
+Do not skip step 3 for step 4: for a brand worth admiring there is almost always a case study, and it says more about intent than the homepage would have. A card built from reports or from memory is allowed and is labelled as such. A card built from memory and presented as measured is the fabricated reason to believe that `SKILL.md` forbids.
 
 ## Where it lands in the kit
 
