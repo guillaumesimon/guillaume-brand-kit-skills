@@ -164,7 +164,9 @@ function measure() {
   let overlay = null
   for (const el of document.querySelectorAll('dialog[open], [role="dialog"], [role="alertdialog"], [aria-modal="true"]')) {
     const v = shown(el)
-    if (v && v.r.top < vh && v.r.width * v.r.height > vw * vh * 0.2) { overlay = (el.innerText || "").replace(/\s+/g, " ").trim().slice(0, 80) || "dialog"; break }
+    const said = (el.innerText || "").replace(/\s+/g, " ").trim()
+    // An empty dialog is a container waiting to be used, not something on screen.
+    if (v && said && v.r.top < vh && v.r.width * v.r.height > vw * vh * 0.2) { overlay = said.slice(0, 80); break }
   }
   const h1 = document.querySelector("h1")
   return {
