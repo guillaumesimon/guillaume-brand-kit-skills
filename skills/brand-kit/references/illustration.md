@@ -112,7 +112,7 @@ In `tokens.json`, under `imagery`:
 }
 ```
 
-And one numbered, checkable rule in `BRAND.md`. Not "our illustration is friendly and modern" — that is unauditable and will be ignored. Something like:
+And one numbered, checkable rule in `DESIGN.md`. Not "our illustration is friendly and modern" — that is unauditable and will be ignored. Something like:
 
 > **31.** Illustration is Playful Geometric only: circles, arcs and rounded rectangles, brand palette, no outlines, no volume, no shadow. A figure is one solid shape for the hair, dot eyes, no nose. Never mix a second territory — if the pack cannot carry a scene, use a chart or a photograph instead.
 

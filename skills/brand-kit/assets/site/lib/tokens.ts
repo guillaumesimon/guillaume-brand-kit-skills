@@ -85,14 +85,14 @@ export function onColour(fill: string): string {
 }
 
 /* ---------- CSS variables ---------- */
-// Mapping, as stated in BRAND.md: drop `semantic.<theme>.`, join with `-`,
+// Mapping, as stated in DESIGN.md: drop `semantic.<theme>.`, join with `-`,
 // prefix `--`. color.semantic.light.ink.muted → --color-ink-muted.
 
 function themeVars(theme: "light" | "dark"): string[] {
   const out: string[] = [];
   for (const [group, roles] of entries(dig(`color.semantic.${theme}`))) {
     for (const [role, node] of entries(roles)) out.push(`--color-${group}-${role}:${val(node)}`);
-    // Shorthand: the base of a group is also the group itself, so BRAND.md can say --color-accent.
+    // Shorthand: the base of a group is also the group itself, so DESIGN.md can say --color-accent.
     if (roles && typeof roles === "object" && "base" in roles) out.push(`--color-${group}:${val(roles.base)}`);
   }
   return out;

@@ -1,6 +1,6 @@
 ---
 name: brand-kit-update
-description: Keep an existing brand kit true, and extend it. Use this skill whenever a repository has a brand/ directory with tokens.json and BRAND.md and something about the brand changes or needs adding - a colour, a typeface, a spacing or radius value, a voice or vocabulary rule, the positioning, the messaging, the logo, the photography direction, the icon set, the illustration style, the art direction, a component recipe, a new surface or a sub-brand. Also use it when an agent produced something off-brand and the rule that would have prevented it is missing, when the user asks to audit, refresh, review or version the brand, when a colour fails contrast in real product, when they want to add a page to the brand site, and when the site, theme.css or the BRAND.md core block has fallen out of step with tokens.json. If there is no brand/ directory, use brand-kit instead.
+description: Keep an existing brand kit true, and extend it. Use this skill whenever a repository has a brand/ directory with tokens.json and DESIGN.md and something about the brand changes or needs adding - a colour, a typeface, a spacing or radius value, a voice or vocabulary rule, the positioning, the messaging, the logo, the photography direction, the icon set, the illustration style, the art direction, a component recipe, a new surface or a sub-brand. Also use it when an agent produced something off-brand and the rule that would have prevented it is missing, when the user asks to audit, refresh, review or version the brand, when a colour fails contrast in real product, when they want to add a page to the brand site, and when the site, theme.css or the DESIGN.md front matter has fallen out of step with tokens.json, and when a kit still has a BRAND.md to migrate to DESIGN.md. If there is no brand/ directory, use brand-kit instead.
 ---
 
 # Update a brand kit
@@ -9,13 +9,13 @@ A brand kit that nothing maintains is wrong within two months and nobody notices
 
 ## Quick kits
 
-A kit whose `tokens.json` has `meta.mode: "quick"` came from the four-minute session of `brand-kit`: tokens, `BRAND.md` and `theme.css`, no site, version 0.x, most of it `assumed`. Update it like any kit - every step about `site/` simply does not apply. When the user wants the site, the imagery or the boards that were skipped, that is not an update: hand over to `brand-kit`, which resumes in normal mode from `brand/session.md`.
+A kit whose `tokens.json` has `meta.mode: "quick"` came from the four-minute session of `brand-kit`: tokens, `DESIGN.md` and `theme.css`, no site, version 0.x, most of it `assumed`. Update it like any kit - every step about `site/` simply does not apply. When the user wants the site, the imagery or the boards that were skipped, that is not an update: hand over to `brand-kit`, which resumes in normal mode from `brand/session.md`.
 
 ## The loop that matters
 
 **The strongest signal that a rule needs to exist is that an agent broke it.**
 
-When a session produces something off-brand, the fix is not to correct the output. It is to add one numbered, checkable line to `BRAND.md` and re-sync. The kit gets measurably better every time it fails, and `CHANGELOG.md` becomes a record of every way this brand has been misunderstood. That record compounds faster than the tokens do.
+When a session produces something off-brand, the fix is not to correct the output. It is to add one numbered, checkable line to `DESIGN.md` and re-sync. The kit gets measurably better every time it fails, and `CHANGELOG.md` becomes a record of every way this brand has been misunderstood. That record compounds faster than the tokens do.
 
 So when the user says "that's not very us", do not just fix the artefact. Ask what rule would have caught it, write that rule, and say you have.
 
@@ -24,7 +24,7 @@ So when the user says "that's not very us", do not just fix the artefact. Ask wh
 | File | Holds | Edited by |
 |---|---|---|
 | `tokens.json` | Every value, and the rule beside it | You |
-| `BRAND.md` | Rules expressed as prose, numbered | You (the core block: **`sync.py`**) |
+| `DESIGN.md` | Body: rules expressed as prose, numbered | You (the YAML front matter: **`sync.py`**) |
 | `CHANGELOG.md` | What changed, why, and the version | You |
 | `site/app/**/page.mdx` | The brand site's prose — the story, the reasons, captions, do/don't sentences | You |
 | `theme.css` | Every token as a CSS variable | **`sync.py`** |
@@ -37,7 +37,7 @@ Kits made before the site existed have a one-page `brand.html` that embeds a cop
 
 ## Which change touches what
 
-| The change | tokens.json | BRAND.md | site | Bump |
+| The change | tokens.json | DESIGN.md | site | Bump |
 |---|---|---|---|---|
 | A colour value moves | ✅ | only if a rule cites the hex | rebuild | patch or major |
 | A new semantic role | ✅ | ✅ if agents must use it | rebuild | minor |
@@ -63,7 +63,17 @@ After any token edit, always:
 python3 ~/.claude/skills/brand-kit-update/assets/sync.py brand/
 ```
 
-It writes `theme.css` and regenerates the twelve-value core block at the top of `BRAND.md` (and refreshes the embedded tokens in a legacy `brand.html`). Add `--check` to find out whether they have drifted without writing anything — that is the form to use in an audit, or in CI.
+It writes `theme.css` and regenerates the YAML front matter of `DESIGN.md` (and refreshes the core block of a legacy `BRAND.md`, or the embedded tokens of a legacy `brand.html`). Add `--check` to find out whether they have drifted without writing anything; that is the form to use in an audit, or in CI.
+
+Then lint the file, since it follows Google's [DESIGN.md format](https://github.com/google-labs-code/design.md):
+
+```bash
+npx @google/design.md lint brand/DESIGN.md
+```
+
+A `contrast-ratio` warning is a finding: fix the token, not the component pair. `orphaned-tokens` warnings on border and focus colours are expected. Before a release, `npx @google/design.md diff <old DESIGN.md> brand/DESIGN.md` lists every token that changed, which is the raw material for the changelog entry.
+
+**A kit with `BRAND.md` and no `DESIGN.md`** predates the format. Migrate it once, as a minor version: rename `BRAND.md` to `DESIGN.md`, delete its old front matter and core block, move its sections into the order of the `brand-kit` skill's `assets/DESIGN.example.md`, renumber the rules top to bottom (and every "rule N" inside the file), run `sync.py`, lint, then replace `@brand/BRAND.md` with `@brand/DESIGN.md` in the project's `CLAUDE.md` or `AGENTS.md`. Log the old-to-new rule numbers in the changelog entry, since commit messages cite them.
 
 If the skill is installed somewhere else, the same script ships in this skill's `assets/` and in `brand-kit`'s. Either copy works; they are identical.
 
@@ -87,7 +97,7 @@ It is the only thing that stops a three-year-old brand becoming a palette of nin
 
 ## Writing a rule that will actually be followed
 
-Every rule you add to `BRAND.md` has to pass four tests, or it will be skimmed and ignored.
+Every rule you add to `DESIGN.md` has to pass four tests, or it will be skimmed and ignored.
 
 1. **Checkable.** Could a second agent audit the output and return true or false? "Maintain a calm tone" cannot be. "No exclamation marks in product UI" can be, by regex.
 2. **Numbered.** Numbered rules are citable, so a human can say "rule 14 is wrong" and you fix one line.
@@ -102,7 +112,7 @@ If adding a rule would push the file past the ceiling, find one that has never b
 
 When asked to review or refresh the kit, do five passes and report rather than fix silently.
 
-**Drift.** Run `sync.py --check`, and `grep -rnE '#[0-9a-fA-F]{6}' brand/site/app brand/site/components` — a literal hex in the site is a finding. Then look for values in the site's prose, in `BRAND.md` rules, or in the project's CSS that no longer match `tokens.json`. A hardcoded hex anywhere in the codebase is a finding.
+**Drift.** Run `sync.py --check`, and `grep -rnE '#[0-9a-fA-F]{6}' brand/site/app brand/site/components` — a literal hex in the site is a finding. Then look for values in the site's prose, in `DESIGN.md` rules, or in the project's CSS that no longer match `tokens.json`. A hardcoded hex anywhere in the codebase is a finding.
 
 **Provenance.** Every page hero carries a `provenance`, and `tokens.json → provenance` lists every field. Anything still marked `assumed` has been running unverified since the kit was written. List them, oldest first, and say what would settle each one.
 
@@ -136,11 +146,11 @@ Report the findings. Fix the drift and the contrast failures; leave the rest for
 }
 ```
 
-Then one line in `BRAND.md`: *"Building for iOS or Android? Apply `surface_overrides.<platform>` on top of the base."*
+Then one line in `DESIGN.md`: *"Building for iOS or Android? Apply `surface_overrides.<platform>` on top of the base."*
 
 `type.platform` and `surface_overrides.<platform>` do different jobs and should not be merged. `type.platform` holds the **decision and its rule** — which of the three web/app patterns this brand uses, and where the brand face may appear in a native app. `surface_overrides` holds **value deltas** for a platform. If a change is "the brand face is no longer allowed below 24px on iOS", it goes in `type.platform`. If it is "iOS body steps down one size", it goes in `surface_overrides`.
 
-**A sub-brand** — a `tokens.json` with an `extends` pointer and only the deltas, plus a six-line `BRAND.md` that imports the parent with `@../<parent>/BRAND.md` and lists the differences.
+**A sub-brand** — a `tokens.json` with an `extends` pointer and only the deltas, plus a short `DESIGN.md` that imports the parent with `@../<parent>/DESIGN.md` and lists the differences. Its front matter, generated from the deltas, holds only the values that differ.
 
 One constraint worth holding: a sub-brand may override colour and logo and add voice rules. It may **not** change the typeface, the spacing scale or the motion language. Those are what make two products look like one company. If a change needs them, it is a new brand, not a sub-brand — say so.
 
@@ -159,5 +169,5 @@ Short, and written for the person who will read it in a year.
   row produced cards with a 20% grey shadow, which is the classic amateur tell.
 - Fixed `ink.muted` from `#736659` to `#6E6156` — 4.3:1 on paper, now 4.6:1.
 
-Rebuilt: theme.css, the BRAND.md core block, the site.
+Rebuilt: theme.css, the DESIGN.md front matter, the site.
 ```

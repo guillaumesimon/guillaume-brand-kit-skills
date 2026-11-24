@@ -9,13 +9,15 @@ Two Claude Code skills that turn a 25-minute conversation into a brand universe,
 
 ```
 brand/
-├── BRAND.md        agents read this, always — numbered, checkable rules
+├── DESIGN.md       agents read this, always: tokens in the DESIGN.md format, then numbered, checkable rules
 ├── tokens.json     every value, written once, with its rule beside it
 ├── theme.css       every token as a CSS variable, generated
 ├── CHANGELOG.md
 ├── assets/         logo, photography, illustration
 └── site/           the brand guidelines site, rendered in the brand it documents
 ```
+
+`DESIGN.md` follows Google's [DESIGN.md format](https://github.com/google-labs-code/design.md): `sync.py` writes its YAML front matter from `tokens.json`, the rules below it are written by hand, and `npx @google/design.md lint` checks contrast and references.
 
 `site/` is a brand guidelines website in the shape of [brand.klarna.com](https://brand.klarna.com): a manifesto home, **Our brand**, **How we speak**, **How we look** — logo, art direction, colour, typography, layout, photography, iconography, illustration, motion — **In use** and a **Toolkit**. It is a small Next.js app that builds to a static folder. Pages carry prose; every swatch, specimen, icon, scale and token table is rendered from `tokens.json` at build, so the site cannot drift from the brand it describes.
 

@@ -54,7 +54,7 @@ Read it back in Act 3 alongside the rendered artefact, in plain words: *"Everyth
 }
 ```
 
-`BRAND.md`, one rule that makes the hierarchy usable by an agent:
+`DESIGN.md`, one rule that makes the hierarchy usable by an agent:
 
 > **26.** When two visual elements compete for the same job, follow `art_direction.hierarchy`: type and the ledger rule first, then photography, then charts. Brief every image and layout against the concept: *the house at work*.
 

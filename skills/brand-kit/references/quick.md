@@ -2,7 +2,7 @@
 
 The same method as the full session, cut to what a founder can decide in four minutes at the start of a project. It exists because the alternative is not the full session - it is no brand at all, and an agent inventing a palette on the first screen it builds.
 
-A quick kit is a **first hypothesis that agents can build from today**: real tokens, a short `BRAND.md`, a `theme.css`. No site, no generated imagery, no logo work. It is honest about that, and it is built so the full session can pick it up later without redoing anything.
+A quick kit is a **first hypothesis that agents can build from today**: real tokens, a short `DESIGN.md`, a `theme.css`. No site, no generated imagery, no logo work. It is honest about that, and it is built so the full session can pick it up later without redoing anything.
 
 ## Budget
 
@@ -61,14 +61,14 @@ If the user has criticised nothing by now, the second question is the gate: do n
 ```
 brand/
 ├── tokens.json     full schema where it was decided; see below
-├── BRAND.md        80-140 lines
+├── DESIGN.md       80-140 lines
 ├── theme.css       from sync.py
 ├── session.md      the scratch file: verbatim, ledger, refusals, provenance
 └── CHANGELOG.md    v0.1.0
 ```
 
 - `tokens.json` - `meta`, `color`, `type`, `space`, `radius`, `shadow`, `motion`, `layout`, `voice` at the example's depth. `icon` with the library and spec. `messaging` with `one_liner` and `positioning` only. `art_direction` with the concept and the weird detail. `logo` and `imagery` present but short, marked `assumed`. Add `"mode": "quick"` to `meta` and version it `0.1.0`: a quick kit is not a v1.
-- `BRAND.md` - same form as `assets/BRAND.example.md`: numbered, imperative, checkable. Drop the `human_kit` line and the "do not read `site/`" sentence; there is no site. Near the top, one line: *"Quick kit (v0.1.0): a first hypothesis from a four-minute session. Run the brand-kit skill in normal mode to turn it into a full identity."*
+- `DESIGN.md` - same form as `assets/DESIGN.example.md`: numbered, imperative, checkable. Drop the "do not read `site/`" sentence; there is no site. Run `sync.py` to write the front matter. Near the top, one line: *"Quick kit (v0.1.0): a first hypothesis from a four-minute session. Run the brand-kit skill in normal mode to turn it into a full identity."*
 - `python3 assets/sync.py brand/` - it needs no site.
 - `session.md` - copy the scratch file in. It is what lets the full session resume instead of restart.
 - Append `assets/claude-md-block.md` to the project's `CLAUDE.md`, without the two lines about `brand/site/`.

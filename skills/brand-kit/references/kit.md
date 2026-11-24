@@ -6,7 +6,7 @@ The output serves two audiences at once. A founder who will show it to their tea
 
 ```
 brand/
-├── BRAND.md        ← agents read this, always. 120–250 lines. Hand-written.
+├── DESIGN.md       ← agents read this, always. Generated token front matter + 120–250 lines of hand-written rules.
 ├── tokens.json     ← every value, written once. The source of truth. Hand-written.
 ├── CHANGELOG.md    ← what changed and why. Hand-written.
 ├── assets/
@@ -28,8 +28,8 @@ An agent in a fresh session reads in this order and stops as soon as it has enou
 
 | Step | File | Cost | When |
 |---|---|---|---|
-| 1 | `CLAUDE.md` (a few lines + the `@brand/BRAND.md` import) | ~100 tokens | always |
-| 2 | `brand/BRAND.md` | ~2,200 | always, via the import |
+| 1 | `CLAUDE.md` (a few lines + the `@brand/DESIGN.md` import) | ~100 tokens | always |
+| 2 | `brand/DESIGN.md` | ~4,500 | always, via the import |
 | 3 | `brand/tokens.json` | ~4,500 | only when writing CSS or config |
 | 4 | `brand/site/` | **~60,000+** | **never** |
 
@@ -37,27 +37,29 @@ That last row is the whole design argument. A pretty brand site is 60–80k toke
 
 So the kit is **actively defensive** about it:
 
-- `BRAND.md`, near the top: *"Do not read `site/`. It is built from `tokens.json` for people and contains nothing you need."*
-- The site's root layout carries a comment in `<head>`: `AGENTS: this site is generated for people. Read ../BRAND.md and ../tokens.json instead.` and sets `robots: noindex`.
+- `DESIGN.md`, near the top: *"Do not read `site/`. It is built from `tokens.json` for people and contains nothing you need."*
+- The site's root layout carries a comment in `<head>`: `AGENTS: this site is generated for people. Read ../DESIGN.md and ../tokens.json instead.` and sets `robots: noindex`.
 - It lives in `brand/site/`, never at the repo root, where a build tool, a monorepo workspace glob or another skill might pick it up. If the project already uses npm workspaces, exclude `brand/site` from them.
 
 ## The duplication rule
 
-**A value is typed once, in `tokens.json`. Prose about the value lives in `BRAND.md`. The site shows both and never types a value of its own.**
+**A value is typed once, in `tokens.json`. Prose about the value lives in `DESIGN.md`. The site shows both and never types a value of its own.**
 
-| Content | tokens.json | BRAND.md | site/ |
+| Content | tokens.json | DESIGN.md | site/ |
 |---|---|---|---|
 | `#1F5D45` | authored | never literal | read at build |
 | "accent is for one CTA per view" | `_rule` field | rule 14 | `<Rules path="color" />` |
 | Clear space = 1× mark height | `logo.clearspace` | a rule | rendered diagram |
 | Tone of voice | `voice.*`, structured | prose plus examples | `<IsNot />`, `<InsteadOf />`, `<Lexicon />` |
-| Why we exist, the idea | — | a line in the frontmatter | page prose in `app/our-brand/page.mdx` |
+| Why we exist, the idea | — | `description` in the front matter, and the Overview | page prose in `app/our-brand/page.mdx` |
 
 Pages carry **prose** — the story, the reasons, the captions, the do/don't sentences — and pull every **value** through a component. A hex typed into an `.mdx` file is the same bug as a hex typed into a component.
 
 One duplication is permitted, and it is mechanical:
 
-1. **The core block at the top of `BRAND.md`** — accent, ink, page, two font families, base spacing, base radius. An agent asked for "a quick landing page" sometimes only has `BRAND.md` in context. Those twelve values get it 80% on-brand with zero further reads. It lives between `<!--@core-->` markers so it can be regenerated without touching the rest.
+1. **The front matter of `DESIGN.md`**: the semantic colours (light and dark), the type roles, the radius and spacing scales, and text-on-background component pairs, in the [DESIGN.md format](https://github.com/google-labs-code/design.md). `sync.py` writes it from `tokens.json` and never touches the body. An agent asked for "a quick landing page" usually only has `DESIGN.md` in context; with these values it builds on-brand with zero further reads. Token names are the CSS variable names without their prefix: `colors.ink-muted` is `--color-ink-muted`.
+
+Because the file follows the DESIGN.md format, Google's linter checks it: `npx @google/design.md lint brand/DESIGN.md` reports broken references and every component pair under 4.5:1, light and dark. Warnings about orphaned border and focus tokens are expected (they are not text, so no pair uses them); contrast warnings are findings. `npx @google/design.md export --format dtcg` (or `css-tailwind`) gives the same tokens to tools that want them.
 
 The site needs no copy: it reads `../tokens.json` at build time, so a rebuild is the sync.
 
@@ -71,7 +73,7 @@ Hand-maintained duplication is how brands rot. The drift always starts the day s
 
 Numeric scales are **absolute, not t-shirt sized**: `space.4` = 16px. T-shirt sizes invite an agent to invent `xxl`; numbers cannot be invented past the end of a scale without it being obvious.
 
-**Mapping to CSS, stated once in `BRAND.md` so no lookup table is needed:** drop the `semantic.<theme>.` segment, join the rest with `-`, prefix with `--`. So `color.semantic.light.ink.muted` → `--color-ink-muted`, `space.5` → `--space-5`, `type.role.body.size` → `--text-body`.
+**Mapping to CSS, stated once in `DESIGN.md` so no lookup table is needed (the front matter uses the same names, without `--color-`):** drop the `semantic.<theme>.` segment, join the rest with `-`, prefix with `--`. So `color.semantic.light.ink.muted` → `--color-ink-muted`, `space.5` → `--space-5`, `type.role.body.size` → `--text-body`.
 
 ### Values are resolved, not aliased
 
@@ -107,7 +109,7 @@ Do not ship W3C DTCG as the read surface. It is the right interchange format and
 
 The fully populated example lives in `assets/tokens.example.json`. Match its depth.
 
-## BRAND.md — the file that changes agent output
+## DESIGN.md — the file that changes agent output
 
 ### Five properties, in order of impact
 
@@ -149,11 +151,15 @@ This is the highest-leverage block in the file. It sets a prior that steers a th
 
 > When a choice is not covered here, pick the quieter option: fewer colours, fewer sizes, less motion, more space. If two options are equally quiet, pick the one that reads more like print and less like an app.
 
+### Shape
+
+The body follows the DESIGN.md section order, so other tools read it too: `## Overview`, `## Colors`, `## Typography`, `## Layout`, `## Elevation & Depth`, `## Shapes`, `## Components`, then the sections the format does not define (`## Imagery and the device`, `## Motion`, `## Voice`, `## Logo`), and `## Do's and Don'ts` last, holding the never-do list, the conflict paragraph and the checklist. Omit a section rather than fill it with nothing. Rules are numbered once, top to bottom, across every section.
+
 ### Length
 
-**120–250 lines, under 2,500 tokens. 250 is a hard ceiling; the example is about 130 and complete.** Beyond that compliance measurably degrades, and it is imported into every session in that project, so it pays rent forever. Overflow goes into `tokens.json` `_rule` fields, read on demand and colocated with their values.
+**Body: 120–250 lines, under 2,500 tokens. 250 is a hard ceiling; the example is about 120 and complete.** Beyond that compliance measurably degrades, and it is imported into every session in that project, so it pays rent forever. The generated front matter adds about 130 lines (about 2,000 tokens) on top; it is one line per token, so it stays that size. Overflow goes into `tokens.json` `_rule` fields, read on demand and colocated with their values.
 
-Budget: ~15 lines of frontmatter and core values · ~10 reference points · ~40 visual rules · ~40 voice · ~30 component recipes · ~20 do/don't · ~15 conflict and checklist.
+Budget: ~10 reference points · ~40 visual rules · ~40 voice · ~30 component recipes · ~20 do/don't · ~15 conflict and checklist.
 
 ### Conflict with the user
 
@@ -162,7 +168,7 @@ The failure runs both ways: an agent that ignores the brand file, and an agent t
 > The user's instruction in this session overrides this file. Do it, then note in one line what you overrode: *"Used title case as you asked — brand default is sentence case."* Do not lecture, do not refuse, do not ask permission first.
 > **Locked:** logo integrity, the contrast floor, legal boilerplate wording, and unverified claims. For these, say what breaks before you do it, and do it only if the user confirms.
 
-`assets/BRAND.example.md` is the quality bar. Match it.
+`assets/DESIGN.example.md` is the quality bar. Match it.
 
 ## site/ — the brand site
 
@@ -178,9 +184,9 @@ The human kit is a small Next.js site in the shape of `brand.klarna.com`: a mani
 
 Copy the `brand/` directory in, then three steps.
 
-**1 · `CLAUDE.md`** gets the block from `assets/claude-md-block.md`. The `@brand/BRAND.md` import is the key mechanic: it is resolved at session start and inlined, so the rules are in context from turn one without the agent deciding to go and look. Do **not** `@`-import `tokens.json` — 4,500 tokens in every session for something needed in perhaps a fifth of them.
+**1 · `CLAUDE.md`** gets the block from `assets/claude-md-block.md`. The `@brand/DESIGN.md` import is the key mechanic: it is resolved at session start and inlined, so the rules are in context from turn one without the agent deciding to go and look. Do **not** `@`-import `tokens.json` — 4,500 tokens in every session for something needed in perhaps a fifth of them.
 
-**2 · CSS.** `sync.py` writes `brand/theme.css` — every token as a CSS variable, light and dark, under the same names `BRAND.md` uses. Import it in the project's global stylesheet, or point Tailwind v4 at it:
+**2 · CSS.** `sync.py` writes `brand/theme.css` — every token as a CSS variable, light and dark, under the same names `DESIGN.md` uses. Import it in the project's global stylesheet, or point Tailwind v4 at it:
 
 ```css
 @import "tailwindcss";

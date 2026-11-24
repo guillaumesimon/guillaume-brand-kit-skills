@@ -156,7 +156,7 @@ In `tokens.json`, under `type`, alongside `family`, `scale` and `role`:
 }
 ```
 
-And one numbered, checkable rule in `BRAND.md`. Not "our typography is modern and clean" — that is unauditable and will be ignored. Something like:
+And one numbered, checkable rule in `DESIGN.md`. Not "our typography is modern and clean" — that is unauditable and will be ignored. Something like:
 
 > **12.** Fraunces sets display only: 1.375rem and above, weight 500–600, `WONK 1` above 24px and `WONK 0` below. Everything else is Public Sans 400/600. In the iOS and Android apps, Fraunces appears above 24px only and all UI is the platform face, so Dynamic Type keeps working. Numbers in tables and metrics are Public Sans with tabular figures, never Fraunces.
 

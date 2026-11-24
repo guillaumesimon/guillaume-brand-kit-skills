@@ -70,6 +70,6 @@ Then `npm i -E @iconify-json/ph` in `brand/site`. Stroke-based sets (Lucide, Tab
 
 `tokens.json → icon`: library, iconify, style, stroke_width, grid, live_area, corner_radius, caps, joins, perspective, size, set (the 8–16 icons the product actually uses, shown on the site), metaphors, `_rules`.
 
-`BRAND.md`, one rule, checkable:
+`DESIGN.md`, one rule, checkable:
 
 > **25.** Icons: Lucide, outline, 1.5px stroke, 24px grid. Filled only for the active state. Every icon has a visible label or a tooltip. One concept, one icon — `icon.metaphors` maps them.

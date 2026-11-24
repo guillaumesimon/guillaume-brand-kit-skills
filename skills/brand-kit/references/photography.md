@@ -105,7 +105,7 @@ In `tokens.json`, under `imagery.photography`:
 }
 ```
 
-And one numbered, checkable rule in `BRAND.md`, written so a second agent could audit an image against it:
+And one numbered, checkable rule in `DESIGN.md`, written so a second agent could audit an image against it:
 
 > **24.** Photography is documentary: real properties in available mid-morning light, staff mid-task or empty rooms, eye level. One image per surface. Never stock, never golden hour, never type set on a photograph.
 

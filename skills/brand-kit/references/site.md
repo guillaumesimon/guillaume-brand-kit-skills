@@ -4,7 +4,7 @@ How `brand/site/` is made: copying the template, writing pages, the components, 
 
 ## What it is
 
-A Next.js 16 app (App Router, MDX pages, static export) in `assets/site/`, filled with a worked example: Perch, a fictional hotel-operations company. Its tokens are `assets/tokens.example.json`, its rules `assets/BRAND.example.md`, its photographs `assets/example-assets/`. Open it before writing anything — it is the quality bar, in depth and in tone.
+A Next.js 16 app (App Router, MDX pages, static export) in `assets/site/`, filled with a worked example: Perch, a fictional hotel-operations company. Its tokens are `assets/tokens.example.json`, its rules `assets/DESIGN.example.md`, its photographs `assets/example-assets/`. Open it before writing anything — it is the quality bar, in depth and in tone.
 
 To see the example running:
 
