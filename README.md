@@ -14,6 +14,7 @@ brand/
 ├── theme.css       every token as a CSS variable, generated
 ├── CHANGELOG.md
 ├── assets/         logo, photography, illustration
+├── references/     the sites the brand was measured against: cards and captures
 └── site/           the brand guidelines site, rendered in the brand it documents
 ```
 
@@ -43,6 +44,14 @@ D=$(mktemp -d)/brand && mkdir -p $D && A=skills/brand-kit/assets
 cp $A/tokens.example.json $D/tokens.json && cp -R $A/example-assets $D/assets && cp -R $A/site $D/site
 cd $D/site && npm install && npm run dev
 ```
+
+The reference reader, which needs Playwright with a Chromium:
+
+```bash
+node skills/brand-kit/assets/inspect-site.cjs linear.app stripe.com --out /tmp/refs
+```
+
+It opens each site, captures the first screen and prints what it is made of: faces, weights, display-to-body ratio, palette by pixel share, radius, density, and links to the brand's own guidelines.
 
 The boards the session shows, served from `skills/brand-kit/assets` (`python3 -m http.server`), since they run scripts:
 - `skills/brand-kit/assets/duel.html` — the tournament board: two real screenshots side by side, a site name under each, and nothing else.

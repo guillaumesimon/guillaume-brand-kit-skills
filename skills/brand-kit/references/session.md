@@ -38,12 +38,12 @@ Four acts, about twenty minutes. Alternate **show** turns and **ask** turns, and
 One follow-up, only when the alternative is manual: *"et qu'est-ce que le papier fait mieux ?"* Never open with "tell me about your business", and never open with a question about feeling.
 
 ### 2:00 — Regarder · duels, until the ledger stops moving
-One question first: *"des sites ou des marques qui t'inspirent ?"*, and "aucun" is fine. Then two real screenshots, one line, six times, popular sites first and the project's own space after, and never closed before three sites have been chosen ("aucun des deux" does not count). Then type and illustration as more of the same, if they are still open. Close by reading the universe back in plain words with a free undo.
+One question first: *"des sites ou des marques qui t'inspirent, même dans un autre secteur ?"*, and "aucun" is fine. Whatever they name or pick gets measured in the background while the duels go on (`references/reference-analysis.md`). Then two real screenshots, one line, six times, popular sites first and the project's own space after, and never closed before three sites have been chosen ("aucun des deux" does not count). Then type and illustration as more of the same, if they are still open. Close by reading the universe back in plain words with a free undo.
 
 **What used to sit in this act, and why it is gone.** An odd-one-out triad, three 4-point scales, four archetype people, a fabricated anchor pair, and a three-route presentation. The sliders and archetypes asked the user to name a preference in studio vocabulary and returned a prior rather than a decision. The fabricated boards failed harder and more quietly: renders from one template vary colour, type and radius and nothing else, so the difference the designer believes they are showing lives in the caption. Founders say "these all look like the same thing", and they are right. Even with the structure genuinely varied, "which of these three worlds is yours" lost the same user twice — it is a designer's question wearing a client's clothes.
 
 ### 12:00 — Montrer · one artefact, two questions
-Specify the system yourself, render one site surface and one product screen at full fidelity, show it. Then, both with a negative presupposition, because "do you like it?" has a socially obligatory answer:
+Specify the system yourself, render one page at full fidelity (a site surface, a product screen, a social tile and the app icon), show it. Then, both with a negative presupposition, because "do you like it?" has a socially obligatory answer:
 
 > "Qu'est-ce que tu changerais en premier ?"
 > "Qu'est-ce que tu ne ferais jamais, même si ça marchait ?"

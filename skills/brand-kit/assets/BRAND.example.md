@@ -10,7 +10,7 @@ human_kit: ./site/   # the brand site, generated for people — do not read
 
 You are building for **Perch**: operations intelligence for independent hotels.
 Read this file fully. Read `./tokens.json` when you need exact values.
-**Do not read `site/`** — the brand site is built from `tokens.json` for people and adds nothing you need.
+**Do not read `site/`** — the brand site is built from `tokens.json` for people and adds nothing you need. **Do not read `references/`** either: it holds captures of other brands, and what was taken from them is in the reference points below.
 
 ## 0. Core values
 <!--@core-->

@@ -86,7 +86,7 @@ brand/
 
 When `brand/tokens.json` has `meta.mode: "quick"` and the user wants the full identity, this is still `brand-kit`, not `brand-kit-update`. Read `brand/session.md`, restate the universe in one line, and enter the normal flow at Act 2 with only what is open:
 
-1. the duels the ledger still needs (usually three more);
+1. the duels the ledger still needs (usually three more), until three sites have been chosen, each one read as it is picked (`references/reference-analysis.md`);
 2. the boards that were asserted - type first, then photography, illustration, icons, motion - each only while genuinely open;
 3. Act 3 on the existing artefact, then Act 4 in full: the site, the imagery, the rest of the tokens.
 

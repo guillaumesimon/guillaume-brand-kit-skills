@@ -14,13 +14,14 @@ brand/
 │   ├── photography/   ← the samples the Photography page shows (generated until a real shoot)
 │   ├── illustration/  ← only if the brand illustrates
 │   └── og.png         ← 1200×630
+├── references/     ← the sites the brand was measured against: cards and captures. Never published.
 └── site/           ← the brand site for people. Next.js, static export. Reads ../tokens.json.
     ├── app/           ← one folder per page, each a page.mdx written in the brand's voice
     ├── components/    ← the building blocks; every value comes from tokens.json
     └── lib/nav.ts     ← the site map
 ```
 
-Three files, the assets, and the site. More and the founder never opens it; fewer and an agent guesses.
+Three files, the assets, the references, and the site. More and the founder never opens it; fewer and an agent guesses.
 
 ## Read order, and why the site must defend itself
 
@@ -32,6 +33,7 @@ An agent in a fresh session reads in this order and stops as soon as it has enou
 | 2 | `brand/BRAND.md` | ~2,200 | always, via the import |
 | 3 | `brand/tokens.json` | ~4,500 | only when writing CSS or config |
 | 4 | `brand/site/` | **~60,000+** | **never** |
+| 5 | `brand/references/` | captures of other brands | **never**: what was taken from them is already in `reference_points` |
 
 That last row is the whole design argument. A pretty brand site is 60–80k tokens — a third of a working context — to deliver about 4k tokens of actual information wrapped in swatch markup and embedded fonts. If the agent reads it, you have paid fifteen times over for the same facts and pushed the user's own codebase out of context.
 

@@ -50,11 +50,13 @@ This section applies in normal mode. Quick mode keeps its three duels and its fr
 
 ### Before the first duel: one question about what they already look at
 
-> "Il y a des sites ou des marques que tu regardes en te disant *j'aimerais que ça ressemble à ça* ? Aucun, c'est une réponse aussi."
+> "Il y a des sites ou des marques que tu regardes en te disant *j'aimerais que ça ressemble à ça* ? Même dans un tout autre secteur. Aucun, c'est une réponse aussi."
 
-Ask it once, as the opening line of the act, and never again. It costs one decision and it is worth it: people who have references usually have them ready, and a name they bring is a better seed than anything a query returns. If the answer is "aucun" or a hesitation, take it and go straight to the first duel.
+Ask it once, as the opening line of the act, and never again. It costs one decision and it is worth it: people who have references usually have them ready, and a name they bring is a better seed than anything a query returns. "Même dans un tout autre secteur" is part of the question on purpose: left alone, people name their competitors, and the references that make a brand specific come from somewhere else (`references/territories.md`, the out-of-category pass). If the answer is "aucun" or a hesitation, take it and go straight to the first duel.
 
 A name they give is **stated**, not yet behavioural. Fetch it (`search_sections` with the site name, or a browser screenshot if Mobbin does not have it) and put it in a duel against something far from it. If they pick it, it counts as a reference. If they pick the other side, that is the attraction/fit split described below, and it is worth more than the reference would have been. Never put two of their own names in the same duel.
+
+Start reading each name the moment it is given, in the background, while you build the first duel: `references/reference-analysis.md`. The same goes for every site they pick afterwards.
 
 ### Where each duel's pair comes from
 
@@ -74,7 +76,7 @@ When the picks do not come:
 - **After four refusals in total**, drop the third option for the next pair: *"Aucun n'est toi, je sais. Lequel est le moins loin ?"* A pick made this way counts, at lower confidence, and its reason is usually sharp.
 - **The decision ceiling still holds** (12, hard stop at 14, `references/session.md`). Extra duels come out of the later boards: assert type, photography, illustration, icons or motion with a reason and a free undo instead of running their board.
 
-Record the three (or more) in the scratch file with the duel that produced each and what it was paired against. They become the "looks like" line of `reference_points`; the refusals become the "does not look like" line.
+Record the three (or more) in the scratch file with the duel that produced each and what it was paired against. Each one gets a reference card, measured from the live site (`references/reference-analysis.md`). The cards become the "looks like" line of `reference_points`; the refusals become the "does not look like" line.
 
 ## How to build a duel
 

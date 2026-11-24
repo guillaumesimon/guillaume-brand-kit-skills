@@ -64,7 +64,9 @@ Never open with "tell me about your business", and never open with a question ab
 
 ### Act 2 · Regarder (4–8 min, and it decides almost everything)
 
-**Read `references/tournament.md` and run it.** Duels of real, screenshotted sites — two images side by side, one line: *"celui-ci ou celui-là ?"* Open the act with one question, *are there sites or brands you look at and wish you looked like*, then run the duels: the popular Mobbin pool first, the project's own space after. Six is usually enough. "Aucun des deux" is a real answer and eliminates twice as fast, but it does not count as a choice: the act does not close until the user has picked at least three sites.
+**Read `references/tournament.md` and run it.** Duels of real, screenshotted sites — two images side by side, one line: *"celui-ci ou celui-là ?"* Open the act with one question, *are there sites or brands you look at and wish you looked like, even in a completely different sector*, then run the duels: the popular Mobbin pool first, the project's own space after. Six is usually enough. "Aucun des deux" is a real answer and eliminates twice as fast, but it does not count as a choice: the act does not close until the user has picked at least three sites.
+
+**While the duels run, read the references. `references/reference-analysis.md`.** Every brand the user names and every site they pick is opened and measured in the background with `assets/inspect-site.cjs`: the faces, the weights, the headline against the body, how much of the screen is colour, the corners, the density, and the brand's own guidelines when they are public. The competitors from Act 1 get the same pass, to name the category's defaults with evidence. It costs the user nothing and it is what turns "I like that one" into mechanisms on the ledger. A reference goes into the kit as what was taken from it and what was left, never as a look to copy.
 
 **Type, photography, illustration, icons and motion are more duels, not separate acts.** Same mechanic, same question — *which two could be yours, which one is definitely not* — and the same discipline: run a board only while the ledger is genuinely open on it. Where the answer follows from what they already chose with more than 70% confidence, assert it with a reason and a free undo instead. A session that runs every board has stopped listening.
 
@@ -91,7 +93,7 @@ Stop asking and build. **Read `references/visual-system.md`** and specify the wh
 
 Then write **the art direction** — the concept every piece of work is briefed against, three principles, the formula of a single image or layout, and which element carries which job. Nothing new is asked: it is the synthesis of everything chosen so far, and `references/art-direction.md` says where each part comes from. Read the concept back in one sentence the user could repeat to their team.
 
-Then render **one** artefact — one site surface, one product screen, real content, full fidelity — and show it. **There is no three-route presentation in this skill, and adding one back is a regression:** shown three directions, a founder cannot tell what is being judged, says the three look like the same thing, and either stalls or answers about colour. It is not a craft problem. "Which of these worlds is yours" is a designer's question wearing a client's clothes.
+Then render **one** artefact and show it: one page carrying four surfaces of the same system, with real content at full fidelity. A site surface, a product screen, a social tile (1200×630) and the app icon at 180px and at 16px. The last two are small and cheap in HTML, and they are where a system designed for a web page gives way: with no room for a layout, only the type, the colour and the device are left to carry it. They are surfaces of one system, not directions to choose between. **There is no three-route presentation in this skill, and adding one back is a regression:** shown three directions, a founder cannot tell what is being judged, says the three look like the same thing, and either stalls or answers about colour. It is not a craft problem. "Which of these worlds is yours" is a designer's question wearing a client's clothes.
 
 Two questions on the rendered thing, both with a negative presupposition, because "do you like it?" has a socially obligatory answer:
 
@@ -102,7 +104,7 @@ The second is load-bearing. A platform with no sacrifice cannot generate decisio
 
 When an answer lands on the generic blocklist — *intégrité, innovation, premium, moderne, simple, tout le monde* — do not accept it. `references/discovery.md` has the refuse-the-first-answer loop, and the six tests your positioning has to pass before you are allowed to write it down: swap, reversal, Monday-morning, sacrifice, new-hire, wallpaper.
 
-Two tests you run silently and report, never delegate to the user: the **swap test** — put a competitor's name on the artefact and the positioning; if both still work you have elicited category conventions, not a brand. And `references/taste.md` **as a gate**: counting typefaces, weights, hues, radius values, accent share, off-scale spacing, plus the five renders. A system that fails it does not go out.
+Two tests you run silently and report, never delegate to the user: the **swap test** — put a competitor's name on the artefact and the positioning; if both still work you have elicited category conventions, not a brand. Run it with each reference's name too: if the artefact works as theirs, the system is too close to it. And `references/taste.md` **as a gate**: counting typefaces, weights, hues, radius values, accent share, off-scale spacing, plus the five renders. A system that fails it does not go out.
 
 ### Act 4 · Écrire
 
@@ -114,7 +116,8 @@ Two tests you run silently and report, never delegate to the user: the **swap te
 4. `cp -R assets/site brand/site`, `npm install`, then write every page in the brand's own voice (`references/site.md` → *Making a brand's site*). The example is Perch, a fictional hotel-operations company: keep the structure, replace every sentence.
 5. **Imagery.** Write a concrete `prompt` on each photography (and illustration) sample in the tokens, show the cost, and on a yes run `python3 assets/imagery.py brand brand/`. Look at every image before it ships; regenerate the ones that fail the any-company test. Mark the photography page `assumed` until a real shoot replaces them. If the user declines, the pages show labelled placeholders — that is fine.
 6. `npm run dev` in `brand/site`, open it in the browser pane, and check every page at desktop and phone width, light and dark. Fix what you see before the user sees it.
-7. Create `brand/CHANGELOG.md` with the v1.0.0 entry, and append `assets/claude-md-block.md` to the project's `CLAUDE.md`.
+7. Write `brand/references/`: the reference cards and the category table in a `README.md`, beside the first-screen captures the script took (`references/reference-analysis.md` → *Where it lands in the kit*). They stay out of `brand/site/`.
+8. Create `brand/CHANGELOG.md` with the v1.0.0 entry, and append `assets/claude-md-block.md` to the project's `CLAUDE.md`.
 
 Show the user the site. Then tell them plainly what it is and is not. Offer a Vercel **preview** deploy as a next step; do not deploy by reflex (`references/site.md`).
 
@@ -154,6 +157,7 @@ Follow the user's language in conversation and on the brand site (`meta.site_loc
 
 - `references/quick.md` — the quick mode: five decisions, what is asserted, what is written, and how the normal mode resumes from it
 - `references/tournament.md` — the visual tournament: where the screenshots come from, how to build a duel, and how to read the answers without ever naming an axis
+- `references/reference-analysis.md` — reading the references: measuring the sites the user admires or picked, finding their public guidelines, the reference card, the category's defaults, and what a reference may never become
 - `references/discovery.md` — the interview: the questions that work, the refuse-the-first-answer loop, provenance, and the tests a positioning must pass
 - `references/session.md` — the turn-by-turn script, showing options well, handling "I don't know", and telling a real answer from a polite one
 - `references/axes.md` — the translation layer: six axes to concrete design variables, with the derived parameters and the correlation traps
@@ -173,6 +177,7 @@ Follow the user's language in conversation and on the brand site (`meta.site_loc
 - `assets/example-assets/` — the worked example's photography, so the example site runs complete
 - `assets/BRAND.example.md` — the agent instruction file, at the quality bar
 - `assets/duel.html` — the tournament board: two real screenshots side by side, a site name under each, and nothing else
+- `assets/inspect-site.cjs` — opens a reference site and measures it: faces, weights, display-to-body ratio, palette by pixel share, radius, density, guideline links, plus a first-screen capture
 - `assets/type-systems.html` — the same words set in thirty free type systems, each shown as a headline and as a 13px product row, for choosing type
 - `assets/illustration-styles.html` — the same scene drawn seven ways plus an eighth card for none, for choosing an illustration language
 - `assets/make-samples.py` — redraws the seven territories on a brand's own scene and palette
