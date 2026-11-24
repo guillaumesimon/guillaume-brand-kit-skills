@@ -138,7 +138,7 @@ function measure() {
         if (!seen.has(key) && buttons.length < 6) {
           seen.add(key)
           const c = rgb(s.color)
-          buttons.push({ label, fill: hex(bg), text: c ? hex(c) : null, radius: s.borderTopLeftRadius, height: Math.round(r.height), weight: s.fontWeight, transform: s.textTransform })
+          buttons.push({ label, fill: hex(bg), text: c ? hex(c) : null, radius: parseFloat(s.borderTopLeftRadius) >= r.height / 2 - 1 ? "pill" : s.borderTopLeftRadius, height: Math.round(r.height), weight: s.fontWeight, transform: s.textTransform })
         }
       }
     }
@@ -252,7 +252,7 @@ function card(m) {
   if (t.font_hosts.length) L.push(`            fonts served from ${t.font_hosts.join(", ")}`)
   if (p.mode) L.push(`  colour    ${p.mode} · ${p.palette.slice(0, 5).map((q) => `${q.hex} ${pct(q.share)}`).join(" · ")}`)
   if (p.mode) L.push(`            chromatic ${pct(p.chromatic_share)} of the first screen · hues: ${p.hues.map((h) => h.hue).join(", ") || "none"}`)
-  if (c.buttons.length) L.push(`  buttons   ${c.buttons.slice(0, 3).map((b) => `"${b.label}" ${b.fill} r${b.radius} ${b.height}px`).join(" · ")}`)
+  if (c.buttons.length) L.push(`  buttons   ${c.buttons.slice(0, 3).map((b) => `"${b.label}" ${b.fill} ${b.radius === "pill" ? "pill" : "r" + b.radius} ${b.height}px`).join(" · ")}`)
   L.push(`  shape     radius ${m.shape.radius.map((r) => `${r.value} ${pct(r.share)}`).join(" · ") || "none"} · ${m.shape.shadow_values} shadow values`)
   L.push(`  density   ${m.density.words_first_screen} words on the first screen · pictures cover ${pct(m.density.picture_share_first_screen)} of it`)
   if (m.h1) L.push(`  headline  "${m.h1}"`)
