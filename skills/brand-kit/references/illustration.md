@@ -19,7 +19,7 @@ Two deliberate choices in how that board is built, both worth keeping:
 Before showing it, **regenerate the samples in the brand's own palette**:
 
 ```bash
-export FAL_KEY=...   # see the imagegen skill for the Keychain route
+python3 assets/gen.py check   # fal.ai, OpenRouter, or none: references/generation.md
 python3 assets/make-samples.py --out "$SCRATCH" --palette '{"ground":"#FBF7F1","ink":"#241E1A","accent":"#1F5D45","soft":"#86B9A4","warm":"#C8761B","cool":"#2C5E8A"}'
 ```
 
@@ -27,7 +27,7 @@ Seven calls, about two minutes, and it folds the results back into the page as e
 
 Be honest about what regeneration costs you: **the shipped artwork was art-directed and picked from several attempts.** A regenerated set is a first pass and will not match it. Regenerate when the brand needs its own scene or palette badly enough to accept that, not by reflex.
 
-Default model is GPT Image 2.5 Flare at `medium` (about $0.09 a run) because it is the strongest of the catalogue at taking a reference image. `--model muse` costs about the same and is noticeably looser. `--quality high` or `xhigh` is worth it when a style needs to stay loose: at `medium` this model tidies a drawing up, which flattens exactly the wobble that makes a hand-drawn style read as hand-drawn.
+On fal.ai the default model is GPT Image 2.5 Flare at `medium` (about $0.09 a run) because it is the strongest of the catalogue at taking a reference image. On OpenRouter the default is Gemini 3.1 Flash Image, about $0.50 a run, and less tested on these seven hands: look at every card before showing the board. `--model muse` costs about the same and is noticeably looser. `--quality high` or `xhigh` is worth it when a style needs to stay loose: at `medium` this model tidies a drawing up, which flattens exactly the wobble that makes a hand-drawn style read as hand-drawn.
 
 **A style is better shown than described.** Writing "wobbly organic linework with uneven stroke weight" gets you a generic pencil sketch, every time; the model has no way to know which of a hundred hands you mean. Drop reference images into `assets/refs/` and point `STYLE_REFS` at them instead — the prompt then carries only the palette and the negatives, and the reference carries the hand. That is how the hand-drawn card is built.
 

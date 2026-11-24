@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Generate the photography board, and a brand's own photography and illustration.
 
-Two jobs, one script, both through fal.ai (key: FAL_KEY or the macOS Keychain,
-see the imagegen skill).
+Two jobs, one script. The provider comes from gen.py: fal.ai when FAL_KEY is
+set, OpenRouter when OPENROUTER_API_KEY is, and --dry-run when neither is.
 
     # 1 · The photography board: one scene, seven photographic directions.
     #     --out copies the board into a working folder (the session scratchpad)
@@ -27,21 +27,20 @@ For the brand job, every "do" image is prefixed with the brand's own recipe
 entry with "kind": "dont" is generated from its prompt alone — it is meant to
 break them.
 
-Cost: GPT Image 2.5 Flare at medium is ~$0.013 an image (a board ~$0.09),
-Muse ~$0.01 and noticeably looser. A typical brand set is 6–10 images.
+Cost on fal: GPT Image 2.5 Flare at medium is ~$0.013 an image (a board ~$0.09),
+Muse ~$0.01 and noticeably looser. On OpenRouter the default model is ~$0.07 an
+image (a board ~$0.50). A typical brand set is 6–10 images. --dry-run prints
+the estimate for the provider this machine would use.
 """
-import argparse, base64, io, json, os, pathlib, subprocess, tempfile
+import argparse, base64, json, pathlib, sys
+
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
+import gen
+from gen import as_ref, to_webp
 
 HERE = pathlib.Path(__file__).resolve().parent
 PAGE = HERE / "photo-styles.html"
 OUT = HERE / "photo-samples"
-
-MODELS = {
-    "gpt":  ("https://fal.run/openai/gpt-image-2.5/flare/text-to-image",
-             "https://fal.run/openai/gpt-image-2.5/flare/edit", 0.013),
-    "muse": ("https://fal.run/meta/muse-image/text-to-image",
-             "https://fal.run/meta/muse-image/edit", 0.01),
-}
 
 # A scene needs a person, an object and a place: casting and environment are
 # the expensive parts of a photographic system, so a still life tells you little.
@@ -97,73 +96,6 @@ DIRECTIONS = {
 }
 
 
-def key_or_die():
-    key = os.environ.get("FAL_KEY") or subprocess.run(
-        ["security", "find-generic-password", "-s", "fal.ai", "-a", "FAL_KEY", "-w"],
-        capture_output=True, text=True).stdout.strip()
-    if not key:
-        raise SystemExit("No FAL_KEY. Export it, or store it once with:\n"
-                         "  security add-generic-password -U -s fal.ai -a FAL_KEY -w")
-    return key
-
-
-def size_for(model, ratio):
-    if model == "gpt":
-        return {"image_size": {"1:1": "square_hd", "4:5": "portrait_4_3", "3:4": "portrait_4_3",
-                               "9:16": "portrait_16_9", "16:9": "landscape_16_9", "3:2": "landscape_4_3",
-                               "4:3": "landscape_4_3"}.get(ratio, "square_hd")}
-    return {"aspect_ratio": ratio if ratio in ("1:1", "4:3", "3:4", "16:9", "9:16")
-            else {"4:5": "3:4", "3:2": "4:3", "2:3": "3:4"}.get(ratio, "1:1")}
-
-
-def call(url, body, key):
-    with tempfile.NamedTemporaryFile("w", suffix=".json", delete=False) as f:
-        json.dump(body, f); tmp = f.name
-    try:
-        subprocess.run(["curl", "-s", "--max-time", "600", url,
-                        "-H", f"Authorization: Key {key}", "-H", "Content-Type: application/json",
-                        "--data-binary", "@" + tmp, "-o", tmp + ".out"], check=True, capture_output=True)
-        payload = json.load(open(tmp + ".out"))
-    finally:
-        os.unlink(tmp)
-    if "images" not in payload:
-        raise SystemExit("fal.ai error: " + json.dumps(payload)[:400])
-    return subprocess.run(["curl", "-sL", payload["images"][0]["url"]], check=True, capture_output=True).stdout
-
-
-def as_ref(raw):
-    from PIL import Image
-    im = Image.open(io.BytesIO(raw)); im.thumbnail((1024, 1024), Image.LANCZOS)
-    buf = io.BytesIO(); im.convert("RGB").save(buf, "PNG", optimize=True)
-    return "data:image/png;base64," + base64.b64encode(buf.getvalue()).decode()
-
-
-def to_webp(raw, ratio, width, budget):
-    """Crop to the exact ratio, resize, and step quality down until under budget."""
-    from PIL import Image
-    im = Image.open(io.BytesIO(raw)).convert("RGB")
-    w, h = (int(x) for x in ratio.split(":"))
-    target = w / h
-    if im.width / im.height > target:
-        nw = int(im.height * target); im = im.crop(((im.width - nw) // 2, 0, (im.width - nw) // 2 + nw, im.height))
-    else:
-        nh = int(im.width / target); im = im.crop((0, (im.height - nh) // 2, im.width, (im.height - nh) // 2 + nh))
-    im = im.resize((width, int(width / target)), Image.LANCZOS)
-    for q in (82, 74, 66, 58, 50):
-        buf = io.BytesIO(); im.save(buf, "WEBP", quality=q, method=6)
-        if len(buf.getvalue()) <= budget or q == 50:
-            return buf.getvalue(), q
-
-
-def body(model, prompt, ratio, quality, refs=None):
-    b = {"prompt": prompt, "num_images": 1, "output_format": "png", **size_for(model, ratio)}
-    if refs:
-        b["image_urls"] = refs
-    if model == "gpt":
-        b["quality"] = quality
-    return b
-
-
 # ---------------------------------------------------------------- board
 
 def board(a):
@@ -174,8 +106,11 @@ def board(a):
         dest = pathlib.Path(a.out).resolve(); dest.mkdir(parents=True, exist_ok=True)
         if not (dest / PAGE.name).exists():
             shutil.copy(PAGE, dest / PAGE.name)
-        PAGE, OUT = dest / PAGE.name, dest / "photo-samples"
-    t2i, edit, price = MODELS[a.model]
+        # The shipped samples come too, or --only would rebuild the page with one card.
+        if not (dest / OUT.name).exists() and OUT.exists():
+            shutil.copytree(OUT, dest / OUT.name)
+        PAGE, OUT = dest / PAGE.name, dest / OUT.name
+    provider, shown, mname, price = gen.plan(a)
     keep = ("Use the reference image only for the scene, the subject and the composition: " + a.scene +
             " Keep the same subject and the same objects. Re-shoot it entirely as described below; change the "
             "light, the lens, the colour and the casting direction completely.")
@@ -183,23 +118,30 @@ def board(a):
     if a.dry_run:
         for k in names:
             print(f"\n--- {k} ---\n{(a.scene + ' ') if k == MASTER else keep + ' '}{DIRECTIONS[k]}{COMMON}")
-        print(f"\n{len(names)} call(s) on {a.model}, ~${len(names) * price:.2f}.")
+        print(f"\n{len(names)} call(s) on {shown} {mname}, ~${len(names) * price:.2f}."
+              + ("" if provider else "\nNo key here: hand these prompts to an image tool the session has."))
         return
-    key = key_or_die()
+    gen.need(a.provider)
+    spent = 0
+    def shoot(prompt, refs=None):
+        nonlocal spent
+        raw, cost = gen.image(prompt, "1:1", refs, a.model, a.quality, a.provider)
+        spent += cost
+        return raw
     OUT.mkdir(exist_ok=True)
     saved = OUT / f"{MASTER}.webp"
     images = {}
     if MASTER in names or not saved.exists():
         print(f"Shooting the master ({MASTER})…")
-        images[MASTER] = call(t2i, body(a.model, a.scene + " " + DIRECTIONS[MASTER] + COMMON, "1:1", a.quality), key)
+        images[MASTER] = shoot(a.scene + " " + DIRECTIONS[MASTER] + COMMON)
     master = as_ref(images.get(MASTER) or saved.read_bytes())
     for k in names:
         if k == MASTER:
             continue
         print(f"Re-shooting → {k}…")
-        images[k] = call(edit, body(a.model, keep + " " + DIRECTIONS[k] + COMMON, "1:1", a.quality, [master]), key)
+        images[k] = shoot(keep + " " + DIRECTIONS[k] + COMMON, [master])
     embed(images)
-    print(f"\nDone. {len(images)} image(s), ~${len(images) * price:.2f}.")
+    print(f"\nDone. {len(images)} image(s) on {shown} {mname}, ${spent:.2f}.")
 
 
 def embed(images):
@@ -259,7 +201,8 @@ def brand(a):
     for sec, e in todo:
         if e["src"] not in seen:
             seen.add(e["src"]); unique.append((sec, e))
-    t2i, _, price = MODELS[a.model]
+    provider, shown, mname, price = gen.plan(a)
+    spent = 0
     if not unique:
         print("Nothing to generate: every imagery entry with a prompt already has its file. Use --force to redo.")
         return
@@ -269,16 +212,18 @@ def brand(a):
         if a.dry_run:
             print(f"\n--- {e['src']} ({e.get('ratio', '4:5')}{', dont' if dont else ''}) ---\n{prompt}")
             continue
-        key = key_or_die()
         print(f"Generating {e['src']}…")
-        raw = call(t2i, body(a.model, prompt, e.get("ratio", "4:5"), a.quality), key)
+        raw, cost = gen.image(prompt, e.get("ratio", "4:5"), None, a.model, a.quality, a.provider)
+        spent += cost
         ratio = e.get("ratio", "4:5")
         width = 1800 if e.get("size") in ("wide", "full") or ratio == "16:9" else 1100
         data, q = to_webp(raw, ratio, width, 220_000)
         dest = root / e["src"]; dest.parent.mkdir(parents=True, exist_ok=True); dest.write_bytes(data)
         print(f"  q{q} {len(data) // 1024} KB → {dest.relative_to(root)}")
     n = len(unique)
-    print(f"\n{'Would generate' if a.dry_run else 'Generated'} {n} image(s), ~${n * price:.2f}.")
+    print(f"\n{'Would generate' if a.dry_run else 'Generated'} {n} image(s) on {shown} {mname}, "
+          f"{'~$%.2f' % (n * price) if a.dry_run else '$%.2f' % spent}."
+          + ("\nNo key here: hand these prompts to an image tool the session has." if a.dry_run and not provider else ""))
     if not a.dry_run:
         print("These are direction, not photography of the real business. Mark imagery provenance 'assumed' "
               "until a real shoot replaces them.")
@@ -297,9 +242,7 @@ def main():
             p.add_argument("--scene", default=DEFAULT_SCENE, help="the one scene every direction re-shoots")
             p.add_argument("--only", choices=sorted(DIRECTIONS), help="redo a single direction")
             p.add_argument("--out", help="working folder: the board is copied there and generated there")
-        p.add_argument("--model", default="gpt", choices=sorted(MODELS))
-        p.add_argument("--quality", default="medium", choices=["low", "medium", "high"])
-        p.add_argument("--dry-run", action="store_true")
+        gen.add_args(p)
     a = ap.parse_args()
     board(a) if a.cmd == "board" else brand(a)
 

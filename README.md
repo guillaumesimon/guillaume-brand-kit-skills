@@ -45,6 +45,12 @@ cp $A/tokens.example.json $D/tokens.json && cp -R $A/example-assets $D/assets &&
 cd $D/site && npm install && npm run dev
 ```
 
+Image generation is optional. With `FAL_KEY` or `OPENROUTER_API_KEY` in the environment, the session can redraw the photography and illustration boards on the brand's own scene and generate the brand's imagery; without one, it runs on the shipped boards.
+
+```bash
+python3 skills/brand-kit/assets/gen.py check
+```
+
 The reference reader, which needs Playwright with a Chromium:
 
 ```bash

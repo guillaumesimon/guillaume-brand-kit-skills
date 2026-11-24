@@ -11,3 +11,6 @@ next-env.d.ts
 skills/brand-kit/assets/site/public/brand
 
 .DS_Store
+
+# Python bytecode from running the scripts in place
+__pycache__/

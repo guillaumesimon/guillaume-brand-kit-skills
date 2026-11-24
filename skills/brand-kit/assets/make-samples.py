@@ -13,27 +13,24 @@ from that master so the composition stays constant. Comparing two territories
 has to mean comparing the same image twice, or people compare drawings instead
 of grammars.
 
-    export FAL_KEY=...                      # or macOS Keychain, see the imagegen skill
+    python3 gen.py check                    # which provider this machine has a key for
     python3 make-samples.py --scene "a florist handing over a bouquet in a shop doorway"
     python3 make-samples.py --only doodle   # redo one card
 
-Cost: 7 calls. GPT Image 2.5 at medium is $0.09 a run; --model muse is $0.07 and
-looser. --dry-run prints the prompts and spends nothing.
+Cost: 7 calls. On fal, GPT Image 2.5 at medium is $0.09 a run and --model muse is
+$0.07 and looser; on OpenRouter the default model is about $0.50 a run. The
+provider comes from gen.py. --dry-run prints the prompts and spends nothing.
 """
-import argparse, base64, io, json, os, pathlib, subprocess, tempfile
+import argparse, base64, io, json, pathlib, sys
+
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
+import gen
+from gen import as_ref
 
 HERE = pathlib.Path(__file__).resolve().parent
 PAGE = HERE / "illustration-styles.html"
 OUT = HERE / "illustration-samples"
 REFS = HERE / "refs"
-
-MODELS = {
-    # id: (text-to-image endpoint, edit endpoint, price per image at the tier we use)
-    "gpt":  ("https://fal.run/openai/gpt-image-2.5/flare/text-to-image",
-             "https://fal.run/openai/gpt-image-2.5/flare/edit", 0.013),
-    "muse": ("https://fal.run/meta/muse-image/text-to-image",
-             "https://fal.run/meta/muse-image/edit", 0.01),
-}
 
 MASTER = "editorial3d"          # the territory every new scene is generated in first
 
@@ -130,36 +127,6 @@ def keep_line(scene):
             "and redraw the whole scene in the style described below.")
 
 
-def shape(model, body):
-    """GPT Image takes named sizes and a quality tier; Muse takes a ratio and neither."""
-    if model == "gpt":
-        body["image_size"] = "square_hd"
-        body.pop("aspect_ratio", None)
-    else:
-        body["aspect_ratio"] = "1:1"
-        body.pop("image_size", None); body.pop("quality", None)
-    return body
-
-
-def call(url, body, key):
-    with tempfile.NamedTemporaryFile("w", suffix=".json", delete=False) as f:
-        json.dump(body, f); tmp = f.name
-    try:
-        subprocess.run(["curl", "-s", "--max-time", "600", url,
-                        "-H", f"Authorization: Key {key}", "-H", "Content-Type: application/json",
-                        "--data-binary", "@" + tmp, "-o", tmp + ".out"], check=True, capture_output=True)
-        payload = json.load(open(tmp + ".out"))
-    finally:
-        os.unlink(tmp)
-    if "images" not in payload:
-        raise SystemExit("fal.ai error: " + json.dumps(payload)[:400])
-    return payload["images"][0]["url"]
-
-
-def fetch(url):
-    return subprocess.run(["curl", "-sL", url], check=True, capture_output=True).stdout
-
-
 def embed(images, merge=False):
     """Fold the samples into the page as data URIs so it stays one openable file."""
     import re
@@ -197,12 +164,10 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--scene", default=DEFAULT_SCENE, help="the one scene every territory draws")
     ap.add_argument("--palette", help="JSON: ground, ink, accent, soft, warm, cool")
-    ap.add_argument("--model", default="gpt", choices=sorted(MODELS))
-    ap.add_argument("--quality", default="medium", choices=["low", "medium", "high", "xhigh", "max"],
-                    help="GPT Image only. Raise it when a territory needs to stay loose: at medium this "
-                         "model tidies a drawing up, which flattens the wobble Clever Doodle lives on.")
+    # --quality is fal GPT Image only. Raise it when a territory needs to stay loose: at
+    # medium that model tidies a drawing up, which flattens the wobble Clever Doodle lives on.
+    gen.add_args(ap)
     ap.add_argument("--only", help="regenerate a single territory, reusing the saved master")
-    ap.add_argument("--dry-run", action="store_true")
     ap.add_argument("--out", help="working folder: the board is copied there and redrawn there, so a "
                                    "session never rewrites the installed skill")
     a = ap.parse_args()
@@ -230,23 +195,20 @@ def main():
                 continue
             print(f"\n--- {k} ---\n{v}")
         n = 1 if a.only else len(S)
-        print(f"\n{n} call(s) on {a.model}, ${n * MODELS[a.model][2]:.3f}.")
+        provider, shown, mname, each = gen.plan(a)
+        print(f"\n{n} call(s) on {shown} {mname}, ~${n * each:.2f}."
+              + ("" if provider else "\nNo key here: hand these prompts to an image tool the session has."))
         return
 
-    key = os.environ.get("FAL_KEY") or subprocess.run(
-        ["security", "find-generic-password", "-s", "fal.ai", "-a", "FAL_KEY", "-w"],
-        capture_output=True, text=True).stdout.strip()
-    if not key:
-        raise SystemExit("No FAL_KEY. Export it, or store it with:\n"
-                         "  security add-generic-password -U -s fal.ai -a FAL_KEY -w")
+    gen.need(a.provider)
+    provider, shown, mname, _ = gen.plan(a)
+    spent = 0
 
-    from PIL import Image
-    t2i, edit, price = MODELS[a.model]
-
-    def as_ref(raw):
-        im = Image.open(io.BytesIO(raw)); im.thumbnail((1024, 1024), Image.LANCZOS)
-        buf = io.BytesIO(); im.save(buf, "PNG", optimize=True)
-        return "data:image/png;base64," + base64.b64encode(buf.getvalue()).decode()
+    def shoot(prompt, refs=None):
+        nonlocal spent
+        raw, cost = gen.image(prompt, "1:1", refs, a.model, a.quality, a.provider)
+        spent += cost
+        return raw
 
     def style_refs(name):
         out = []
@@ -258,14 +220,6 @@ def main():
                 print(f"  ! missing style reference {rel}, falling back to the written prompt")
         return out
 
-    def body_for(prompt, refs=None):
-        b = shape(a.model, {"prompt": prompt, "num_images": 1, "output_format": "png"})
-        if refs:
-            b["image_urls"] = refs
-        if a.model == "gpt":
-            b["quality"] = a.quality
-        return b
-
     def draw(name, master):
         refs = style_refs(name)
         prompt = KEEP + " " + S[name]
@@ -274,24 +228,24 @@ def main():
                       "line quality, their character construction, their colour treatment and their level of "
                       "abstraction. Match that hand exactly. Ignore their subject and composition entirely. "
                       + S[name])
-        return fetch(call(edit, body_for(prompt, [master] + refs), key))
+        return shoot(prompt, [master] + refs)
 
     if a.only:
         saved = OUT / f"{MASTER}.webp"
         if a.only != MASTER and not saved.exists():
             raise SystemExit(f"No saved {MASTER} master. Run a full pass once before using --only.")
         if a.only == MASTER:
-            images = {MASTER: fetch(call(t2i, body_for(scene + " " + S[MASTER]), key))}
+            images = {MASTER: shoot(scene + " " + S[MASTER])}
         else:
             print(f"Drawing → {a.only}…")
             images = {a.only: draw(a.only, as_ref(saved.read_bytes()))}
         print("Embedding…")
         embed(images, merge=True)
-        print(f"\nDone. 1 image, ${price:.3f}.")
+        print(f"\nDone. 1 image on {shown} {mname}, ${spent:.3f}.")
         return
 
     print(f"Generating the master in {MASTER}…")
-    master_raw = fetch(call(t2i, body_for(scene + " " + S[MASTER]), key))
+    master_raw = shoot(scene + " " + S[MASTER])
     master = as_ref(master_raw)
 
     images = {MASTER: master_raw}
@@ -303,7 +257,7 @@ def main():
 
     print("Embedding…")
     embed(images)
-    print(f"\nDone. {len(images)} images, ${len(images) * price:.2f}.")
+    print(f"\nDone. {len(images)} images on {shown} {mname}, ${spent:.2f}.")
 
 
 if __name__ == "__main__":

@@ -25,11 +25,13 @@ The board was built the way the illustration picker was: the scene is generated 
 
 ```bash
 python3 assets/imagery.py board --dry-run --scene "a florist handing a wrapped bouquet across the counter, morning"
-python3 assets/imagery.py board --out "$SCRATCH" --scene "…" --model muse   # ~$0.07, looser
-python3 assets/imagery.py board --out "$SCRATCH" --scene "…"                # GPT Image 2.5 medium, ~$0.09, holds the composition better
+python3 assets/imagery.py board --out "$SCRATCH" --scene "…"                # the default model of whichever provider has a key
+python3 assets/imagery.py board --out "$SCRATCH" --scene "…" --model muse   # fal only: cheaper, looser
 ```
 
-`--out` copies the board into the session's scratchpad and generates there, so the shipped board in the skill is never rewritten. Generation spends the user's money: say what it costs and which model before running it, the same way the `imagegen` skill does, and wait for a yes. If the user declines, show the board as shipped and say the scene is generic.
+The dry run prints the prompts and the estimate for the provider this machine has: about $0.09 a board on fal.ai, about $0.50 on OpenRouter. With no key at all it still prints the prompts, and the board is shown as shipped. `references/generation.md` covers the providers, the key and the single agreement on cost.
+
+`--out` copies the board into the session's scratchpad and generates there, so the shipped board in the skill is never rewritten. Generation spends the user's money: it runs only under the one agreement on cost described in `references/generation.md`. If the user declines, or there is no provider, show the board as shipped and say the scene is generic.
 
 The board needs a real browser that runs scripts — serve the folder it is in (`python3 -m http.server <port> --directory "$SCRATCH"`) and open it in the browser pane. Put the brand's ink, card colour and tagline in the hash so the "none" card is in the brand: `photo-styles.html#ink=241E1A&card=FBF7F1&line=Know%20your%20house.`
 
@@ -80,7 +82,7 @@ Every entry under `imagery.photography.types`, `.samples` and `.misuse` that has
 
 ```bash
 python3 assets/imagery.py brand brand/ --dry-run     # prints every prompt, spends nothing
-python3 assets/imagery.py brand brand/ --model muse
+python3 assets/imagery.py brand brand/               # generates what is missing, prints what it cost
 python3 assets/imagery.py brand brand/ --only hero --force
 ```
 
