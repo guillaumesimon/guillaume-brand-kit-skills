@@ -13,9 +13,13 @@
        node inspect-site.cjs https://example.com --out "$SCRATCH/refs" --dark
        node inspect-site.cjs --snippet          # print the in-page measure, for a browser tool
 
-   Per site it writes <slug>.png (the first screen, 1440×900), <slug>-full.jpg
-   (the page, capped) and <slug>.json (every measurement), and prints a short
-   card. It only ever sends a plain GET for the page: nothing about the user's
+   Per page it writes <slug>.png (the first screen, 1440×900), <slug>-full.jpg
+   (the page, capped at 6000px) and <slug>.json (every measurement), and prints
+   a short card. The slug is the host plus the path (linear-app,
+   linear-app-pricing), so two pages of one site sit side by side. A page that
+   is blocked, empty or an error screen gets a JSON saying so and no capture.
+   When something still covers the first screen (a pop-up, a consent wall), the
+   card says `overlay`: its colour and density lines then describe the overlay. It only ever sends a plain GET for the page: nothing about the user's
    project leaves the machine.
 
    Needs Playwright with a Chromium (`npm i -D playwright && npx playwright
@@ -77,7 +81,7 @@ function measure() {
     if (c) ink[hex(c)] = (ink[hex(c)] || 0) + t.length
     chars += t.length
     if (v.y < vh) foldWords += t.split(" ").length
-    if (t.length >= 8 && (!display || size > display.size)) {
+    if (t.length >= 4 && (!display || size > display.size)) {
       const lh = parseFloat(v.s.lineHeight), ls = parseFloat(v.s.letterSpacing)
       display = {
         size, family, weight: v.s.fontWeight,
@@ -101,7 +105,10 @@ function measure() {
 
   // Boxes: declared grounds, corners, shadows, buttons, pictures.
   const ground = {}, radius = {}, shadows = new Set(), buttons = [], seen = new Set()
-  let groundArea = 0, boxes = 0, picFold = 0, pics = 0
+  let groundArea = 0, boxes = 0, pics = 0
+  // Pictures are counted on a coarse grid of the first screen, so a photograph
+  // with a grain layer on top of it is counted once.
+  const GX = 48, GY = 30, grid = new Uint8Array(GX * GY)
   const all = document.body.querySelectorAll("*")
   for (let i = 0; i < all.length && i < 8000; i++) {
     const el = all[i], v = shown(el)
@@ -121,7 +128,8 @@ function measure() {
       (el.tagName === "svg" && r.width > 160 && r.height > 160) || /url\(/.test(s.backgroundImage)
     if (isPic && r.width > 80 && r.height > 80) {
       pics++
-      if (v.y < vh) picFold += Math.max(0, Math.min(r.right, vw) - Math.max(r.left, 0)) * Math.max(0, Math.min(r.bottom, vh) - Math.max(r.top, 0))
+      for (let gy = Math.max(0, Math.floor(r.top / vh * GY)); gy < Math.min(GY, Math.ceil(r.bottom / vh * GY)); gy++)
+        for (let gx = Math.max(0, Math.floor(r.left / vw * GX)); gx < Math.min(GX, Math.ceil(r.right / vw * GX)); gx++) grid[gy * GX + gx] = 1
     }
     if (/^(A|BUTTON|INPUT)$/.test(el.tagName) || el.getAttribute("role") === "button") {
       const label = (el.innerText || el.value || "").replace(/\s+/g, " ").trim()
@@ -146,14 +154,21 @@ function measure() {
     const named = /^(brand|design|press)$/i.test(a.hostname.split(".")[0]) ||
       /(^|\/)(brand|brand-assets|brand-guidelines|press|press-kit|media-kit|logos?)(\/|$)/i.test(a.pathname)
     const said = label.length < 30 && /\b(brand|press kit|media kit|guidelines|design system|logos?)\b/i.test(label)
-    if (!shallow || !(named || said)) continue
+    if (!shallow || !(named || said) || (a.pathname === "/" && a.hostname === location.hostname)) continue
     if (hrefs.has(a.href) || links.length >= 6 || !/^https?:/.test(a.href)) continue
     hrefs.add(a.href); links.push({ label, href: a.href })
   }
   const fontHosts = [...new Set(performance.getEntriesByType("resource")
     .filter((e) => /\.(woff2?|otf|ttf)(\?|$)/i.test(e.name)).map((e) => new URL(e.name).hostname))]
+  // Something sitting on top of the first screen: a dialog, a consent wall.
+  let overlay = null
+  for (const el of document.querySelectorAll('dialog[open], [role="dialog"], [role="alertdialog"], [aria-modal="true"]')) {
+    const v = shown(el)
+    if (v && v.r.top < vh && v.r.width * v.r.height > vw * vh * 0.2) { overlay = (el.innerText || "").replace(/\s+/g, " ").trim().slice(0, 80) || "dialog"; break }
+  }
   const h1 = document.querySelector("h1")
   return {
+    overlay,
     url: location.href, title: document.title, lang: document.documentElement.lang || null,
     description: document.querySelector('meta[name="description"]')?.content || null,
     // Some sites set the headline twice (one copy for screen readers).
@@ -169,8 +184,8 @@ function measure() {
     density: {
       words_first_screen: foldWords, pictures: pics,
       // Boxes that hold a picture, not what the picture is: a hero photograph and
-      // a product screenshot both count. Stacked pictures overlap, hence the cap.
-      picture_share_first_screen: +Math.min(1, picFold / (vw * vh)).toFixed(2),
+      // a product screenshot both count, and a mock-up drawn in HTML does not.
+      picture_share_first_screen: +(grid.reduce((a, b) => a + b, 0) / grid.length).toFixed(2),
     },
     guideline_links: links,
   }
@@ -198,7 +213,7 @@ function countPixels(dataUrl) {
         if (mx - mn > 48 && sat > 0.3 && l > 0.12 && l < 0.92) {
           chroma++
           let h = mx === r ? ((gg - b) / (mx - mn)) % 6 : mx === gg ? (b - r) / (mx - mn) + 2 : (r - gg) / (mx - mn) + 4
-          hues[Math.floor((((h * 60) % 360) + 360) % 360 / 30)]++
+          hues[Math.round((((h * 60) % 360) + 360) % 360 / 30) % 12]++
         }
       }
       // Merge near-identical buckets so an anti-aliased ground is one colour.
@@ -221,14 +236,15 @@ function countPixels(dataUrl) {
   })
 }
 
-const slugOf = (u) => new URL(u).hostname.replace(/^www\./, "").replace(/[^a-z0-9]+/gi, "-").toLowerCase()
+const slugOf = (u) => { const x = new URL(u); return (x.hostname.replace(/^www\./, "") + x.pathname).replace(/[^a-z0-9]+/gi, "-").replace(/^-|-$/g, "").toLowerCase() }
 
 function card(m) {
   const t = m.type, c = m.colour, p = m.pixels || {}
   const pct = (v) => Math.round(v * 100) + "%"
   const L = []
-  L.push(`${slugOf(m.url)}  (${m.url})`)
+  L.push(`${m.slug}  (${m.url})  ${m.blocked ? "not measured" : "measured " + m.read_at}`)
   if (m.blocked) { L.push(`  blocked: ${m.blocked}`); return L.join("\n") }
+  if (m.overlay) L.push(`  overlay   "${m.overlay}" is covering the first screen: the colour and density lines describe it, not the site`)
   L.push(`  type      ${t.families.map((f) => `${f.family} (${f.role}, ${pct(f.share)})`).join(" · ") || "none read"}`)
   L.push(`            ${t.weights.length} weights ${t.weights.join("/")} · body ${t.body_px}px · display ${t.display ? `${t.display.size}px ${t.display.weight}, leading ${t.display.leading}, tracking ${t.display.tracking_em}em` : "none"} · ratio ${t.display_to_body}:1`)
   if (t.font_hosts.length) L.push(`            fonts served from ${t.font_hosts.join(", ")}`)
@@ -267,30 +283,41 @@ async function main() {
       colorScheme: argv.includes("--dark") ? "dark" : "light", reducedMotion: "reduce",
     })
     const page = await ctx.newPage()
+    const fontHosts = new Set()
+    page.on("request", (r) => { if (r.resourceType() === "font") { try { fontHosts.add(new URL(r.url()).hostname) } catch {} } })
     let m
     try {
       const res = await page.goto(url, { waitUntil: "domcontentloaded", timeout: 45000 })
       await page.waitForLoadState("networkidle", { timeout: 12000 }).catch(() => {})
       // A consent banner is not the brand. One try at dismissing it, then move on.
-      await page.getByRole("button", { name: /^(accept|agree|allow|got it|ok|tout accepter|accepter|j'accepte)\b/i }).first().click({ timeout: 1500 }).catch(() => {})
+      // The whole label has to be a consent answer: "Accept and optimise
+      // payments" is a product card, and clicking it opens it.
+      await page.getByRole("button", { name: /^(accept|accept all|accept all cookies|accept cookies|agree|i agree|allow all|allow all cookies|got it|ok|okay|tout accepter|accepter|accepter tout|j'accepte)$/i }).first().click({ timeout: 1500 }).catch(() => {})
+      await page.keyboard.press("Escape").catch(() => {})
       await page.evaluate(() => document.fonts.ready).catch(() => {})
       await page.waitForTimeout(800)
       const status = res ? res.status() : 0
-      const words = await page.evaluate(() => document.body.innerText.trim().split(/\s+/).length)
-      if (status >= 400 || words < 25) {
-        m = { url, blocked: `HTTP ${status}, ${words} words on the page: a block page or an empty shell, not the site` }
+      const text = await page.evaluate(() => document.body.innerText.trim())
+      const words = text.split(/\s+/).length
+      const wall = words < 150 && /application error|client-side exception|access denied|forbidden|verify (that )?you are (a )?human|are you a robot|just a moment|attention required|captcha|enable javascript|unusual traffic|something went wrong/i.exec(text)
+      if (status >= 400 || words < 25 || wall) {
+        m = { url, blocked: `HTTP ${status}, ${words} words on the page${wall ? `, reading "${wall[0]}"` : ""}: a block page, an error screen or an empty shell, not the site` }
       } else {
         m = await page.evaluate(measure)
         const shot = await page.screenshot({ path: path.join(out, slug + ".png") })
         m.pixels = await page.evaluate(countPixels, "data:image/png;base64," + shot.toString("base64"))
-        await page.screenshot({ path: path.join(out, slug + "-full.jpg"), type: "jpeg", quality: 70, fullPage: true, clip: undefined }).catch(() => {})
-        m.files = { first_screen: slug + ".png", page: slug + "-full.jpg" }
+        m.type.font_hosts = [...new Set([...m.type.font_hosts, ...fontHosts])]
+        m.files = { first_screen: slug + ".png" }
+        const h = Math.min(6000, await page.evaluate(() => document.documentElement.scrollHeight))
+        const full = await page.screenshot({ path: path.join(out, slug + "-full.jpg"), type: "jpeg", quality: 70, fullPage: true, clip: { x: 0, y: 0, width: 1440, height: h } }).then(() => true).catch(() => false)
+        if (full) m.files.page = slug + "-full.jpg"
       }
     } catch (e) {
       m = { url, blocked: String(e.message || e).split("\n")[0] }
     }
     m.read_at = new Date().toISOString().slice(0, 10)
-    if (m.blocked) failed++
+    m.slug = slug
+    if (m.blocked) { failed++; for (const f of [slug + ".png", slug + "-full.jpg"]) fs.rmSync(path.join(out, f), { force: true }) }
     fs.writeFileSync(path.join(out, slug + ".json"), JSON.stringify(m, null, 2))
     console.log(card(m) + "\n")
     await ctx.close()

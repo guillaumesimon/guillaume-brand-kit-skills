@@ -18,7 +18,9 @@ In the background, during Act 2, so that it never holds up a duel:
 - **Each time the user picks a site in a duel**: that site is now a reference. Start on it while you build the next pair.
 - **The competitors from Act 1**, once: the alternatives they said people use today.
 
-Cap it at **three references and three competitors**, and at about a minute each. If a subagent tool is there, hand the fetching to one and keep running the duels. Everything has to be in by the end of Act 2, because Act 3 is specified from it.
+Cap it at **five sites on the reference side and three competitors**, at about a minute each. If a subagent tool is there, hand the fetching to one and keep running the duels. Everything has to be in by the end of Act 2, because Act 3 is specified from it.
+
+**Who counts as a reference.** A site the user chose in a duel, as in `references/tournament.md`. A brand they named is measured straight away because it costs nothing, but it only becomes a reference once it has won a duel. A name that never gets chosen keeps its card in the scratch file, marked *named, not chosen*: it shows what attracts them, and it does not go into the kit. The kit carries three to five cards, all of them chosen.
 
 Never announce it as a step and never make the user wait for it. If a reference is not back when you need it, go without and say so in the provenance.
 
@@ -37,25 +39,29 @@ Never announce it as a step and never make the user wait for it. If a reference 
 node assets/inspect-site.cjs linear.app stripe.com --out "$SCRATCH/refs"
 ```
 
-Per site it writes a 1440×900 capture of the first screen, a capped full-page capture and a JSON file, and prints a card: families with their share of the text and their role, weights, body size, the display line (size, weight, leading, tracking), the display-to-body ratio, where the fonts are served from, light or dark, the palette of the first screen by pixel share, how much of that screen is chromatic and in how many hues, the buttons (fill, radius, height), the radius values in use, the number of shadow values, words on the first screen, and links that look like the brand's own guidelines.
+Run it from the skill's own directory. `$SCRATCH` stands for the session's scratch directory, the one the scratch file is in; `--out` is required, so nothing is ever written into the skill or the project.
 
-Three things to know when reading the card:
+Per page it writes a 1440×900 capture of the first screen, a full-page capture capped at 6000px and a JSON file, named after the host and the path (`linear-app`, `linear-app-pricing`), and prints a card with the date: families with their share of the text and their role, weights, body size, the display line (size, weight, leading, tracking), the display-to-body ratio, where the fonts are served from, light or dark, the palette of the first screen by pixel share, how much of that screen is chromatic and in how many hues, the buttons (fill, radius, height), the radius values in use, the number of shadow values, words on the first screen, and links that look like the brand's own guidelines.
+
+Five things to know when reading the card:
 
 - **Look at the capture as well.** The numbers say how much, not what. "Pictures cover 83% of the first screen" is a hero photograph on one site and a product screenshot on another, and that difference is the imagery decision.
-- **The first screen is not the brand.** It is the brand at its most deliberate. For a product-led reference, run it again on a pricing or product page: that is where the system shows how it behaves when nobody is art-directing.
-- **A blocked page is reported as blocked**, not measured. Some sites refuse automated browsers; the script says so and writes no capture. That is the moment to search what has been published about the brand: *Reported*, below.
+- **The first screen is not the brand.** It is the brand at its most deliberate. For each *chosen* reference, run one more page, pricing or a product page: that is where the system shows how it behaves when nobody is art-directing. Put both on one card: the home page gives the type and the idea, the second page gives the colour share and the density of an ordinary screen.
+- **Something may be sitting on the page.** The script dismisses a consent bar when its button says exactly that, and presses Escape once. When a dialog still covers the first screen, the card says `overlay` and its colour and density lines describe the dialog. Use the second page for those lines, or open the site in the browser pane and close the dialog yourself. Closing a pop-up is fine; the rule further down is about not submitting anything.
+- **A campaign is not the brand either.** A sale banner, a seasonal hero or a video caught mid-frame shows up in the palette and the picture share. The capture tells you; leave those out of the card.
+- **A blocked page is reported as blocked**, not measured. Some sites refuse automated browsers or answer with an error screen; the script says so and writes no capture. That is the moment to search what has been published about the brand: *Reported*, below.
 
-No Playwright in the environment: `node assets/inspect-site.cjs --snippet` prints the in-page function. Open the site in the browser pane, run that in its JavaScript tool, and take a screenshot the usual way. You lose only the pixel count.
+No Playwright in the environment: `node assets/inspect-site.cjs --snippet` prints the in-page function. Open the site in the browser pane, run that in its JavaScript tool, and take a screenshot the usual way. It returns the same JSON without the pixel count, and it prints no card and makes no block check: read the page yourself before trusting the numbers. `--dark` measures the site's dark scheme when it has one.
 
 ### Read: their own guidelines
 
-Many brands publish theirs, and it is the only place that states the intent behind what you measured. Look, in this order, and stop at the first that answers:
+Many brands publish theirs, and it is the only place that states the intent behind what you measured. Look, in this order, and stop at the first that actually holds guidelines (a page at `/brand` is sometimes a product feature, and a brand portal is sometimes a login):
 
 1. the `guidelines?` links on the card;
 2. the usual addresses: `brand.<name>.com`, `<name>.com/brand`, `/press`, `/media-kit`, `design.<name>.com`;
 3. one web search, `<name> brand guidelines`.
 
-Take the brand's own pages only. They do not have to be on the main site: a press release announcing a rebrand, a partner or marketing guidelines PDF on a documentation host, or the design team's own blog are all the brand speaking, and they are often reachable when the homepage is not. An aggregator listing "the hex codes of 500 brands" is `recalled` at best. From the guidelines, read three things and leave the rest: the stated principles (what they say they are and are not), the rules on colour share and on type, and anything about imagery or voice that a homepage cannot show. Most references will have no public guidelines. That is normal; write "none found" and move on.
+Take the brand's own pages only. They do not have to be on the main site: a press release announcing a rebrand, a partner or marketing guidelines PDF on a documentation host, or the design team's own blog are all the brand speaking, and they are often reachable when the homepage is not. An aggregator listing "the hex codes of 500 brands" is `recalled` at best. From the guidelines, read three things and leave the rest: the stated principles (what they say they are and are not), the rules on colour share and on type, and anything about imagery or voice that a homepage cannot show. Many brand pages cover the logo and nothing else. Cite such a page for what it states and write "logo rules only". Most references will have no public guidelines at all. That is normal; write "none found" and move on.
 
 ### Reported: what others have published
 
@@ -92,19 +98,19 @@ One per reference, in the scratch file as you go, then in the kit. The form is f
 ```markdown
 ## Linear
 Named by the user · picked in duel 3, against Headspace
-Sources: measured linear.app, 2026-11-24 · read linear.app/brand
+Sources: measured linear.app and /pricing, 2026-11-24 · read linear.app/brand (logo rules only)
 
 - Type: one family for display and text (Inter Variable), a mono at 3% for data. Four weights, 300 to 590.
   Display 64px on 15px body (4.3:1), leading 1.0, tracking −0.022em.
 - Colour: dark ground, two near-blacks for 94% of the first screen. No chromatic pixel on it.
 - Shape: pills for controls, 9px for surfaces. Hairlines; shadows only on floating layers.
-- Density: about 160 words on the first screen, one product capture filling most of it.
+- Density: about 160 words on the first screen, one product capture across the lower half of it.
 - Imagery: the product itself. No people, no illustration.
 - Voice: an eight-word headline that names the category. No adjective.
 
 What makes it look like itself: nothing on the page is decorative; the product capture is the only image and the type does everything else.
 Take: display-to-body ratio above 4:1 · no colour on marketing surfaces · product as the only picture
-Leave: the face (theirs to wear) · the dark ground (the user refused dark twice) · the pill controls
+Leave: the dark ground (the user refused dark twice) · the pill controls · the wordmark
 Their words: "c'est net, on dirait que rien n'a été ajouté"
 ```
 
@@ -128,6 +134,7 @@ Leave: the pink · both faces (theirs, and custom)
 
 Rules for filling it:
 
+- **The second line says how the site got here**, in one of four forms: *picked in duel N, against X* · *named by the user, picked in duel N, against X* · *named by the user, not chosen (refused in duel N)* · *named by the user, not yet in a duel*. Only the first two are references.
 - **Every line is a mechanism with a number or a countable fact.** If a line could be written without having opened the site, delete it.
 - **A card built from reports has fewer lines, and each carries its source.** No sizes, no ratios, no shares: write what the pieces establish (the kind of face and who drew it, the structure of the palette, the stated idea, the imagery) and leave the rest blank rather than estimating it. A short card that is true is worth more than a full one that is half remembered.
 - **"What makes it look like itself" is one sentence**, written as an organising principle. If you cannot write it, you have a list of observations and not yet a reading.
@@ -136,10 +143,26 @@ Rules for filling it:
 
 ## From three cards to the ledger
 
-One card is a taste. Three cards are a brief, and the brief is in what they share.
+One card is a taste. Three cards are a brief, and the brief is in what they share. "Three" here means three chosen references.
 
-- **What all three do is the strongest evidence in the session.** Three references that each keep colour under 5% of the screen settle the saturation budget without a question. Move the axis, mark the evidence `measured`, and assert it.
-- **What two of three do** moves the axis at lower confidence. Check it against the duels before asserting.
+**Measuring is not a third kind of evidence.** The ledger knows *stated* and *behavioural* (`references/session.md`), and a measurement inherits its kind from how the site got here: measured on a site they chose, it is behavioural, and it now says precisely what they chose; measured on a site they only named, it is stated, and "chosen beats said" still applies. `measured`, `read`, `reported` and `recalled` describe the source of a card line, not the user's commitment to it.
+
+**Most card lines set a parameter directly and need no axis.** The axes exist to turn vague answers into values. A measurement already is a value:
+
+| Card line | What it sets |
+|---|---|
+| Display-to-body ratio, display leading and tracking | the type scale and the display style, checked against `references/taste.md` (10 to 12) |
+| Families and their share, weights in use | one family or two, and the weight count |
+| Chromatic share of an ordinary screen, number of hues | the brand colour's surface share and the hue count |
+| Light or dark, the tint of the neutrals | the ground |
+| Radius values, hairlines or shadows | the radius scale and the elevation model |
+| Words on the first screen, picture share | density and section padding |
+| What the picture is (from the capture) | the imagery slot: photography, product, illustration, none |
+
+Take the range the chosen references share, not their average, and never a value copied from one of them. Where a line also says something about an axis (a serif used for display only, a ground that is always warm), move the axis through `references/axes.md` and the table in `references/tournament.md`, as for a duel.
+
+- **What all three do is the strongest evidence in the session.** Three chosen references that each keep colour under 5% of the screen settle the brand colour's share without a question. Set it, and assert it.
+- **What two of three do** is a lean. Check it against the duels before asserting.
 - **Where they disagree is the open decision**, and the only thing here that may cost the user anything. If the axis is still open after the duels, use the forced choice that already exists, inside one reference they picked: name three measured things on that page and ask which they would miss most (`references/tournament.md`). Never ask them to choose between two of their own references.
 - **A reference that disagrees with the duels** is the attraction-and-fit split. The duels win, and the reference tells you the ceiling of their taste. Write both down.
 
@@ -157,13 +180,15 @@ Run the same script on the alternatives from Act 1. The output is not three more
 | A dashboard capture tilted in the hero | 2 of 3 | break: flat, full-width, real data |
 ```
 
-Anything on two of three is a default. For each one, decide on purpose: **comply** (the audience needs the code to recognise the category) or **break** (it is where the brand becomes recognisable). A system that breaks none is the category's wallpaper; one that breaks all of them is unreadable as a member of it. This is the in-category pass of `references/territories.md`, done with evidence, and it is what the swap test in Act 3 is run against.
+Anything on two of three is a default. With fewer than three measurable competitors, which is the usual case, keep the table and put the source in the "Seen on" column: *Wave measured · FreshBooks reported*. A row that rests on one measured site and nothing else is a lead, not a default; say so. A competitor that will not open goes through the same fallbacks as a reference (*When it cannot be fetched*), and a spreadsheet or paper simply has no row. For each default, decide on purpose: **comply** (the audience needs the code to recognise the category) or **break** (it is where the brand becomes recognisable). A system that breaks none is the category's wallpaper; one that breaks all of them is unreadable as a member of it. This is the in-category pass of `references/territories.md`, done with evidence, and it is what the swap test in Act 3 is run against.
 
-When the honest alternative is paper or a spreadsheet, there is no site to measure. Skip the table and say so.
+When every honest alternative is paper or a spreadsheet, there is no site to measure. Skip the table and say so.
+
+The "break" rows go into the "Not:" half of `reference_points`, next to what the user refused.
 
 ## What a reference may never become
 
-- **Never their typeface, when it is theirs.** Fonts served from the brand's own host, under a name no library carries, are custom or licensed. Use the card to say what kind of face it is, and choose the free equivalent through `references/typography.md`.
+- **Never their typeface, when it is theirs.** Fonts served from the brand's own host, under a name no library carries, are custom or licensed. A library face (Inter, Geist, a Google font) is nobody's, and the same face may be the right choice for other reasons, decided through `references/typography.md`, which is also where the free equivalent of a custom face is chosen.
 - **Never their colour.** Not the hex and not its near twin. If the accent you arrive at could be mistaken for a reference's at a glance, move it.
 - **Never their logo, their copy or their images** anywhere in the kit's own work.
 - **Never one reference alone.** One reference is a copy. The minimum of three exists for this reason too.
@@ -179,7 +204,7 @@ Two more, about the fetching itself:
 In order:
 
 1. the script reports a block;
-2. open the site in the browser pane and use `--snippet`: a real browser often gets through where a headless one does not;
+2. if you have a browser pane, open the site there and use `--snippet`: a real browser often gets through where a headless one does not. A subagent without one reports the block and goes to step 3;
 3. search what has been published and build the card from it (*Reported*, above), with the Mobbin capture as the picture;
 4. fall back to what you recall, every line marked `recalled`;
 5. say plainly that the reference stays a picture.
@@ -196,7 +221,7 @@ brand/references/
 ```
 
 - The **captures are the script's own**, taken from the public page on the day. Keep them in `brand/references/` and nowhere else: they are someone else's work, kept as working reference. They do not go into `brand/site/` and they are never published.
-- `meta.reference_points` in `tokens.json` is written from the cards: the "looks like" line from the *take* lines, the "does not look like" line from the refusals and the *leave* lines. Name the mechanism, not only the brand: *"Linear's absence of colour"*, not *"Linear"*.
+- `meta.reference_points` in `tokens.json` is one string in two halves, as in `assets/tokens.example.json`. The first half is written from the *take* lines; the "Not:" half from the refusals, the *leave* lines and the category defaults being broken. Name the mechanism, not only the brand: *"Linear's absence of colour"*, not *"Linear"*.
 - The Art direction page of the site may **name** the references and say what was taken, in prose. No captures.
-- `BRAND.md` needs nothing new: `reference_points` is already near its top. Agents do not read `brand/references/`; add it to the "do not read" line.
+- `BRAND.md` needs no new section: the reference points are already near its top, and `assets/BRAND.example.md` already tells agents not to read `brand/references/`. Keep that sentence.
 - Provenance: a line that rests on three measured references is `inferred`, and says so. It is still founder taste, not customer evidence.
