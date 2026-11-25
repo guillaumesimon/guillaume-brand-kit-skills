@@ -105,10 +105,22 @@ In `tokens.json`, under `imagery.photography`:
 }
 ```
 
-And one numbered, checkable rule in `BRAND.md`, written so a second agent could audit an image against it:
+And in `BRAND.md` → Imagery → `### Photography`: the point of view and the recipe in prose, then the rules and the sample images, written so a second agent could audit an image against them:
 
-> **24.** Photography is documentary: real properties in available mid-morning light, staff mid-task or empty rooms, eye level. One image per surface. Never stock, never golden hour, never type set on a photograph.
+```yaml
+rules:
+  - verdict: dont
+    rule: Never stock photography, golden hour, or anyone smiling at a laptop.
+    exception: none
+visuals:
+  - file: assets/photography/hero.webp
+    verdict: do
+    caption: Front desk at 07:10. Available light, nobody there yet, square to the counter.
+  - file: assets/photography/dont-stock.webp
+    verdict: dont
+    caption: Stock hotel photography shows a hotel nobody runs. Shoot a real property on a weekday morning.
+```
 
-If the answer is none:
+The caption carries the rule: say what the image demonstrates, not what it shows. A `dont` image is never given to an image model as a reference.
 
-> **24.** This brand does not use photography. Type, colour and the ledger rule carry every surface. If a page needs warmth, it comes from the copy.
+If the answer is none, the subsection is one sentence: "This brand does not use photography. Type, colour and the ledger rule carry every surface; if a page needs warmth, it comes from the copy."

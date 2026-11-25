@@ -2,7 +2,7 @@
 
 The same method as the full session, cut to what a founder can decide in four minutes at the start of a project. It exists because the alternative is not the full session - it is no brand at all, and an agent inventing a palette on the first screen it builds.
 
-A quick kit is a **first hypothesis that agents can build from today**: real tokens, a short `BRAND.md`, a `theme.css`. No site, no generated imagery, no logo work. It is honest about that, and it is built so the full session can pick it up later without redoing anything.
+A quick kit is a **first hypothesis that agents can build from today**: real tokens, a short `BRAND.md` in the BRAND.md format, a `DESIGN.md`, a `theme.css`. No site, no generated imagery, no logo work. It is honest about that, and it is built so the full session can pick it up later without redoing anything.
 
 ## Budget
 
@@ -61,17 +61,20 @@ If the user has criticised nothing by now, the second question is the gate: do n
 ```
 brand/
 ├── tokens.json     full schema where it was decided; see below
-├── BRAND.md        80-140 lines
+├── BRAND.md        the BRAND.md format, 150-250 lines with its synced blocks
+├── DESIGN.md       the interface system; front matter from sync.py
 ├── theme.css       from sync.py
 ├── session.md      the scratch file: verbatim, ledger, refusals, provenance
 └── CHANGELOG.md    v0.1.0
 ```
 
 - `tokens.json` - `meta`, `color`, `type`, `space`, `radius`, `shadow`, `motion`, `layout`, `voice` at the example's depth. `icon` with the library and spec. `messaging` with `one_liner` and `positioning` only. `art_direction` with the concept and the weird detail. `logo` and `imagery` present but short, marked `assumed`. Add `"mode": "quick"` to `meta` and version it `0.1.0`: a quick kit is not a v1.
-- `BRAND.md` - same form as `assets/BRAND.example.md`: numbered, imperative, checkable. Drop the `human_kit` line and the "do not read `site/`" sentence; there is no site. Near the top, one line: *"Quick kit (v0.1.0): a first hypothesis from a four-minute session. Run the brand-kit skill in normal mode to turn it into a full identity."*
-- `python3 assets/sync.py brand/` - it needs no site.
+- `tokens.json` also gets `color.brand`, `voice.examples` (three pairs) and `motion.brand`. No `logo.variations`: there is no logo file yet.
+- `BRAND.md` - the BRAND.md format, from `assets/BRAND.example.md` (or the project's existing `BRAND.md`, updated in place: `SKILL.md` → *Before you start*). Overview, Positioning and Audience in a few lines each, the synced blocks, Claims with everything `review` unless the user approved it, Imagery as one line per kind ("None for now: a graphic device does this job"), no Applications unless a channel came up. No Logo block: add `omitted: [{section: logo, reason: "Wordmark not drawn yet. Placeholder: the name set in the display face."}]` to the front matter and remove the `@sync logo` markers. Drop the sentence about `site/`; there is no site. End Overview with one line: *"Quick kit (v0.1.0): a first hypothesis from a four-minute session. Run the brand-kit skill in normal mode to turn it into a full identity."*
+- `DESIGN.md` - from `assets/DESIGN.example.md`, the body cut to the rules this system actually needs.
+- `python3 assets/sync.py brand/` - it needs no site. Then lint both files (`references/kit.md` → *Lint it*).
 - `session.md` - copy the scratch file in. It is what lets the full session resume instead of restart.
-- Append `assets/claude-md-block.md` to the project's `CLAUDE.md`, without the two lines about `brand/site/`.
+- Append `assets/claude-md-block.md` to the project's `CLAUDE.md`, without the line about `brand/site/`.
 
 **Provenance is blunt in a quick kit.** `stated` for what came from their words, `inferred` for what three duels support, `assumed` for everything else - which is most of it. Write `breaks_if` and `validate` as in any kit, and say it in chat in one sentence when you hand it over: what was decided by them, what was decided for them, and that the second list is long.
 
@@ -89,5 +92,7 @@ When `brand/tokens.json` has `meta.mode: "quick"` and the user wants the full id
 1. the duels the ledger still needs (usually three more);
 2. the boards that were asserted - type first, then photography, illustration, icons, motion - each only while genuinely open;
 3. Act 3 on the existing artefact, then Act 4 in full: the site, the imagery, the rest of the tokens.
+
+`BRAND.md` and `DESIGN.md` are completed in place, never rewritten from the example. Once logo files exist, add `logo.variations` to the tokens, take `logo` out of `omitted` and add a `## Logo` section in its place in the order: `sync.py` writes the block into it. Drop the quick-kit line from Overview.
 
 Keep every refusal already recorded. On completion, remove `meta.mode`, bump to `1.0.0`, and write the changelog entry as an upgrade, not a rewrite.

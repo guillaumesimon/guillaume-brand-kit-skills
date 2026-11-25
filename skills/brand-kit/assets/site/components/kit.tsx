@@ -209,13 +209,15 @@ export function InsteadOf({ limit = 8 }: { limit?: number }) {
 }
 
 export function Lexicon() {
-  const use: string[] = dig("voice.vocabulary.use") ?? [];
+  // A map of term → how to use it (BRAND.md's shape), or a plain list in kits made before it.
+  const raw: string[] | Record<string, string> = dig("voice.vocabulary.use") ?? [];
+  const use: [string, string][] = Array.isArray(raw) ? raw.map((w) => [w, ""]) : Object.entries(raw).filter(([k]) => !k.startsWith("_"));
   const avoid: Record<string, string> = dig("voice.vocabulary.avoid") ?? {};
   return (
     <div className="lexicon">
       <div>
         <p className="t-label">{t.wordsWeUse}</p>
-        <ul>{use.map((w) => <li key={w}><span>{w}</span></li>)}</ul>
+        <ul>{use.map(([w, how]) => <li key={w}><span>{w}</span>{how && <span>{how}</span>}</li>)}</ul>
       </div>
       <div>
         <p className="t-label">{t.wordsWeNeverUse}</p>

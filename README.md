@@ -9,7 +9,8 @@ Two Claude Code skills that turn a 25-minute conversation into a brand universe,
 
 ```
 brand/
-├── BRAND.md        agents read this, always — numbered, checkable rules
+├── BRAND.md        the brand, in the open BRAND.md format: agents read it, always
+├── DESIGN.md       the interface system, in Google's DESIGN.md format
 ├── tokens.json     every value, written once, with its rule beside it
 ├── theme.css       every token as a CSS variable, generated
 ├── CHANGELOG.md
@@ -18,6 +19,10 @@ brand/
 ```
 
 `site/` is a brand guidelines website in the shape of [brand.klarna.com](https://brand.klarna.com): a manifesto home, **Our brand**, **How we speak**, **How we look** — logo, art direction, colour, typography, layout, photography, iconography, illustration, motion — **In use** and a **Toolkit**. It is a small Next.js app that builds to a static folder. Pages carry prose; every swatch, specimen, icon, scale and token table is rendered from `tokens.json` at build, so the site cannot drift from the brand it describes.
+
+`BRAND.md` follows the [BRAND.md format](https://github.com/guillaumesimon/brand.md): who the brand is for, how it sounds, what it may claim, its logo, colours, typefaces, imagery and motion, with each rule in the section it governs. Any agent or tool that knows the format can use it, and its linter checks it. `DESIGN.md` carries what would change in a redesign without changing the brand: colour roles, the type scale, spacing, components. Both are kept in step with `tokens.json` by `sync.py`.
+
+If the project already has a `BRAND.md`, `brand-kit` completes and updates that file in place rather than writing a new one.
 
 ## Why it is built this way
 
@@ -40,7 +45,8 @@ The worked example — Perch, a fictional hotel-operations company — as a runn
 
 ```bash
 D=$(mktemp -d)/brand && mkdir -p $D && A=skills/brand-kit/assets
-cp $A/tokens.example.json $D/tokens.json && cp -R $A/example-assets $D/assets && cp -R $A/site $D/site
+cp $A/tokens.example.json $D/tokens.json && cp $A/BRAND.example.md $D/BRAND.md && cp $A/DESIGN.example.md $D/DESIGN.md
+cp -R $A/example-assets $D/assets && cp -R $A/site $D/site && python3 $A/sync.py $D
 cd $D/site && npm install && npm run dev
 ```
 

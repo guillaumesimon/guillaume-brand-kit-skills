@@ -112,10 +112,22 @@ In `tokens.json`, under `imagery`:
 }
 ```
 
-And one numbered, checkable rule in `BRAND.md`. Not "our illustration is friendly and modern" — that is unauditable and will be ignored. Something like:
+And in `BRAND.md` → Imagery → `### Illustration`: the construction in prose, the recipe if images are generated, and a checkable rule. Not "our illustration is friendly and modern", that is unauditable and will be ignored. Something like:
 
-> **31.** Illustration is Playful Geometric only: circles, arcs and rounded rectangles, brand palette, no outlines, no volume, no shadow. A figure is one solid shape for the hair, dot eyes, no nose. Never mix a second territory — if the pack cannot carry a scene, use a chart or a photograph instead.
+```yaml
+rules:
+  - verdict: dont
+    rule: Never mix a second territory. Circles, arcs and rounded rectangles in the brand palette, no outlines, no volume, no shadow.
+    exception: Charts and diagrams, which follow the icon stroke.
+```
+
+Add the samples as `visuals`, each with a `do` or `dont` verdict and a caption that states the rule.
 
 If the answer is none, the rule is shorter and just as useful:
 
-> **31.** This brand does not illustrate. Use a chart, a photograph, or nothing. If a page feels empty, the fix is more space and fewer elements, not a drawing.
+```yaml
+rules:
+  - verdict: dont
+    rule: No illustration of any kind. Use a chart, a photograph, or nothing.
+    exception: Diagrams drawn in the icon stroke, in brand colours.
+```

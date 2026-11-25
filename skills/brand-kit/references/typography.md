@@ -156,10 +156,22 @@ In `tokens.json`, under `type`, alongside `family`, `scale` and `role`:
 }
 ```
 
-And one numbered, checkable rule in `BRAND.md`. Not "our typography is modern and clean" — that is unauditable and will be ignored. Something like:
+The families, fallbacks and licences reach `BRAND.md` → Typography through `sync.py` (`type.family`; `license_verified` is `true` only once the user has confirmed the licence covers their use). What you write by hand is one sentence per role in the prose, and one checkable rule in that section. Not "our typography is modern and clean", that is unauditable and will be ignored. Something like:
 
-> **12.** Fraunces sets display only: 1.375rem and above, weight 500–600, `WONK 1` above 24px and `WONK 0` below. Everything else is Public Sans 400/600. In the iOS and Android apps, Fraunces appears above 24px only and all UI is the platform face, so Dynamic Type keeps working. Numbers in tables and metrics are Public Sans with tabular figures, never Fraunces.
+```yaml
+rules:
+  - verdict: dont
+    rule: Never set Fraunces below 1.375rem, at weight 700, or for numbers in tables and metrics.
+    exception: none
+```
+
+The sizes, weights and the web/app split are interface decisions: they go in `DESIGN.md` → Typography ("In the iOS and Android apps, Fraunces appears above 24px only and all UI is the platform face, so Dynamic Type keeps working").
 
 If the answer is the system stack, the rule is shorter and just as useful:
 
-> **12.** This brand ships no webfont. `system-ui` on web, San Francisco on iOS, Roboto on Android. Hierarchy comes from size, weight and space — never from a second family. If a page feels flat, the fix is more scale contrast and more space, not a display face.
+```yaml
+rules:
+  - verdict: dont
+    rule: Ship no webfont. Hierarchy comes from size, weight and space, never from a second family.
+    exception: none
+```

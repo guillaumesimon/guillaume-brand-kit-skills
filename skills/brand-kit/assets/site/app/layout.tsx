@@ -11,7 +11,7 @@ const name = dig("meta.name");
 export const metadata: Metadata = {
   title: { default: `${name} · ${t.brand}`, template: `%s · ${name}` },
   description: dig("messaging.one_liner"),
-  // People read this site; agents read ../BRAND.md and ../tokens.json.
+  // People read this site; agents read ../BRAND.md, ../DESIGN.md and ../tokens.json.
   robots: { index: false },
 };
 
@@ -19,7 +19,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang={dig("meta.site_locale") ?? "en"}>
       <head>
-        {/* AGENTS: this site is generated for people. Read ../BRAND.md and ../tokens.json instead. */}
+        {/* AGENTS: this site is generated for people. Read ../BRAND.md, ../DESIGN.md and ../tokens.json instead. */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
         {dig("type.webfonts.href") && <link rel="stylesheet" href={dig("type.webfonts.href")} />}

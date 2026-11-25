@@ -64,6 +64,35 @@
         "100": "#DCE8F2"
       }
     },
+    "brand": {
+      "_use": "The identity colours, named for what they mean, never for a screen role. sync.py writes them to BRAND.md → Colors (with `required` and `print`). The words that describe each one live in BRAND.md prose.",
+      "moss": {
+        "value": "#1F5D45",
+        "_ref": "palette.moss.600",
+        "required": true,
+        "print": {
+          "cmyk": "70 0 26 64",
+          "note": "Conversion to proof on uncoated stock. No Pantone chosen yet."
+        }
+      },
+      "ink": {
+        "value": "#241E1A",
+        "_ref": "palette.ink.800",
+        "required": true,
+        "print": {
+          "cmyk": "0 17 28 86"
+        }
+      },
+      "paper": {
+        "value": "#FBF7F1",
+        "_ref": "palette.paper.50",
+        "required": true,
+        "print": {
+          "cmyk": "0 2 4 2",
+          "note": "On cream stock, leave unprinted: the paper is the colour."
+        }
+      }
+    },
     "semantic": {
       "light": {
         "surface": {
@@ -289,7 +318,9 @@
           "SOFT": 30,
           "WONK": 1
         },
-        "_use": "h1 and h2, pull quotes, deck titles, the wordmark. Never body, never UI. WONK on above 24px, off below."
+        "_use": "h1 and h2, pull quotes, deck titles, the wordmark. Never body, never UI. WONK on above 24px, off below.",
+        "required": true,
+        "license_verified": true
       },
       "text": {
         "stack": "'Inter', -apple-system, 'Segoe UI', sans-serif",
@@ -301,13 +332,15 @@
             700
           ]
         },
-        "_use": "All body copy, all UI, h3 and below."
+        "_use": "All body copy, all UI, h3 and below.",
+        "license_verified": true
       },
       "mono": {
         "stack": "'IBM Plex Mono', ui-monospace, 'SF Mono', monospace",
         "source": "Google Fonts",
         "license": "SIL OFL 1.1",
-        "_use": "The index labels, confirmation numbers, tabular figures in dense tables. This is the device."
+        "_use": "The index labels, confirmation numbers, tabular figures in dense tables. This is the device.",
+        "license_verified": true
       }
     },
     "scale": {
@@ -528,6 +561,19 @@
       "modal": "slow standard",
       "exit": "fast exit"
     },
+    "brand": {
+      "_use": "The brand's motion character, named for purpose. sync.py writes it to BRAND.md → Motion. Interface transitions are motion.role, in DESIGN.md.",
+      "settle": {
+        "duration": "base",
+        "easing": "standard",
+        "_use": "How anything arrives: fade and rise 12px, then still."
+      },
+      "confirm": {
+        "duration": "fast",
+        "easing": "standard",
+        "_use": "A number that changed fades in once. Nothing else moves."
+      }
+    },
     "_rules": [
       "Nothing animates for longer than 320ms.",
       "No bounce, no overshoot, no spring. Perch does not bounce.",
@@ -598,6 +644,49 @@
       }
     ]
   },
+  "component": {
+    "_use": "Component recipes in DESIGN.md's shape. Colour, type, radius and spacing values are references to the DESIGN.md tokens sync.py writes from this file: {colors.<group>-<role>}, {typography.<role>}, {rounded.<step>}, {spacing.<step>}. sync.py writes them to DESIGN.md's front matter.",
+    "button-primary": {
+      "backgroundColor": "{colors.accent}",
+      "textColor": "{colors.accent-on}",
+      "typography": "{typography.button}",
+      "rounded": "{rounded.md}",
+      "padding": "{spacing.3}"
+    },
+    "button-primary-hover": {
+      "backgroundColor": "{colors.accent-hover}"
+    },
+    "button-secondary": {
+      "backgroundColor": "{colors.surface-page}",
+      "textColor": "{colors.ink}",
+      "typography": "{typography.button}",
+      "rounded": "{rounded.md}",
+      "padding": "{spacing.3}"
+    },
+    "card": {
+      "backgroundColor": "{colors.surface-raised}",
+      "textColor": "{colors.ink}",
+      "rounded": "{rounded.lg}",
+      "padding": "{spacing.5}"
+    },
+    "input": {
+      "backgroundColor": "{colors.surface-raised}",
+      "textColor": "{colors.ink}",
+      "rounded": "{rounded.md}",
+      "height": "44px"
+    },
+    "table-header": {
+      "backgroundColor": "{colors.surface-sunken}",
+      "textColor": "{colors.ink-muted}",
+      "typography": "{typography.label}",
+      "rounded": "{rounded.none}"
+    },
+    "tag": {
+      "backgroundColor": "{colors.accent-subtle}",
+      "textColor": "{colors.accent-hover}",
+      "rounded": "{rounded.pill}"
+    }
+  },
   "icon": {
     "library": "Lucide",
     "iconify": {
@@ -657,6 +746,53 @@
     "primary": "assets/logo/perch-lockup.svg",
     "mark": "assets/logo/perch-mark.svg",
     "wordmark": "assets/logo/perch-wordmark.svg",
+    "variations": {
+      "_use": "The logo in BRAND.md's shape: one entry per variation, one colourway per kind of background. Files are relative to brand/. sync.py writes it to BRAND.md → Logo. The first variation and its first colourway are the default.",
+      "full": {
+        "use": "The default. Site header, decks, documents, anywhere there is room.",
+        "minSize": "120px",
+        "clearSpace": "the height of the mark on every side",
+        "colorways": {
+          "on-light": {
+            "file": "assets/logo/perch-lockup.svg",
+            "color": "{colors.ink}",
+            "backgrounds": [
+              "{colors.paper}"
+            ]
+          },
+          "on-dark": {
+            "file": "assets/logo/perch-lockup-on-dark.svg",
+            "color": "{colors.paper}",
+            "backgrounds": [
+              "{colors.ink}",
+              "{colors.moss}"
+            ]
+          }
+        }
+      },
+      "mark": {
+        "use": "At 32px and below, and as an avatar or favicon. Never as a decorative watermark.",
+        "minSize": "24px",
+        "clearSpace": "half the height of the mark on every side",
+        "colorways": {
+          "on-light": {
+            "file": "assets/logo/perch-mark.svg",
+            "color": "{colors.ink}",
+            "backgrounds": [
+              "{colors.paper}"
+            ]
+          },
+          "on-dark": {
+            "file": "assets/logo/perch-mark-on-dark.svg",
+            "color": "{colors.paper}",
+            "backgrounds": [
+              "{colors.ink}",
+              "{colors.moss}"
+            ]
+          }
+        }
+      }
+    },
     "construction": "Fraunces 400 at -0.03em tracking, the 'h' ascender shortened to cap height. That is the whole mark.",
     "min_width_px": {
       "lockup": 120,
@@ -758,19 +894,40 @@
     "reading_level": "Grade 9. Users are hoteliers, not analysts.",
     "locale": "en-GB. -ise not -ize. DD Month YYYY. 24-hour clock. £ before the number, no space. No Oxford comma.",
     "capitalisation": "Sentence case for every heading, button, label and menu item. 'Save changes', not 'Save Changes'.",
+    "examples": [
+      {
+        "instead": "Unlock powerful insights into your hotel's performance!",
+        "write": "Occupancy dropped four points last week. Here is why.",
+        "why": "The number first, the reason second."
+      },
+      {
+        "instead": "Our AI-powered solution seamlessly integrates with your PMS.",
+        "write": "Perch reads your PMS. Setup takes eleven minutes.",
+        "why": "Say what it does and how long it takes."
+      },
+      {
+        "instead": "Hurry, limited spots available for our beta!",
+        "write": "Start free. Cancel from the settings page.",
+        "why": "We never manufacture urgency."
+      },
+      {
+        "instead": "Oops! Something went wrong.",
+        "write": "The forecast did not load. Your data is safe; try again in a minute.",
+        "why": "What happened, and what is safe."
+      }
+    ],
     "punctuation": "No exclamation marks in product UI or marketing. Spaced en dash, not em dash. Ellipsis only for truncation.",
     "vocabulary": {
-      "use": [
-        "property",
-        "house",
-        "guest",
-        "rate",
-        "occupancy",
-        "front desk",
-        "set up",
-        "we'll",
-        "turn on"
-      ],
+      "use": {
+        "property": "What we call a hotel. Never 'hotel asset'.",
+        "house": "The warm word for a property, in headlines and talk with GMs.",
+        "guest": "The person staying. Never 'customer'.",
+        "rate": "The price of a room-night. Never 'ADR' in marketing.",
+        "occupancy": "Rooms sold over rooms available, always as a percentage.",
+        "front desk": "Two words, lower case. Never 'reception team'.",
+        "set up": "Two words as a verb, one word ('setup') as a noun.",
+        "Perch": "One word, capital P only. Never 'PERCH' or 'Perch.ai'."
+      },
       "avoid": {
         "hotel asset": "property",
         "customer": "guest",

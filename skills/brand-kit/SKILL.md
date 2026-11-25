@@ -1,11 +1,11 @@
 ---
 name: brand-kit
-description: Build a brand universe and its guidelines from a guided conversation, in a quick mode (four minutes, five decisions: tokens, BRAND.md and theme.css an agent can build from today) or a normal mode (twenty minutes), and in normal mode publish them as a Klarna-style brand guidelines website (Our brand, How we speak, How we look - art direction, colour, typography, layout, photography, iconography, illustration, motion) plus machine-readable tokens and an agent instruction file. Use this skill whenever someone wants to create a brand, a visual identity, brand guidelines, a brand book, a brand site, a style guide, a charte graphique, une identité de marque, un univers de marque, or says they need to define how their product or company should look and sound. Also use it when a new project is starting and nothing about its brand has been decided, when a project needs a brand so that agents can build on-brand pages, decks and screens, and when someone asks for a colour palette, a typographic system, a tone of voice, a photography direction, an icon style, an illustration style or a logo direction for a real company. Also use it to turn a quick kit into a full identity. Do not use it to update a kit that already exists - use brand-kit-update for that.
+description: Build a brand universe and its guidelines from a guided conversation, in a quick mode (four minutes, five decisions: tokens, a BRAND.md, a DESIGN.md and theme.css an agent can build from today) or a normal mode (twenty minutes), and in normal mode publish them as a Klarna-style brand guidelines website (Our brand, How we speak, How we look - art direction, colour, typography, layout, photography, iconography, illustration, motion) plus machine-readable tokens, a BRAND.md in the open BRAND.md format (github.com/guillaumesimon/brand.md) and a DESIGN.md for the interface system. Use this skill whenever someone wants to create a brand, a visual identity, brand guidelines, a brand book, a brand site, a style guide, a charte graphique, une identité de marque, un univers de marque, or says they need to define how their product or company should look and sound. Also use it when a new project is starting and nothing about its brand has been decided, when a project needs a brand so that agents can build on-brand pages, decks and screens, and when someone asks for a colour palette, a typographic system, a tone of voice, a photography direction, an icon style, an illustration style or a logo direction for a real company. Also use it to turn a quick kit into a full identity, and when a project has a BRAND.md (hand-written or from another tool) but no brand kit yet: it completes and updates that file in place instead of writing a new one. Do not use it to update a kit that already exists - use brand-kit-update for that.
 ---
 
 # Build a brand kit
 
-Produce a `brand/` directory: a brand guidelines **site** a founder would show their team — shaped like `brand.klarna.com`, with Our brand, How we speak, and How we look broken into art direction, colour, typography, layout, photography, iconography, illustration and motion — plus a `tokens.json` an agent can build from and a `BRAND.md` that actually changes what agents make.
+Produce a `brand/` directory: a `BRAND.md` in the open [BRAND.md format](https://github.com/guillaumesimon/brand.md) that any agent or tool can read and lint, a `DESIGN.md` for the interface system, a brand guidelines **site** a founder would show their team, shaped like `brand.klarna.com`, with Our brand, How we speak, and How we look broken into art direction, colour, typography, layout, photography, iconography, illustration and motion, and a `tokens.json` that holds every value once.
 
 The hard part is not the site. The template does that. The hard part is that **almost nobody can describe the brand they want.** Asked what it should feel like, people say "modern, clean, trustworthy" — which is true of every competitor and instructs nothing. Shown two options, the same person chooses decisively and explains why. So this skill is built to **show rather than ask**, and to ask about consequences rather than mechanisms.
 
@@ -28,7 +28,7 @@ Assert it instead, with a one-line reason and a free undo. When you are right it
 |---|---|---|
 | User's time | about 4 minutes | 20 to 25 minutes |
 | Decisions | 5: three duels, one change, one refusal | about 12 |
-| Output | `tokens.json`, `BRAND.md`, `theme.css` | the same, plus the brand site and imagery |
+| Output | `tokens.json`, `BRAND.md`, `DESIGN.md`, `theme.css` | the same, plus the brand site and imagery |
 | Status | v0.1.0, a first hypothesis, mostly `assumed` | v1.0.0, provenance per page |
 
 Both write the same files in the same schema, so a quick kit is upgraded later, never redone.
@@ -39,7 +39,12 @@ Pick the mode before the first question. If the user or the calling skill named 
 
 ## Before you start
 
-Check whether `brand/` already exists. If it does, this is not the right skill — use `brand-kit-update`. One exception: a kit whose `tokens.json` has `meta.mode: "quick"`, when the user wants the full identity. That is this skill in normal mode, resumed - `references/quick.md` → *Resuming in normal mode*.
+Check what already exists, in this order:
+
+- **`brand/` with `tokens.json`.** This is not the right skill: use `brand-kit-update`. One exception: a kit whose `tokens.json` has `meta.mode: "quick"`, when the user wants the full identity. That is this skill in normal mode, resumed - `references/quick.md` → *Resuming in normal mode*.
+- **A `BRAND.md` and no kit** (at the project root, in `brand/`, or wherever the project keeps it). The brand has been started, by hand or by another tool. **Update that file; never write a second one.** Read it whole first. Everything it states is `stated` in the provenance: it opens the session as verbatim, it closes the axes it settles, and you do not ask about anything it already decides (a palette in `colors` means no colour duels; a `voice` block means voice is asserted from it). Run the session on what is still open, then in Act 4 move its values into `tokens.json` (`color.brand`, `type.family`, `voice`, `messaging`, `logo.variations`, `motion.brand`), delete the hand-written copies of the synced keys from the file (keep its `rules` and `visuals`), and let `sync.py` write them back between markers. Keep its prose, its claims and their statuses, its sections in place and any section the format does not define; add the missing sections in the format's order. Change a sentence it states only if the user asks. If it is not in the BRAND.md format (a free-form brand document), keep it where it is and carry its content into a new `brand/BRAND.md`, then ask the user whether to delete the old file or point it at the new one.
+- **A `BRAND.md` in the kit's old numbered format** (it has a `<!--@core-->` block). That is a kit from before this skill wrote the BRAND.md format: `brand-kit-update` → *Migrating to the BRAND.md format*.
+- **Nothing.** Create everything, as below.
 
 Create a scratch file for the session (in the scratchpad directory, not in the project) and keep three things in it as you go: **verbatim** (their exact words, never paraphrased), the **axis ledger** (six axes, each with a position −2…+2, a confidence 0–1, and whether it came from something they *said* or something they *chose*), and **provenance** (which facts are stated, inferred, or assumed).
 
@@ -108,13 +113,14 @@ Two tests you run silently and report, never delegate to the user: the **swap te
 
 **Read `references/kit.md`, `references/kit-pages.md` and `references/site.md`.**
 
-1. `cp assets/tokens.example.json brand/tokens.json` and replace every value. It is the source of truth: a value is typed once, here, with its `_use` or `_rule` beside it. Match the example's depth, including `art_direction`, `imagery.photography`, `icon` and `motion.principles`.
-2. `cp assets/BRAND.example.md brand/BRAND.md` and rewrite it. That file is the quality bar: numbered, imperative, checkable rules under 250 lines.
-3. `python3 assets/sync.py brand/` — writes `brand/theme.css` and the core block of `BRAND.md`.
-4. `cp -R assets/site brand/site`, `npm install`, then write every page in the brand's own voice (`references/site.md` → *Making a brand's site*). The example is Perch, a fictional hotel-operations company: keep the structure, replace every sentence.
-5. **Imagery.** Write a concrete `prompt` on each photography (and illustration) sample in the tokens, show the cost, and on a yes run `python3 assets/imagery.py brand brand/`. Look at every image before it ships; regenerate the ones that fail the any-company test. Mark the photography page `assumed` until a real shoot replaces them. If the user declines, the pages show labelled placeholders — that is fine.
-6. `npm run dev` in `brand/site`, open it in the browser pane, and check every page at desktop and phone width, light and dark. Fix what you see before the user sees it.
-7. Create `brand/CHANGELOG.md` with the v1.0.0 entry, and append `assets/claude-md-block.md` to the project's `CLAUDE.md`.
+1. `cp assets/tokens.example.json brand/tokens.json` and replace every value. It is the source of truth: a value is typed once, here, with its `_use` or `_rule` beside it. Match the example's depth, including `color.brand`, `voice.examples`, `logo.variations`, `motion.brand`, `component`, `art_direction`, `imagery.photography`, `icon` and `motion.principles`. With an existing `BRAND.md`, its values come first (see *Before you start*).
+2. **`BRAND.md`.** If none exists, `cp assets/BRAND.example.md brand/BRAND.md` and rewrite every hand-written part: the front matter, Overview, Positioning, Audience, the prose around each synced block, Claims, every `rules` and `visuals` entry, Imagery and Applications. Leave the `<!-- @sync -->` markers where they are. If one exists, update it in place. Either way it follows the BRAND.md format: `references/kit.md` → *BRAND.md* says what goes in each section, how to write claims and rules, and the length. Write `licenseVerified: true` and `status: approved` only for what the user confirmed in the session.
+3. **`DESIGN.md`.** `cp assets/DESIGN.example.md brand/DESIGN.md` and rewrite its body: the interface rules, component recipes and checklist for this system (`references/kit.md` → *DESIGN.md*). Its front matter is generated.
+4. `python3 assets/sync.py brand/`: writes `brand/theme.css`, the synced blocks of `BRAND.md` and the front matter of `DESIGN.md`. Read every note it prints: a block it could not write is a block you still owe. Then lint both files (`references/kit.md` → *Lint it*) and fix what they report.
+5. `cp -R assets/site brand/site`, `npm install`, then write every page in the brand's own voice (`references/site.md` → *Making a brand's site*). The example is Perch, a fictional hotel-operations company: keep the structure, replace every sentence.
+6. **Imagery.** Write a concrete `prompt` on each photography (and illustration) sample in the tokens, show the cost, and on a yes run `python3 assets/imagery.py brand brand/`. Look at every image before it ships; regenerate the ones that fail the any-company test. Mark the photography page `assumed` until a real shoot replaces them. If the user declines, the pages show labelled placeholders: that is fine. Add the images you keep to `BRAND.md` → Imagery as `visuals`, each with a verdict and a caption.
+7. `npm run dev` in `brand/site`, open it in the browser pane, and check every page at desktop and phone width, light and dark. Fix what you see before the user sees it.
+8. Create `brand/CHANGELOG.md` with the v1.0.0 entry, and append `assets/claude-md-block.md` to the project's `CLAUDE.md` (with the path of `BRAND.md` if it lives at the root).
 
 Show the user the site. Then tell them plainly what it is and is not. Offer a Vercel **preview** deploy as a next step; do not deploy by reflex (`references/site.md`).
 
@@ -128,7 +134,7 @@ So every kit carries three things, on the home page, not buried:
 - **"This breaks if…"** — three named conditions that would invalidate it, plus an expiry: the next funding round, the first marketing hire, or 3× revenue.
 - **Three validation tasks** they can do in an afternoon.
 
-**Never invent a reason to believe.** If there is no structural proof for the difference, write "no structural reason to believe yet" and give them the three ways to find one. A confident fabricated RTB is the worst thing this skill can produce.
+**Never invent a reason to believe.** If there is no structural proof for the difference, write "no structural reason to believe yet" and give them the three ways to find one. A confident fabricated RTB is the worst thing this skill can produce. The same goes for `BRAND.md` → Claims: a claim you drafted is `review`, never `approved`, and one with no evidence is not written as if it had some.
 
 ## Showing things
 
@@ -148,7 +154,7 @@ It shows **state**, never a choice. A duel is still two real screenshots in the 
 
 ## Language
 
-Follow the user's language in conversation and on the brand site (`meta.site_locale`, page prose in their language, translated token prose in `site/locale.json` — `references/site.md`). Write `BRAND.md` and `tokens.json` in **English** whatever the conversation language, unless the user asks otherwise: they are read by agents and by people who may not share the team's language. If the user wants them in another language, follow them and say so in the maintenance page so later updates stay consistent.
+Follow the user's language in conversation and on the brand site (`meta.site_locale`, page prose in their language, translated token prose in `site/locale.json`, `references/site.md`). Write `BRAND.md`, `DESIGN.md` and `tokens.json` in **English** whatever the conversation language, unless the user asks otherwise: they are read by agents and by people who may not share the team's language. If the user wants them in another language, follow them and say so in the maintenance page so later updates stay consistent. Either way, set `language` in the `BRAND.md` front matter to the brand's primary language (`en-GB`, `fr-FR`): it is the language the brand publishes in, which is not always the language of the file. An existing `BRAND.md` keeps its language.
 
 ## Files in this skill
 
@@ -165,13 +171,15 @@ Follow the user's language in conversation and on the brand site (`meta.site_loc
 - `references/iconography.md` — the seven icon languages, the spec in numbers, the metaphor map, and how a chosen set reaches the site
 - `references/art-direction.md` — the concept, principles, formula and hierarchy, and where each comes from in the session
 - `references/taste.md` — the gate. Counts, measurements, and the five renders
-- `references/kit.md` — the artefact set, the token schema, and what makes a `BRAND.md` that agents actually follow
+- `references/kit.md`: the artefact set, the token schema, the BRAND.md and DESIGN.md formats as the kit writes them, and linting
 - `references/kit-pages.md` — each page of the site: purpose, what belongs, what does not, and the page template
 - `references/site.md` — the site's mechanics: copying it, the components, running, building, deploying
 - `assets/site/` — the brand site to copy (Next.js, static export), filled with a worked example at the expected depth
 - `assets/tokens.example.json` — the token schema, fully populated
 - `assets/example-assets/` — the worked example's photography, so the example site runs complete
-- `assets/BRAND.example.md` — the agent instruction file, at the quality bar
+- `assets/BRAND.example.md`: the brand in the BRAND.md format, at the quality bar, synced from `tokens.example.json`
+- `assets/DESIGN.example.md`: the interface system in the DESIGN.md format, at the quality bar
+- `assets/example-assets/logo/`: the worked example's logo files, one per variation and colourway
 - `assets/duel.html` — the tournament board: two real screenshots side by side, a site name under each, and nothing else
 - `assets/type-systems.html` — the same words set in thirty free type systems, each shown as a headline and as a 13px product row, for choosing type
 - `assets/illustration-styles.html` — the same scene drawn seven ways plus an eighth card for none, for choosing an illustration language
@@ -181,4 +189,4 @@ Follow the user's language in conversation and on the brand site (`meta.site_loc
 - `assets/motion-styles.html` — the same card arriving six ways, for choosing a motion temperament
 - `assets/imagery.py` — regenerates the photography board on a brand's scene, and generates the brand's own photography and illustration samples from the prompts in `tokens.json`
 - `assets/claude-md-block.md` — the block to append to a project's `CLAUDE.md`
-- `assets/sync.py` — writes `theme.css` and the `BRAND.md` core block from `tokens.json`
+- `assets/sync.py`: writes `theme.css`, the synced blocks of `BRAND.md` and the front matter of `DESIGN.md` from `tokens.json`; `--check` reports drift

@@ -54,8 +54,6 @@ Read it back in Act 3 alongside the rendered artefact, in plain words: *"Everyth
 }
 ```
 
-`BRAND.md`, one rule that makes the hierarchy usable by an agent:
-
-> **26.** When two visual elements compete for the same job, follow `art_direction.hierarchy`: type and the ledger rule first, then photography, then charts. Brief every image and layout against the concept: *the house at work*.
+`BRAND.md`, at the top of Imagery, one sentence that makes the hierarchy usable by an agent: *"When two elements compete for the same job, type and the ledger rule win, then photography, then charts. Brief every image and layout against one concept: the house at work."* The organising principle and the weird detail go in Overview, each with a `rules` entry so they are never tidied away.
 
 On the site, the Art direction page shows the concept huge, the principles numbered, the formula as a recipe, the imagery in practice, the hierarchy table, and the rules last. No do/don't row here — misuse lives on the pages of the ingredient that was misused.
