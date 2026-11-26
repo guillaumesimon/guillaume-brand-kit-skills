@@ -91,14 +91,17 @@ Chaque marque est codée sur une grille à vocabulaire fermé, livrée avec la s
 
 | Dimension | Exemples de valeurs |
 |---|---|
-| Type de logo | wordmark, monogramme, symbole et texte, emblème |
-| Famille de symbole | cœur, croix, feuille, abstrait géométrique, lettre, aucun |
+| Type de logo | wordmark, monogramme ou lettermark, pictorial mark, abstract mark, combination mark, emblème, mascotte |
+| Nature du symbole (combination mark seulement) | lettermark, pictorial, abstract, mascotte |
+| Sujet du symbole | cœur, croix, feuille, forme géométrique, lettre, aucun |
 | Casse et dessin du nom | bas de casse, capitales, géométrique, humaniste, serif |
 | Couleur | famille de teinte dominante, saturation, nombre de teintes, fond clair ou sombre |
 | Typographie | classe du titre, classe du texte, contraste de graisse |
 | Imagerie | portrait souriant, interface produit, 3D, illustration plate, aucune |
 | Mise en page | héros centré, scindé, dense, aéré |
 | Promesse du titre | bénéfice, mécanisme, manifeste, preuve chiffrée |
+
+Le type de logo suit les sept catégories usuelles, une seule valeur par marque, codée sur le logo principal (celui de l'en-tête du site). Comme la plupart des marques ont un symbole accompagné du nom, "combination mark" seul écraserait la statistique : un second champ précise donc la nature de son symbole. Si une marque emploie aussi son symbole seul (icône d'application, favicon), c'est noté à part dans `symbol_used_alone`.
 
 Les valeurs mesurées à l'étape 3 pré-remplissent la grille. Le sous-agent regarde les captures, complète les champs d'observation et peut ajouter une valeur `autre: …` quand la grille ne suffit pas. Les `autre` récurrents sont le signal d'un code propre au secteur, à nommer.
 
