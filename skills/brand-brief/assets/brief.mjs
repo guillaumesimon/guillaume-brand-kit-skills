@@ -8,7 +8,7 @@ import { pathToFileURL } from 'node:url';
 import { readBrief, provenance } from './lib/schema.mjs';
 
 const LEVEL = { must: 'Must', preference: 'Preference', explore: 'To explore', never: 'Never' };
-const CIRCLE = { direct: 'direct competitor', adjacent: 'adjacent category', analogous: 'analogous industry', aspirational: 'aspirational' };
+const CIRCLE = { buyer_world: 'the buyers\' own world', direct: 'direct alternatives', adjacent: 'adjacent tools and services', analogous: 'the same problem solved elsewhere' };
 const tag = (f) => (f?.source ? ` _(${f.source}${f.evidence?.length ? `: ${f.evidence.join(', ')}` : ''})_` : '');
 const field = (label, f) => (f?.value ? [`- **${label}.** ${f.value}${tag(f)}${f.quote ? ` "${f.quote}"` : ''}`] : []);
 const list = (xs) => (xs || []).join('; ');
@@ -55,13 +55,23 @@ export function renderBrief(b) {
 
   L.push('## 7. Personality', '');
   for (const t of per.traits || []) L.push(`- **${t.trait}.** ${t.more_than}; ${t.never}. Sounds like: "${t.sounds_like}"${tag(t)}`);
-  if ((per.dimensions || []).length) {
-    L.push('', '| Dimension | Orientation | Importance | Confidence | Boundary |', '|---|---|---|---|---|');
-    for (const d of per.dimensions) L.push(`| ${d.poles ? d.poles.join(' / ') : d.id} | ${d.orientation || ''} | ${d.importance || ''} | ${d.confidence || 'unknown'}${d.validation === 'validated' ? ', validated' : ''} | ${d.boundary || ''} |`);
-    const contra = per.dimensions.filter((d) => d.contradictions);
-    if (contra.length) L.push('', ...contra.map((d) => `- Unresolved on ${d.id}: ${d.contradictions}`));
-    L.push('', 'Confidence is a judgement on the evidence in `brief.json`, not a measurement. Design against `high`; hold `low` and `unknown` as open.');
+  const nm = (id) => refs.find((r) => r.id === id)?.name || id;
+  const dims = (per.dimensions || []).filter((d) => d.camp !== 'skipped');
+  if (dims.length) {
+    L.push('', 'Each subject below was judged on real material from brands of this product\'s world, one subject at a time, and the founder confirmed each reading. A brand named here is a marker on a scale, never a model to copy.', '');
+    for (const d of dims) {
+      const [l, r] = d.poles || ['', ''];
+      L.push(`### ${d.name || d.id} (${l} / ${r})`, '', ...[
+        d.orientation ? `- **Orientation.** ${d.orientation}` : '', d.boundary ? `- **Boundary.** ${d.boundary}` : '',
+        (d.fits || []).length ? `- Fits: ${d.fits.map(nm).join(', ')}` : '- None of the brands shown fits.',
+        (d.too_left || []).length ? `- Too ${l.toLowerCase()}: ${d.too_left.map(nm).join(', ')}` : '', (d.too_right || []).length ? `- Too ${r.toLowerCase()}: ${d.too_right.map(nm).join(', ')}` : '',
+        d.contradictions ? `- Unresolved: ${d.contradictions}` : '',
+        `- Importance ${d.importance || 'medium'}, confidence ${d.confidence || 'unknown'}${d.kind ? `; judged on ${{ quote: 'their words', image: 'their visuals', logo: 'their logos', palette: 'their measured colours' }[d.kind]}` : ''} _(${(d.evidence || []).map((e) => e.interaction).join(', ')})_`].filter(Boolean), '');
+    }
+    L.push('Confidence is a judgement on the evidence in `brief.json`, not a measurement. Design against `high` and `medium`; hold `low` and `unknown` as open.');
   }
+  const skipped = (per.dimensions || []).filter((d) => d.camp === 'skipped');
+  if (skipped.length) L.push('', `Does not matter to the founder: ${skipped.map((d) => d.name || d.id).join(', ')}. Yours to decide.`);
   L.push('');
 
   if ((b.tensions || []).length) {
@@ -77,16 +87,12 @@ export function renderBrief(b) {
   }
   for (const x of pref.founder_vs_audience || []) L.push(`**Founder's taste against the audience's need.** ${x.wish} Risk: ${x.risk} Arbitration: ${x.arbitration}`, '');
 
-  const shown = (v) => refs.filter((r) => r.verdict === v);
-  L.push('## 10. References', '', 'Real brands the founder reacted to. What was liked or refused in each matters more than the brand: liking a reference is not a wish to look like it.', '');
-  for (const [v, title] of [['for_us', 'Speaks to them'], ['liked_not_for_us', 'Liked, but not for this brand (the ceiling of their taste, not the brief)'], ['never', 'Anti-references']]) {
-    if (!shown(v).length) continue;
-    L.push(`### ${title}`, '');
-    for (const r of shown(v)) L.push(`- **${r.name}** (${CIRCLE[r.circle] || r.circle}${r.founder_cited ? ', cited by the founder' : ''}${r.kind ? `, ${r.kind}` : ''}).${r.liked_attributes?.length ? ` Keeps: ${list(r.liked_attributes)}.` : ''}${r.rejected_attributes?.length ? ` Rejects: ${list(r.rejected_attributes)}.` : ''}${r.asset ? ` \`${r.asset}\`` : ''}`);
-    L.push('');
+  L.push('## 10. References', '', 'The brands the subjects were judged against, chosen from this product\'s world. Section 7 says where the brand sits relative to each.', '');
+  for (const c of Object.keys(CIRCLE)) {
+    const xs = refs.filter((r) => r.circle === c); if (!xs.length) continue;
+    L.push(`- **${CIRCLE[c][0].toUpperCase()}${CIRCLE[c].slice(1)}:** ${xs.map((r) => `${r.name}${r.founder_cited ? ' (cited by the founder)' : ''}${r.capture && r.capture.status !== 'ok' ? ` (not shown, ${r.capture.status})` : ''}`).join(', ')}`);
   }
-  const unseen = refs.filter((r) => !['for_us', 'liked_not_for_us', 'never'].includes(r.verdict));
-  if (unseen.length) L.push(`No verdict: ${unseen.map((r) => `${r.name} (${r.capture && r.capture.status !== 'ok' ? `not shown, ${r.capture.status}` : r.verdict || 'not shown'})`).join(', ')}.`, '');
+  L.push('');
 
   if ((b.principles || []).length) L.push('## 11. Creative principles', '', ...b.principles.map((x, i) => `${i + 1}. **${x.principle}** ${x.because}${x.evidence?.length ? ` _(${x.evidence.join(', ')})_` : ''}`), '');
 
@@ -94,8 +100,8 @@ export function renderBrief(b) {
   for (const x of b.constraints?.items || []) L.push(`- ${x.constraint} _(${x.kind}, ${x.source})_`);
   if (b.constraints?.timeline) L.push(`- Timeline: ${b.constraints.timeline}`);
   if ((b.logo_contexts || []).length) {
-    L.push('', '| Where the logo must live | Priority | Note |', '|---|---|---|');
-    for (const x of b.logo_contexts) L.push(`| ${x.context} | ${x.priority} | ${x.note || ''} |`);
+    L.push('', 'Where the logo will have to live. Derived from the product, not asked: check anything marked inferred or assumed.', '', '| Context | Priority | Source | Note |', '|---|---|---|---|');
+    for (const x of b.logo_contexts) L.push(`| ${x.context} | ${x.priority || ''} | ${x.source || ''} | ${x.note || ''} |`);
   }
   L.push('');
 

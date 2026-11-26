@@ -4,12 +4,13 @@ import { join } from 'node:path';
 
 /** Where a statement comes from. `assumed` is the only one that must reappear in open_questions. */
 export const SOURCES = ['documented', 'stated', 'chosen', 'inferred', 'assumed'];
-export const CIRCLES = ['direct', 'adjacent', 'analogous', 'aspirational'];
-export const VERDICTS = ['for_us', 'liked_not_for_us', 'never', 'unknown', 'skipped'];
+/** Where a reference sits relative to the product. `buyer_world` is what the buyers look at every day. */
+export const CIRCLES = ['buyer_world', 'direct', 'adjacent', 'analogous'];
+/** What a subject shows, so that the thing judged is the thing asked about. */
+export const KINDS = ['quote', 'image', 'logo', 'palette'];
 export const CONFIDENCE = ['unknown', 'low', 'medium', 'high'];
 export const IMPORTANCE = ['low', 'medium', 'high'];
 export const LEVELS = ['must', 'preference', 'explore', 'never'];
-export const LOGO_PRIORITY = ['critical', 'expected', 'later'];
 export const STATUS = ['draft', 'provisional', 'validated'];
 export const CAPTURE = ['ok', 'blocked', 'failed', 'rejected'];
 
@@ -22,15 +23,15 @@ export const GENERIC = [
   'professionnel', 'humain', 'bienveillance', 'bienveillant',
 ];
 
-/** The nine subjects a brief must cover, with the path that holds each. */
+/** The subjects a brief must cover, with the key that holds each. */
 export const SECTIONS = [
   ['context', 'Business context'], ['audiences', 'Audiences'], ['positioning', 'Positioning'], ['ambition', 'Ambition'],
   ['values', 'Values'], ['personality', 'Personality'], ['perception', 'Desired perception'],
-  ['references', 'References and taste'], ['constraints', 'Constraints and logo contexts'],
+  ['references', 'References'], ['constraints', 'Constraints and logo contexts'],
 ];
 
-const SWIPE = { y: 'for_us', l: 'liked_not_for_us', x: 'never', u: 'unknown', _: 'skipped' };
-const DUEL = { a: 'a', b: 'b', 2: 'both', n: 'neither', u: 'unknown', _: 'skipped' };
+const CAMP = { a: 'left', b: 'right', m: 'between', x: 'skipped', _: 'unanswered' };
+const JUDGE = { l: 'too_left', o: 'fits', r: 'too_right', u: 'unknown', _: 'unanswered' };
 
 export const briefPath = (dir) => join(dir, 'brief.json');
 export const readBrief = (dir) => JSON.parse(readFileSync(briefPath(dir), 'utf8'));
@@ -38,100 +39,117 @@ export const writeBrief = (dir, brief) => writeFileSync(briefPath(dir), JSON.str
 export const roundPath = (dir, id, ext = 'json') => join(dir, 'rounds', `${id}.${ext}`);
 
 /**
- * Load a round and resolve each `ref` against the brief's references, so a round names a
- * reference once and the image and the name come from its card.
- * @returns {{id:string, locale:string, steps:object[]}}
+ * Load a round and resolve each specimen against the brief's references: the name comes from the
+ * reference card, the image from its main capture or from the material the specimen names.
+ * A subject is refused when what it shows cannot be shown.
  */
 export function loadRound(dir, id, brief = readBrief(dir)) {
   const round = JSON.parse(readFileSync(roundPath(dir, id), 'utf8'));
   const refs = new Map((brief.references || []).map((r) => [r.id, r]));
-  const fill = (it) => {
-    const r = refs.get(it.ref);
-    if (!r && !(it.src && it.name)) throw new Error(`round ${id}: "${it.ref}" is not in brief.json references and carries no src and name`);
-    return { ...it, name: it.name || r.name, src: it.src || r.asset };
-  };
   if (round.id !== id) throw new Error(`round file ${id}.json declares id "${round.id}"`);
-  if (!Array.isArray(round.steps) || !round.steps.length) throw new Error(`round ${id}: no steps`);
-  for (const s of round.steps) {
-    if (s.type === 'swipe') s.items = (s.items || []).map(fill);
-    else if (s.type === 'duel') s.pairs = (s.pairs || []).map((p) => ({ ...p, a: fill(p.a), b: fill(p.b) }));
-    else throw new Error(`round ${id}: unknown step type "${s.type}" (swipe or duel)`);
-    for (const it of s.type === 'swipe' ? s.items : s.pairs.flatMap((p) => [p.a, p.b])) {
-      if (!it.src) throw new Error(`round ${id}: "${it.ref}" has no image. Run fetch.mjs, or take it out of the round.`);
-    }
+  if (!Array.isArray(round.subjects) || !round.subjects.length) throw new Error(`round ${id}: no subjects`);
+  const seen = new Set();
+  for (const s of round.subjects) {
+    const at = `round ${id}, subject "${s.id}"`;
+    if (!s.id || seen.has(s.id)) throw new Error(`round ${id}: every subject needs its own id`);
+    seen.add(s.id);
+    if (!KINDS.includes(s.kind)) throw new Error(`${at}: kind "${s.kind}" is not one of ${KINDS.join(', ')}`);
+    for (const k of ['name', 'question', 'ask', 'too_left', 'ok', 'too_right']) if (!s[k]) throw new Error(`${at}: "${k}" is missing. The user must always know what they are judging`);
+    if (!s.ask.includes('%s')) throw new Error(`${at}: "ask" must contain %s where the brand's name goes`);
+    for (const side of ['left', 'right']) for (const k of ['label', 'title', 'desc', 'word']) if (!s[side]?.[k]) throw new Error(`${at}: ${side}.${k} is missing`);
+    if (!Array.isArray(s.specimens) || s.specimens.length < 3 || s.specimens.length > 6) throw new Error(`${at}: 3 to 6 specimens, ordered from the left pole to the right one`);
+    s.specimens = s.specimens.map((sp) => {
+      const r = refs.get(sp.ref);
+      if (!r) throw new Error(`${at}: "${sp.ref}" is not in brief.json references`);
+      const material = sp.material ? r.materials?.[sp.material] : null;
+      if (sp.material && !material) throw new Error(`${at}: reference "${sp.ref}" has no material "${sp.material}"`);
+      const out = { ...sp, name: sp.name || r.name, src: sp.src || (material ? material.asset : r.asset) || null };
+      if (s.kind === 'quote' && !sp.quote) throw new Error(`${at}: "${sp.ref}" has no quote. A subject about words shows words`);
+      if (s.kind === 'quote' && !sp.source_url && !r.url) throw new Error(`${at}: the quote of "${sp.ref}" has no source`);
+      if (s.kind === 'palette' && !((sp.colors || r.palette || []).length >= 2)) throw new Error(`${at}: "${sp.ref}" has no measured palette. Run fetch.mjs, or give "colors" read from the source`);
+      if (s.kind === 'palette') out.colors = sp.colors || r.palette;
+      if ((s.kind === 'image' || s.kind === 'logo') && !out.src) throw new Error(`${at}: "${sp.ref}" has no image. Run fetch.mjs, or take it out`);
+      return out;
+    });
   }
   round.locale = round.locale || brief.meta?.locale || 'fr';
   return round;
 }
 
-/** What the page is allowed to know: images, names, labels. Never the objective or the dimension tested. */
+/** What the page receives: the subjects and their specimens, nothing about the brief. */
 export function pageRound(round) {
-  const item = ({ src, name, attributes }) => ({ src, name, ...(attributes?.length ? { attributes } : {}) });
   return {
     id: round.id, locale: round.locale,
-    steps: round.steps.map((s) => s.type === 'swipe'
-      ? { type: 'swipe', title: s.title, sub: s.sub, items: s.items.map(item) }
-      : { type: 'duel', title: s.title, sub: s.sub, known: !!s.known, pairs: s.pairs.map((p) => ({ a: item(p.a), b: item(p.b), ...(p.attributes?.length ? { attributes: p.attributes } : {}) })) }),
+    subjects: round.subjects.map((s) => ({
+      id: s.id, name: s.name, question: s.question, ask: s.ask, kind: s.kind,
+      left: s.left, right: s.right, too_left: s.too_left, ok: s.ok, too_right: s.too_right,
+      specimens: s.specimens.map(({ name, src, quote, colors, crop, look }) => ({ name, src, quote, colors, crop, look })),
+    })),
   };
-}
-
-/** One entry per screen, in the order the board shows them. */
-export function screensOf(round) {
-  return round.steps.flatMap((s) => s.type === 'swipe'
-    ? s.items.map((item) => ({ kind: 'swipe', step: s, item }))
-    : s.pairs.map((pair) => ({ kind: 'duel', step: s, pair })));
 }
 
 /**
  * Turn the code a board returns into votes.
- * @param {string} code `bb1.<round>.<tokens>.<note>`, a token being an answer letter then attribute indexes in base 36
+ * @param {string} code `bb2.<round>.<one token per subject>.<note>`; a token is the camp letter, then one letter per specimen
  */
 export function decode(round, code) {
-  const m = String(code).trim().match(/bb1\.([^.\s]+)\.([^.\s]*)\.([A-Za-z0-9_-]*)/);
-  if (!m) throw new Error('not a board code (expected bb1.<round>.<answers>.<note>)');
+  const m = String(code).trim().match(/bb2\.([^.\s]+)\.([^.\s]*)\.([A-Za-z0-9_-]*)/);
+  if (!m) throw new Error('not a board code (expected bb2.<round>.<answers>.<note>)');
   if (m[1] !== round.id) throw new Error(`this code is for round "${m[1]}", not "${round.id}"`);
-  const screens = screensOf(round), toks = m[2].split(',');
-  if (toks.length !== screens.length) throw new Error(`the code holds ${toks.length} answers and the round has ${screens.length} screens`);
-  const answers = screens.map((sc, i) => {
-    const c = toks[i][0], idx = [...toks[i].slice(1)].map((ch) => parseInt(ch, 36));
-    const base = { objective: sc.step.objective || '', targets: sc.step.targets || [] };
-    if (sc.kind === 'swipe') {
-      if (!SWIPE[c]) throw new Error(`answer ${i + 1}: "${c}" is not a swipe answer`);
-      return { kind: 'swipe', ...base, ref: sc.item.ref, name: sc.item.name, verdict: SWIPE[c], attributes: idx.map((k) => (sc.item.attributes || [])[k]).filter(Boolean) };
-    }
-    if (!DUEL[c]) throw new Error(`answer ${i + 1}: "${c}" is not a duel answer`);
-    const p = sc.pair, choice = DUEL[c];
-    const picked = choice === 'a' ? [p.a.ref] : choice === 'b' ? [p.b.ref] : choice === 'both' ? [p.a.ref, p.b.ref] : [];
-    const labels = choice === 'a' || choice === 'b' ? (p[choice].attributes || p.attributes || []) : [];
-    return { kind: 'duel', ...base, a: p.a.ref, b: p.b.ref, names: [p.a.name, p.b.name], choice, picked, attributes: idx.map((k) => labels[k]).filter(Boolean) };
+  const toks = m[2].split(',');
+  if (toks.length !== round.subjects.length) throw new Error(`the code holds ${toks.length} subjects and the round has ${round.subjects.length}`);
+  const subjects = round.subjects.map((s, i) => {
+    const t = toks[i], camp = CAMP[t[0]];
+    if (!camp) throw new Error(`subject "${s.id}": "${t[0]}" is not a camp answer`);
+    const letters = [...t.slice(1)];
+    if (camp !== 'skipped' && letters.length !== s.specimens.length) throw new Error(`subject "${s.id}": ${letters.length} answers for ${s.specimens.length} specimens`);
+    const answers = camp === 'skipped' ? [] : s.specimens.map((sp, k) => {
+      if (!JUDGE[letters[k]]) throw new Error(`subject "${s.id}": "${letters[k]}" is not an answer`);
+      return { ref: sp.ref, name: sp.name, answer: JUDGE[letters[k]] };
+    });
+    const pick = (a) => answers.filter((x) => x.answer === a).map((x) => x.ref);
+    return { id: s.id, name: s.name, kind: s.kind, poles: [s.left.label, s.right.label], camp, answers, fits: pick('fits'), too_left: pick('too_left'), too_right: pick('too_right'), unknown: pick('unknown') };
   });
-  return { round: round.id, at: new Date().toISOString(), answers, note: m[3] ? Buffer.from(m[3], 'base64url').toString('utf8') : '' };
+  return { round: round.id, at: new Date().toISOString(), subjects, note: m[3] ? Buffer.from(m[3], 'base64url').toString('utf8') : '' };
 }
 
-const add = (list, values) => [...new Set([...(list || []), ...values])];
+/** One line a person can read: where the brand sits on a subject, in the names of the brands judged. */
+export function reading(subject, names = (id) => id) {
+  const list = (ids) => ids.map(names).join(', ');
+  if (subject.camp === 'skipped') return 'does not matter to them';
+  const parts = [];
+  if (subject.fits.length) parts.push(`fits: ${list(subject.fits)}`);
+  if (subject.too_left.length) parts.push(`too ${subject.poles[0].toLowerCase()}: ${list(subject.too_left)}`);
+  if (subject.too_right.length) parts.push(`too ${subject.poles[1].toLowerCase()}: ${list(subject.too_right)}`);
+  if (subject.unknown.length) parts.push(`not known: ${list(subject.unknown)}`);
+  if (!subject.fits.length) parts.unshift(`none of the brands shown fits (leans ${subject.camp})`);
+  return parts.join('; ');
+}
 
 /**
- * Merge a round's votes into the brief: one interaction per screen, and each reference's verdict
- * and attributes. Recording the same round twice replaces the first recording.
+ * Merge a round's votes into the brief: one interaction per subject, and the subject's dimension.
+ * The user confirmed each reading on the board, so the dimension is validated; what it means for a
+ * designer (orientation, boundary) is still the agent's to write. Recording a round twice replaces it.
  */
 export function record(brief, votes) {
-  const refs = new Map((brief.references || []).map((r) => [r.id, r]));
+  const name = (id) => (brief.references || []).find((r) => r.id === id)?.name || id;
   brief.interactions = (brief.interactions || []).filter((x) => x.round !== votes.round);
-  votes.answers.forEach((a, i) => {
-    const id = `${votes.round}-${String(i + 1).padStart(2, '0')}`;
-    if (a.kind === 'swipe') {
-      const r = refs.get(a.ref);
-      if (r) {
-        r.verdict = a.verdict;
-        if (a.verdict === 'never') r.rejected_attributes = add(r.rejected_attributes, a.attributes);
-        else r.liked_attributes = add(r.liked_attributes, a.attributes);
-      }
-      brief.interactions.push({ id, round: votes.round, type: 'swipe', objective: a.objective, targets: a.targets, refs: [a.ref], answer: a.verdict, attributes: a.attributes, at: votes.at });
-    } else {
-      for (const ref of a.picked) { const r = refs.get(ref); if (r) r.liked_attributes = add(r.liked_attributes, a.attributes); }
-      brief.interactions.push({ id, round: votes.round, type: 'duel', objective: a.objective, targets: a.targets, refs: [a.a, a.b], answer: a.choice, picked: a.picked, attributes: a.attributes, at: votes.at });
-    }
-  });
+  brief.personality = brief.personality || {};
+  const dims = (brief.personality.dimensions = brief.personality.dimensions || []);
+  for (const s of votes.subjects) {
+    const id = `${votes.round}-${s.id}`;
+    brief.interactions.push({ id, round: votes.round, type: 'subject', subject: s.id, question: s.name, camp: s.camp, answers: s.answers.map(({ ref, answer }) => ({ ref, answer })), answer: reading(s, name), at: votes.at });
+    let d = dims.find((x) => x.id === s.id);
+    if (!d) dims.push((d = { id: s.id, importance: 'medium' }));
+    const bounded = s.too_left.length + s.too_right.length > 0;
+    Object.assign(d, {
+      name: s.name, poles: s.poles, kind: s.kind, camp: s.camp, fits: s.fits, too_left: s.too_left, too_right: s.too_right, unknown: s.unknown,
+      confidence: s.camp === 'skipped' ? 'unknown' : s.fits.length && bounded ? 'medium' : 'low',
+      validation: s.camp === 'skipped' ? 'skipped' : 'validated',
+      evidence: [...(d.evidence || []).filter((e) => e.interaction !== id), { interaction: id, signal: reading(s, name), status: 'explicit' }],
+    });
+    if (s.camp === 'skipped') d.importance = 'low';
+  }
   if (votes.note) brief.verbatim = [...(brief.verbatim || []).filter((v) => v.about !== `round ${votes.round}`), { quote: votes.note, about: `round ${votes.round}` }];
   return brief;
 }
@@ -139,18 +157,11 @@ export function record(brief, votes) {
 /** How many statements of the brief come from each source. Interactions and references are not statements. */
 export function provenance(brief) {
   const counts = Object.fromEntries(SOURCES.map((s) => [s, 0]));
-  const walk = (x) => {
-    if (Array.isArray(x)) return x.forEach(walk);
-    if (!x || typeof x !== 'object') return;
-    if (typeof x.source === 'string' && x.source in counts) counts[x.source]++;
-    Object.values(x).forEach(walk);
-  };
-  const { interactions, references, ...rest } = brief;
-  walk(rest);
+  for (const { node } of statements(brief)) if (node.source in counts) counts[node.source]++;
   return counts;
 }
 
-/** Every object of the brief that carries a `source`, with a readable label. */
+/** Every object of the brief that carries a `source`, with a readable path. */
 export function statements(brief) {
   const out = [];
   const walk = (x, path) => {

@@ -2,7 +2,7 @@
 brief: Perch
 date: 2026-11-26
 status: validated
-provenance: 1 documented, 15 stated, 6 chosen, 7 inferred, 1 assumed
+provenance: 1 documented, 16 stated, 6 chosen, 9 inferred, 2 assumed
 data: ./brief.json
 report: ./brief.html   # for people; do not read
 generated: by brief.mjs from brief.json; do not edit by hand
@@ -69,18 +69,38 @@ Each value is given with the time it cost something. A value with no instance is
 
 ## 7. Personality
 
-- **Exact.** more a head housekeeper than a consultant; never fussy or bureaucratic. Sounds like: "Room 12: shower fixed at 10:40." _(inferred: r1-03, r2-02)_
-- **Plain-spoken.** more a note left on the desk than a notification; never chatty. Sounds like: "Three rooms left. Nothing urgent." _(chosen: r1-01, r1-05)_
+- **Exact.** more a head housekeeper than a consultant; never fussy or bureaucratic. Sounds like: "Room 12: shower fixed at 10:40." _(inferred: r1-presence)_
+- **Plain-spoken.** more a note left on the desk than a notification; never chatty. Sounds like: "Three rooms left. Nothing urgent." _(chosen: r1-tone)_
 
-| Dimension | Orientation | Importance | Confidence | Boundary |
-|---|---|---|---|---|
-| serious / playful | serious, with dry warmth | high | high, validated | Warm but never cute: no mascot, no jokes in the interface. |
-| minimal / expressive | restrained, one distinctive element | high | medium | Quiet without being anonymous. |
-| human / technological | human, shown through objects rather than faces | medium | low |  |
+Each subject below was judged on real material from brands of this product's world, one subject at a time, and the founder confirmed each reading. A brand named here is a marker on a scale, never a model to copy.
 
-- Unresolved on incarnation: Rejected every photograph of staff, yet wants to be on their side.
+### Tone (Plain / Playful)
 
-Confidence is a judgement on the evidence in `brief.json`, not a measurement. Design against `high`; hold `low` and `unknown` as open.
+- **Orientation.** Plain and exact, with dry warmth.
+- **Boundary.** Warm but never cute: no mascot, no jokes in the interface.
+- Fits: Muji, Monocle
+- Too plain: Mews
+- Too playful: Mailchimp, Duolingo
+- Importance high, confidence high; judged on their words _(r1-tone, q06)_
+
+### Presence (Quiet / Loud)
+
+- **Orientation.** Quiet, with one distinctive element.
+- **Boundary.** Quiet without being anonymous.
+- Fits: Monocle, Muji
+- Too quiet: Linear
+- Too loud: Stripe
+- Importance high, confidence medium; judged on their visuals _(r1-presence)_
+
+### People in the picture (Objects / Faces)
+
+- **Orientation.** The building and its objects rather than faces.
+- None of the brands shown fits.
+- Too faces: Belmond
+- Unresolved: Refused every portrait of staff, yet wants to be on their side.
+- Importance medium, confidence low; judged on their visuals _(r1-people)_
+
+Confidence is a judgement on the evidence in `brief.json`, not a measurement. Design against `high` and `medium`; hold `low` and `unknown` as open.
 
 ## 8. Creative tensions
 
@@ -93,51 +113,36 @@ Signals from what the founder chose and refused. They are taste, not rules, exce
 
 ### Must
 
-- A wordmark that can be embroidered in one colour. _(stated: q09)_
+- A wordmark that can be embroidered in one colour. _(stated: q06)_
 
 ### Preference
 
-- Print discipline: rules, small labels, real tables. _(chosen: r1-03, r2-02)_
+- Print discipline: rules, small labels, real tables. _(chosen: r1-presence)_
 
 ### To explore
 
-- Photography of the building and its objects rather than of people. _(inferred: r1-07)_
+- Photography of the building and its objects rather than of people. _(inferred: r1-people)_
 
 ### Never
 
-- No mascot and no illustrated characters. _(chosen: r1-04)_
-- No dashboard as the first image of the brand. _(chosen: r1-02, q06)_
+- No mascot and no illustrated characters. _(chosen: r1-tone)_
+- No dashboard as the first image of the brand. _(chosen: r1-presence, q06)_
 
 **Founder's taste against the audience's need.** The founder is drawn to very quiet, print-like references. Risk: Housekeeping staff on a small phone need large, obvious controls; a magazine's restraint can read as hard to use. Arbitration: Quiet on the brand's surfaces, generous and plain in the product. Decided by the founder.
 
 ## 10. References
 
-Real brands the founder reacted to. What was liked or refused in each matters more than the brand: liking a reference is not a wish to look like it.
+The brands the subjects were judged against, chosen from this product's world. Section 7 says where the brand sits relative to each.
 
-### Speaks to them
-
-- **Monocle** (aspirational, cited by the founder, magazine spread). Keeps: it looks printed; the small labels.
-- **Muji** (aspirational, packaging). Keeps: nothing to explain.
-
-### Liked, but not for this brand (the ceiling of their taste, not the brief)
-
-- **Mailchimp** (analogous industry, home page). Keeps: plain words.
-- **Stripe** (analogous industry, home page). Keeps: the precision.
-- **Linear** (analogous industry, home page). Keeps: the feeling of control.
-
-### Anti-references
-
-- **Mews** (direct competitor, cited by the founder, home page). Rejects: looks like every SaaS; the dashboard on the first screen.
-- **Duolingo** (aspirational, home page). Rejects: the mascot; childish for a workplace.
-- **Belmond** (adjacent category, campaign).
-
-No verdict: Cloudbeds (not shown, blocked).
+- **The buyers' own world:** Monocle (cited by the founder), Belmond
+- **Direct alternatives:** Mews (cited by the founder), Cloudbeds (not shown, blocked)
+- **The same problem solved elsewhere:** Mailchimp, Stripe, Linear, Duolingo, Muji
 
 ## 11. Creative principles
 
 1. **If it needs explaining, it is not finished.** No training is a value the founder has paid for. _(q06)_
-2. **Show the building, not the dashboard.** The dashboard is the category's first image and what the staff fear. _(r1-02, q06)_
-3. **Say it the way it would be said at the front desk.** Plain speech was chosen every time it was offered. _(r1-01, r1-05)_
+2. **Show the building, not the dashboard.** The dashboard is the category's first image and what the staff fear. _(r1-presence, q06)_
+3. **Say it the way it would be said at the front desk.** Plain speech was chosen every time it was offered. _(r1-tone)_
 
 ## 12. Constraints and logo contexts
 
@@ -147,13 +152,14 @@ No verdict: Cloudbeds (not shown, blocked).
 - No trademark search has been done on the name in the EU. _(legal, assumed)_
 - Timeline: Identity needed before the spring trade fair, in about ten weeks.
 
-| Where the logo must live | Priority | Note |
-|---|---|---|
-| App icon on a phone home screen | critical | Must read at 16 px beside other work apps. |
-| Embroidery on uniforms, one colour | critical | Two pilot hotels asked for it. |
-| Front-desk screen, top corner | expected |  |
-| Printed door hangers and room cards | expected | One colour on uncoated paper. |
-| Trade-fair stand | later |  |
+Where the logo will have to live. Derived from the product, not asked: check anything marked inferred or assumed.
+
+| Context | Priority | Source | Note |
+|---|---|---|---|
+| App icon on a phone home screen | critical | inferred | The product is a phone app for staff: must read at 16 px beside other work apps. |
+| Front-desk screen, top corner | expected | inferred | The product has a front-desk screen. |
+| Embroidery on uniforms, one colour | expected | stated | Two pilot hotels asked for it. |
+| Printed door hangers and room cards | later | assumed | Common in hotels; not confirmed. |
 
 ## 13. How to judge a concept
 
@@ -167,11 +173,12 @@ No verdict: Cloudbeds (not shown, blocked).
 - **Is the name Perch free to register in the EU?** Assumed, never checked; the plan includes France and Italy. _(for: founder)_
 - **Do owner-managers read a paper-toned brand as a serious tool or as nostalgia?** The founder's taste, untested on buyers. _(for: audit)_
 - **People in the imagery: none, or hands and objects?** Low confidence, one contradictory signal. _(for: kit)_
+- **Will the logo be printed on door hangers and room cards?** Assumed from the sector, not confirmed. _(for: founder)_
 
 ## 15. What this brief is not
 
 - Everything here is the founder's account. No customer was interviewed.
-- The references are a sample of nine, one of which could not be captured. They show taste, not the market.
+- The references are a sample of nine brands from the hotel world and from tools that solved a similar problem, one of which could not be captured. They show taste, not the market.
 - No structural reason to believe was found for the difference.
 
 ## For brand-audit

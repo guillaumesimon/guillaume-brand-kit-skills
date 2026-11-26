@@ -11,32 +11,31 @@ Four Claude Code skills that follow an art director's process: understand the co
 
 `brand-brief` answers one question: what must this brand say, to whom, and what must it never become. It is the conversation an art director has with a founder before any talk of aesthetics, built on one observation: people cannot describe the brand they want, and can say in a second what they like and what they refuse.
 
-1. **Context.** It reads the project first, then asks only what is missing: short questions, mostly closed, whose options are hypotheses written for this project and anchored in brands the founder knows.
-2. **Reference landscape.** Scouts gather about fifteen real brands in four circles (direct competitors, adjacent categories, analogous industries, aspirational brands), plus every brand the founder names. A script fetches one clean image of each: consent banners closed, blocked and broken pages set aside.
-3. **Positioning.** Three or four territories in plain words: the closest, the one that goes, what is kept from a second.
-4. **Visual discovery.** Clickable boards. Swipe a brand (speaks to me; I like it, not for us; not at all; I don't know it), duel two, then tick what you keep or what bothers you. Votes come back to the agent without anything to type.
-5. **Refinement.** Each answer changes the next question: the skill keeps, per dimension, an orientation, a confidence and its evidence, and goes where it matters most and is known least.
-6. **Synthesis.** Read back in plain words, corrected, validated.
+1. **Understand, then ask.** It reads the project and says what it understood, to be corrected. Then two or three short questions about the business, never about design.
+2. **One board, one subject at a time.** Five or six subjects chosen for the project: tone, presence, colour, the place of a technology, the sign. Each one is named, asks a question in plain words, and is judged on its own material: real sentences for tone, colours measured on the sites for colour, logos alone for the sign. Two camps face to face, then a swipe ("too hushed for us · the right tone for us · too bold for us"), then what was understood, to confirm.
+3. **Brands from the product's own world.** What the buyers look at every day and the tools they compare, plus the few brands elsewhere that solved the same problem. A script captures them cleanly (consent banners closed, blocked pages set aside), measures their palette and reads their own sentences.
+4. **Read back and write.** The brief in four sentences, with what was derived and never asked (where the logo will have to live), corrected by the founder.
 
 ```
 brand/brief/
-├── brief.json       the single source: answers, verbatim, provenance, references, votes
+├── brief.json       the single source: answers, verbatim, provenance, references, subjects
 ├── BRIEF.md         the brief for the next agent, generated from brief.json
-├── brief.html       the brief for people, with the three walls of references
-├── rounds/          the visual rounds shown, and their votes
-└── evidence/        one image per reference
+├── brief.html       the brief for people, each subject as the line the founder saw
+├── rounds/          the board that was shown, and its answers
+└── evidence/        the material shown: captures, logos, contact sheets
 ```
 
-Every line of the brief says where it comes from: read in the project, stated, chosen on a board, inferred, or assumed. A gate refuses a brief with a value that has no instance, a wallpaper word in its summary, a conclusion drawn from one signal, or no refusal at all.
+About fifteen minutes. Every line of the brief says where it comes from: read in the project, stated, chosen on the board, inferred, or assumed. A gate refuses a brief with a value that has no instance, a wallpaper word in its summary, or no refusal at all.
 
 What it needs: Node 22 or later, web search, and Playwright with Chromium to capture pages (`node skills/brand-brief/assets/fetch.mjs --check`). No API key. The Mobbin connector is optional. `node --test skills/brand-brief/tests/*.test.mjs` runs its tests.
 
 What to know before using it:
 
 - **It is the founder's account.** No customer is interviewed, and it says so.
-- **The references show taste, not the market.** The market is the audit.
+- **The references place the brand, they do not describe the market.** The market is the audit. A brand on a scale is a marker, never a model.
 - **It fixes no colour, typeface or logo.** It records intentions, taste and refusals for the skills that follow.
-- **The board works two ways.** Served locally, the votes reach the agent on the last click. Sent as one file (a cloud session), it ends on a short code to paste back.
+- **The board works two ways.** Served locally, the answers reach the agent on the last click. Sent as one file (a cloud session), it ends on a short code to paste back.
+- **It was rewritten after its first real run**, where a board of unrelated famous brands with no stated subject lost the user in a minute. `docs/superpowers/specs/2026-11-26-brand-brief-design.md` keeps the history.
 
 ## The audit
 

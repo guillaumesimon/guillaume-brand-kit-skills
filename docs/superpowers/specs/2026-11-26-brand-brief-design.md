@@ -199,3 +199,26 @@ Deux demandes directes : du swipe « à la Tinder » pour trier, et pas de captu
 - Un fichier d'état séparé : `brief.json` reste la source unique, écrite au fil de la session, ce qui donne la reprise.
 
 **Captures.** `fetch.mjs` ferme les bandeaux de consentement, masque ce qui reste collé à l'écran, reconnaît les pages anti-robot et de maintenance et les marque comme telles, puis assemble une planche-contact. L'agent la regarde avant qu'une planche parte, et retire ou remplace toute image où la marque ne se voit pas.
+
+## Seconde révision : après le premier essai réel
+
+Guillaume a joué la skill sur un vrai projet (dogo, un outil de recherche pour cabinets de chasse de dirigeants). Elle a échoué dès la première planche. Ce qui précède dans ce document décrit une version abandonnée ; `skills/brand-brief/SKILL.md` est la référence.
+
+**Ce qui a échoué**
+
+- Une planche de marques sans sujet annoncé (le logo de Free, puis BlaBlaCar, puis le Guide Michelin). La règle « ne jamais dire ce qu'une planche teste » rendait la planche incompréhensible.
+- Des marques célèbres sans rapport avec l'univers du produit, parce que la règle demandait des marques « connues du fondateur » et « hors de sa catégorie ».
+- Des pages d'accueil pour tout juger, y compris un ton de voix.
+- Des questions de designer (où le logo sera utilisé, où il ne doit pas échouer) auxquelles un fondateur n'a pas de réponse.
+- Des libellés qui ne répondaient à aucune question (« C'est ça »).
+
+**Ce qui a été décidé, par prototypes successifs avec Guillaume**
+
+- **Un sujet à la fois, et il est nommé.** Chaque sujet a un nom, une question en mots simples, et trois réponses qui complètent une phrase (« Trop feutré pour nous · Le bon ton pour nous · Trop bravache pour nous »).
+- **Un déroulé par sujet** : deux camps face à face, puis un swipe sur quatre ou cinq marques rangées d'un pôle à l'autre, puis « voilà ce que je comprends » sur une ligne où les marques sont placées, à confirmer.
+- **La matière du sujet.** Le ton se juge sur de vraies phrases, la couleur sur la palette mesurée, le signe sur les logos seuls, la présence sur un visuel.
+- **Des marques de l'univers du produit** : le monde des acheteurs, les alternatives directes, les outils voisins, et les rares marques d'ailleurs qui ont résolu le même problème.
+- **Plus aucune question de designer.** Les usages du logo sont déduits du produit et montrés à la relecture.
+- **Une seule planche**, cinq ou six sujets, trois minutes. L'entretien parlé tombe à trois questions.
+
+Abandonnés : le swipe de marques sans sujet, les duels sans axe, l'extraction d'attributs par pastilles, les territoires comme étape obligatoire, les quatre cercles dont un « aspirationnel ».

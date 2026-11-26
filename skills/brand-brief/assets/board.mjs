@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// A round of visual questions, shown as a clickable board, and its votes brought back.
+// A round of subjects, shown as a clickable board one subject at a time, and its answers brought back.
 //   node board.mjs serve  <brief-dir> <round> [--port n] [--minutes n]   serve it locally; exits when the user clicks Done
 //   node board.mjs build  <brief-dir> <round> [out.html]                 one file, images embedded; ends on a code to paste
 //   node board.mjs decode <brief-dir> <round> "<code>"                   read a pasted code
@@ -8,7 +8,7 @@ import { readFileSync, writeFileSync } from 'node:fs';
 import { createServer } from 'node:http';
 import { dirname, join, extname, resolve, sep } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
-import { readBrief, writeBrief, loadRound, pageRound, roundPath, decode, record } from './lib/schema.mjs';
+import { readBrief, writeBrief, loadRound, pageRound, roundPath, decode, record, reading } from './lib/schema.mjs';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const MIME = { '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.png': 'image/png', '.webp': 'image/webp', '.gif': 'image/gif', '.svg': 'image/svg+xml' };
@@ -21,12 +21,12 @@ export function page(pageData) {
 /** The same page with every image embedded, for where no local server can be reached. */
 export function buildSingle(dir, round) {
   const data = pageRound(round);
-  const embed = (it) => {
-    const type = MIME[extname(it.src).toLowerCase()];
-    if (!type) throw new Error(`${it.src}: not an image type the board can embed`);
-    it.src = `data:${type};base64,${readFileSync(join(dir, it.src)).toString('base64')}`;
-  };
-  for (const s of data.steps) (s.type === 'swipe' ? s.items : s.pairs.flatMap((p) => [p.a, p.b])).forEach(embed);
+  for (const subject of data.subjects) for (const sp of subject.specimens) {
+    if (!sp.src) continue;
+    const type = MIME[extname(sp.src).toLowerCase()];
+    if (!type) throw new Error(`${sp.src}: not an image type the board can embed`);
+    sp.src = `data:${type};base64,${readFileSync(join(dir, sp.src)).toString('base64')}`;
+  }
   return page(data);
 }
 
@@ -39,16 +39,9 @@ export function save(dir, round, code) {
 }
 
 /** A reading of the votes short enough to act on at once. */
-export function summary(votes) {
-  const by = (v) => votes.answers.filter((a) => a.kind === 'swipe' && a.verdict === v).map((a) => a.name + (a.attributes.length ? ` (${a.attributes.join('; ')})` : ''));
-  const L = [];
-  for (const [v, label] of [['for_us', 'Speaks to them'], ['liked_not_for_us', 'Liked, not for them'], ['never', 'Not at all'], ['unknown', 'Did not know'], ['skipped', 'Skipped']]) {
-    if (by(v).length) L.push(`${label}: ${by(v).join(', ')}`);
-  }
-  for (const a of votes.answers.filter((x) => x.kind === 'duel')) {
-    const res = a.choice === 'a' ? a.names[0] : a.choice === 'b' ? a.names[1] : a.choice;
-    L.push(`${a.names[0]} / ${a.names[1]}: ${res}${a.attributes.length ? ` (${a.attributes.join('; ')})` : ''}`);
-  }
+export function summary(votes, brief) {
+  const name = (id) => (brief?.references || []).find((r) => r.id === id)?.name || id;
+  const L = votes.subjects.map((s) => `${s.name} (${s.poles.join(' / ')}): ${reading(s, name)}`);
   if (votes.note) L.push(`Note: "${votes.note}"`);
   return L.join('\n');
 }
@@ -95,7 +88,7 @@ if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) 
       console.log(`Wrote ${out}. Send it to the user; it ends on a code to paste back, then: board.mjs decode ${dir} ${id} "<code>"`);
     } else {
       const votes = cmd === 'decode' ? save(dir, round, rest[0] || '') : await serve(dir, round, { port: flag('port') || 0, minutes: flag('minutes') || 30 });
-      console.log(`Votes for round ${id}, recorded in brief.json:\n${summary(votes)}`);
+      console.log(`Answers for round ${id}, recorded in brief.json:\n${summary(votes, readBrief(dir))}`);
     }
   } catch (e) { console.error(e.message); process.exit(1); }
 }

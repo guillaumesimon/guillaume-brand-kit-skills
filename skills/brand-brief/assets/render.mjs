@@ -16,10 +16,10 @@ const T = {
     chosen: 'Retenu', kept: 'On en garde', rejected: 'Écarté', open: 'Non tranché', horizon: 'Horizon', scale: 'Échelle', carry: 'La marque doit pouvoir porter',
     think: 'On doit penser', feel: 'On doit ressentir', never: 'Jamais', sounds: 'Ça donne', dim: 'Dimension', orient: 'Orientation', conf: 'Confiance', bound: 'Limite',
     c: { unknown: 'inconnue', low: 'faible', medium: 'moyenne', high: 'forte' }, validated: 'validé', crossed: 'La limite est franchie quand',
-    walls: { for_us: 'Ça leur parle', liked_not_for_us: 'Aimé, mais pas pour cette marque', never: 'Jamais' }, keeps: 'Garde', rejects: 'Rejette', cited: 'cité par le fondateur',
-    circle: { direct: 'concurrent direct', adjacent: 'catégorie voisine', analogous: 'industrie analogue', aspirational: 'aspirationnelle' }, noverdict: 'Sans avis', notshown: 'non montrée',
+    fits: 'Au bon endroit', none: 'Aucune des marques montrées n\u2019est au bon endroit.', too: 'Trop', skipped: 'Ne compte pas pour le fondateur', judged: { quote: 'jugé sur leurs phrases', image: 'jugé sur leurs visuels', logo: 'jugé sur leurs logos', palette: 'jugé sur leurs couleurs mesurées' }, cited: 'cité par le fondateur',
+    circle: { buyer_world: 'Le monde des acheteurs', direct: 'Les alternatives directes', adjacent: 'Les outils voisins', analogous: 'Le même problème, ailleurs' }, notshown: 'non montrée',
     level: { must: 'Indispensable', preference: 'Préférence', explore: 'Piste', never: 'Interdit' }, wish: 'Goût du fondateur', risk: 'Risque pour l’audience', arb: 'Arbitrage',
-    where: 'Où le logo doit vivre', prio: 'Priorité', p: { critical: 'critique', expected: 'attendu', later: 'plus tard' }, timeline: 'Calendrier', gate: 'Obligatoire', pref: 'Préférence', forWho: { founder: 'pour le fondateur', audit: 'pour l’audit', kit: 'pour le kit' },
+    where: 'Où le logo devra vivre (déduit du produit, à corriger)', prio: 'Priorité', p: { critical: 'critique', expected: 'attendu', later: 'plus tard' }, timeline: 'Calendrier', gate: 'Obligatoire', pref: 'Préférence', forWho: { founder: 'pour le fondateur', audit: 'pour l’audit', kit: 'pour le kit' },
     unsolved: 'Non résolu' },
   en: { title: 'Brand brief', status: { draft: 'Draft', provisional: 'Provisional, not validated', validated: 'Validated' },
     src: { documented: 'read in the project', stated: 'stated', chosen: 'chosen', inferred: 'inferred', assumed: 'assumed' },
@@ -29,10 +29,10 @@ const T = {
     chosen: 'Chosen', kept: 'Kept from it', rejected: 'Rejected', open: 'Not ruled on', horizon: 'Horizon', scale: 'Scale', carry: 'The brand must be able to carry',
     think: 'People should think', feel: 'People should feel', never: 'Never', sounds: 'Sounds like', dim: 'Dimension', orient: 'Orientation', conf: 'Confidence', bound: 'Boundary',
     c: { unknown: 'unknown', low: 'low', medium: 'medium', high: 'high' }, validated: 'validated', crossed: 'The limit is crossed when',
-    walls: { for_us: 'Speaks to them', liked_not_for_us: 'Liked, but not for this brand', never: 'Never' }, keeps: 'Keeps', rejects: 'Rejects', cited: 'cited by the founder',
-    circle: { direct: 'direct competitor', adjacent: 'adjacent category', analogous: 'analogous industry', aspirational: 'aspirational' }, noverdict: 'No verdict', notshown: 'not shown',
+    fits: 'In the right place', none: 'None of the brands shown is in the right place.', too: 'Too', skipped: 'Does not matter to the founder', judged: { quote: 'judged on their words', image: 'judged on their visuals', logo: 'judged on their logos', palette: 'judged on their measured colours' }, cited: 'cited by the founder',
+    circle: { buyer_world: 'The buyers\u2019 own world', direct: 'Direct alternatives', adjacent: 'Adjacent tools', analogous: 'The same problem, elsewhere' }, notshown: 'not shown',
     level: { must: 'Must', preference: 'Preference', explore: 'To explore', never: 'Never' }, wish: 'Founder’s taste', risk: 'Risk for the audience', arb: 'Arbitration',
-    where: 'Where the logo must live', prio: 'Priority', p: { critical: 'critical', expected: 'expected', later: 'later' }, timeline: 'Timeline', gate: 'Gate', pref: 'Preference', forWho: { founder: 'for the founder', audit: 'for the audit', kit: 'for the kit' },
+    where: 'Where the logo will have to live (derived from the product, to correct)', prio: 'Priority', p: { critical: 'critical', expected: 'expected', later: 'later' }, timeline: 'Timeline', gate: 'Gate', pref: 'Preference', forWho: { founder: 'for the founder', audit: 'for the audit', kit: 'for the kit' },
     unsolved: 'Unresolved' },
 };
 
@@ -68,7 +68,11 @@ table{border-collapse:collapse;width:100%;font-size:14.5px} th,td{text-align:lef
 .wall{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:18px 14px;margin:10px 0 30px}
 .wall figure{margin:0} .wall img,.ph{display:block;width:100%;aspect-ratio:16/10;object-fit:cover;object-position:top;border-radius:8px;outline:1px solid var(--line);background:var(--soft)}
 .ph{display:grid;place-items:center;color:var(--muted);font-size:13px}
-.wall.never img{filter:grayscale(1);opacity:.55}
+.card.subj{margin-bottom:14px;padding:20px 22px}.read{font-size:19px;line-height:1.35;margin:26px 0 8px;font-weight:500}
+.scale{position:relative;margin:34px 8px 10px;height:2px;background:var(--ink)}.zone{position:absolute;top:-9px;height:20px;background:var(--ink);opacity:.12;border-radius:10px}
+.dot{position:absolute;top:-6px;width:14px;height:14px;border-radius:50%;background:var(--bg);border:2px solid var(--ink);transform:translateX(-50%)}.dot.in{background:var(--ink)}.dot.out{border-color:var(--muted)}
+.dot span{position:absolute;top:20px;left:50%;transform:translateX(-50%);white-space:nowrap;font-size:13px}.dot:first-of-type span{left:0;transform:none}.dot:last-of-type span{left:auto;right:0;transform:none}.dot.out span{color:var(--muted);text-decoration:line-through}
+.poles{display:flex;justify-content:space-between;font-size:13px;color:var(--muted);margin-top:44px}
 figcaption{font-size:13.5px;margin-top:7px;line-height:1.45} figcaption b{font-weight:600} figcaption span{color:var(--muted);display:block}
 h3.w{font-size:15px;margin:0}
 .prov{display:flex;gap:20px;flex-wrap:wrap;font-size:14px;margin-top:22px;color:var(--muted)} .prov b{color:var(--ink)}
@@ -89,18 +93,27 @@ export function render(b, { exists = () => true } = {}) {
   const terr = (p.territories || []).map((x) => `<div class="card${x.status === 'chosen' ? ' on' : x.status === 'rejected' ? ' off' : ''}"><span class="lab">${{ chosen: t.chosen, kept_from: t.kept, rejected: t.rejected, open: t.open }[x.status] || ''}</span><h3>${esc(x.name)}</h3><p>${esc(x.description)}</p>${x.keep ? `<p><b>${esc(x.keep)}</b></p>` : ''}${x.reason ? `<p>${esc(x.reason)}</p>` : ''}</div>`).join('');
   const values = (b.values || []).map((v) => `<div><dt><b>${esc(v.value)}</b>${tag(v)}</dt><dd>${esc(v.instance || '')}${v.quote ? `<blockquote>${esc(v.quote)}</blockquote>` : ''}</dd></div>`).join('');
   const traits = (per.traits || []).map((x) => `<div class="card"><h3>${esc(x.trait)}${tag(x)}</h3><p>${esc(x.more_than)}; ${esc(x.never)}.</p><p><span class="lab">${t.sounds}</span><br><q>${esc(x.sounds_like)}</q></p></div>`).join('');
-  const dims = (per.dimensions || []).length ? `<table><tr><th>${t.dim}</th><th>${t.orient}</th><th>${t.conf}</th><th>${t.bound}</th></tr>${per.dimensions.map((d) => `<tr><td>${esc((d.poles || [d.id]).join(' / '))}</td><td>${esc(d.orientation || '')}</td><td>${t.c[d.confidence] || ''}${d.validation === 'validated' ? `, ${t.validated}` : ''}</td><td>${esc(d.boundary || '')}${d.contradictions ? `<br><span class="lab">${t.unsolved}</span> ${esc(d.contradictions)}` : ''}</td></tr>`).join('')}</table>` : '';
+  const nm = (id) => (b.references || []).find((r) => r.id === id)?.name || id;
+  const scale = (d) => {
+    const order = [...(d.too_left || []), ...(d.fits || []), ...(d.too_right || [])];
+    if (order.length < 2) return '';
+    const pos = (i) => (i / (order.length - 1)) * 100, a = (d.too_left || []).length, z = (d.fits || []).length;
+    const zone = z ? `<div class="zone" style="left:calc(${pos(a)}% - 14px);width:calc(${pos(a + z - 1) - pos(a)}% + 28px)"></div>` : '';
+    return `<div class="scale">${zone}${order.map((id, i) => `<div class="dot ${i >= a && i < a + z ? 'in' : 'out'}" style="left:${pos(i)}%"><span>${esc(nm(id))}</span></div>`).join('')}</div><div class="poles"><span>${esc(d.poles?.[0] || '')}</span><span>${esc(d.poles?.[1] || '')}</span></div>`;
+  };
+  const dims = (per.dimensions || []).map((d) => d.camp === 'skipped'
+    ? `<div class="card off"><span class="lab">${esc(d.name || d.id)}</span><p>${t.skipped}</p></div>`
+    : `<div class="card subj"><span class="lab">${esc(d.name || d.id)}${d.kind ? ` · ${t.judged[d.kind]}` : ''} · ${t.conf.toLowerCase()} ${t.c[d.confidence] || ''}</span>${scale(d)}<p class="read">${esc(d.orientation || '')}</p>${d.boundary ? `<p><span class="lab">${t.bound}</span><br>${esc(d.boundary)}</p>` : ''}${!(d.fits || []).length ? `<p>${t.none}</p>` : ''}${d.contradictions ? `<p><span class="lab">${t.unsolved}</span><br>${esc(d.contradictions)}</p>` : ''}</div>`).join('');
   const tensions = (b.tensions || []).map((x) => `<div><dt><b>${esc(x.direction)}</b> <span class="tag">${esc(x.tension)}</span></dt><dd><span class="lab">${t.crossed}</span><br>${esc(x.crossed_when || '')}</dd></div>`).join('');
 
-  const tile = (r) => `<figure>${r.asset && exists(r.asset) ? `<img src="${esc(r.asset)}" alt="${esc(r.name)}">` : `<div class="ph">${esc(r.name)}</div>`}<figcaption><b>${esc(r.name)}</b> <span>${t.circle[r.circle] || ''}${r.founder_cited ? `, ${t.cited}` : ''}</span>${r.liked_attributes?.length ? `${t.keeps} : ${esc(r.liked_attributes.join(' ; '))}<br>` : ''}${r.rejected_attributes?.length ? `${t.rejects} : ${esc(r.rejected_attributes.join(' ; '))}` : ''}</figcaption></figure>`;
+  const tile = (r) => `<figure>${r.asset && exists(r.asset) ? `<img src="${esc(r.asset)}" alt="${esc(r.name)}">` : `<div class="ph">${esc(r.name)}</div>`}<figcaption><b>${esc(r.name)}</b>${r.founder_cited ? ` <span>${t.cited}</span>` : ''}${r.capture && r.capture.status !== 'ok' ? ` <span>${t.notshown}</span>` : ''}<span>${esc(r.why || '')}</span></figcaption></figure>`;
   const refs = b.references || [];
-  const walls = ['for_us', 'liked_not_for_us', 'never'].map((v) => { const xs = refs.filter((r) => r.verdict === v); return xs.length ? `<h3 class="w">${t.walls[v]}</h3><div class="wall ${v}">${xs.map(tile).join('')}</div>` : ''; }).join('');
-  const rest = refs.filter((r) => !['for_us', 'liked_not_for_us', 'never'].includes(r.verdict));
-  const noverdict = rest.length ? `<p><span class="lab">${t.noverdict}</span><br>${rest.map((r) => `${esc(r.name)}${r.capture && r.capture.status !== 'ok' ? ` (${t.notshown})` : ''}`).join(', ')}</p>` : '';
+  const walls = Object.keys(t.circle).map((c) => { const xs = refs.filter((r) => r.circle === c); return xs.length ? `<h3 class="w">${t.circle[c]}</h3><div class="wall">${xs.map(tile).join('')}</div>` : ''; }).join('');
+  const noverdict = '';
 
   const signals = Object.keys(t.level).map((lv) => { const xs = (pref.signals || []).filter((s) => s.level === lv); return xs.length ? `<div><dt class="lab">${t.level[lv]}</dt><dd><ul>${xs.map((s) => `<li>${esc(s.statement)}${tag(s)}</li>`).join('')}</ul></dd></div>` : ''; }).join('');
   const fva = (pref.founder_vs_audience || []).map((x) => `<div class="card"><p><span class="lab">${t.wish}</span><br>${esc(x.wish)}</p><p><span class="lab">${t.risk}</span><br>${esc(x.risk)}</p><p><span class="lab">${t.arb}</span><br><b>${esc(x.arbitration)}</b></p></div>`).join('');
-  const constraints = `${(b.constraints?.items || []).length ? `<ul>${b.constraints.items.map((x) => `<li>${esc(x.constraint)}${tag(x)}</li>`).join('')}</ul>` : ''}${b.constraints?.timeline ? `<p><span class="lab">${t.timeline}</span><br>${esc(b.constraints.timeline)}</p>` : ''}${(b.logo_contexts || []).length ? `<table><tr><th>${t.where}</th><th>${t.prio}</th><th></th></tr>${b.logo_contexts.map((x) => `<tr><td>${esc(x.context)}</td><td>${t.p[x.priority] || ''}</td><td>${esc(x.note || '')}</td></tr>`).join('')}</table>` : ''}`;
+  const constraints = `${(b.constraints?.items || []).length ? `<ul>${b.constraints.items.map((x) => `<li>${esc(x.constraint)}${tag(x)}</li>`).join('')}</ul>` : ''}${b.constraints?.timeline ? `<p><span class="lab">${t.timeline}</span><br>${esc(b.constraints.timeline)}</p>` : ''}${(b.logo_contexts || []).length ? `<table><tr><th>${t.where}</th><th>${t.prio}</th><th></th></tr>${b.logo_contexts.map((x) => `<tr><td>${esc(x.context)}${tag(x)}</td><td>${t.p[x.priority] || ''}</td><td>${esc(x.note || '')}</td></tr>`).join('')}</table>` : ''}`;
 
   const body = [
     sec(0, b.summary?.lead ? `<p class="lead">${esc(b.summary.lead)}</p><ul>${(b.summary.essence || []).map((s) => `<li>${esc(s)}</li>`).join('')}</ul>` : ''),

@@ -4,10 +4,9 @@
 import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { pathToFileURL } from 'node:url';
-import { readBrief, statements, SOURCES, CIRCLES, VERDICTS, CONFIDENCE, IMPORTANCE, LEVELS, LOGO_PRIORITY, STATUS, GENERIC, SECTIONS } from './lib/schema.mjs';
+import { readBrief, statements, SOURCES, CIRCLES, KINDS, CONFIDENCE, IMPORTANCE, LEVELS, STATUS, GENERIC, SECTIONS } from './lib/schema.mjs';
 import { renderBrief } from './brief.mjs';
 
-const JUDGED = ['for_us', 'liked_not_for_us', 'never'];
 const generic = (text) => GENERIC.filter((w) => new RegExp(`(^|[^\\p{L}])${w}([^\\p{L}]|$)`, 'iu').test(text || ''));
 
 const PRESENT = {
@@ -18,7 +17,7 @@ const PRESENT = {
   values: (b) => (b.values || []).length > 0,
   personality: (b) => (b.personality?.traits || []).length + (b.personality?.dimensions || []).length > 0,
   perception: (b) => !!b.perception?.feel?.value,
-  references: (b) => (b.references || []).some((r) => JUDGED.includes(r.verdict)),
+  references: (b) => (b.references || []).length > 0,
   constraints: (b) => (b.logo_contexts || []).length > 0,
 };
 
@@ -48,7 +47,7 @@ export function check(b, { dir } = {}) {
   for (const v of b.values || []) if (!v.instance) err(`value "${v.value}" has no instance: the time it cost something. Without one it is a preference; drop it`);
   for (const t of b.personality?.traits || []) if (!(t.more_than && t.never && t.sounds_like)) err(`trait "${t.trait}" is an adjective. Give it "more_than", "never" and "sounds_like"`);
 
-  const refused = (b.references || []).some((r) => r.verdict === 'never') || (b.preferences?.signals || []).some((s) => s.level === 'never') || (b.positioning?.territories || []).some((t) => t.status === 'rejected');
+  const refused = (b.personality?.dimensions || []).some((d) => (d.too_left || []).length + (d.too_right || []).length > 0) || (b.preferences?.signals || []).some((s) => s.level === 'never') || (b.positioning?.territories || []).some((t) => t.status === 'rejected');
   if (!refused) err('nothing was refused. A session where the founder only said yes is politeness, not a brief: get one real refusal');
 
   // Wallpaper words are only allowed beside the instance that proves them.
@@ -71,27 +70,27 @@ export function check(b, { dir } = {}) {
   for (const r of b.references || []) {
     if (refIds.has(r.id)) err(`reference id "${r.id}" appears twice`); refIds.add(r.id);
     if (!CIRCLES.includes(r.circle)) err(`reference ${r.id}: circle "${r.circle}" is not one of ${CIRCLES.join(', ')}`);
-    if (r.verdict && !VERDICTS.includes(r.verdict)) err(`reference ${r.id}: verdict "${r.verdict}" is not one of ${VERDICTS.join(', ')}`);
     if (!r.url) err(`reference ${r.id}: no source url. A reference nobody can open is an invention`);
     if (!r.why) err(`reference ${r.id}: no "why". Say what makes it relevant to this project`);
-    if (JUDGED.includes(r.verdict) && r.capture && r.capture.status !== 'ok') err(`reference ${r.id}: a verdict on an image that was never shown (capture ${r.capture.status})`);
     if (dir && r.asset && !existsSync(join(dir, r.asset))) err(`reference ${r.id}: ${r.asset} is not on disk`);
   }
-  for (const x of b.interactions || []) for (const ref of x.refs || []) if (!refIds.has(ref)) err(`interaction ${x.id} shows "${ref}", which is not a reference`);
+  for (const x of b.interactions || []) for (const a of x.answers || []) if (!refIds.has(a.ref)) err(`interaction ${x.id} shows "${a.ref}", which is not a reference`);
 
   for (const d of b.personality?.dimensions || []) {
     if (!CONFIDENCE.includes(d.confidence)) err(`dimension ${d.id}: confidence must be one of ${CONFIDENCE.join(', ')}`);
     if (d.importance && !IMPORTANCE.includes(d.importance)) err(`dimension ${d.id}: importance must be one of ${IMPORTANCE.join(', ')}`);
+    if (d.kind && !KINDS.includes(d.kind)) err(`dimension ${d.id}: kind must be one of ${KINDS.join(', ')}`);
+    for (const side of ['fits', 'too_left', 'too_right']) for (const ref of d[side] || []) if (!refIds.has(ref)) err(`dimension ${d.id}: "${ref}" is not a reference`);
+    if (d.camp !== 'skipped' && d.validation === 'validated' && !d.orientation) err(`dimension ${d.id}: the board gave the markers; write "orientation", what it means for a designer in plain words`);
     for (const e of d.evidence || []) if (!ids.has(e.interaction)) err(`dimension ${d.id}: cites "${e.interaction}", which is not an interaction`);
-    if (d.confidence === 'high' && (d.evidence || []).length < 2) err(`dimension ${d.id}: confidence "high" on ${(d.evidence || []).length} piece of evidence. One preference is not a validation; test it a second way or lower it`);
+    if (d.confidence === 'high' && (d.evidence || []).length < 2) err(`dimension ${d.id}: confidence "high" on ${(d.evidence || []).length} piece of evidence. A subject judged once is "medium" at most; it takes a second, different signal`);
     if (d.importance === 'high' && ['unknown', 'low'].includes(d.confidence) && !(b.open_questions || []).length) err(`dimension ${d.id} matters and is not understood, and no open question says so`);
   }
   for (const s of b.preferences?.signals || []) {
     if (!LEVELS.includes(s.level)) err(`signal "${s.statement}": level must be one of ${LEVELS.join(', ')}`);
     for (const e of s.evidence || []) if (isId(e) && !ids.has(e)) err(`signal "${s.statement}": cites "${e}", which is not an interaction`);
   }
-  for (const c of b.logo_contexts || []) if (!LOGO_PRIORITY.includes(c.priority)) err(`logo context "${c.context}": priority must be one of ${LOGO_PRIORITY.join(', ')}`);
-  if ((b.logo_contexts || []).length && !b.logo_contexts.some((c) => c.priority === 'critical')) err('no logo context is critical. Ask which one use, if the logo failed there, would be a real problem');
+  for (const c of b.logo_contexts || []) if (!c.source) err(`logo context "${c.context}": say where it comes from (inferred from the product, stated, or assumed). It is derived, never asked`);
   if (!(b.evaluation || []).some((e) => e.type === 'gate')) err('no evaluation gate: give at least one criterion a concept must pass');
   if (!(b.limits || []).length) err('limits is empty: say what this brief does not cover');
 

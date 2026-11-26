@@ -40,7 +40,7 @@ test('a value without an instance and a trait that is an adjective fail', () => 
 
 test('a session with no refusal fails', () => {
   const b = example();
-  for (const r of b.references) if (r.verdict === 'never') r.verdict = 'for_us';
+  for (const d of b.personality.dimensions) { d.too_left = []; d.too_right = []; }
   b.preferences.signals = b.preferences.signals.filter((s) => s.level !== 'never');
   b.positioning.territories = b.positioning.territories.filter((t) => t.status !== 'rejected');
   fails(b, /nothing was refused/);
@@ -54,36 +54,40 @@ test('wallpaper words are refused where the brand is summed up', () => {
 test('evidence must point at a real interaction, and stated needs one', () => {
   const b = example(); b.context.reason.evidence = ['q99']; fails(b, /cites "q99"/);
   const c = example(); delete c.context.reason.evidence; fails(c, /"stated" needs the interaction/);
-  const d = example(); d.personality.dimensions[0].evidence[0].interaction = 'r9-01'; fails(d, /dimension playfulness: cites "r9-01"/);
+  const d = example(); d.personality.dimensions[0].evidence[0].interaction = 'r9-tone'; fails(d, /dimension tone: cites "r9-tone"/);
 });
 
-test('high confidence on one piece of evidence fails', () => {
-  const b = example(); b.personality.dimensions[0].evidence.pop(); fails(b, /One preference is not a validation/);
+test('a subject judged once is medium at most', () => {
+  const b = example(); b.personality.dimensions[0].evidence.pop(); fails(b, /it takes a second, different signal/);
+});
+
+test('the board gives markers; the agent must still say what they mean', () => {
+  const b = example(); delete b.personality.dimensions[1].orientation; fails(b, /dimension presence: the board gave the markers/);
+  const c = example(); c.personality.dimensions[0].fits = ['nobody']; fails(c, /"nobody" is not a reference/);
 });
 
 test('every assumption is an open question', () => {
   const b = example(); b.open_questions = []; fails(b, /assumed and only 0 open question/);
 });
 
-test('a verdict on an image that was never shown fails', () => {
-  const b = example(); b.references.find((r) => r.id === 'cloudbeds').verdict = 'never'; fails(b, /never shown/);
+test('logo contexts are derived, and say where from', () => {
+  const b = example(); delete b.logo_contexts[0].source; fails(b, /It is derived, never asked/);
 });
 
 test('a reference needs a source and a reason, and closed vocabularies are enforced', () => {
   const b = example(); delete b.references[0].url; fails(b, /no source url/);
   const c = example(); c.references[0].circle = 'famous'; fails(c, /circle "famous"/);
-  const d = example(); d.logo_contexts.forEach((x) => { x.priority = 'later'; }); fails(d, /no logo context is critical/);
 });
 
 test('provenance counts statements, not references or interactions', () => {
   const n = provenance(example());
-  assert.equal(n.assumed, 1);
+  assert.equal(n.assumed, 2);
   assert.ok(n.stated > 10 && n.chosen > 3);
 });
 
-test('the brief for agents carries the hand-offs and the three reference walls', () => {
+test('the brief for agents carries the hand-offs, each subject with its markers, and the references by circle', () => {
   const md = renderBrief(example());
-  for (const h of ['## For brand-audit', '## For brand-kit', '### Anti-references', 'Liked, but not for this brand', '| Where the logo must live |', 'Gate: Reads at 16 px']) assert.ok(md.includes(h), h);
+  for (const h of ['## For brand-audit', '## For brand-kit', '### Tone (Plain / Playful)', '- Too playful: Mailchimp, Duolingo', '- **The buyers\' own world:** Monocle', 'Derived from the product, not asked', 'Gate: Reads at 16 px']) assert.ok(md.includes(h), h);
   assert.ok(!md.includes('undefined'));
 });
 
@@ -97,7 +101,7 @@ test('the report escapes what the founder said and marks assumptions', () => {
 test('the report is in the session language and falls back to a name tile without an image', () => {
   const b = example(); b.meta.locale = 'fr';
   const html = render(b, { exists: () => false });
-  assert.ok(html.includes('Brief de marque') && html.includes('Aimé, mais pas pour cette marque') && html.includes('<div class="ph">Monocle</div>'));
+  assert.ok(html.includes('Brief de marque') && html.includes('Le monde des acheteurs') && html.includes('jugé sur leurs phrases') && html.includes('<div class="ph">Monocle</div>') && html.includes('class="zone"'));
 });
 
 test('inlining embeds local images and leaves the rest alone', () => {

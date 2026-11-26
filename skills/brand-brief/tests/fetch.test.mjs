@@ -13,6 +13,7 @@ let server, base, browser;
 before(async () => {
   server = http.createServer((req, res) => {
     if (req.url === '/big.png') { res.writeHead(200, { 'content-type': 'image/png' }); res.end(Buffer.concat([Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==', 'base64'), Buffer.alloc(9000)])); return; }
+    if (req.url === '/logo.svg') { res.writeHead(200, { 'content-type': 'image/svg+xml' }); res.end('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 40"><rect width="120" height="40" fill="#114433"/><text x="10" y="26" fill="#fff" font-size="16">Maison Verger</text></svg>'); return; }
     if (req.url === '/tiny.png') { res.writeHead(200, { 'content-type': 'image/png' }); res.end(Buffer.alloc(200)); return; }
     if (req.url === '/forbidden') { res.writeHead(403, { 'content-type': 'text/html' }); res.end('<h1>No</h1>'); return; }
     const f = join(fixtures, req.url.slice(1));
@@ -33,6 +34,18 @@ test('a consent banner is closed and a region bar hidden, and the site header st
   assert.ok(got.notes.includes('consent banner closed'));
   assert.ok(got.notes.some((n) => /overlay/.test(n)));
   assert.ok(got.buffer.length > 1000);
+});
+
+test('a capture brings back the measured colours and the sentences set largest', async (t) => {
+  if (noBrowser(t)) return;
+  const got = await capturePage(browser, `${base}/cookie.html`);
+  assert.ok(got.palette.includes('#ffffff') && got.palette.includes('#114433'), `palette: ${got.palette.join(' ')}`);
+  assert.equal(got.copy[0], "Des pommes, et rien d'autre.");
+});
+
+test('a logo may be small or an SVG; a picture may not', async () => {
+  assert.equal((await downloadImage(`${base}/logo.svg`, { logo: true })).status, 'ok');
+  assert.equal((await downloadImage(`${base}/logo.svg`)).status, 'failed');
 });
 
 test('the header of a site is not taken for a notice', async (t) => {
@@ -64,7 +77,7 @@ test('run writes assets, statuses and a contact sheet; reject drops an image wit
   if (noBrowser(t)) return;
   const dir = mkdtempSync(join(tmpdir(), 'bb-f-'));
   writeFileSync(join(dir, 'brief.json'), JSON.stringify({ meta: {}, references: [
-    { id: 'verger', name: 'Maison Verger', url: `${base}/cookie.html` },
+    { id: 'verger', name: 'Maison Verger', url: `${base}/cookie.html`, materials: { logo: { image_url: `${base}/logo.svg` } } },
     { id: 'wall', name: 'Wall', url: `${base}/blocked.html` },
     { id: 'none', name: 'None' },
   ] }));
@@ -74,6 +87,8 @@ test('run writes assets, statuses and a contact sheet; reject drops an image wit
   assert.ok(existsSync(join(dir, 'evidence/verger.webp')) && existsSync(join(dir, 'evidence/sheet-1.webp')));
   let b = JSON.parse(readFileSync(join(dir, 'brief.json'), 'utf8'));
   assert.equal(b.references[1].capture.status, 'blocked');
+  assert.equal(b.references[0].materials.logo.asset, 'evidence/verger-logo.svg');
+  assert.ok(b.references[0].palette.length >= 2 && b.references[0].copy.length >= 1);
   assert.equal(b.references[1].asset, undefined);
   reject(dir, ['verger'], 'the hero is a stock photo');
   b = JSON.parse(readFileSync(join(dir, 'brief.json'), 'utf8'));

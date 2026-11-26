@@ -18,7 +18,7 @@ Every statement of the brief is an object with a `source`:
 
 A plain field is `{ "value": "...", "source": "...", "evidence": ["q03"], "quote": "..." }`. Never let an `assumed` pass for a finding: the report draws it differently and counts it, and `check.mjs` requires an open question for each.
 
-Chat questions are recorded as interactions `q01`, `q02`, … with `type` (`question`, `closed`, `territory`), the `question`, the `options` offered, and the `answer`. Board screens are recorded by `board.mjs` as `r1-01`, `r1-02`, ….
+Chat questions are recorded as interactions `q01`, `q02`, … with `type` (`question`, `closed`), the `question`, the `options` offered, and the `answer`. Each subject of the board is recorded by `board.mjs` as `r1-<subject>`, for example `r1-tone`.
 
 ## The sections
 
@@ -30,7 +30,7 @@ Chat questions are recorded as interactions `q01`, `q02`, … with `type` (`ques
 
 `audiences`: a list; exactly one `primary: true`. Each: `name`, `who`, `need`, `feeling`, `source`, `evidence`, `quote`.
 
-`positioning`: `frame_inherited` (what people compare them with today), `frame_wanted`, `promise`, and `territories`, each with `id`, `name`, `description`, `status` (`chosen`, `kept_from` with `keep`, `rejected` with `reason`, `open`).
+`positioning`: `frame_inherited` (what people compare them with today), `frame_wanted`, `promise`. Optionally `territories`, when the direction itself was put to the user as three or four plain-word options: each with `id`, `name`, `description`, `status` (`chosen`, `kept_from` with `keep`, `rejected` with `reason`, `open`). Do not add that step by default; the board usually settles it.
 
 `ambition`: `horizon`, `scale`, `must_carry` (what the brand has to survive: other languages, a second product, a sale).
 
@@ -38,11 +38,22 @@ Chat questions are recorded as interactions `q01`, `q02`, … with `type` (`ques
 
 `perception`: `think`, `feel`, `never_feel`.
 
-`personality`: `traits`, each operable: `trait`, `more_than` ("more a head housekeeper than a consultant"), `never` ("never fussy"), `sounds_like` (one real sentence). And `dimensions`: see `references/exercises.md`.
+`personality`: `traits`, each operable: `trait`, `more_than` ("more a head housekeeper than a consultant"), `never` ("never fussy"), `sounds_like` (one real sentence). And `dimensions`, one per subject of the board:
+
+```json
+{ "id": "tone", "name": "Le ton", "poles": ["Feutré", "Direct"], "kind": "quote",
+  "camp": "left", "fits": ["russellreynolds", "harvey", "ashby"], "too_left": ["egonzehnder"], "too_right": ["juicebox"], "unknown": [],
+  "orientation": "Direct, without bravado: it states what it does and never promises a victory.",
+  "boundary": "Never an imperative that promises.",
+  "importance": "high", "confidence": "medium", "validation": "validated",
+  "evidence": [ { "interaction": "r1-tone", "signal": "fits: Russell Reynolds, Harvey, Ashby; too feutré: Egon Zehnder; too direct: Juicebox", "status": "explicit" } ] }
+```
+
+`board.mjs` writes everything but `orientation`, `boundary` and `importance`, which are yours (`references/subjects.md` → *Reading the answers*). `confidence` is `unknown`, `low`, `medium` or `high`: a judgement on the evidence, never shown as a number. A subject the user said does not matter has `camp: "skipped"`.
 
 `tensions`: `tension` ("Humour / credibility"), `direction` ("Playful without being childish"), `crossed_when` (the observable sign that the limit is passed), optional `examples`.
 
-`references`: the cards (`references/references.md`), with their verdicts and attributes.
+`references`: the brands the subjects were judged against (`references/subjects.md`): `id`, `name`, `circle`, `url`, `why`, and what `fetch.mjs` added (`asset`, `capture`, `palette`, `copy`, `materials`).
 
 `preferences`: `signals`, each a `statement` with a `level`, `evidence` and `source`; and `founder_vs_audience`, each `wish`, `risk`, `arbitration`, `decided_by`.
 
@@ -57,15 +68,15 @@ Chat questions are recorded as interactions `q01`, `q02`, … with `type` (`ques
 
 `constraints`: `items`, each `constraint`, `kind` (`practical`, `technical`, `legal`, `cultural`, `existing`), `source`; and `timeline`.
 
-`logo_contexts`: each `context`, `priority` (`critical`, `expected`, `later`), `note`. At least one is `critical`.
+`logo_contexts`: where the logo will have to live, **derived from the product and never asked**: each `context`, `priority` (`critical`, `expected`, `later`), `note`, and a `source` (`inferred` from the product, `stated` if the user mentioned it, `assumed` for a guess, which then needs an open question). They are shown in the read-back for correction.
 
-`evaluation`: criteria to judge a future concept, each `criterion` and `type` (`gate` or `preference`). Gates come from constraints, refusals and the critical logo context.
+`evaluation`: criteria to judge a future concept, each `criterion` and `type` (`gate` or `preference`). Gates come from constraints, refusals and the most demanding logo context.
 
 `interactions`, `verbatim`: the record. `verbatim` holds the sentences worth reusing, each with what it is `about`.
 
 `open_questions`: each `question`, `why`, and `for` (`founder`, `audit`, `kit`). Market hypotheses go to the audit; design questions to the kit.
 
-`limits`: what the brief does not cover. Always: it is the founder's account; the references are a sample; and anything specific to this session (a blocked site, a session cut short).
+`limits`: what the brief does not cover. Always: it is the founder's account; the references are a dozen brands chosen to place this one, not the market; and anything specific to this session (a blocked site, a subject skipped, a session cut short).
 
 `declared_empty`: `{ "<section>": "why it is empty" }` for a section that could not be filled. An empty section with its reason passes the gate; an invented one is worse than a gap.
 
@@ -95,9 +106,9 @@ node assets/render.mjs $BRIEF --inline  # brief.html and brief.single.html
 node assets/check.mjs $BRIEF            # the gate
 ```
 
-`BRIEF.md` is in English, sixteen short sections, with every line tagged by its source and its interaction ids, then the two hand-off blocks. It tells the reader what is binding (Must, Never, gates) and what is defeasible.
+`BRIEF.md` is in English, sixteen short sections, with every line tagged by its source and its interaction ids, then the two hand-off blocks. Each subject of the board appears with its orientation, its boundary and its markers (which brands fit, which are too far on each side). It tells the reader what is binding (Must, Never, gates) and what is defeasible, and that a brand named is a marker, never a model.
 
-`brief.html` is in the session language, black and white: the summary, each section with its quotes and provenance tags, the three walls of references with the real images (speaks to them; liked, but not for this brand; never), the logo contexts, what is open, what the brief is not. An `assumed` statement is drawn with a dashed tag and counted in the header.
+`brief.html` is in the session language, black and white: the summary, each section with its quotes and provenance tags, each subject as the same line the user saw on the board (the brands placed, the zone that fits), the references by circle, the logo contexts with where each comes from, what is open, what the brief is not. An `assumed` statement is drawn with a dashed tag and counted in the header.
 
 ## The gate
 
@@ -107,13 +118,13 @@ node assets/check.mjs $BRIEF            # the gate
 - one of the nine sections is empty and not in `declared_empty`;
 - there is not exactly one primary audience;
 - a value has no instance, or a trait lacks `more_than`, `never` or `sounds_like`;
-- nothing was refused: no `never` verdict, no `never` signal, no rejected territory;
+- nothing was refused: no brand judged too far on a subject, no `never` signal, no rejected territory;
 - a wallpaper word (modern, simple, trust, premium, human, authentic…) appears in the summary, the promise, the perception or a principle;
 - a `stated` or `chosen` statement has no evidence, or any statement cites an interaction that does not exist;
 - there are more `assumed` statements than open questions;
-- a reference has no `url` or no `why`, or carries a verdict although its image was never shown;
-- a dimension is `high` on fewer than two pieces of evidence, or uses a value outside the vocabulary;
-- no logo context is `critical`, no evaluation criterion is a gate, or `limits` is empty;
+- a reference has no `url` or no `why`, or a dimension names a brand that is not a reference;
+- a dimension confirmed on the board has no `orientation`, is `high` on a single piece of evidence, or uses a value outside the vocabulary;
+- a logo context does not say where it comes from, no evaluation criterion is a gate, or `limits` is empty;
 - `BRIEF.md` differs from what `brief.json` generates, or `brief.html` is missing.
 
 `provisional` passes with a note. Fix the data and run the three commands again; never edit a generated file to pass.

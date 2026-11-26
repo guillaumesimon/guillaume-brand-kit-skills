@@ -3,182 +3,198 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Planche</title>
+<title>Brief de marque</title>
 <style>
-/* Almost no chrome: every pixel here competes with the images being judged.
-   Black and white, so that no colour of ours sits beside a colour of theirs. */
+/* Black and white, so that no colour of ours sits beside a colour of theirs. */
 :root{--bg:#fff;--ink:#111;--muted:#6b6b6b;--line:#e4e4e4;--soft:#f4f4f4}
-@media (prefers-color-scheme:dark){:root{--bg:#0d0d0d;--ink:#f2f2f2;--muted:#9a9a9a;--line:#2a2a2a;--soft:#181818}}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden}
 button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
-.top{display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding:16px 24px 0;font-size:13px;color:var(--muted)}
-.top b{color:var(--ink);font-weight:600}
-.back{text-decoration:underline;text-underline-offset:3px}
 [hidden]{display:none!important}
-.screen{max-width:1400px;margin:0 auto;padding-bottom:40px}
-h1{font-size:22px;line-height:1.25;font-weight:600;letter-spacing:-.015em;margin:12px 24px 4px}
-.sub{margin:0 24px 16px;color:var(--muted);max-width:64ch}
-.pill{border:1px solid var(--line);border-radius:999px;padding:9px 18px;font-size:14px}
-.pill:hover{border-color:var(--ink)}
-.pill kbd{font:inherit;color:var(--muted);margin-left:6px;font-size:12px}
-.primary{background:var(--ink);color:var(--bg);border-radius:999px;padding:11px 24px;font-weight:600}
-.row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;padding:18px 24px 0}
-.name{font-size:13px;font-weight:500;margin-top:8px}
-img{display:block;background:var(--soft)}
+.wrap{max-width:1100px;margin:0 auto;padding:20px 24px 48px}
+.top{display:flex;justify-content:space-between;align-items:center;font-size:13px;color:var(--muted);margin-bottom:18px;min-height:24px}
+.steps{display:flex;gap:6px;align-items:center}.steps i{width:28px;height:4px;border-radius:2px;background:var(--line)}.steps i.on{background:var(--ink)}.steps span{margin-left:8px}
+.back{text-decoration:underline;text-underline-offset:3px}
+.dim{font:600 12px/1 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+h1{font-size:28px;line-height:1.2;letter-spacing:-.02em;margin:8px 0 6px;font-weight:650}
+.sub{color:var(--muted);margin:0 0 22px;max-width:60ch}
+.axis{display:flex;align-items:center;gap:12px;font-size:14px;font-weight:600;margin:0 0 22px}
+.axis .l{flex:1;height:2px;background:var(--ink);position:relative}
+.axis .l:before,.axis .l:after{content:"";position:absolute;top:-4px;width:2px;height:10px;background:var(--ink)}.axis .l:after{right:0}
 
-/* swipe */
-.deck{display:flex;flex-direction:column;align-items:center;padding:0 24px}
-.card{position:relative;width:min(100%,calc(58vh * 1.6),960px);touch-action:none;user-select:none;cursor:grab;transition:transform .18s ease,opacity .18s ease}
-.card.drag{transition:none;cursor:grabbing}
-.card img{width:100%;aspect-ratio:16/10;object-fit:contain;border-radius:10px;outline:1px solid var(--line);pointer-events:none}
-.stamp{position:absolute;top:42%;left:50%;transform:translate(-50%,-50%);white-space:nowrap;padding:10px 18px;border-radius:8px;background:var(--ink);color:var(--bg);font-weight:600;font-size:16px;opacity:0;pointer-events:none}
-.y{font-weight:600}
+/* the two camps */
+.camps{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.camp{border:1px solid var(--line);border-radius:14px;padding:18px;text-align:left;transition:transform .12s,border-color .12s}
+.camp:hover,.camp:focus-visible{border-color:var(--ink);transform:translateY(-2px)}
+.camp h2{font-size:20px;margin:0 0 4px}.camp p{margin:0 0 14px;color:var(--muted);font-size:14.5px}
+.tiles{display:grid;grid-template-columns:1fr 1fr;gap:10px}.tiles figure{margin:0}
+figcaption{font-size:13px;font-weight:500;margin-top:6px}
+.row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:20px}
+.pill{border:1px solid var(--line);border-radius:999px;padding:10px 20px;font-size:15px}.pill:hover{border-color:var(--ink)}
+.pill.ok{background:var(--ink);color:var(--bg);border-color:var(--ink);font-weight:600}
+.pill kbd{font:inherit;font-size:12px;opacity:.6;margin-left:6px}
+.quiet{color:var(--muted);border-color:transparent}
 
-/* duel */
-.pair{display:grid;grid-template-columns:1fr 1fr;gap:16px;padding:0 24px}
-.side{display:block;width:100%;text-align:left}
-.side img{width:100%;aspect-ratio:16/10;object-fit:contain;border-radius:10px;outline:1px solid var(--line);transition:transform .12s ease}
-.side:hover img,.side:focus-visible img{outline:3px solid var(--ink);transform:translateY(-2px)}
+/* a specimen: the thing judged is the thing asked about */
+.spec{position:relative;aspect-ratio:16/10;border-radius:10px;overflow:hidden;outline:1px solid var(--line);background:var(--soft);container-type:inline-size}
+.spec img{display:block;width:100%;height:100%;object-fit:cover}
+.spec.q{background:#161616}
+.spec .bg{position:absolute;inset:-12%;background-size:cover;background-position:center;filter:blur(22px) brightness(.42) saturate(1.2)}
+.spec blockquote{position:absolute;inset:0;margin:0;display:grid;place-items:center;text-align:center;padding:7cqw;color:#fff;font-weight:650;letter-spacing:-.02em;line-height:1.14;font-size:6.4cqw;text-wrap:balance}
+.spec blockquote.long{font-size:4.8cqw}
+.spec.logo{background:#fff}.spec.logo img{object-fit:contain;padding:14cqw 18cqw}
+.spec.pal{display:flex}.spec.pal i{flex:1}.spec.pal i:first-child{flex:3}.spec.pal i:nth-child(2){flex:2}
 
-/* attributes */
-.why{display:grid;grid-template-columns:minmax(0,360px) 1fr;gap:28px;padding:0 24px;align-items:start}
-.why img{width:100%;height:auto;max-height:46vh;object-fit:contain;border-radius:10px;outline:1px solid var(--line)}
-.chips{display:flex;gap:8px;flex-wrap:wrap;margin:4px 0 18px}
-.chips button{border:1px solid var(--line);border-radius:999px;padding:8px 14px;font-size:14px}
-.chips button:hover{border-color:var(--ink)}
-.chips button[aria-pressed=true]{background:var(--ink);border-color:var(--ink);color:var(--bg)}
-.why h2{font-size:18px;font-weight:600;margin:0 0 10px;letter-spacing:-.01em}
+/* the swipe */
+.deck{display:flex;justify-content:center}
+.card{position:relative;width:min(100%,calc(50vh * 1.6),820px);touch-action:none;user-select:none;cursor:grab;transition:transform .18s,opacity .18s}
+.card.drag{transition:none;cursor:grabbing}.card .spec{pointer-events:none}
+.cap{margin-top:10px;font-size:15px}.cap b{font-weight:650}
+.stamp{position:absolute;top:40%;left:50%;transform:translate(-50%,-50%);background:var(--ink);color:var(--bg);padding:10px 18px;border-radius:8px;font-weight:600;opacity:0;white-space:nowrap;pointer-events:none;z-index:2}
+.count{text-align:center;color:var(--muted);font-size:13px;margin-top:14px}
 
-/* end */
-.end{max-width:560px;margin:10vh auto 0;padding:0 24px}
-.end h1{margin-left:0}
-.end p,.end label{color:var(--muted)}
-.end label{display:block;font-size:13px;margin:18px 0 6px}
-.end input,.code{width:100%;font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:10px 12px}
+/* the reading of a subject */
+.scale{position:relative;margin:34px 8px 10px;height:2px;background:var(--ink)}
+.zone{position:absolute;top:-9px;height:20px;background:var(--ink);opacity:.12;border-radius:10px}
+.dot{position:absolute;top:-6px;width:14px;height:14px;border-radius:50%;background:var(--bg);border:2px solid var(--ink);transform:translateX(-50%)}
+.dot.in{background:var(--ink)}.dot.out{border-color:var(--muted)}.dot.unk{border-style:dotted;border-color:var(--muted)}
+.dot span{position:absolute;top:20px;left:50%;transform:translateX(-50%);white-space:nowrap;font-size:13px}
+.dot:first-of-type span{left:0;transform:none}.dot:last-of-type span{left:auto;right:0;transform:none}
+.dot.out span{color:var(--muted);text-decoration:line-through}.dot.unk span{color:var(--muted)}
+.poles{display:flex;justify-content:space-between;font-size:13px;color:var(--muted);margin-top:44px}
+.read{font-size:22px;line-height:1.35;letter-spacing:-.012em;margin:28px 0 0;max-width:36ch;font-weight:500}
+.recap{border:1px solid var(--line);border-radius:14px;padding:20px 22px;margin-bottom:14px}.recap .read{font-size:18px;margin-top:18px}
+
+.end label{display:block;font-size:13px;color:var(--muted);margin:24px 0 6px}
+.end input,.code{width:100%;max-width:560px;font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:10px 12px}
 .code{display:block;margin:16px 0 12px;background:var(--soft);font:13px/1.5 ui-monospace,Menlo,monospace;word-break:break-all;resize:none}
-.end .primary{margin-top:18px}
-@media (max-width:720px){.pair{grid-template-columns:1fr}.why{grid-template-columns:1fr}}
+@media (max-width:720px){.camps{grid-template-columns:1fr}h1{font-size:23px}.read{font-size:19px}}
 @media (hover:none){kbd{display:none}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 </head>
 <body>
-<div class="top"><span id="where"></span><button class="back" id="back" hidden></button></div>
-<main class="screen" id="screen"></main>
+<div class="wrap">
+  <div class="top"><div class="steps" id="steps"></div><button class="back" id="back" hidden></button></div>
+  <main id="m"></main>
+</div>
 
 <!-- Filled by board.mjs. Never edit this file per round: write a round JSON and let the script inject it.
-     The page receives presentation fields only (image, name, attribute labels). The objective of an
-     exercise and the dimension it tests are stripped before injection, and must never appear here. -->
+     One subject at a time, and the user always knows what they are judging: the subject is named, the
+     question is a full sentence, and each answer completes it. -->
 <script id="round" type="application/json">__ROUND__</script>
 <script>
 (function(){
   var R=JSON.parse(document.getElementById('round').textContent);
-  var L={ // the only words on the board
-    fr:{swipe:'Ça te parle ?',swipeSub:'Une image à la fois. Glisse, clique ou utilise les flèches.',
-      y:'Ça me parle',l:'J’aime, pas pour nous',x:'Pas du tout',u:'Je ne connais pas',
-      duel:'Laquelle des deux ?',duelSub:'Rien à lire. Clique sur celle qui serait la plus juste pour ta marque.',
-      both:'Les deux',neither:'Aucune des deux',space:'espace',
-      keep:'Qu’est-ce que tu en gardes ?',bother:'Qu’est-ce qui te gêne ?',pick:'Pourquoi celle-ci ?',several:'Plusieurs réponses possibles. Aucune, c’est une réponse aussi.',
-      next:'Continuer',back:'Revenir en arrière',note:'Un mot à ajouter ? (facultatif)',done:'Terminé',
-      sent:'C’est noté.',sentSub:'Tu peux revenir à la conversation.',
-      copyTitle:'Dernière étape',copySub:'Copie ce code et colle-le dans la conversation.',copy:'Copier',copied:'Copié'},
-    en:{swipe:'Does this speak to you?',swipeSub:'One image at a time. Drag, click or use the arrow keys.',
-      y:'Speaks to me',l:'I like it, not for us',x:'Not at all',u:'I don’t know it',
-      duel:'Which of the two?',duelSub:'Nothing to read. Click the one that would be more right for your brand.',
-      both:'Both',neither:'Neither',space:'space',
-      keep:'What would you keep from it?',bother:'What bothers you?',pick:'Why this one?',several:'Several answers allowed. None is an answer too.',
-      next:'Continue',back:'Go back',note:'Anything to add? (optional)',done:'Done',
-      sent:'Noted.',sentSub:'You can go back to the conversation.',
-      copyTitle:'Last step',copySub:'Copy this code and paste it into the conversation.',copy:'Copy',copied:'Copied'}
+  var L={
+    fr:{camp:'Clique sur le côté qui te ressemble le plus. Les marques sont là pour donner une idée, pas comme modèles.',between:'Entre les deux',skip:'Ce sujet ne compte pas pour moi',
+      unknown:'Je ne connais pas cette marque',of:'sur',understood:'Voilà ce que je comprends',yes:'C’est ça, on continue',redo:'Je recommence ce sujet',back:'Revenir en arrière',
+      near:'Du côté de ',and:' et ',none:'Aucune de ces marques n’est au bon endroit.',never:'Jamais aussi ',than:' que ',skipped:'Ce sujet ne compte pas pour toi.',
+      summary:'Résumé',all:'Ta marque, sujet par sujet',note:'Un mot à ajouter ? (facultatif)',send:'Envoyer mes réponses',
+      sent:'C’est noté.',sentSub:'Tu peux revenir à la conversation.',copyTitle:'Dernière étape',copySub:'Copie ce code et colle-le dans la conversation.',copy:'Copier',copied:'Copié'},
+    en:{camp:'Click the side that is closest to you. The brands are there to give an idea, not as models.',between:'In between',skip:'This subject does not matter to me',
+      unknown:'I don’t know this brand',of:'of',understood:'Here is what I understand',yes:'That’s right, next',redo:'Redo this subject',back:'Go back',
+      near:'Close to ',and:' and ',none:'None of these brands is in the right place.',never:'Never as ',than:' as ',skipped:'This subject does not matter to you.',
+      summary:'Summary',all:'Your brand, subject by subject',note:'Anything to add? (optional)',send:'Send my answers',
+      sent:'Noted.',sentSub:'You can go back to the conversation.',copyTitle:'Last step',copySub:'Copy this code and paste it into the conversation.',copy:'Copy',copied:'Copied'}
   };
   var T=L[R.locale]||L.fr; document.documentElement.lang=L[R.locale]?R.locale:'fr';
-  var screens=[];
-  (R.steps||[]).forEach(function(s){
-    if(s.type==='swipe') s.items.forEach(function(it){screens.push({kind:'swipe',step:s,item:it});});
-    else if(s.type==='duel') s.pairs.forEach(function(p){screens.push({kind:'duel',step:s,pair:p});});
-  });
-  var A=screens.map(function(){return null;}), note='', i=0, asking=false;
-  var el=document.getElementById('screen'), back=document.getElementById('back'), where=document.getElementById('where');
+  var D=R.subjects, m=document.getElementById('m'), back=document.getElementById('back');
+  var di=0, phase='camp', bi=0, camp=[], ans=D.map(function(){return [];}), note='';
   back.textContent=T.back;
   function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]});}
-  function attrsOf(sc,c){
-    if(sc.kind==='swipe') return (c==='y'||c==='l'||c==='x')?(sc.item.attributes||[]):[];
-    return (c==='a'||c==='b')?((sc.pair[c].attributes)||sc.pair.attributes||[]):[];
+
+  function spec(d,b){
+    if(d.kind==='quote') return '<div class="spec q">'+(b.src?'<div class="bg" style="background-image:url(&quot;'+esc(b.src)+'&quot;)"></div>':'')+'<blockquote class="'+(b.quote.length>90?'long':'')+'">“'+esc(b.quote)+'”</blockquote></div>';
+    if(d.kind==='palette') return '<div class="spec pal">'+b.colors.slice(0,5).map(function(c){return '<i style="background:'+esc(c)+'"></i>';}).join('')+'</div>';
+    if(d.kind==='logo') return '<div class="spec logo"><img src="'+esc(b.src)+'" alt="'+esc(b.name)+'"></div>';
+    var c=b.crop||{x:50,y:0,z:1};
+    return '<div class="spec"><img src="'+esc(b.src)+'" alt="'+esc(b.name)+'" style="object-position:'+c.x+'% '+c.y+'%;transform:scale('+(c.z||1)+');transform-origin:'+c.x+'% '+c.y+'%"></div>';
   }
+  function steps(){document.getElementById('steps').innerHTML=D.map(function(_,i){return '<i class="'+(i<=di?'on':'')+'"></i>';}).join('')+'<span>'+Math.min(di+1,D.length)+' / '+D.length+'</span>';}
+  function axis(d){return '<div class="axis">'+esc(d.left.label)+'<span class="l"></span>'+esc(d.right.label)+'</div>';}
 
   function show(){
-    asking=false; back.hidden=i===0; window.scrollTo(0,0);
-    if(i>=screens.length) return finish();
-    where.innerHTML='<b>'+(i+1)+'</b> / '+screens.length;
-    var sc=screens[i];
-    if(sc.kind==='swipe'){
-      el.innerHTML='<h1>'+esc(sc.step.title||T.swipe)+'</h1><p class="sub">'+esc(sc.step.sub||T.swipeSub)+'</p>'+
-        '<div class="deck"><div class="card" id="card"><img src="'+esc(sc.item.src)+'" alt="'+esc(sc.item.name)+'"><span class="stamp" id="stamp"></span><div class="name">'+esc(sc.item.name)+'</div></div></div>'+
-        '<div class="row"><button class="pill" data-c="x">'+T.x+'<kbd>←</kbd></button><button class="pill" data-c="l">'+T.l+'<kbd>↑</kbd></button><button class="pill y" data-c="y">'+T.y+'<kbd>→</kbd></button></div>'+
-        '<div class="row" style="padding-top:10px"><button class="pill" data-c="u" style="border-color:transparent;color:var(--muted)">'+T.u+'<kbd>↓</kbd></button></div>';
-      drag(document.getElementById('card'));
+    steps(); window.scrollTo(0,0); back.hidden=(di===0&&phase==='camp');
+    if(di>=D.length) return final();
+    var d=D[di], n=d.specimens.length;
+    if(phase==='camp'){
+      var sides={a:[0,1],b:[n-2,n-1]};
+      m.innerHTML='<div class="dim">'+esc(d.name)+'</div><h1>'+esc(d.question)+'</h1><p class="sub">'+T.camp+'</p><div class="camps">'+['a','b'].map(function(k){
+        var c=k==='a'?d.left:d.right;
+        return '<button class="camp" data-k="'+k+'"><h2>'+esc(c.title)+'</h2><p>'+esc(c.desc)+'</p><div class="tiles">'+sides[k].map(function(i){var b=d.specimens[i];return '<figure>'+spec(d,b)+'<figcaption>'+esc(b.name)+'</figcaption></figure>';}).join('')+'</div></button>';
+      }).join('')+'</div><div class="row"><button class="pill" data-k="m">'+T.between+'</button><button class="pill quiet" data-k="x">'+T.skip+'</button></div>';
+      m.querySelectorAll('[data-k]').forEach(function(b){b.onclick=function(){camp[di]=b.dataset.k; if(camp[di]==='x'){ans[di]=[];di++;phase='camp';}else{phase='swipe';bi=0;} show();};});
+    } else if(phase==='swipe'){
+      var b=d.specimens[bi];
+      m.innerHTML='<div class="dim">'+esc(d.name)+'</div><h1>'+esc(d.ask.replace('%s',b.name))+'</h1>'+axis(d)+
+        '<div class="deck"><div class="card" id="card">'+spec(d,b)+'<span class="stamp" id="stamp"></span><div class="cap"><b>'+esc(b.name)+'.</b> '+esc(b.look||'')+'</div></div></div>'+
+        '<div class="row"><button class="pill" data-c="l">'+esc(d.too_left)+'<kbd>←</kbd></button><button class="pill ok" data-c="o">'+esc(d.ok)+'<kbd>↑</kbd></button><button class="pill" data-c="r">'+esc(d.too_right)+'<kbd>→</kbd></button></div>'+
+        '<div class="row" style="margin-top:8px"><button class="pill quiet" data-c="u">'+T.unknown+'<kbd>↓</kbd></button></div><p class="count">'+(bi+1)+' '+T.of+' '+n+'</p>';
+      m.querySelectorAll('[data-c]').forEach(function(x){x.onclick=function(){pick(x.dataset.c);};});
+      drag(document.getElementById('card'),d);
     } else {
-      var p=sc.pair;
-      el.innerHTML='<h1>'+esc(sc.step.title||T.duel)+'</h1><p class="sub">'+esc(sc.step.sub||T.duelSub)+'</p>'+
-        '<div class="pair">'+['a','b'].map(function(k){return '<button class="side" data-c="'+k+'"><img src="'+esc(p[k].src)+'" alt="'+esc(p[k].name)+'"><div class="name">'+esc(p[k].name)+'</div></button>';}).join('')+'</div>'+
-        '<div class="row"><button class="pill" data-c="2">'+T.both+'</button><button class="pill" data-c="n">'+T.neither+'<kbd>'+T.space+'</kbd></button>'+(sc.step.known?'<button class="pill" data-c="u">'+T.u+'</button>':'')+'</div>';
+      m.innerHTML='<div class="dim">'+esc(d.name)+'</div><h1>'+T.understood+'</h1>'+scale(d,ans[di])+'<p class="read">'+esc(reading(d,ans[di]))+'</p>'+
+        '<div class="row" style="justify-content:flex-start;margin-top:28px"><button class="pill ok" id="ok">'+T.yes+'</button><button class="pill" id="redo">'+T.redo+'</button></div>';
+      document.getElementById('ok').onclick=function(){di++;phase='camp';show();};
+      document.getElementById('redo').onclick=function(){ans[di]=[];phase='camp';show();};
     }
-    el.querySelectorAll('[data-c]').forEach(function(b){b.onclick=function(){choose(b.dataset.c);};});
+  }
+  function pick(c){ans[di][bi]=c;bi++;if(bi>=D[di].specimens.length)phase='recap';show();}
+
+  function reading(d,a){
+    var by=function(v){return d.specimens.filter(function(_,i){return a[i]===v;});}, ok=by('o'), l=by('l'), r=by('r');
+    var names=ok.map(function(b){return b.name;}), s=ok.length?T.near+(names.length>1?names.slice(0,-1).join(', ')+T.and+names[names.length-1]:names[0])+'.':T.none;
+    if(r.length) s+=' '+T.never+d.right.word+T.than+r[0].name+'.';
+    if(l.length) s+=' '+T.never+d.left.word+T.than+l[l.length-1].name+'.';
+    return s;
+  }
+  function scale(d,a){
+    var n=d.specimens.length, pos=function(i){return i/(n-1)*100;}, oks=[];
+    a.forEach(function(v,i){if(v==='o')oks.push(i);});
+    var z=oks.length?'<div class="zone" style="left:calc('+pos(oks[0])+'% - 14px);width:calc('+(pos(oks[oks.length-1])-pos(oks[0]))+'% + 28px)"></div>':'';
+    return '<div class="scale">'+z+d.specimens.map(function(b,i){return '<div class="dot '+(a[i]==='o'?'in':a[i]==='u'?'unk':(a[i]==='l'||a[i]==='r')?'out':'')+'" style="left:'+pos(i)+'%"><span>'+esc(b.name)+'</span></div>';}).join('')+'</div><div class="poles"><span>'+esc(d.left.label)+'</span><span>'+esc(d.right.label)+'</span></div>';
   }
 
-  function choose(c){
-    var sc=screens[i], attrs=attrsOf(sc,c);
-    A[i]={c:c,a:[]};
-    if(!attrs.length){ i++; return show(); }
-    asking=true; window.scrollTo(0,0);
-    var it=sc.kind==='swipe'?sc.item:sc.pair[c];
-    var q=sc.kind==='duel'?T.pick:(c==='x'?T.bother:T.keep);
-    el.innerHTML='<h1>'+esc(it.name)+'</h1><p class="sub">'+T.several+'</p><div class="why"><img src="'+esc(it.src)+'" alt="'+esc(it.name)+'"><div><h2>'+q+'</h2>'+
-      '<div class="chips">'+attrs.map(function(t,k){return '<button data-k="'+k+'" aria-pressed="false">'+esc(t)+'</button>';}).join('')+'</div>'+
-      '<button class="primary" id="go">'+T.next+'</button></div></div>';
-    el.querySelectorAll('.chips button').forEach(function(b){b.onclick=function(){
-      var k=+b.dataset.k, at=A[i].a.indexOf(k); if(at<0) A[i].a.push(k); else A[i].a.splice(at,1);
-      b.setAttribute('aria-pressed',at<0);};});
-    document.getElementById('go').onclick=function(){ A[i].a.sort(function(x,y){return x-y;}); i++; show(); };
-  }
-
-  function drag(card){
-    var sx=0,sy=0,dx=0,dy=0,on=false,stamp=document.getElementById('stamp');
-    function verdict(){ return dx>90?'y':dx<-90?'x':dy<-90?'l':dy>110?'u':''; }
+  function drag(card,d){
+    var sx,sy,dx=0,dy=0,on=false,st=document.getElementById('stamp'),lab={l:d.too_left,r:d.too_right,o:d.ok,u:T.unknown};
+    function v(){return dx>90?'r':dx<-90?'l':dy<-90?'o':dy>110?'u':'';}
     card.onpointerdown=function(e){on=true;sx=e.clientX;sy=e.clientY;dx=dy=0;card.classList.add('drag');card.setPointerCapture(e.pointerId);};
-    card.onpointermove=function(e){ if(!on) return; dx=e.clientX-sx; dy=e.clientY-sy;
-      card.style.transform='translate('+dx+'px,'+dy+'px) rotate('+(dx/28)+'deg)'; var v=verdict(); stamp.textContent=v?T[v]:''; stamp.style.opacity=v?1:0; };
-    card.onpointerup=card.onpointercancel=function(){ if(!on) return; on=false; card.classList.remove('drag'); var v=verdict();
-      if(v){ card.style.opacity=0; setTimeout(function(){choose(v);},140); } else { card.style.transform=''; stamp.style.opacity=0; } };
+    card.onpointermove=function(e){if(!on)return;dx=e.clientX-sx;dy=e.clientY-sy;card.style.transform='translate('+dx+'px,'+dy+'px) rotate('+dx/28+'deg)';var x=v();st.textContent=x?lab[x]:'';st.style.opacity=x?1:0;};
+    card.onpointerup=card.onpointercancel=function(){if(!on)return;on=false;card.classList.remove('drag');var x=v();if(x){card.style.opacity=0;setTimeout(function(){pick(x);},140);}else{card.style.transform='';st.style.opacity=0;}};
   }
-
-  back.onclick=function(){ if(asking){ A[i]=null; return show(); } if(i>0){ i--; A[i]=null; show(); } };
   document.addEventListener('keydown',function(e){
-    var sc=screens[i]; if(!sc||asking||e.target.tagName==='INPUT'||e.target.tagName==='TEXTAREA') return;
-    var k=e.key, c=sc.kind==='swipe'?{ArrowRight:'y',ArrowLeft:'x',ArrowUp:'l',ArrowDown:'u'}[k]:{ArrowLeft:'a',ArrowRight:'b',' ':'n'}[k];
-    if(c){ e.preventDefault(); choose(c); }
+    if(phase!=='swipe'||di>=D.length||e.target.tagName==='INPUT'||e.target.tagName==='TEXTAREA')return;
+    var c={ArrowLeft:'l',ArrowRight:'r',ArrowUp:'o',ArrowDown:'u'}[e.key]; if(c){e.preventDefault();pick(c);}
   });
+  back.onclick=function(){
+    if(di>=D.length){di=D.length-1;phase=camp[di]==='x'?'camp':'recap';}
+    else if(phase==='swipe'&&bi>0)bi--; else if(phase==='swipe')phase='camp';
+    else if(phase==='recap'){phase='swipe';bi=D[di].specimens.length-1;}
+    else if(di>0){di--;phase=camp[di]==='x'?'camp':'recap';}
+    show();
+  };
 
-  // bb1.<round id>.<one token per screen: answer letter then attribute indexes in base 36>.<note, base64url>
+  // bb2.<round id>.<one token per subject: camp letter then one letter per specimen>.<note, base64url>
   function code(){
-    var toks=A.map(function(a){return a?a.c+a.a.map(function(k){return k.toString(36);}).join(''):'_';}).join(',');
+    var toks=D.map(function(d,i){return (camp[i]||'_')+(camp[i]==='x'?'':d.specimens.map(function(_,k){return ans[i][k]||'_';}).join(''));}).join(',');
     var n=note?btoa(unescape(encodeURIComponent(note))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,''):'';
-    return ['bb1',R.id,toks,n].join('.');
+    return ['bb2',R.id,toks,n].join('.');
   }
-  function finish(){
-    where.textContent='';
-    el.innerHTML='<div class="end"><h1>'+T.done+'</h1><label for="note">'+T.note+'</label><input id="note" maxlength="200"><button class="primary" id="send">'+T.done+'</button></div>';
+  function final(){
+    m.innerHTML='<div class="dim">'+T.summary+'</div><h1>'+T.all+'</h1><div style="margin-top:20px">'+D.map(function(d,i){
+      return '<div class="recap"><div class="dim">'+esc(d.name)+'</div>'+(camp[i]==='x'?'<p class="read" style="margin-top:10px">'+T.skipped+'</p>':scale(d,ans[i])+'<p class="read">'+esc(reading(d,ans[i]))+'</p>')+'</div>';
+    }).join('')+'</div><div class="end"><label for="note">'+T.note+'</label><input id="note" maxlength="200"><div style="margin-top:18px"><button class="pill ok" id="send">'+T.send+'</button></div></div>';
     document.getElementById('note').oninput=function(e){note=e.target.value;};
     document.getElementById('send').onclick=function(){
-      var c=code(); back.hidden=true;
-      function sent(){ el.innerHTML='<div class="end"><h1>'+T.sent+'</h1><p>'+T.sentSub+'</p></div>'; }
+      var c=code(); back.hidden=true; document.getElementById('steps').innerHTML='';
+      function sent(){m.innerHTML='<h1>'+T.sent+'</h1><p class="sub">'+T.sentSub+'</p>';}
       function paste(){
-        el.innerHTML='<div class="end"><h1>'+T.copyTitle+'</h1><p>'+T.copySub+'</p><textarea class="code" id="code" rows="3" readonly>'+esc(c)+'</textarea><button class="primary" id="cp">'+T.copy+'</button></div>';
+        m.innerHTML='<h1>'+T.copyTitle+'</h1><p class="sub">'+T.copySub+'</p><textarea class="code" id="code" rows="3" readonly>'+esc(c)+'</textarea><button class="pill ok" id="cp">'+T.copy+'</button>';
         var ta=document.getElementById('code'); ta.onclick=function(){ta.select();};
-        document.getElementById('cp').onclick=function(){ ta.select(); var b=this;
+        document.getElementById('cp').onclick=function(){ta.select();var b=this;
           var p=navigator.clipboard&&navigator.clipboard.writeText?navigator.clipboard.writeText(c):Promise.reject();
-          p.catch(function(){document.execCommand('copy');}).then(function(){b.textContent=T.copied;}); };
+          p.catch(function(){document.execCommand('copy');}).then(function(){b.textContent=T.copied;});};
       }
       if(R.post&&/^http/.test(location.protocol)) fetch(R.post,{method:'POST',headers:{'content-type':'text/plain'},body:c}).then(function(r){r.ok?sent():paste();}).catch(paste);
       else paste();
