@@ -48,7 +48,16 @@ Check whether `brand/tokens.json` already exists. If it does, this is not the ri
 - **Swap test.** Use the competitor it names, rather than choosing one.
 - **The "Not" list.** Seed `BRAND.md` section 1 from its clichés, then let the session's refusals add to it.
 
-Never launch the audit from here. If there is none and the user has twenty minutes before starting, say once that `brand-audit` exists and what it would add, then carry on either way.
+**If `brand/brief/BRIEF.md` exists, read it before the first question too**, in both modes. It is the output of the `brand-brief` skill: who the brand is for, what it must say and never become, and what the founder chose and refused by looking at real brands. It changes four things:
+
+- **Framing.** Its sections 1 and 2 answer both Act 1 questions. State them in one line and move on; do not ask again.
+- **Tournament.** Its section "For brand-kit" lists what is settled and what is open. Spend duels only on what is open, and never re-run one the brief already decided. Its section 7 places the brand on each subject between real brands (which fit, which are too far on each side): those are markers on a scale, never models to copy.
+- **The "Not" list.** Seed `BRIEF.md`'s refusals into `BRAND.md` section 1, in the founder's words, alongside the audit's clichés.
+- **The gate.** Its Must, Never and evaluation gates are checked on the artefact in Act 3, and its most demanding logo context is one of the five renders. The logo contexts were derived from the product, not stated by the founder: confirm any marked inferred or assumed before relying on it.
+
+Its statements carry their source. Take `stated` and `chosen` as the session's own; treat `inferred` and `assumed` as claims to confirm with an assertion and a free undo.
+
+Never launch the audit or the brief from here. If there is no audit or no brief and the user has twenty minutes before starting, say once that `brand-brief` and `brand-audit` exist and what each would add, then carry on either way.
 
 Create a scratch file for the session (in the scratchpad directory, not in the project) and keep three things in it as you go: **verbatim** (their exact words, never paraphrased), the **axis ledger** (six axes, each with a position −2…+2, a confidence 0–1, and whether it came from something they *said* or something they *chose*), and **provenance** (which facts are stated, inferred, or assumed).
 

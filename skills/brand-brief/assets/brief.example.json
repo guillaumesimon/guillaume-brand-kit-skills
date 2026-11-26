@@ -1,0 +1,851 @@
+{
+  "meta": {
+    "schema": 1,
+    "brand": "Perch",
+    "date": "2026-11-26",
+    "locale": "en",
+    "market_locale": "en-GB",
+    "status": "validated",
+    "session": {
+      "minutes": 14,
+      "questions": 6,
+      "rounds": 1
+    }
+  },
+  "summary": {
+    "lead": "Perch gives the people who run an independent hotel the calm of knowing every room is handled, without turning the hotel into a control room.",
+    "essence": [
+      "For owner-managers of 20 to 80 room hotels who run housekeeping and maintenance on paper and a group chat.",
+      "It should feel like a well-kept ledger: quiet, exact, on the side of the staff.",
+      "Competent without being corporate, warm without being cute, and never a dashboard that watches people.",
+      "It must work as a 16 px app icon on a housekeeper's phone and embroidered in one colour on a uniform."
+    ]
+  },
+  "context": {
+    "product": {
+      "value": "A phone app and a front-desk screen that tell every member of a hotel's staff which rooms and repairs are theirs today, and tell the manager what is done.",
+      "source": "documented",
+      "evidence": [
+        "README.md"
+      ]
+    },
+    "reason": {
+      "value": "Independent hotels lose rooms and reviews to things nobody was told about: a broken shower reported on paper, a late checkout that never reached housekeeping.",
+      "source": "stated",
+      "evidence": [
+        "q01"
+      ],
+      "quote": "Nobody is lazy in a hotel. Things fall between two people, that's all."
+    },
+    "problem": {
+      "value": "The tools sold to hotels are built for chains: long set-up, a manager's dashboard first, staff treated as rows.",
+      "source": "stated",
+      "evidence": [
+        "q02"
+      ]
+    },
+    "instead_of": {
+      "value": "A paper list at reception and a WhatsApp group. The paper is faster to write and everyone already knows how.",
+      "source": "stated",
+      "evidence": [
+        "q02"
+      ],
+      "quote": "The paper never needs a login."
+    },
+    "difference": {
+      "value": "Built for the housekeeper's first minute, not the manager's first report: a new member of staff uses it without training.",
+      "source": "stated",
+      "evidence": [
+        "q03"
+      ]
+    },
+    "proof": {
+      "value": "No structural reason to believe yet. Two pilot hotels onboarded their teams in a morning, which is an anecdote, not a proof.",
+      "source": "inferred",
+      "evidence": [
+        "q03"
+      ]
+    }
+  },
+  "audiences": [
+    {
+      "name": "Owner-managers of independent hotels",
+      "primary": true,
+      "who": "20 to 80 rooms, often family-run, the manager also covers reception.",
+      "need": "To stop being the only memory of the building.",
+      "feeling": "Relieved: I can go home.",
+      "source": "stated",
+      "evidence": [
+        "q04"
+      ],
+      "quote": "I want to be able to leave at six without my phone ringing at seven."
+    },
+    {
+      "name": "Housekeeping and maintenance staff",
+      "primary": false,
+      "who": "Often not native English speakers, on their own phones.",
+      "need": "To know what is theirs today without being watched.",
+      "feeling": "Respected.",
+      "source": "inferred",
+      "evidence": [
+        "q04",
+        "q06"
+      ]
+    }
+  ],
+  "positioning": {
+    "frame_inherited": {
+      "value": "Hotel management software, next to property management systems.",
+      "source": "stated",
+      "evidence": [
+        "q02"
+      ]
+    },
+    "frame_wanted": {
+      "value": "The hotel's own logbook, next to the paper it replaces.",
+      "source": "chosen",
+      "evidence": [
+        "q05"
+      ]
+    },
+    "territories": [
+      {
+        "id": "t1",
+        "name": "The well-kept ledger",
+        "description": "Quiet and exact. The hotel's own book, kept properly.",
+        "status": "chosen"
+      },
+      {
+        "id": "t2",
+        "name": "The colleague who never forgets",
+        "description": "Warm and close to the staff. Makes the day lighter.",
+        "status": "kept_from",
+        "keep": "on the side of the staff, speaks plainly"
+      },
+      {
+        "id": "t3",
+        "name": "The control tower",
+        "description": "Everything visible at once. The manager sees all.",
+        "status": "rejected",
+        "reason": "It is what the staff fear, and what every competitor sells."
+      },
+      {
+        "id": "t4",
+        "name": "The modern challenger",
+        "description": "Bold, shakes up old hotel software.",
+        "status": "open"
+      }
+    ],
+    "promise": {
+      "value": "Nothing in the building falls between two people.",
+      "source": "inferred",
+      "evidence": [
+        "q01",
+        "q05"
+      ]
+    }
+  },
+  "ambition": {
+    "horizon": {
+      "value": "In five years, the default for independent hotels in the UK and Ireland, then French and Italian family hotels.",
+      "source": "stated",
+      "evidence": [
+        "q07"
+      ]
+    },
+    "scale": {
+      "value": "A product company of thirty people, not a platform.",
+      "source": "stated",
+      "evidence": [
+        "q07"
+      ]
+    },
+    "must_carry": {
+      "value": "The brand has to survive translation into French and Italian and a second product for small restaurants.",
+      "source": "inferred",
+      "evidence": [
+        "q07"
+      ]
+    }
+  },
+  "values": [
+    {
+      "value": "The staff are users, never the thing being measured.",
+      "instance": "Turned down a pilot with a 400-room group that wanted per-housekeeper timing reports.",
+      "quote": "They wanted a stopwatch. I said no and it cost us the quarter.",
+      "source": "stated",
+      "evidence": [
+        "q06"
+      ]
+    },
+    {
+      "value": "No training, ever.",
+      "instance": "Removed a feature two hotels had asked for because it needed a ten-minute explanation.",
+      "source": "stated",
+      "evidence": [
+        "q06"
+      ]
+    }
+  ],
+  "personality": {
+    "traits": [
+      {
+        "trait": "Exact",
+        "more_than": "more a head housekeeper than a consultant",
+        "never": "never fussy or bureaucratic",
+        "sounds_like": "Room 12: shower fixed at 10:40.",
+        "source": "inferred",
+        "evidence": [
+          "r1-presence"
+        ]
+      },
+      {
+        "trait": "Plain-spoken",
+        "more_than": "more a note left on the desk than a notification",
+        "never": "never chatty",
+        "sounds_like": "Three rooms left. Nothing urgent.",
+        "source": "chosen",
+        "evidence": [
+          "r1-tone"
+        ]
+      }
+    ],
+    "dimensions": [
+      {
+        "id": "tone",
+        "name": "Tone",
+        "poles": [
+          "Plain",
+          "Playful"
+        ],
+        "kind": "quote",
+        "importance": "high",
+        "confidence": "high",
+        "camp": "left",
+        "fits": [
+          "muji",
+          "monocle"
+        ],
+        "too_left": [
+          "mews"
+        ],
+        "too_right": [
+          "mailchimp",
+          "duolingo"
+        ],
+        "unknown": [],
+        "orientation": "Plain and exact, with dry warmth.",
+        "boundary": "Warm but never cute: no mascot, no jokes in the interface.",
+        "validation": "validated",
+        "evidence": [
+          {
+            "interaction": "r1-tone",
+            "signal": "fits: Muji, Monocle; too plain: Mews; too playful: Mailchimp, Duolingo",
+            "status": "explicit"
+          },
+          {
+            "interaction": "q06",
+            "signal": "\"No training, ever\": words must explain themselves",
+            "status": "interpretation"
+          }
+        ]
+      },
+      {
+        "id": "presence",
+        "name": "Presence",
+        "poles": [
+          "Quiet",
+          "Loud"
+        ],
+        "kind": "image",
+        "importance": "high",
+        "confidence": "medium",
+        "camp": "left",
+        "fits": [
+          "monocle",
+          "muji"
+        ],
+        "too_left": [
+          "linear"
+        ],
+        "too_right": [
+          "stripe"
+        ],
+        "unknown": [],
+        "orientation": "Quiet, with one distinctive element.",
+        "boundary": "Quiet without being anonymous.",
+        "validation": "validated",
+        "evidence": [
+          {
+            "interaction": "r1-presence",
+            "signal": "fits: Monocle, Muji; too quiet: Linear; too loud: Stripe",
+            "status": "explicit"
+          }
+        ]
+      },
+      {
+        "id": "people",
+        "name": "People in the picture",
+        "poles": [
+          "Objects",
+          "Faces"
+        ],
+        "kind": "image",
+        "importance": "medium",
+        "confidence": "low",
+        "camp": "between",
+        "fits": [],
+        "too_left": [],
+        "too_right": [
+          "belmond"
+        ],
+        "unknown": [],
+        "orientation": "The building and its objects rather than faces.",
+        "contradictions": "Refused every portrait of staff, yet wants to be on their side.",
+        "validation": "validated",
+        "evidence": [
+          {
+            "interaction": "r1-people",
+            "signal": "none of the brands shown fits (leans between); too faces: Belmond",
+            "status": "explicit"
+          }
+        ]
+      }
+    ]
+  },
+  "tensions": [
+    {
+      "tension": "Competence / closeness",
+      "direction": "Exact without being cold",
+      "crossed_when": "A screen could belong to a bank, or a sentence could not be said aloud at the front desk."
+    },
+    {
+      "tension": "Quiet / distinctive",
+      "direction": "Restrained without being anonymous",
+      "crossed_when": "The work is not recognisable once the logo is covered."
+    }
+  ],
+  "perception": {
+    "think": {
+      "value": "These people have worked in a hotel.",
+      "source": "stated",
+      "evidence": [
+        "q08"
+      ],
+      "quote": "I want them to think: these people have carried linen."
+    },
+    "feel": {
+      "value": "Relief, then quiet pride in a building that runs well.",
+      "source": "chosen",
+      "evidence": [
+        "q08"
+      ]
+    },
+    "never_feel": {
+      "value": "Watched.",
+      "source": "stated",
+      "evidence": [
+        "q06"
+      ]
+    }
+  },
+  "references": [
+    {
+      "id": "mews",
+      "name": "Mews",
+      "circle": "direct",
+      "url": "https://www.mews.com",
+      "consulted": "2026-11-26",
+      "kind": "home page",
+      "why": "The best-known modern hotel system; the look owners compare against.",
+      "hypothesis": "Does the founder want to be read as hotel software at all?",
+      "limits": "Sells to chains.",
+      "founder_cited": true
+    },
+    {
+      "id": "mailchimp",
+      "name": "Mailchimp",
+      "circle": "analogous",
+      "url": "https://mailchimp.com",
+      "consulted": "2026-11-26",
+      "kind": "home page",
+      "why": "Made a professional chore approachable.",
+      "hypothesis": "How much humour can a work tool carry?",
+      "limits": "Marketing audience, not shift workers.",
+      "founder_cited": false
+    },
+    {
+      "id": "monocle",
+      "name": "Monocle",
+      "circle": "buyer_world",
+      "url": "https://monocle.com",
+      "consulted": "2026-11-26",
+      "kind": "magazine spread",
+      "why": "Read by hotel owners; print discipline as a sign of care.",
+      "hypothesis": "Does print craft read as serious or as nostalgic?",
+      "limits": "A magazine, not a tool.",
+      "founder_cited": true,
+      "copy": [
+        "Keeping an eye and an ear on the world"
+      ]
+    },
+    {
+      "id": "stripe",
+      "name": "Stripe",
+      "circle": "analogous",
+      "url": "https://stripe.com",
+      "consulted": "2026-11-26",
+      "kind": "home page",
+      "why": "The reference for a trusted tool.",
+      "hypothesis": "Polish against paper.",
+      "limits": "Developer audience.",
+      "founder_cited": false
+    },
+    {
+      "id": "linear",
+      "name": "Linear",
+      "circle": "analogous",
+      "url": "https://linear.app",
+      "consulted": "2026-11-26",
+      "kind": "home page",
+      "why": "A task tool people love using.",
+      "hypothesis": "Is sobriety liked for its look or for the sense of control?",
+      "limits": "Dark, technical.",
+      "founder_cited": false
+    },
+    {
+      "id": "duolingo",
+      "name": "Duolingo",
+      "circle": "analogous",
+      "url": "https://www.duolingo.com",
+      "consulted": "2026-11-26",
+      "kind": "home page",
+      "why": "Used daily by people who are not native speakers, like much of the staff.",
+      "hypothesis": "Where does friendly become childish?",
+      "limits": "Consumer learning.",
+      "founder_cited": false
+    },
+    {
+      "id": "muji",
+      "name": "Muji",
+      "circle": "analogous",
+      "url": "https://www.muji.com",
+      "consulted": "2026-11-26",
+      "kind": "packaging",
+      "why": "Objects that explain themselves; no training.",
+      "hypothesis": "Can absence of decoration carry warmth?",
+      "limits": "Retail.",
+      "founder_cited": false
+    },
+    {
+      "id": "belmond",
+      "name": "Belmond",
+      "circle": "buyer_world",
+      "url": "https://www.belmond.com",
+      "consulted": "2026-11-26",
+      "kind": "campaign",
+      "why": "The hotel brand owners look up to; hospitality told through its staff.",
+      "hypothesis": "Should the staff be shown?",
+      "limits": "Luxury hotels.",
+      "founder_cited": false
+    },
+    {
+      "id": "cloudbeds",
+      "name": "Cloudbeds",
+      "circle": "direct",
+      "url": "https://www.cloudbeds.com",
+      "consulted": "2026-11-26",
+      "kind": "home page",
+      "why": "Sold to independents.",
+      "hypothesis": "Category look.",
+      "limits": "",
+      "founder_cited": false,
+      "capture": {
+        "status": "blocked",
+        "via": "page",
+        "notes": [
+          "the site refused the visit (403)"
+        ],
+        "at": "2026-11-26"
+      }
+    }
+  ],
+  "preferences": {
+    "signals": [
+      {
+        "statement": "Print discipline: rules, small labels, real tables.",
+        "level": "preference",
+        "evidence": [
+          "r1-presence"
+        ],
+        "source": "chosen"
+      },
+      {
+        "statement": "No mascot and no illustrated characters.",
+        "level": "never",
+        "evidence": [
+          "r1-tone"
+        ],
+        "source": "chosen"
+      },
+      {
+        "statement": "No dashboard as the first image of the brand.",
+        "level": "never",
+        "evidence": [
+          "r1-presence",
+          "q06"
+        ],
+        "source": "chosen"
+      },
+      {
+        "statement": "A wordmark that can be embroidered in one colour.",
+        "level": "must",
+        "evidence": [
+          "q06"
+        ],
+        "source": "stated"
+      },
+      {
+        "statement": "Photography of the building and its objects rather than of people.",
+        "level": "explore",
+        "evidence": [
+          "r1-people"
+        ],
+        "source": "inferred"
+      }
+    ],
+    "founder_vs_audience": [
+      {
+        "wish": "The founder is drawn to very quiet, print-like references.",
+        "risk": "Housekeeping staff on a small phone need large, obvious controls; a magazine's restraint can read as hard to use.",
+        "arbitration": "Quiet on the brand's surfaces, generous and plain in the product. Decided by the founder.",
+        "decided_by": "founder"
+      }
+    ]
+  },
+  "principles": [
+    {
+      "principle": "If it needs explaining, it is not finished.",
+      "because": "No training is a value the founder has paid for.",
+      "evidence": [
+        "q06"
+      ]
+    },
+    {
+      "principle": "Show the building, not the dashboard.",
+      "because": "The dashboard is the category's first image and what the staff fear.",
+      "evidence": [
+        "r1-presence",
+        "q06"
+      ]
+    },
+    {
+      "principle": "Say it the way it would be said at the front desk.",
+      "because": "Plain speech was chosen every time it was offered.",
+      "evidence": [
+        "r1-tone"
+      ]
+    }
+  ],
+  "constraints": {
+    "items": [
+      {
+        "constraint": "The name Perch stays.",
+        "kind": "existing",
+        "source": "stated",
+        "evidence": [
+          "q02"
+        ]
+      },
+      {
+        "constraint": "Works in English, French and Italian; no wordplay in the mark.",
+        "kind": "cultural",
+        "source": "inferred"
+      },
+      {
+        "constraint": "Staff use their own phones, many of them old Android devices.",
+        "kind": "technical",
+        "source": "stated",
+        "evidence": [
+          "q02"
+        ]
+      },
+      {
+        "constraint": "No trademark search has been done on the name in the EU.",
+        "kind": "legal",
+        "source": "assumed"
+      }
+    ],
+    "timeline": "Identity needed before the spring trade fair, in about ten weeks."
+  },
+  "logo_contexts": [
+    {
+      "context": "App icon on a phone home screen",
+      "priority": "critical",
+      "note": "The product is a phone app for staff: must read at 16 px beside other work apps.",
+      "source": "inferred"
+    },
+    {
+      "context": "Front-desk screen, top corner",
+      "priority": "expected",
+      "note": "The product has a front-desk screen.",
+      "source": "inferred"
+    },
+    {
+      "context": "Embroidery on uniforms, one colour",
+      "priority": "expected",
+      "note": "Two pilot hotels asked for it.",
+      "source": "stated",
+      "evidence": [
+        "q06"
+      ]
+    },
+    {
+      "context": "Printed door hangers and room cards",
+      "priority": "later",
+      "note": "Common in hotels; not confirmed.",
+      "source": "assumed"
+    }
+  ],
+  "evaluation": [
+    {
+      "criterion": "Reads at 16 px and in one colour.",
+      "type": "gate"
+    },
+    {
+      "criterion": "A housekeeper would not feel it is the manager's tool.",
+      "type": "gate"
+    },
+    {
+      "criterion": "Could not be mistaken for Mews or Cloudbeds with the logo covered.",
+      "type": "gate"
+    },
+    {
+      "criterion": "Looks at home on paper.",
+      "type": "preference"
+    }
+  ],
+  "interactions": [
+    {
+      "id": "q01",
+      "type": "question",
+      "question": "What happened the last time something went wrong in one of your hotels?",
+      "answer": "A shower reported on paper on Friday, found by a guest on Sunday."
+    },
+    {
+      "id": "q02",
+      "type": "question",
+      "question": "What do they use today instead, and what does it do better?",
+      "answer": "Paper and WhatsApp. No login, everyone knows how."
+    },
+    {
+      "id": "q03",
+      "type": "question",
+      "question": "When a hotel picks you over Mews, what is the sentence they say?",
+      "answer": "My team used it the first morning."
+    },
+    {
+      "id": "q04",
+      "type": "closed",
+      "question": "If you lost one of these tomorrow, which would end the company?",
+      "options": [
+        "Owner-managers",
+        "Hotel groups",
+        "Housekeeping companies"
+      ],
+      "answer": "Owner-managers"
+    },
+    {
+      "id": "q05",
+      "type": "territory",
+      "question": "Which is closest, which goes, what do you keep from a second?",
+      "answer": "The ledger. Drop the control tower. Keep 'on the side of the staff' from the colleague."
+    },
+    {
+      "id": "q06",
+      "type": "question",
+      "question": "Tell me about the last time you turned down money.",
+      "answer": "The 400-room group that wanted timing reports."
+    },
+    {
+      "id": "q07",
+      "type": "closed",
+      "question": "In five years, which is closest?",
+      "options": [
+        "The default for independents in a few countries",
+        "A platform for all hospitality",
+        "Sold to a large hotel-software company"
+      ],
+      "answer": "The default for independents in a few countries"
+    },
+    {
+      "id": "q08",
+      "type": "closed",
+      "question": "The manager closes the app at six. They feel like after...",
+      "options": [
+        "handing the keys to a night porter they trust",
+        "a good session at the gym",
+        "ticking the last box of a tax form"
+      ],
+      "answer": "handing the keys to a night porter they trust"
+    },
+    {
+      "id": "r1-tone",
+      "round": "r1",
+      "type": "subject",
+      "subject": "tone",
+      "question": "Tone",
+      "camp": "left",
+      "answers": [
+        {
+          "ref": "mews",
+          "answer": "too_left"
+        },
+        {
+          "ref": "muji",
+          "answer": "fits"
+        },
+        {
+          "ref": "monocle",
+          "answer": "fits"
+        },
+        {
+          "ref": "mailchimp",
+          "answer": "too_right"
+        },
+        {
+          "ref": "duolingo",
+          "answer": "too_right"
+        }
+      ],
+      "answer": "fits: Muji, Monocle; too plain: Mews; too playful: Mailchimp, Duolingo",
+      "at": "2026-11-26T10:12:00.000Z"
+    },
+    {
+      "id": "r1-presence",
+      "round": "r1",
+      "type": "subject",
+      "subject": "presence",
+      "question": "Presence",
+      "camp": "left",
+      "answers": [
+        {
+          "ref": "linear",
+          "answer": "too_left"
+        },
+        {
+          "ref": "muji",
+          "answer": "fits"
+        },
+        {
+          "ref": "monocle",
+          "answer": "fits"
+        },
+        {
+          "ref": "stripe",
+          "answer": "too_right"
+        }
+      ],
+      "answer": "fits: Monocle, Muji; too quiet: Linear; too loud: Stripe",
+      "at": "2026-11-26T10:12:00.000Z"
+    },
+    {
+      "id": "r1-people",
+      "round": "r1",
+      "type": "subject",
+      "subject": "people",
+      "question": "People in the picture",
+      "camp": "between",
+      "answers": [
+        {
+          "ref": "muji",
+          "answer": "too_left"
+        },
+        {
+          "ref": "monocle",
+          "answer": "unknown"
+        },
+        {
+          "ref": "belmond",
+          "answer": "too_right"
+        }
+      ],
+      "answer": "none of the brands shown fits (leans between); too faces: Belmond",
+      "at": "2026-11-26T10:12:00.000Z"
+    }
+  ],
+  "verbatim": [
+    {
+      "quote": "Nobody is lazy in a hotel. Things fall between two people, that's all.",
+      "about": "reason to exist"
+    },
+    {
+      "quote": "They wanted a stopwatch. I said no and it cost us the quarter.",
+      "about": "values"
+    },
+    {
+      "quote": "The paper never needs a login.",
+      "about": "what paper does better"
+    }
+  ],
+  "open_questions": [
+    {
+      "question": "Is the name Perch free to register in the EU?",
+      "why": "Assumed, never checked; the plan includes France and Italy.",
+      "for": "founder"
+    },
+    {
+      "question": "Do owner-managers read a paper-toned brand as a serious tool or as nostalgia?",
+      "why": "The founder's taste, untested on buyers.",
+      "for": "audit"
+    },
+    {
+      "question": "People in the imagery: none, or hands and objects?",
+      "why": "Low confidence, one contradictory signal.",
+      "for": "kit"
+    },
+    {
+      "question": "Will the logo be printed on door hangers and room cards?",
+      "why": "Assumed from the sector, not confirmed.",
+      "for": "founder"
+    }
+  ],
+  "limits": [
+    "Everything here is the founder's account. No customer was interviewed.",
+    "The references are a sample of nine brands from the hotel world and from tools that solved a similar problem, one of which could not be captured. They show taste, not the market.",
+    "No structural reason to believe was found for the difference."
+  ],
+  "handoff": {
+    "audit": {
+      "competitors": [
+        "Mews",
+        "Cloudbeds"
+      ],
+      "aspirational": [
+        "Monocle",
+        "Muji"
+      ],
+      "hypotheses": [
+        "The category opens on a dashboard and a blue or purple gradient.",
+        "No competitor addresses the staff rather than the manager."
+      ]
+    },
+    "kit": {
+      "settled": [
+        "Light rather than dark",
+        "Type and rules carry the character, not colour",
+        "No mascot, no illustrated people"
+      ],
+      "open": [
+        "People in the imagery",
+        "How distinctive the one strange element may be"
+      ],
+      "refusals": [
+        "A dashboard as the first image",
+        "Anything that reads as surveillance",
+        "Cute"
+      ],
+      "swap_candidate": "Mews"
+    }
+  }
+}

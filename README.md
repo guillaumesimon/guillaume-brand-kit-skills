@@ -1,10 +1,41 @@
 # Brand kit skills
 
-Three Claude Code skills that look at a market, turn a 25-minute conversation into a brand universe, and keep it true afterwards.
+Four Claude Code skills that follow an art director's process: understand the company, look at its market, turn a 25-minute conversation into a brand universe, and keep it true afterwards.
 
-- **`brand-audit`** looks first: the competitive and visual audit an art director runs before designing. Optional, and `brand-kit` reads it when it is there.
+- **`brand-brief`** comes first: the discovery interview, and the brand brief. Optional, and the two skills after it read the brief when it is there.
+- **`brand-audit`** looks at the market: the competitive and visual audit an art director runs before designing. Optional, and `brand-kit` reads it when it is there.
 - **`brand-kit`** — runs the session and writes the kit.
 - **`brand-kit-update`** — keeps the kit honest, versions the brand, and turns every agent mistake into a rule.
+
+## The brief
+
+`brand-brief` answers one question: what must this brand say, to whom, and what must it never become. It is the conversation an art director has with a founder before any talk of aesthetics, built on one observation: people cannot describe the brand they want, and can say in a second what they like and what they refuse.
+
+1. **Understand, then ask.** It reads the project and says what it understood, to be corrected. Then two or three short questions about the business, never about design.
+2. **One board, one subject at a time.** Five or six subjects chosen for the project: tone, presence, colour, the place of a technology, the sign. Each one is named, asks a question in plain words, and is judged on its own material: real sentences for tone, colours measured on the sites for colour, logos alone for the sign. Two camps face to face, then a swipe ("too hushed for us · the right tone for us · too bold for us"), then what was understood, to confirm.
+3. **Brands from the product's own world.** What the buyers look at every day and the tools they compare, plus the few brands elsewhere that solved the same problem. A script captures them cleanly (consent banners closed, blocked pages set aside), measures their palette and reads their own sentences.
+4. **Read back and write.** The brief in four sentences, with what was derived and never asked (where the logo will have to live), corrected by the founder.
+
+```
+brand/brief/
+├── brief.json       the single source: answers, verbatim, provenance, references, subjects
+├── BRIEF.md         the brief for the next agent, generated from brief.json
+├── brief.html       the brief for people, each subject as the line the founder saw
+├── rounds/          the board that was shown, and its answers
+└── evidence/        the material shown: captures, logos, contact sheets
+```
+
+About fifteen minutes. Every line of the brief says where it comes from: read in the project, stated, chosen on the board, inferred, or assumed. A gate refuses a brief with a value that has no instance, a wallpaper word in its summary, or no refusal at all.
+
+What it needs: Node 22 or later, web search, and Playwright with Chromium to capture pages (`node skills/brand-brief/assets/fetch.mjs --check`). No API key. The Mobbin connector is optional. `node --test skills/brand-brief/tests/*.test.mjs` runs its tests.
+
+What to know before using it:
+
+- **It is the founder's account.** No customer is interviewed, and it says so.
+- **The references place the brand, they do not describe the market.** The market is the audit. A brand on a scale is a marker, never a model.
+- **It fixes no colour, typeface or logo.** It records intentions, taste and refusals for the skills that follow.
+- **The board works two ways.** Served locally, the answers reach the agent on the last click. Sent as one file (a cloud session), it ends on a short code to paste back.
+- **It was rewritten after its first real run**, where a board of unrelated famous brands with no stated subject lost the user in a minute. `docs/superpowers/specs/2026-11-26-brand-brief-design.md` keeps the history.
 
 ## The audit
 
@@ -60,6 +91,7 @@ So the skill shows rather than asks, asks about consequences rather than mechani
 Clone the repo, then symlink the skills into `~/.claude/skills` so edits here are live everywhere:
 
 ```bash
+ln -s "$PWD/skills/brand-brief" ~/.claude/skills/brand-brief
 ln -s "$PWD/skills/brand-audit" ~/.claude/skills/brand-audit
 ln -s "$PWD/skills/brand-kit" ~/.claude/skills/brand-kit
 ln -s "$PWD/skills/brand-kit-update" ~/.claude/skills/brand-kit-update
