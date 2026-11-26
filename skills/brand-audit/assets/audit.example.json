@@ -1,0 +1,918 @@
+{
+  "meta": {
+    "mode": "flash",
+    "date": "2026-11-26",
+    "locale": "en",
+    "market_country": "gb",
+    "thresholds": {
+      "convention": 0.6,
+      "rare": 0.15
+    }
+  },
+  "framing": {
+    "product": "Ordering and stock app for independent bookshops",
+    "audience": "Owners of one to three shops",
+    "market": "United Kingdom",
+    "instead_of": "Distributor portals and a paper order book"
+  },
+  "panel": [
+    {
+      "id": "folio",
+      "name": "Folio",
+      "url": "https://folio.example",
+      "role": "direct",
+      "why": "Same product, same buyers",
+      "confidence": 0.8,
+      "established": {
+        "value": true,
+        "reason": "Largest installed base, founded 2011, used by two national chains"
+      },
+      "capture": "full",
+      "measures": {
+        "palette": [
+          {
+            "hex": "#ffffff",
+            "share": 0.72,
+            "hue": "neutral",
+            "saturation": "muted"
+          },
+          {
+            "hex": "#1d4ed8",
+            "share": 0.09,
+            "hue": "blue",
+            "saturation": "vivid"
+          }
+        ],
+        "accent": "#1d4ed8",
+        "ground": "light",
+        "fonts": [
+          {
+            "family": "Source Serif",
+            "weight": 400,
+            "share": 0.8
+          },
+          {
+            "family": "Source Serif",
+            "weight": 600,
+            "share": 0.2
+          }
+        ],
+        "headline": {
+          "text": "Every book, ordered by tomorrow",
+          "family": "Source Serif",
+          "size_px": 56,
+          "weight": 600,
+          "tracking_em": -0.02
+        },
+        "button_radius_px": 8,
+        "media": {
+          "img": 6,
+          "video": 0,
+          "svg": 12,
+          "canvas": 0
+        }
+      },
+      "codes": {
+        "logo_type": "combination",
+        "symbol_nature": "pictorial",
+        "symbol_subject": "open book",
+        "symbol_used_alone": true,
+        "name_case": "title",
+        "name_style": "serif",
+        "hue": "blue",
+        "saturation": "medium",
+        "ground": "light",
+        "hue_count": "one",
+        "headline_class": "serif",
+        "text_class": "humanist_sans",
+        "imagery": "product_ui",
+        "layout": "split_hero",
+        "headline_promise": "benefit"
+      },
+      "evidence": [
+        "evidence/folio/desktop.webp",
+        "evidence/folio/logo.svg"
+      ]
+    },
+    {
+      "id": "shelfline",
+      "name": "Shelfline",
+      "url": "https://shelfline.example",
+      "role": "direct",
+      "why": "Same product, same buyers",
+      "confidence": 0.8,
+      "established": {
+        "value": true,
+        "reason": "Second by market share, public pricing since 2015"
+      },
+      "capture": "full",
+      "measures": {
+        "palette": [
+          {
+            "hex": "#ffffff",
+            "share": 0.72,
+            "hue": "neutral",
+            "saturation": "muted"
+          },
+          {
+            "hex": "#2563eb",
+            "share": 0.09,
+            "hue": "blue",
+            "saturation": "vivid"
+          }
+        ],
+        "accent": "#2563eb",
+        "ground": "light",
+        "fonts": [
+          {
+            "family": "Inter",
+            "weight": 400,
+            "share": 0.8
+          },
+          {
+            "family": "Inter",
+            "weight": 600,
+            "share": 0.2
+          }
+        ],
+        "headline": {
+          "text": "Every book, ordered by tomorrow",
+          "family": "Inter",
+          "size_px": 56,
+          "weight": 600,
+          "tracking_em": -0.02
+        },
+        "button_radius_px": 8,
+        "media": {
+          "img": 6,
+          "video": 0,
+          "svg": 12,
+          "canvas": 0
+        }
+      },
+      "codes": {
+        "logo_type": "combination",
+        "symbol_nature": "pictorial",
+        "symbol_subject": "open book",
+        "symbol_used_alone": false,
+        "name_case": "lower",
+        "name_style": "geometric_sans",
+        "hue": "blue",
+        "saturation": "vivid",
+        "ground": "light",
+        "hue_count": "one",
+        "headline_class": "geometric_sans",
+        "text_class": "geometric_sans",
+        "imagery": "product_ui",
+        "layout": "split_hero",
+        "headline_promise": "benefit"
+      },
+      "evidence": [
+        "evidence/shelfline/desktop.webp",
+        "evidence/shelfline/logo.svg"
+      ]
+    },
+    {
+      "id": "pagewise",
+      "name": "Pagewise",
+      "url": "https://pagewise.example",
+      "role": "direct",
+      "why": "Same product, newer entrant",
+      "confidence": 0.8,
+      "established": {
+        "value": false,
+        "reason": "Launched 2023, seed stage"
+      },
+      "capture": "full",
+      "measures": {
+        "palette": [
+          {
+            "hex": "#ffffff",
+            "share": 0.72,
+            "hue": "neutral",
+            "saturation": "muted"
+          },
+          {
+            "hex": "#3b82f6",
+            "share": 0.09,
+            "hue": "blue",
+            "saturation": "vivid"
+          }
+        ],
+        "accent": "#3b82f6",
+        "ground": "light",
+        "fonts": [
+          {
+            "family": "Inter",
+            "weight": 400,
+            "share": 0.8
+          },
+          {
+            "family": "Inter",
+            "weight": 600,
+            "share": 0.2
+          }
+        ],
+        "headline": {
+          "text": "Every book, ordered by tomorrow",
+          "family": "Inter",
+          "size_px": 56,
+          "weight": 600,
+          "tracking_em": -0.02
+        },
+        "button_radius_px": 8,
+        "media": {
+          "img": 6,
+          "video": 0,
+          "svg": 12,
+          "canvas": 0
+        }
+      },
+      "codes": {
+        "logo_type": "combination",
+        "symbol_nature": "pictorial",
+        "symbol_subject": "bookmark",
+        "symbol_used_alone": false,
+        "name_case": "lower",
+        "name_style": "geometric_sans",
+        "hue": "blue",
+        "saturation": "vivid",
+        "ground": "light",
+        "hue_count": "two",
+        "headline_class": "geometric_sans",
+        "text_class": "geometric_sans",
+        "imagery": "product_ui",
+        "layout": "centered_hero",
+        "headline_promise": "benefit"
+      },
+      "evidence": [
+        "evidence/pagewise/desktop.webp",
+        "evidence/pagewise/logo.svg"
+      ]
+    },
+    {
+      "id": "bindery",
+      "name": "Bindery",
+      "url": "https://bindery.example",
+      "role": "direct",
+      "why": "Same product, academic segment",
+      "confidence": 0.8,
+      "established": {
+        "value": true,
+        "reason": "Trade press names it the reference for academic shops"
+      },
+      "capture": "full",
+      "measures": {
+        "palette": [
+          {
+            "hex": "#ffffff",
+            "share": 0.72,
+            "hue": "neutral",
+            "saturation": "muted"
+          },
+          {
+            "hex": "#1a1a1a",
+            "share": 0.09,
+            "hue": "neutral",
+            "saturation": "vivid"
+          }
+        ],
+        "accent": "#1a1a1a",
+        "ground": "light",
+        "fonts": [
+          {
+            "family": "Tiempos",
+            "weight": 400,
+            "share": 0.8
+          },
+          {
+            "family": "Tiempos",
+            "weight": 600,
+            "share": 0.2
+          }
+        ],
+        "headline": {
+          "text": "Every book, ordered by tomorrow",
+          "family": "Tiempos",
+          "size_px": 56,
+          "weight": 600,
+          "tracking_em": -0.02
+        },
+        "button_radius_px": 8,
+        "media": {
+          "img": 6,
+          "video": 0,
+          "svg": 12,
+          "canvas": 0
+        }
+      },
+      "codes": {
+        "logo_type": "wordmark",
+        "symbol_subject": "none",
+        "symbol_used_alone": false,
+        "name_case": "upper",
+        "name_style": "serif",
+        "hue": "neutral",
+        "saturation": "muted",
+        "ground": "light",
+        "hue_count": "one",
+        "headline_class": "serif",
+        "text_class": "serif",
+        "imagery": "product_photo",
+        "layout": "editorial",
+        "headline_promise": "manifesto"
+      },
+      "evidence": [
+        "evidence/bindery/desktop.webp",
+        "evidence/bindery/logo.svg"
+      ]
+    },
+    {
+      "id": "stacks",
+      "name": "Stacks",
+      "url": "https://stacks.example",
+      "role": "direct",
+      "why": "Same product, newer entrant",
+      "confidence": 0.8,
+      "established": {
+        "value": false,
+        "reason": "Launched 2022"
+      },
+      "capture": "full",
+      "measures": {
+        "palette": [
+          {
+            "hex": "#ffffff",
+            "share": 0.72,
+            "hue": "neutral",
+            "saturation": "muted"
+          },
+          {
+            "hex": "#1e40af",
+            "share": 0.09,
+            "hue": "blue",
+            "saturation": "vivid"
+          }
+        ],
+        "accent": "#1e40af",
+        "ground": "light",
+        "fonts": [
+          {
+            "family": "Inter",
+            "weight": 400,
+            "share": 0.8
+          },
+          {
+            "family": "Inter",
+            "weight": 600,
+            "share": 0.2
+          }
+        ],
+        "headline": {
+          "text": "Every book, ordered by tomorrow",
+          "family": "Inter",
+          "size_px": 56,
+          "weight": 600,
+          "tracking_em": -0.02
+        },
+        "button_radius_px": 8,
+        "media": {
+          "img": 6,
+          "video": 0,
+          "svg": 12,
+          "canvas": 0
+        }
+      },
+      "codes": {
+        "logo_type": "combination",
+        "symbol_nature": "abstract",
+        "symbol_subject": "stacked bars",
+        "symbol_used_alone": false,
+        "name_case": "lower",
+        "name_style": "grotesque",
+        "hue": "blue",
+        "saturation": "vivid",
+        "ground": "light",
+        "hue_count": "one",
+        "headline_class": "grotesque",
+        "text_class": "grotesque",
+        "imagery": "product_ui",
+        "layout": "centered_hero",
+        "headline_promise": "mechanism"
+      },
+      "evidence": [
+        "evidence/stacks/desktop.webp",
+        "evidence/stacks/logo.svg"
+      ]
+    },
+    {
+      "id": "quire",
+      "name": "Quire",
+      "url": "https://quire.example",
+      "role": "direct",
+      "why": "Same product, one region",
+      "confidence": 0.8,
+      "established": {
+        "value": false,
+        "reason": "Regional player, 300 shops"
+      },
+      "capture": "full",
+      "measures": {
+        "palette": [
+          {
+            "hex": "#ffffff",
+            "share": 0.72,
+            "hue": "neutral",
+            "saturation": "muted"
+          },
+          {
+            "hex": "#15803d",
+            "share": 0.09,
+            "hue": "green",
+            "saturation": "vivid"
+          }
+        ],
+        "accent": "#15803d",
+        "ground": "light",
+        "fonts": [
+          {
+            "family": "Nunito",
+            "weight": 400,
+            "share": 0.8
+          },
+          {
+            "family": "Nunito",
+            "weight": 600,
+            "share": 0.2
+          }
+        ],
+        "headline": {
+          "text": "Every book, ordered by tomorrow",
+          "family": "Nunito",
+          "size_px": 56,
+          "weight": 600,
+          "tracking_em": -0.02
+        },
+        "button_radius_px": 8,
+        "media": {
+          "img": 6,
+          "video": 0,
+          "svg": 12,
+          "canvas": 0
+        }
+      },
+      "codes": {
+        "logo_type": "combination",
+        "symbol_nature": "pictorial",
+        "symbol_subject": "open book",
+        "symbol_used_alone": false,
+        "name_case": "title",
+        "name_style": "humanist_sans",
+        "hue": "green",
+        "saturation": "medium",
+        "ground": "light",
+        "hue_count": "one",
+        "headline_class": "humanist_sans",
+        "text_class": "humanist_sans",
+        "imagery": "people_photo",
+        "layout": "split_hero",
+        "headline_promise": "benefit"
+      },
+      "evidence": [
+        "evidence/quire/desktop.webp",
+        "evidence/quire/logo.svg"
+      ]
+    },
+    {
+      "id": "marque",
+      "name": "Marque",
+      "url": "https://marque.example",
+      "role": "direct",
+      "why": "Same product, newer entrant",
+      "confidence": 0.8,
+      "established": {
+        "value": false,
+        "reason": "Launched 2024"
+      },
+      "capture": "full",
+      "measures": {
+        "palette": [
+          {
+            "hex": "#ffffff",
+            "share": 0.72,
+            "hue": "neutral",
+            "saturation": "muted"
+          },
+          {
+            "hex": "#2563eb",
+            "share": 0.09,
+            "hue": "blue",
+            "saturation": "vivid"
+          }
+        ],
+        "accent": "#2563eb",
+        "ground": "light",
+        "fonts": [
+          {
+            "family": "Inter",
+            "weight": 400,
+            "share": 0.8
+          },
+          {
+            "family": "Inter",
+            "weight": 600,
+            "share": 0.2
+          }
+        ],
+        "headline": {
+          "text": "Every book, ordered by tomorrow",
+          "family": "Inter",
+          "size_px": 56,
+          "weight": 600,
+          "tracking_em": -0.02
+        },
+        "button_radius_px": 8,
+        "media": {
+          "img": 6,
+          "video": 0,
+          "svg": 12,
+          "canvas": 0
+        }
+      },
+      "codes": {
+        "logo_type": "combination",
+        "symbol_nature": "lettermark",
+        "symbol_subject": "letter m",
+        "symbol_used_alone": false,
+        "name_case": "lower",
+        "name_style": "geometric_sans",
+        "hue": "blue",
+        "saturation": "vivid",
+        "ground": "light",
+        "hue_count": "one",
+        "headline_class": "geometric_sans",
+        "text_class": "geometric_sans",
+        "imagery": "product_ui",
+        "layout": "centered_hero",
+        "headline_promise": "benefit"
+      },
+      "evidence": [
+        "evidence/marque/desktop.webp",
+        "evidence/marque/logo.svg"
+      ]
+    },
+    {
+      "id": "libra",
+      "name": "Libra Order",
+      "url": "https://libra.example",
+      "role": "direct",
+      "why": "Same product, legacy leader",
+      "confidence": 0.8,
+      "established": {
+        "value": true,
+        "reason": "Oldest in the category, founded 2004"
+      },
+      "capture": "full",
+      "measures": {
+        "palette": [
+          {
+            "hex": "#ffffff",
+            "share": 0.72,
+            "hue": "neutral",
+            "saturation": "muted"
+          },
+          {
+            "hex": "#1d4ed8",
+            "share": 0.09,
+            "hue": "blue",
+            "saturation": "vivid"
+          }
+        ],
+        "accent": "#1d4ed8",
+        "ground": "light",
+        "fonts": [
+          {
+            "family": "Open Sans",
+            "weight": 400,
+            "share": 0.8
+          },
+          {
+            "family": "Open Sans",
+            "weight": 600,
+            "share": 0.2
+          }
+        ],
+        "headline": {
+          "text": "Every book, ordered by tomorrow",
+          "family": "Open Sans",
+          "size_px": 56,
+          "weight": 600,
+          "tracking_em": -0.02
+        },
+        "button_radius_px": 8,
+        "media": {
+          "img": 6,
+          "video": 0,
+          "svg": 12,
+          "canvas": 0
+        }
+      },
+      "codes": {
+        "logo_type": "combination",
+        "symbol_nature": "pictorial",
+        "symbol_subject": "open book",
+        "symbol_used_alone": false,
+        "name_case": "title",
+        "name_style": "humanist_sans",
+        "hue": "blue",
+        "saturation": "medium",
+        "ground": "light",
+        "hue_count": "two",
+        "headline_class": "humanist_sans",
+        "text_class": "humanist_sans",
+        "imagery": "product_ui",
+        "layout": "split_hero",
+        "headline_promise": "proof"
+      },
+      "evidence": [
+        "evidence/libra/desktop.webp",
+        "evidence/libra/logo.svg"
+      ]
+    },
+    {
+      "id": "atelier-paper",
+      "name": "Atelier Paper",
+      "url": "https://atelier-paper.example",
+      "role": "aspirational",
+      "why": "Serves the same independent shopkeepers, in stationery: trusted without looking institutional",
+      "confidence": 0.8,
+      "capture": "full",
+      "measures": {
+        "palette": [
+          {
+            "hex": "#ffffff",
+            "share": 0.72,
+            "hue": "neutral",
+            "saturation": "muted"
+          },
+          {
+            "hex": "#7c4a2d",
+            "share": 0.09,
+            "hue": "brown",
+            "saturation": "vivid"
+          }
+        ],
+        "accent": "#7c4a2d",
+        "ground": "coloured",
+        "fonts": [
+          {
+            "family": "GT Sectra",
+            "weight": 400,
+            "share": 0.8
+          },
+          {
+            "family": "GT Sectra",
+            "weight": 600,
+            "share": 0.2
+          }
+        ],
+        "headline": {
+          "text": "Every book, ordered by tomorrow",
+          "family": "GT Sectra",
+          "size_px": 56,
+          "weight": 600,
+          "tracking_em": -0.02
+        },
+        "button_radius_px": 8,
+        "media": {
+          "img": 6,
+          "video": 0,
+          "svg": 12,
+          "canvas": 0
+        }
+      },
+      "codes": {
+        "logo_type": "wordmark",
+        "symbol_subject": "none",
+        "symbol_used_alone": false,
+        "name_case": "title",
+        "name_style": "serif",
+        "hue": "brown",
+        "saturation": "muted",
+        "ground": "coloured",
+        "hue_count": "two",
+        "headline_class": "serif",
+        "text_class": "mono",
+        "imagery": "product_photo",
+        "layout": "editorial",
+        "headline_promise": "manifesto"
+      },
+      "evidence": [
+        "evidence/atelier-paper/desktop.webp",
+        "evidence/atelier-paper/logo.svg"
+      ]
+    },
+    {
+      "id": "ledgerly",
+      "name": "Ledgerly",
+      "url": "https://ledgerly.example",
+      "role": "aspirational",
+      "why": "Solved the same tension in accounting: dense operational data that still feels calm",
+      "confidence": 0.8,
+      "capture": "full",
+      "measures": {
+        "palette": [
+          {
+            "hex": "#ffffff",
+            "share": 0.72,
+            "hue": "neutral",
+            "saturation": "muted"
+          },
+          {
+            "hex": "#111111",
+            "share": 0.09,
+            "hue": "neutral",
+            "saturation": "vivid"
+          }
+        ],
+        "accent": "#111111",
+        "ground": "light",
+        "fonts": [
+          {
+            "family": "IBM Plex Mono",
+            "weight": 400,
+            "share": 0.8
+          },
+          {
+            "family": "IBM Plex Mono",
+            "weight": 600,
+            "share": 0.2
+          }
+        ],
+        "headline": {
+          "text": "Every book, ordered by tomorrow",
+          "family": "IBM Plex Mono",
+          "size_px": 56,
+          "weight": 600,
+          "tracking_em": -0.02
+        },
+        "button_radius_px": 8,
+        "media": {
+          "img": 6,
+          "video": 0,
+          "svg": 12,
+          "canvas": 0
+        }
+      },
+      "codes": {
+        "logo_type": "lettermark",
+        "symbol_subject": "letter l",
+        "symbol_used_alone": false,
+        "name_case": "lower",
+        "name_style": "mono",
+        "hue": "neutral",
+        "saturation": "muted",
+        "ground": "light",
+        "hue_count": "one",
+        "headline_class": "grotesque",
+        "text_class": "mono",
+        "imagery": "none",
+        "layout": "dense_grid",
+        "headline_promise": "mechanism"
+      },
+      "evidence": [
+        "evidence/ledgerly/desktop.webp",
+        "evidence/ledgerly/logo.svg"
+      ]
+    }
+  ],
+  "library": {
+    "logosystem": null,
+    "mobbin": null
+  },
+  "conventions": [
+    {
+      "dimension": "imagery",
+      "value": "product_ui",
+      "count": 6,
+      "base": 8,
+      "share": 0.75,
+      "breakers": [
+        {
+          "id": "bindery",
+          "established": true,
+          "value": "product_photo"
+        },
+        {
+          "id": "quire",
+          "established": false,
+          "value": "people_photo"
+        }
+      ],
+      "class": "legibility",
+      "provenance": "judged",
+      "reason": "Hypothesis. Bindery breaks it but sells to a segment that already knows the product; for a shop owner comparing tools, the screen is how the category is recognised.",
+      "evidence": [
+        "evidence/sheets/heroes.webp",
+        "evidence/bindery/desktop.webp"
+      ]
+    },
+    {
+      "dimension": "hue",
+      "value": "blue",
+      "count": 6,
+      "base": 8,
+      "share": 0.75,
+      "breakers": [
+        {
+          "id": "bindery",
+          "established": true,
+          "value": "neutral"
+        },
+        {
+          "id": "quire",
+          "established": false,
+          "value": "green"
+        }
+      ],
+      "class": "cliche",
+      "provenance": "judged",
+      "reason": "Bindery is established, uses no blue at all and is still read as the category reference. Blue carries no information here.",
+      "evidence": [
+        "evidence/sheets/palettes.webp",
+        "evidence/bindery/desktop.webp"
+      ]
+    },
+    {
+      "dimension": "ground",
+      "value": "light",
+      "count": 8,
+      "base": 8,
+      "share": 1,
+      "breakers": [],
+      "class": "risky",
+      "provenance": "judged",
+      "reason": "Nobody breaks it and it tells the buyer nothing about the product. Atelier Paper shows a coloured ground working for the same audience in another category.",
+      "evidence": [
+        "evidence/sheets/heroes.webp",
+        "evidence/atelier-paper/desktop.webp"
+      ]
+    }
+  ],
+  "opportunities": [
+    {
+      "id": "the-order-book",
+      "title": "The order book",
+      "keep": [
+        "imagery: product_ui"
+      ],
+      "break": [
+        "hue: blue",
+        "logo symbol: open book"
+      ],
+      "import": [
+        {
+          "from": "atelier-paper",
+          "what": "a paper-coloured ground and a serif wordmark"
+        }
+      ],
+      "rationale": "Six of eight competitors are blue with a book pictogram. The thing shop owners use today is a paper order book: a ruled, warm, typographic territory is recognisable to them and empty in the panel.",
+      "risk": "medium",
+      "provenance": "judged",
+      "evidence": [
+        "evidence/sheets/logos.webp",
+        "evidence/atelier-paper/desktop.webp"
+      ]
+    },
+    {
+      "id": "the-back-office",
+      "title": "The back office",
+      "keep": [
+        "imagery: product_ui",
+        "ground: light"
+      ],
+      "break": [
+        "hue: blue",
+        "layout: split_hero"
+      ],
+      "import": [
+        {
+          "from": "ledgerly",
+          "what": "dense grids and a mono label system"
+        }
+      ],
+      "rationale": "Every competitor sells ease. None shows the density owners actually work in. A calm, dense, tabular look would read as the serious tool.",
+      "risk": "low",
+      "provenance": "judged",
+      "evidence": [
+        "evidence/sheets/heroes.webp",
+        "evidence/ledgerly/desktop.webp"
+      ]
+    }
+  ],
+  "limits": [
+    "Flash mode: 8 direct brands, home pages only. Every classification is a hypothesis.",
+    "No indirect competitors and no library sample were collected.",
+    "A photograph dated 2026-11-26."
+  ]
+}
