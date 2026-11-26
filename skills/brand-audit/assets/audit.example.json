@@ -898,6 +898,7 @@
           "value": "wordmark"
         }
       ],
+      "id": "C-01",
       "class": "cliche",
       "provenance": "judged",
       "reason": "Bindery is established with a bare wordmark. A symbol next to the name is habit here, not a signal.",
@@ -924,6 +925,7 @@
           "value": "lettermark"
         }
       ],
+      "id": "C-02",
       "class": "risky",
       "provenance": "judged",
       "reason": "No established brand uses anything but a pictogram, four of them the same open book. Only two newcomers try something else, with no evidence yet that it reads.",
@@ -949,6 +951,7 @@
           "value": "green"
         }
       ],
+      "id": "C-03",
       "class": "cliche",
       "provenance": "judged",
       "reason": "Bindery is established, uses no blue at all and is still read as the category reference. Blue carries no information here.",
@@ -964,6 +967,7 @@
       "base": 8,
       "share": 1,
       "breakers": [],
+      "id": "C-04",
       "class": "risky",
       "provenance": "judged",
       "reason": "Nobody breaks it and it tells the buyer nothing about the product. Atelier Paper shows a coloured ground working for the same audience in another category.",
@@ -990,6 +994,7 @@
           "value": "two"
         }
       ],
+      "id": "C-05",
       "class": "cliche",
       "provenance": "judged",
       "reason": "Libra Order, the oldest brand, runs two hues. A single accent is a default, not a code.",
@@ -1016,7 +1021,8 @@
           "value": "people_photo"
         }
       ],
-      "class": "legibility",
+      "id": "C-06",
+      "class": "signal",
       "provenance": "judged",
       "reason": "Hypothesis. Bindery breaks it but sells to a segment that already knows the product; for a shop owner comparing tools, the screen is how the category is recognised.",
       "evidence": [
@@ -1047,6 +1053,7 @@
           "value": "proof"
         }
       ],
+      "id": "C-07",
       "class": "cliche",
       "provenance": "judged",
       "reason": "Two established brands open on something other than a benefit line and lose nothing.",
@@ -1069,6 +1076,7 @@
           "value": "organic"
         }
       ],
+      "id": "C-08",
       "class": "cliche",
       "provenance": "judged",
       "reason": "Bindery draws its name in a serif with a pen behind it and is the category reference. Geometry is habit.",
@@ -1084,6 +1092,7 @@
       "base": 8,
       "share": 1,
       "breakers": [],
+      "id": "C-09",
       "class": "risky",
       "provenance": "judged",
       "reason": "Every mark sits still and upright. Nothing says a tool for retail must; nothing shows that movement would help either.",
@@ -1114,6 +1123,7 @@
           "value": "minimal"
         }
       ],
+      "id": "C-10",
       "class": "cliche",
       "provenance": "judged",
       "reason": "The drawn pictograms are the detailed ones. Bindery does without any drawing.",
@@ -1135,7 +1145,8 @@
       "evidence": [
         "evidence/folio/desktop.webp",
         "evidence/folio/logo.webp"
-      ]
+      ],
+      "id": "C-11"
     },
     {
       "manual": true,
@@ -1151,7 +1162,26 @@
       "evidence": [
         "evidence/stacks/logo.webp",
         "evidence/marque/logo.webp"
-      ]
+      ],
+      "id": "C-12"
+    },
+    {
+      "manual": true,
+      "dimension": "logo_detail",
+      "value": "a mark that reads at 16 px",
+      "count": 8,
+      "base": 8,
+      "share": 1,
+      "population": "8 favicons",
+      "breakers": [],
+      "class": "requirement",
+      "provenance": "judged",
+      "confidence": "high",
+      "reason": "The product lives in a browser tab all day. All eight favicons read at 16 px; a mark that does not is unusable there.",
+      "evidence": [
+        "evidence/sheets/logos.webp"
+      ],
+      "id": "C-13"
     }
   ],
   "opportunities": [
@@ -1231,17 +1261,33 @@
           "provenance": "observed",
           "evidence": [
             "evidence/sheets/logos.webp"
-          ]
+          ],
+          "id": "F-LOG-01"
         },
         {
           "text": "Bindery is the only brand recognisable in black and white without its name.",
           "provenance": "judged",
           "evidence": [
             "evidence/bindery/logo.webp"
-          ]
+          ],
+          "id": "F-LOG-02"
         }
       ],
-      "takeaway": "The sign is where this category is most alike, and so where a new brand is most visible."
+      "takeaway": "The sign is where this category is most alike, and so where a new brand is most visible.",
+      "implications": {
+        "implication": "The sign is where a newcomer is most visible, and where the category is most alike.",
+        "preserve": [
+          "a mark that reads at favicon size"
+        ],
+        "explore": [
+          "a mark recognisable without colour"
+        ],
+        "deprioritise": [
+          "a pictogram beside the name by default"
+        ],
+        "tradeoff": "A bare wordmark needs another device to stand alone as an icon.",
+        "confidence": "medium"
+      }
     },
     "architecture": {
       "lead": "Combination marks are the rule; the wordmark is the exception, and the only established one.",
@@ -1254,10 +1300,23 @@
           "provenance": "observed",
           "evidence": [
             "evidence/sheets/logos.webp"
-          ]
+          ],
+          "id": "F-ARC-01"
         }
       ],
-      "takeaway": "A rare architecture is not an opportunity by itself: Bindery shows the wordmark works here, the lettermark is still unproven."
+      "takeaway": "A rare architecture is not an opportunity by itself: Bindery shows the wordmark works here, the lettermark is still unproven.",
+      "implications": {
+        "implication": "Rarity is not an opening by itself: one architecture is proven by an established brand, the others are bets.",
+        "preserve": [],
+        "explore": [
+          "a wordmark with one detachable letter or device"
+        ],
+        "deprioritise": [
+          "the default combination mark"
+        ],
+        "tradeoff": "Less immediate \"software\" recognition.",
+        "confidence": "medium"
+      }
     },
     "colour": {
       "lead": "Six of eight brands are blue, within a narrow band of the spectrum.",
@@ -1270,17 +1329,33 @@
           "provenance": "measured",
           "evidence": [
             "evidence/sheets/palettes.webp"
-          ]
+          ],
+          "id": "F-COL-01"
         },
         {
           "text": "No direct brand uses a warm accent.",
           "provenance": "measured",
           "evidence": [
             "evidence/sheets/palettes.webp"
-          ]
+          ],
+          "id": "F-COL-02"
         }
       ],
-      "takeaway": "Blue says \"software\" here, not \"bookshop\". The warm half of the spectrum is empty."
+      "takeaway": "Blue says \"software\" here, not \"bookshop\". The warm half of the spectrum is empty.",
+      "implications": {
+        "implication": "Blue is crowded and tied to the leader; the warm half of the spectrum is unused in this panel of eight.",
+        "preserve": [
+          "enough contrast for a tool used all day"
+        ],
+        "explore": [
+          "a warm or paper-toned ground"
+        ],
+        "deprioritise": [
+          "royal blue with white"
+        ],
+        "tradeoff": "A warm ground may read as stationery rather than software.",
+        "confidence": "medium"
+      }
     },
     "typography": {
       "lead": "Neutral sans-serifs set almost every headline; two brands use a serif.",
@@ -1293,10 +1368,25 @@
           "provenance": "measured",
           "evidence": [
             "evidence/sheets/type.webp"
-          ]
+          ],
+          "id": "F-TYP-01"
         }
       ],
-      "takeaway": "Type is an open field: nobody has a lettering signature."
+      "takeaway": "Type is an open field: nobody has a lettering signature.",
+      "implications": {
+        "implication": "No competitor has a lettering signature, so type is the cheapest place to be recognised.",
+        "preserve": [
+          "legibility in dense tables"
+        ],
+        "explore": [
+          "a serif or a mono with character"
+        ],
+        "deprioritise": [
+          "Inter as the whole voice"
+        ],
+        "tradeoff": "A characterful face ages faster.",
+        "confidence": "low"
+      }
     },
     "symbols": {
       "lead": "One idea, repeated: the open book.",
@@ -1309,10 +1399,23 @@
           "provenance": "observed",
           "evidence": [
             "evidence/sheets/logos.webp"
-          ]
+          ],
+          "id": "F-SYM-01"
         }
       ],
-      "takeaway": "The book is the cliché to avoid. What the tool does, ordering and keeping count, is not pictured by anyone."
+      "takeaway": "The book is the cliché to avoid. What the tool does, ordering and keeping count, is not pictured by anyone.",
+      "implications": {
+        "implication": "Every symbol pictures the customer's product; none pictures what the tool does.",
+        "preserve": [],
+        "explore": [
+          "ordering, counting, the ruled line"
+        ],
+        "deprioritise": [
+          "the open book"
+        ],
+        "tradeoff": "An abstract idea is slower to read than a book.",
+        "confidence": "medium"
+      }
     },
     "visual_language": {
       "lead": "A dashboard floating beside a benefit line: six of eight first screens.",
@@ -1325,10 +1428,26 @@
           "provenance": "observed",
           "evidence": [
             "evidence/sheets/heroes.webp"
-          ]
+          ],
+          "id": "F-VIS-01"
         }
       ],
-      "takeaway": "Showing the screen is how the category is recognised; how it is shown is where the sameness lies."
+      "takeaway": "Showing the screen is how the category is recognised; how it is shown is where the sameness lies.",
+      "implications": {
+        "implication": "Showing the screen is how the category is recognised; how it is shown is where the sameness lies.",
+        "preserve": [
+          "the product screen in the first view"
+        ],
+        "explore": [
+          "density shown honestly",
+          "the shop itself"
+        ],
+        "deprioritise": [
+          "a floating dashboard beside a benefit line"
+        ],
+        "tradeoff": "A dense first screen may put off a first-time buyer.",
+        "confidence": "medium"
+      }
     }
   },
   "summary": {
@@ -1376,6 +1495,296 @@
         "text": "Do shop owners read a paper-toned brand as a serious tool or as a nostalgic one? Show both to five owners."
       }
     ]
+  },
+  "synthesis": {
+    "thesis": "Be read at once as a tool for running a bookshop, and as nothing like the blue software brands that sell it today: closer to the paper order book owners already trust.",
+    "tension": "Recognition as software against the warmth and craft of the trade it serves.",
+    "uncertainty": "Whether shop owners read a paper-toned brand as a serious tool or as nostalgia. Nothing in the captures can tell.",
+    "decisions": [
+      {
+        "id": "D-01",
+        "dimension": "Imagery",
+        "status": "required",
+        "recommendation": "Show the product screen in the first view.",
+        "rationale": "It is how owners recognise the category when they compare tools.",
+        "finding_refs": [
+          "F-VIS-01",
+          "C-06"
+        ],
+        "tradeoff": "Less room for an image of the shop.",
+        "confidence": "medium"
+      },
+      {
+        "id": "D-02",
+        "dimension": "Logo",
+        "status": "required",
+        "recommendation": "A mark that reads at 16 px.",
+        "rationale": "The product lives in a browser tab.",
+        "finding_refs": [
+          "C-13"
+        ],
+        "tradeoff": "Rules out fine detail.",
+        "confidence": "high"
+      },
+      {
+        "id": "D-03",
+        "dimension": "Colour",
+        "status": "explore",
+        "recommendation": "A warm or paper-toned ground.",
+        "rationale": "Six of eight are blue and no warm hue appears in the panel.",
+        "finding_refs": [
+          "F-COL-01",
+          "F-COL-02",
+          "C-03"
+        ],
+        "tradeoff": "May read as stationery rather than software.",
+        "confidence": "medium"
+      },
+      {
+        "id": "D-04",
+        "dimension": "Symbolism",
+        "status": "deprioritise",
+        "recommendation": "The open book.",
+        "rationale": "Four of eight symbols already are one.",
+        "finding_refs": [
+          "F-SYM-01"
+        ],
+        "tradeoff": "Gives up the fastest way to say \"books\".",
+        "confidence": "high"
+      },
+      {
+        "id": "D-05",
+        "dimension": "Colour",
+        "status": "avoid",
+        "recommendation": "Royal blue with a white open book.",
+        "rationale": "That pairing is Folio's.",
+        "finding_refs": [
+          "C-11"
+        ],
+        "tradeoff": "None worth keeping.",
+        "confidence": "high"
+      }
+    ],
+    "territories": [
+      {
+        "id": "T-order-book",
+        "title": "The order book",
+        "idea": "The tool that replaces the paper book looks like it learned from it.",
+        "description": "A ruled, warm, typographic brand that an owner recognises as their own trade.",
+        "perception": "Made by people who know a shop floor.",
+        "finding_refs": [
+          "F-COL-02",
+          "F-SYM-01",
+          "C-03"
+        ],
+        "opportunity_refs": [
+          "the-order-book"
+        ],
+        "directions": {
+          "personality": "Careful, plain-spoken, a little bookish",
+          "logo": "A serif wordmark with one detachable device",
+          "symbolism": "The ruled line, the tally, the margin note",
+          "colour": "A paper ground and one ink",
+          "typography": "A serif for the voice, a mono for figures",
+          "photography": "The shop and its counter, in daylight",
+          "graphic_system": "Hairline rules and index labels",
+          "voice": "Statements, not benefits"
+        },
+        "touchpoints": {
+          "Favicon": "the device alone, in ink on paper",
+          "Home page": "a ruled page with the product screen set into it",
+          "Product": "tables first"
+        },
+        "preserves": [
+          "the product screen in the first view",
+          "a mark that reads at 16 px"
+        ],
+        "challenges": [
+          "blue",
+          "the book pictogram",
+          "the white page"
+        ],
+        "risk": "May read as nostalgic or as stationery.",
+        "confidence": "medium",
+        "validate": "Show it beside Folio to five owners and ask which one they would trust with their stock.",
+        "open_decisions": [
+          "The exact ground tone",
+          "Which device detaches from the wordmark",
+          "How much of the shop to show"
+        ],
+        "moodboard": [
+          {
+            "file": "evidence/atelier-paper/desktop.webp",
+            "source": "https://atelier-paper.example",
+            "kind": "panel",
+            "note": "A serif voice held across the page (atelier-paper)"
+          },
+          {
+            "file": "evidence/bindery/desktop.webp",
+            "source": "https://bindery.example",
+            "kind": "panel",
+            "note": "A serif voice held across the page (bindery)"
+          },
+          {
+            "file": "evidence/libra/desktop.webp",
+            "source": "https://libra.example",
+            "kind": "panel",
+            "note": "A serif voice held across the page (libra)"
+          },
+          {
+            "file": "evidence/quire/desktop.webp",
+            "source": "https://quire.example",
+            "kind": "panel",
+            "note": "What to stand apart from, or learn density from (quire)"
+          },
+          {
+            "file": "evidence/ledgerly/desktop.webp",
+            "source": "https://ledgerly.example",
+            "kind": "panel",
+            "note": "What to stand apart from, or learn density from (ledgerly)"
+          },
+          {
+            "file": "evidence/folio/desktop.webp",
+            "source": "https://folio.example",
+            "kind": "panel",
+            "note": "What to stand apart from, or learn density from (folio)"
+          }
+        ]
+      },
+      {
+        "id": "T-back-office",
+        "title": "The back office",
+        "idea": "The serious tool shows its density instead of hiding it.",
+        "description": "A calm, tabular brand for people who count stock all day.",
+        "perception": "The professional choice.",
+        "finding_refs": [
+          "F-VIS-01",
+          "F-TYP-01"
+        ],
+        "opportunity_refs": [
+          "the-back-office"
+        ],
+        "directions": {
+          "personality": "Exact, unhurried, dry",
+          "logo": "A lettermark or a compact wordmark",
+          "symbolism": "The grid, the column, the count",
+          "colour": "Black on white with one functional accent",
+          "typography": "A mono label system over a neutral text face",
+          "photography": "None: the interface is the picture",
+          "graphic_system": "Dense grids, aligned figures",
+          "voice": "How it works, in few words"
+        },
+        "touchpoints": {
+          "Favicon": "a letter on a square",
+          "Home page": "a real table, legible, above the fold",
+          "Product": "the same grid as the site"
+        },
+        "preserves": [
+          "the product screen in the first view",
+          "a light ground"
+        ],
+        "challenges": [
+          "blue",
+          "the benefit headline",
+          "the floating dashboard"
+        ],
+        "risk": "May put off a first-time buyer.",
+        "confidence": "medium",
+        "validate": "Whether a dense first screen loses sign-ups against a simplified one.",
+        "open_decisions": [
+          "The accent and what it means",
+          "How dense is too dense on a phone"
+        ],
+        "moodboard": [
+          {
+            "file": "evidence/ledgerly/desktop.webp",
+            "source": "https://ledgerly.example",
+            "kind": "panel",
+            "note": "Density that stays calm (ledgerly)"
+          },
+          {
+            "file": "evidence/stacks/desktop.webp",
+            "source": "https://stacks.example",
+            "kind": "panel",
+            "note": "Density that stays calm (stacks)"
+          },
+          {
+            "file": "evidence/marque/desktop.webp",
+            "source": "https://marque.example",
+            "kind": "panel",
+            "note": "Density that stays calm (marque)"
+          },
+          {
+            "file": "evidence/shelfline/desktop.webp",
+            "source": "https://shelfline.example",
+            "kind": "panel",
+            "note": "The dashboard convention to answer (shelfline)"
+          },
+          {
+            "file": "evidence/pagewise/desktop.webp",
+            "source": "https://pagewise.example",
+            "kind": "panel",
+            "note": "The dashboard convention to answer (pagewise)"
+          },
+          {
+            "file": "evidence/bindery/desktop.webp",
+            "source": "https://bindery.example",
+            "kind": "panel",
+            "note": "The dashboard convention to answer (bindery)"
+          }
+        ]
+      }
+    ],
+    "references": [
+      {
+        "asset": "evidence/atelier-paper/desktop.webp",
+        "mechanism": "One ground tone carries the whole identity.",
+        "reinterpret": "Find the ground that belongs to a bookshop counter, not to a stationer.",
+        "do_not_copy": "Its brown, its serif, its layout."
+      },
+      {
+        "asset": "evidence/ledgerly/desktop.webp",
+        "mechanism": "A mono label system makes dense data feel ordered.",
+        "reinterpret": "Labels that name what a bookseller counts.",
+        "do_not_copy": "Its grid proportions and lettermark."
+      }
+    ],
+    "evaluation": [
+      {
+        "criterion": "Functional",
+        "test": "The mark is recognisable at 16 px in a browser tab, in one colour.",
+        "gate": true
+      },
+      {
+        "criterion": "Category recognition",
+        "test": "A shop owner says what the product is within five seconds of seeing the home page.",
+        "gate": true
+      },
+      {
+        "criterion": "Differentiation",
+        "test": "Placed in the logo wall, it is not mistaken for any of the eight.",
+        "gate": false
+      },
+      {
+        "criterion": "System",
+        "test": "Favicon, home page and product screen are recognised as one brand with the logo covered.",
+        "gate": false
+      }
+    ],
+    "for_brand_kit": {
+      "swap_competitor": "Folio: largest installed base and the most typical of the category.",
+      "swap_evidence": "evidence/folio/desktop.webp",
+      "duel": [
+        "evidence/folio/desktop.webp",
+        "evidence/bindery/desktop.webp"
+      ],
+      "not_list": [
+        "blue SaaS accent",
+        "open-book pictogram",
+        "split hero with a floating dashboard",
+        "\"save time\" benefit headline"
+      ]
+    }
   },
   "frequencies": {
     "base": 8,

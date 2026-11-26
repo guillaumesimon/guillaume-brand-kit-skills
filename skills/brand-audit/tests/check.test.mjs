@@ -7,6 +7,7 @@ import { fileURLToPath } from 'node:url';
 import { execFileSync } from 'node:child_process';
 import { checkAudit } from '../assets/check.mjs';
 import { sheetPages } from '../assets/sheets.mjs';
+import { renderBrief } from '../assets/brief.mjs';
 
 const assets = fileURLToPath(new URL('../assets/', import.meta.url));
 const example = () => JSON.parse(readFileSync(join(assets, 'audit.example.json')));
@@ -21,6 +22,8 @@ function fixture(mutate) {
   for (const c of [...audit.conventions, ...audit.opportunities]) c.evidence.forEach((p) => paths.add(p));
   for (const sec of Object.values(audit.sections)) sec.findings.forEach((f) => f.evidence.forEach((p) => paths.add(p)));
   for (const d of ['preserve', 'avoid', 'challenge', 'explore']) audit.summary[d].forEach((it) => it.evidence.forEach((p) => paths.add(p)));
+  for (const t of audit.synthesis.territories) t.moodboard.forEach((m) => paths.add(m.file));
+  for (const r of audit.synthesis.references) paths.add(r.asset);
   for (const p of paths) { mkdirSync(dirname(join(dir, p)), { recursive: true }); writeFileSync(join(dir, p), ''); }
   copyFileSync(join(assets, 'AUDIT.example.md'), join(dir, 'AUDIT.md'));
   writeFileSync(join(dir, 'landscape.html'), '<html></html>');
@@ -30,8 +33,8 @@ function fixture(mutate) {
 }
 
 test('the worked example passes the gate', () => assert.deepEqual(checkAudit(fixture()).errors, []));
-test('the example AUDIT.md stays under 120 lines', () => {
-  assert.ok(readFileSync(join(assets, 'AUDIT.example.md'), 'utf8').split('\n').length < 120);
+test('the example brief stays short enough to be read whole', () => {
+  assert.ok(readFileSync(join(assets, 'AUDIT.example.md'), 'utf8').split('\n').length < 220);
 });
 test('missing evidence in audit.json fails and is named', () => {
   const dir = fixture(); rmSync(join(dir, 'evidence/bindery/desktop.webp'));
@@ -86,4 +89,21 @@ test('an opportunity must say what it rests on and what to validate', () => {
 test('aspirational brands must cover both criteria', () => {
   const dir = fixture((a) => { for (const b of a.panel) if (b.role === 'aspirational') b.criterion = 'same_tension'; });
   assert.ok(checkAudit(dir).errors.some((e) => /none chosen on same_audience/.test(e)));
+});
+test('the example brief is exactly what brief.mjs generates', () => {
+  assert.equal(readFileSync(join(assets, 'AUDIT.example.md'), 'utf8'), renderBrief(example()));
+});
+test('a hand-edited brief fails', () => {
+  const dir = fixture((a, d) => writeFileSync(join(d, 'AUDIT.md'), readFileSync(join(assets, 'AUDIT.example.md'), 'utf8').replace('6 of 8', '7 of 8')));
+  assert.ok(checkAudit(dir).errors.some((e) => /differs from what brief\.mjs generates/.test(e)));
+});
+test('a territory needs a real moodboard, and there are two to four territories', () => {
+  const dir = fixture((a) => { a.synthesis.territories[0].moodboard = a.synthesis.territories[0].moodboard.slice(0, 3); });
+  assert.ok(checkAudit(dir).errors.some((e) => /T-order-book": 3 moodboard images/.test(e)));
+  const one = fixture((a) => { a.synthesis.territories.pop(); });
+  assert.ok(checkAudit(one).errors.some((e) => /1 territories/.test(e)));
+});
+test('a section without its implications fails', () => {
+  const dir = fixture((a) => { delete a.sections.colour.implications; });
+  assert.ok(checkAudit(dir).errors.some((e) => /sections\.colour: implications/.test(e)));
 });

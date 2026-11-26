@@ -102,7 +102,7 @@ test('a convention written by the analyst survives a re-run', () => {
   const dir = mkdtempSync(join(tmpdir(), 'ba-man-'));
   const audit = JSON.parse(readFileSync(new URL('../assets/audit.example.json', import.meta.url)));
   const before = audit.conventions.filter((c) => c.manual).length;
-  audit.conventions.push({ manual: true, dimension: 'imagery', value: 'a screen or a shelf', count: 8, base: 8, share: 1, breakers: [], class: 'legibility', provenance: 'judged', reason: 'x', evidence: ['evidence/sheets/heroes.webp'] });
+  audit.conventions.push({ manual: true, dimension: 'imagery', value: 'a screen or a shelf', count: 8, base: 8, share: 1, breakers: [], class: 'signal', provenance: 'judged', reason: 'x', evidence: ['evidence/sheets/heroes.webp'] });
   writeFileSync(join(dir, 'audit.json'), JSON.stringify(audit));
   assert.equal(aggregate(dir).conventions.filter((c) => c.manual).length, before + 1);
   assert.equal(aggregate(dir).conventions.filter((c) => c.manual).length, before + 1);
@@ -121,4 +121,16 @@ test('--axes without a value is ignored, not a crash', () => {
   const dir = mkdtempSync(join(tmpdir(), 'ba-ax-'));
   writeFileSync(join(dir, 'audit.json'), readFileSync(new URL('../assets/audit.example.json', import.meta.url)));
   assert.match(execFileSync('node', [fileURLToPath(new URL('../assets/aggregate.mjs', import.meta.url)), dir, '--axes'], { encoding: 'utf8' }), /base: 8/);
+});
+test('ids are given once and survive a re-run', () => {
+  const dir = mkdtempSync(join(tmpdir(), 'ba-ids-'));
+  const audit = JSON.parse(readFileSync(new URL('../assets/audit.example.json', import.meta.url)));
+  for (const c of audit.conventions) delete c.id;
+  for (const s of Object.values(audit.sections)) for (const f of s.findings) delete f.id;
+  delete audit.synthesis;
+  writeFileSync(join(dir, 'audit.json'), JSON.stringify(audit));
+  const a = aggregate(dir), ids = a.conventions.map((c) => c.id);
+  assert.equal(new Set(ids).size, ids.length);
+  assert.match(a.sections.colour.findings[0].id, /^F-COL-01$/);
+  assert.deepEqual(aggregate(dir).conventions.map((c) => c.id), ids);
 });

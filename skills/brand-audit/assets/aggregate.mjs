@@ -108,6 +108,21 @@ export function mapAxes(panel, forced = [], exclude = []) {
   return { x: strip(x), y: strip(y), points, clusters };
 }
 
+/**
+ * Stable IDs for everything a recommendation can cite. An ID is given once and never reused:
+ * F-<section>-<n> for a section finding, C-<n> for a convention, O-<n> is the opportunity's own slug.
+ */
+export function assignIds(audit) {
+  const next = (items, prefix) => {
+    let n = items.reduce((m, it) => Math.max(m, +(String(it.id || '').match(new RegExp(`^${prefix}(\\d+)$`))?.[1] || 0)), 0);
+    for (const it of items) if (!it.id) it.id = `${prefix}${String(++n).padStart(2, '0')}`;
+  };
+  const short = { logos: 'LOG', architecture: 'ARC', colour: 'COL', typography: 'TYP', symbols: 'SYM', visual_language: 'VIS' };
+  for (const [key, sec] of Object.entries(audit.sections || {})) next(sec.findings || [], `F-${short[key] || key.toUpperCase()}-`);
+  next(audit.conventions || [], 'C-');
+  return audit;
+}
+
 /** Recompute an audit directory in place and return the audit. */
 export function aggregate(auditDir, axes = []) {
   const file = join(auditDir, 'audit.json');
@@ -120,7 +135,7 @@ export function aggregate(auditDir, axes = []) {
   // Too few brands to count: keep what was judged, marked stale, rather than erase the analyst's work.
   audit.conventions = audit.frequencies.insufficient ? (audit.conventions || []).map((c) => ({ ...c, stale: true })) : [...conventionCandidates(audit.frequencies, audit.panel).map((c) => {
     const old = previous.get(`${c.dimension}=${c.value}`);
-    return old?.class ? { ...c, class: old.class, provenance: old.provenance, reason: old.reason, evidence: old.evidence } : c;
+    return old?.class ? { ...c, id: old.id, class: old.class, provenance: old.provenance, reason: old.reason, evidence: old.evidence, confidence: old.confidence, population: old.population } : old?.id ? { ...c, id: old.id } : c;
   }), ...manual];
   // Several maps: the pairs the analyst named, else the best pair and the best of what is left.
   const before = audit.maps || (audit.map ? [audit.map] : []);
@@ -138,6 +153,7 @@ export function aggregate(auditDir, axes = []) {
   for (const m of maps) { const r = readingOf(m); if (r) m.reading = r; }
   audit.maps = maps;
   audit.map = maps[0] || null;
+  assignIds(audit);
   writeFileSync(file, JSON.stringify(audit, null, 2) + '\n');
   return audit;
 }

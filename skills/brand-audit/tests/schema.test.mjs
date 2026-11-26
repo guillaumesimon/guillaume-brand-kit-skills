@@ -13,8 +13,8 @@ test('logo type has exactly the seven standard values', () => {
   assert.ok(DIMENSIONS.includes('symbol_subject'));
 });
 test('example audit is valid', () => assert.deepEqual(validateAudit(example), []));
-test('example covers the five convention classes', () => {
-  assert.deepEqual([...new Set(example.conventions.map((c) => c.class))].sort(), ['cliche', 'emerging', 'legibility', 'owned', 'risky']);
+test('example covers the six convention classes', () => {
+  assert.deepEqual([...new Set(example.conventions.map((c) => c.class))].sort(), ['cliche', 'emerging', 'owned', 'requirement', 'risky', 'signal']);
 });
 test('example has the six written sections, a summary and a profile per brand', () => {
   assert.deepEqual(Object.keys(example.sections).sort(), ['architecture', 'colour', 'logos', 'symbols', 'typography', 'visual_language']);
@@ -72,4 +72,15 @@ test('an aspirational brand says its criterion and who recognises it', () => {
   const errs = validateAudit(a).join('\n');
   assert.match(errs, new RegExp(`panel\\[${i}\\]\\.criterion`));
   assert.match(errs, new RegExp(`panel\\[${i}\\]\\.recognition`));
+});
+test('a decision must cite findings that exist', () => {
+  const a = clone(); a.synthesis.decisions[0].finding_refs = ['F-NOPE-99'];
+  assert.match(validateAudit(a).join('\n'), /"F-NOPE-99" is not a finding or convention/);
+  const b = clone(); b.synthesis.decisions[0].status = 'banned';
+  assert.match(validateAudit(b).join('\n'), /decisions\[0\]\.status/);
+});
+test('a territory states its eight directions and what it leaves open', () => {
+  const a = clone(); delete a.synthesis.territories[0].directions.voice; a.synthesis.territories[0].open_decisions = [];
+  const errs = validateAudit(a).join('\n');
+  assert.match(errs, /territories\[0\]\.directions/); assert.match(errs, /open_decisions/);
 });

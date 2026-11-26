@@ -15,7 +15,13 @@ const STRINGS = {
       typography: ['Typography landscape', 'The lettering signatures of the category.'], symbols: ['Signs and meaning', 'What the marks represent.'], visual_language: ['Visual language and touchpoints', 'The logo is one piece of a larger system.'],
       maps: ['Positioning maps', 'Where the brands gather, and where they do not.'], codes: ['Codes and conventions', 'What helps a brand be understood, and what stops it standing apart.'], opportunities: ['White space and opportunities', 'The bridge from the audit to the creative work.'], method: ['Method and limits', 'What this audit can and cannot say.'] },
     decisions: { preserve: ['Preserve', 'Codes to keep to stay legible'], avoid: ['Avoid', 'Clichés and resemblances'], challenge: ['Challenge', 'Conventions worth questioning'], explore: ['Explore', 'Territories to open'], validate: ['Validate', 'Hypotheses to check with people'] },
-    classInfo: { legibility: ['Category codes', 'Signals a brand needs to be understood and believed.'], cliche: ['Category clichés', 'So widespread they no longer distinguish anyone. An established brand does without.'], risky: ['Risky breaks', 'Nobody established breaks them and they tell the buyer nothing. An opening or a trap.'], owned: ['Codes owned by a competitor', 'Strongly tied to one brand. Imitating them is borrowing its identity.'], emerging: ['Emerging codes', 'Appearing in the category or next to it. Not yet a convention.'] },
+    classInfo: { requirement: ['Functional requirements', 'The product does not work without them. Not a matter of taste.'], signal: ['Category signals', 'How the category is recognised. Likely needed to be understood; frequency alone does not prove it.'], cliche: ['Category clichés', 'So widespread they no longer distinguish anyone. An established brand does without.'], risky: ['Risky breaks', 'Nobody established breaks them and they tell the buyer nothing. An opening or a trap.'], owned: ['Codes owned by a competitor', 'Strongly tied to one brand. Imitating them is borrowing its identity.'], emerging: ['Emerging codes', 'Appearing in the category or next to it. Not yet a convention.'] },
+    synthesisSec: ['Creative synthesis', 'What the evidence means for the brand to be designed.'], territoriesSec: ['Creative territories', 'Distinct answers to the same brief, to explore, not to execute.'],
+    thesis: 'Thesis', tension: 'Central tension', uncertainty: 'Most consequential uncertainty', matrix: 'Decision matrix', dimension: 'Dimension', decision: 'Decision', why: 'Why', tradeoff: 'Trade-off', conf: 'Confidence', confLevels: { high: 'high', medium: 'medium', low: 'low' },
+    statuses: { required: 'Required', preferred: 'Preferred', explore: 'Explore', deprioritise: 'Deprioritise', avoid: 'Avoid' }, refsTitle: 'References: borrow the mechanism, not the look', mechanism: 'Mechanism', reinterpret: 'How to reinterpret', dontCopy: 'Do not copy',
+    evalTitle: 'How to judge a concept', criterion: 'Criterion', test: 'Test', gate: 'gate', preference: 'preference', implications: 'Implications', impPreserve: 'Preserve', impExplore: 'Explore', impDepri: 'Deprioritise',
+    direction: 'Creative direction', dirs: { personality: 'Personality', logo: 'Logo', symbolism: 'Symbolism', colour: 'Colour', typography: 'Typography', photography: 'Photography', graphic_system: 'Graphic system', voice: 'Voice' },
+    perception: 'Intended perception', preserves: 'Keeps', challenges: 'Challenges', touchpoints: 'Across touchpoints', openDecisions: 'Left open for the designer', moodSources: 'What each image is there for', basedOn: 'Rests on', territoryNote: 'Territories are hypotheses for a designer to explore. Moodboard images are references to study for one mechanism each, not material to reuse.',
     takeaway: 'What to take from it', findingsTitle: 'Findings', prov: { measured: 'measured', observed: 'observed', judged: 'judged' }, convention: 'convention', otherValue: 'other value',
     original: 'As published', mono: 'In black and white', icons: 'The sign alone: app icons', specimens: 'Headlines as set on the page', spectrum: 'Accent hues on the spectrum', panelCounts: 'What the panel does', library: 'Curated sample', homes: 'Home pages',
     personality: 'Perceived personality', strength: 'Strength', lesson: 'What it teaches', notes: 'Coder\u2019s note', learn: 'What it shows', nBrands: 'Brands', source: 'Source', seen: 'Captured',
@@ -25,7 +31,7 @@ const STRINGS = {
     title: 'Visual landscape audit', question: 'Which codes make a brand understood by this market, and which ones can be broken to stand apart from it?',
     mode: 'Mode', date: 'Date', market: 'Market', base: 'Statistics base', baseUnit: 'direct brands', flash: 'Flash: hypotheses', deep: 'Deep: checked positions',
     keep: 'Keep', keepSub: 'Legibility codes', brk: 'Break', brkSub: 'Clichés', risky: 'Weigh', riskySub: 'Risky breaks',
-    classes: { legibility: 'Category code', cliche: 'Cliché', risky: 'Risky break', owned: 'Owned by a competitor', emerging: 'Emerging code' }, unclassified: 'Not classified yet',
+    classes: { requirement: 'Requirement', signal: 'Category signal', cliche: 'Cliché', risky: 'Risky break', owned: 'Owned by a competitor', emerging: 'Emerging code' }, unclassified: 'Not classified yet',
     panel: 'The panel', roles: { direct: 'Direct', indirect: 'Indirect', leader: 'Category leader', aspirational: 'Aspirational', self: 'The brand itself' },
     brand: 'Brand', role: 'Role', why: 'Why it is here', capture: 'Capture', established: 'established', partial: 'partial: not measured', none: 'not captured',
     stores: 'App Store listings', storesNote: 'The icon and the first screenshot of each listing. For an app this is often the first thing a buyer sees of the brand, and it does not always look like the site.', logos: 'Logos', logoTypes: 'Logo types', heroes: 'Home pages', colour: 'Colour', palette: 'Palette', accent: 'Accent', type: 'Typography', headline: 'Headline', text: 'Text',
@@ -47,7 +53,13 @@ const STRINGS = {
       typography: ['Paysage typographique', 'Les signatures de lettres de la catégorie.'], symbols: ['Signes et sémantique', 'Ce que les signes représentent.'], visual_language: ['Langage visuel et points de contact', 'Le logo est une pièce d\u2019un système plus large.'],
       maps: ['Cartes de positionnement', 'Où les marques se regroupent, et où elles ne vont pas.'], codes: ['Codes et conventions', 'Ce qui aide à être compris, et ce qui empêche de se distinguer.'], opportunities: ['Espaces libres et opportunités', 'La passerelle entre l\u2019audit et la création.'], method: ['Méthode et limites', 'Ce que cet audit peut dire, et ce qu\u2019il ne peut pas.'] },
     decisions: { preserve: ['Préserver', 'Les codes à garder pour rester lisible'], avoid: ['Éviter', 'Clichés et ressemblances'], challenge: ['Remettre en question', 'Les conventions qui se discutent'], explore: ['Explorer', 'Les territoires à ouvrir'], validate: ['Valider', 'Les hypothèses à vérifier auprès de personnes'] },
-    classInfo: { legibility: ['Codes de catégorie', 'Les signaux nécessaires pour être compris et crédible.'], cliche: ['Clichés de catégorie', 'Si répandus qu\u2019ils ne distinguent plus personne. Une marque installée s\u2019en passe.'], risky: ['Ruptures risquées', 'Aucune marque installée ne les rompt, et ils ne disent rien à l\u2019acheteur. Une ouverture ou un piège.'], owned: ['Codes associés à un concurrent', 'Fortement liés à une marque. Les imiter, c\u2019est emprunter son identité.'], emerging: ['Codes émergents', 'Ils apparaissent dans la catégorie ou à côté. Pas encore une convention.'] },
+    classInfo: { requirement: ['Exigences fonctionnelles', 'Le produit ne fonctionne pas sans elles. Pas une affaire de goût.'], signal: ['Signaux de catégorie', 'Ce à quoi la catégorie se reconnaît. Probablement nécessaires pour être compris ; la fréquence seule ne le prouve pas.'], cliche: ['Clichés de catégorie', 'Si répandus qu\u2019ils ne distinguent plus personne. Une marque installée s\u2019en passe.'], risky: ['Ruptures risquées', 'Aucune marque installée ne les rompt, et ils ne disent rien à l\u2019acheteur. Une ouverture ou un piège.'], owned: ['Codes associés à un concurrent', 'Fortement liés à une marque. Les imiter, c\u2019est emprunter son identité.'], emerging: ['Codes émergents', 'Ils apparaissent dans la catégorie ou à côté. Pas encore une convention.'] },
+    synthesisSec: ['Synthèse créative', 'Ce que les preuves veulent dire pour la marque à créer.'], territoriesSec: ['Territoires créatifs', 'Des réponses distinctes au même brief, à explorer, pas à exécuter.'],
+    thesis: 'Thèse', tension: 'Tension centrale', uncertainty: 'Incertitude la plus lourde', matrix: 'Matrice de décisions', dimension: 'Dimension', decision: 'Décision', why: 'Pourquoi', tradeoff: 'Compromis', conf: 'Confiance', confLevels: { high: 'haute', medium: 'moyenne', low: 'basse' },
+    statuses: { required: 'Requis', preferred: 'Préféré', explore: 'Explorer', deprioritise: 'Déprioriser', avoid: 'Éviter' }, refsTitle: 'Références : emprunter le mécanisme, pas l\u2019esthétique', mechanism: 'Mécanisme', reinterpret: 'Comment le réinterpréter', dontCopy: 'À ne pas copier',
+    evalTitle: 'Comment juger un concept', criterion: 'Critère', test: 'Test', gate: 'éliminatoire', preference: 'préférence', implications: 'Implications', impPreserve: 'Préserver', impExplore: 'Explorer', impDepri: 'Déprioriser',
+    direction: 'Direction créative', dirs: { personality: 'Personnalité', logo: 'Logo', symbolism: 'Symbolique', colour: 'Couleur', typography: 'Typographie', photography: 'Photographie', graphic_system: 'Système graphique', voice: 'Voix' },
+    perception: 'Perception visée', preserves: 'Garde', challenges: 'Remet en cause', touchpoints: 'Sur les points de contact', openDecisions: 'Laissé ouvert au designer', moodSources: 'Ce que chaque image vient montrer', basedOn: 'S\u2019appuie sur', territoryNote: 'Les territoires sont des hypothèses à explorer par un designer. Les images de moodboard sont des références à étudier pour un mécanisme chacune, pas du matériau à réutiliser.',
     takeaway: 'Ce qu\u2019il faut en retenir', findingsTitle: 'Constats', prov: { measured: 'mesuré', observed: 'observé', judged: 'jugé' }, convention: 'convention', otherValue: 'autre valeur',
     original: 'Tels que publiés', mono: 'En noir et blanc', icons: 'Le signe seul : icônes d\u2019application', specimens: 'Les titres tels qu\u2019ils sont composés', spectrum: 'Les teintes d\u2019accent sur le spectre', panelCounts: 'Ce que fait le panel', library: 'Échantillon sélectionné', homes: 'Pages d\u2019accueil',
     personality: 'Personnalité perçue', strength: 'Force', lesson: 'Enseignement', notes: 'Note du codeur', learn: 'Ce qu\u2019on y apprend', nBrands: 'Marques', source: 'Source', seen: 'Capture',
@@ -57,7 +69,7 @@ const STRINGS = {
     title: 'Audit du paysage visuel', question: 'Quels codes faut-il garder pour être compris par ce marché, et lesquels peut-on rompre pour s’en distinguer ?',
     mode: 'Mode', date: 'Date', market: 'Marché', base: 'Base statistique', baseUnit: 'marques directes', flash: 'Flash : hypothèses', deep: 'Deep : positions vérifiées',
     keep: 'Garder', keepSub: 'Codes de lisibilité', brk: 'Rompre', brkSub: 'Clichés', risky: 'Peser', riskySub: 'Ruptures risquées',
-    classes: { legibility: 'Code de catégorie', cliche: 'Cliché', risky: 'Rupture risquée', owned: 'Associé à un concurrent', emerging: 'Code émergent' }, unclassified: 'Pas encore classé',
+    classes: { requirement: 'Exigence', signal: 'Signal de catégorie', cliche: 'Cliché', risky: 'Rupture risquée', owned: 'Associé à un concurrent', emerging: 'Code émergent' }, unclassified: 'Pas encore classé',
     panel: 'Le panel', roles: { direct: 'Direct', indirect: 'Indirect', leader: 'Leader de catégorie', aspirational: 'Aspirationnelle', self: 'La marque elle-même' },
     brand: 'Marque', role: 'Rôle', why: 'Pourquoi elle est là', capture: 'Capture', established: 'installée', partial: 'partielle : non mesurée', none: 'non capturée',
     stores: 'Fiches App Store', storesNote: 'L\u2019icône et la première capture de chaque fiche. Pour une application, c\u2019est souvent la première chose qu\u2019un acheteur voit de la marque, et elle ne ressemble pas toujours au site.', logos: 'Logos', logoTypes: 'Types de logos', heroes: 'Pages d’accueil', colour: 'Couleur', palette: 'Palette', accent: 'Accent', type: 'Typographie', headline: 'Titre', text: 'Texte',
@@ -78,7 +90,7 @@ const STRINGS = {
 const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 const plain = (v) => esc(String(v ?? '').replace(/^other:/, '').replace(/[_-]/g, ' '));
 const ROLE_ORDER = ['self', 'direct', 'leader', 'indirect', 'aspirational'];
-const CLASS_ORDER = ['legibility', 'cliche', 'owned', 'risky', 'emerging'];
+const CLASS_ORDER = ['requirement', 'signal', 'cliche', 'owned', 'risky', 'emerging'];
 const IMG = /\.(webp|png|jpe?g|svg)$/i;
 
 function hueAngle(hex) {
@@ -129,9 +141,11 @@ export function renderLandscape(audit, strings = STRINGS[localeOf(audit)], has =
     const s = sections[key];
     if (!s) return { lead: '', rest: `<p class="note">${esc(t.noSection)}</p>` };
     const findings = (s.findings || []).length ? `<h3>${esc(t.findingsTitle)}</h3><ul class="findings">${s.findings.map((x) =>
-      `<li><span class="tag">${esc(t.prov[x.provenance] || x.provenance)}</span><div>${esc(x.text)}${thumbs(x.evidence, x.text)}</div></li>`).join('')}</ul>` : '';
+      `<li${x.id ? ` id="${esc(x.id)}"` : ''}><span class="tag">${esc(t.prov[x.provenance] || x.provenance)}</span><div>${x.id ? `<span class="fid">${esc(x.id)}</span> ` : ''}${esc(x.text)}${thumbs(x.evidence, x.text)}</div></li>`).join('')}</ul>` : '';
+    const im = s.implications, lst = (k, l) => ((l || []).length ? `<dt>${esc(k)}</dt><dd>${l.map(esc).join(' · ')}</dd>` : '');
+    const imp = im ? `<div class="imp"><h4>${esc(t.implications)} <span class="tag">${esc(t.conf)} ${esc(t.confLevels[im.confidence] || im.confidence)}</span></h4><p>${esc(im.implication)}</p><dl>${lst(t.impPreserve, im.preserve)}${lst(t.impExplore, im.explore)}${lst(t.impDepri, im.deprioritise)}${im.tradeoff ? `<dt>${esc(t.tradeoff)}</dt><dd>${esc(im.tradeoff)}</dd>` : ''}</dl></div>` : '';
     return { lead: `<p class="lead">${esc(s.lead)}</p>`,
-      rest: `<div class="prose">${(s.paragraphs || []).map((p) => `<p>${esc(p)}</p>`).join('')}</div>${findings}<div class="take"><h4>${esc(t.takeaway)}</h4>${esc(s.takeaway)}</div>` };
+      rest: `<div class="prose">${(s.paragraphs || []).map((p) => `<p>${esc(p)}</p>`).join('')}</div>${findings}<div class="take"><h4>${esc(t.takeaway)}</h4>${esc(s.takeaway)}</div>${imp}` };
   };
   const wall = (items, cls, cell) => (items.length ? `<div class="grid ${cls}">${items.map(cell).join('')}</div>` : '');
   const cap = (b, right) => `<figcaption><span>${esc(b.name)}</span><small>${right ?? role(b)}</small></figcaption>`;
@@ -141,7 +155,9 @@ export function renderLandscape(audit, strings = STRINGS[localeOf(audit)], has =
   const sm = audit.summary;
   const decisions = sm ? `<div class="decisions">${['preserve', 'avoid', 'challenge', 'explore', 'validate'].map((d) =>
     `<section><div><h3>${esc(t.decisions[d][0])}</h3><h4>${esc(t.decisions[d][1])}</h4></div><ul>${(sm[d] || []).map((it) => `<li>${esc(it.text)}</li>`).join('') || '<li class="note">&nbsp;</li>'}</ul></section>`).join('')}</div>` : '';
-  S.push(['summary', `${sm ? `<p class="lead">${esc(sm.lead)}</p>` : `<p class="note">${esc(t.noSection)}</p>`}${decisions}`]);
+  const sy = audit.synthesis;
+  const thesis = sy ? `<div class="thesis"><div><h4>${esc(t.thesis)}</h4><p>${esc(sy.thesis)}</p></div><div><h4>${esc(t.tension)}</h4><p>${esc(sy.tension)}</p></div><div><h4>${esc(t.uncertainty)}</h4><p>${esc(sy.uncertainty)}</p></div></div>` : '';
+  S.push(['summary', `${sm ? `<p class="lead">${esc(sm.lead)}</p>` : `<p class="note">${esc(t.noSection)}</p>`}${thesis}${decisions}`]);
 
   // 02 Scope
   const roles = ROLE_ORDER.filter((r) => panel.some((b) => b.role === r));
@@ -221,7 +237,7 @@ ${stores.length ? `<h3>${esc(t.stores)}</h3><p class="note">${esc(t.storesNote)}
   S.push(['maps', maps.length ? `${maps.map((m) => `<div><div class="map">${mapSvg(m, byId, t, human)}</div>${m.reading ? `<div class="prose"><p>${esc(m.reading)}</p></div>` : ''}</div>`).join('')}<p class="note">${esc(t.mapCaveat)}</p>` : `<p class="note">${esc(f.insufficient ? t.insufficient : t.noSection)}</p>`]);
 
   // 11 Codes and conventions
-  const item = (c) => `<div class="item"><h4>${label(c.dimension, c.value)}<span class="c">${c.count} ${esc(t.of)} ${c.base}</span></h4>${c.reason ? `<p>${esc(c.reason)}</p>` : ''}<p class="note">${esc(t.breakers)} : ${(c.breakers || []).map((b) => `${name(b.id)} (${human(b.value)}${b.established ? ', ' + esc(t.established) : ''})`).join(' · ') || esc(t.nobody)}</p>${thumbs(c.evidence, c.value)}</div>`;
+  const item = (c) => `<div class="item"${c.id ? ` id="${esc(c.id)}"` : ''}><h4>${c.id ? `<span class="fid">${esc(c.id)}</span> ` : ''}${label(c.dimension, c.value)}<span class="c">${c.count} ${esc(t.of)} ${c.base}</span></h4>${c.reason ? `<p>${esc(c.reason)}</p>` : ''}<p class="note">${esc(t.breakers)} : ${(c.breakers || []).map((b) => `${name(b.id)} (${human(b.value)}${b.established ? ', ' + esc(t.established) : ''})`).join(' · ') || esc(t.nobody)}</p>${thumbs(c.evidence, c.value)}</div>`;
   const groups = CLASS_ORDER.map((k) => [k, convs.filter((c) => c.class === k)]).filter(([, l]) => l.length);
   const unclassified = convs.filter((c) => !c.class);
   S.push(['codes', (f.insufficient ? `<p class="note">${esc(t.insufficient)}</p>` : '') + groups.map(([k, l]) => `<div class="group"><h3>${esc(t.classInfo[k][0])} <span class="tag">${l.length}</span></h3><p class="note">${esc(t.classInfo[k][1])}</p>${l.map(item).join('')}</div>`).join('')
@@ -237,6 +253,26 @@ ${row(t.okeep, (o.keep || []).map(human).join(' · '))}${row(t.obreak, (o.break 
 ${row(t.risk, `${esc(t.riskLevels[o.risk] || o.risk)}${o.risk_note ? '. ' + esc(o.risk_note) : ''}`)}${row(t.toValidate, o.validate && esc(o.validate))}${row(t.challenged, ch)}</dl>${thumbs(o.evidence, o.title)}</article>`;
   }).join('') : `<p class="note">${esc(t.noSection)}</p>`]);
 
+  // 13 Creative synthesis: thesis, decision matrix, references, evaluation
+  const fref = (ids) => (ids || []).map((id) => `<a class="fid" href="#${esc(id)}">${esc(id)}</a>`).join(' ');
+  const stOrder = ['required', 'preferred', 'explore', 'deprioritise', 'avoid'];
+  S.push(['synthesis', sy ? `<p class="lead">${esc(sy.thesis)}</p><div class="prose"><p><strong>${esc(t.tension)}.</strong> ${esc(sy.tension)}</p><p><strong>${esc(t.uncertainty)}.</strong> ${esc(sy.uncertainty)}</p></div>
+<h3>${esc(t.matrix)}</h3><div class="scroll"><table class="matrix"><thead><tr><th>${esc(t.dimension)}</th><th>${esc(t.decision)}</th><th>${esc(t.why)}</th><th>${esc(t.tradeoff)}</th></tr></thead><tbody>${[...(sy.decisions || [])].sort((a, b) => stOrder.indexOf(a.status) - stOrder.indexOf(b.status)).map((d) =>
+    `<tr id="${esc(d.id)}"><td>${esc(d.dimension)}<span class="sub">${esc(d.id)}</span></td><td><span class="tag${d.status === 'required' ? ' on' : ''}">${esc(t.statuses[d.status] || d.status)}</span><br>${esc(d.recommendation)}</td><td>${esc(d.rationale)}<span class="sub">${fref(d.finding_refs)} · ${esc(t.conf)} ${esc(t.confLevels[d.confidence] || d.confidence)}</span></td><td>${esc(d.tradeoff)}</td></tr>`).join('')}</tbody></table></div>
+${(sy.references || []).length ? `<h3>${esc(t.refsTitle)}</h3>${sy.references.map((r) => `<div class="refrow">${img(r.asset, r.mechanism) ? `<a href="${esc(r.asset)}">${img(r.asset, r.mechanism)}</a>` : '<span></span>'}<dl><dt>${esc(t.mechanism)}</dt><dd>${esc(r.mechanism)}</dd><dt>${esc(t.reinterpret)}</dt><dd>${esc(r.reinterpret)}</dd><dt>${esc(t.dontCopy)}</dt><dd>${esc(r.do_not_copy)}</dd></dl></div>`).join('')}` : ''}
+${(sy.evaluation || []).length ? `<h3>${esc(t.evalTitle)}</h3><div class="scroll"><table><thead><tr><th>${esc(t.criterion)}</th><th>${esc(t.test)}</th><th></th></tr></thead><tbody>${sy.evaluation.map((c) => `<tr><td>${esc(c.criterion)}</td><td>${esc(c.test)}</td><td><span class="tag${c.gate ? ' on' : ''}">${esc(c.gate ? t.gate : t.preference)}</span></td></tr>`).join('')}</tbody></table></div>` : ''}` : `<p class="note">${esc(t.noSection)}</p>`]);
+
+  // 14 Creative territories, each with its moodboard
+  S.push(['territories', sy && (sy.territories || []).length ? `<p class="note">${esc(t.territoryNote)}</p>` + sy.territories.map((tr, i) => {
+    const mood = (tr.moodboard || []).filter((m) => has(m.file));
+    const row = (k, v) => (v ? `<dt>${esc(k)}</dt><dd>${v}</dd>` : '');
+    return `<article class="terr" id="${esc(tr.id)}"><div class="tboard n${Math.min(mood.length, 10)}">${mood.slice(0, 10).map((m) => `<figure>${img(m.file, m.note, 'fill')}</figure>`).join('')}</div>
+<div class="tbody"><h3>${i + 1}. ${esc(tr.title)}</h3><p class="idea">${esc(tr.idea)}</p><p>${esc(tr.description)}</p>
+<table class="dirs"><thead><tr><th>${esc(t.dimension)}</th><th>${esc(t.direction)}</th></tr></thead><tbody>${Object.entries(tr.directions || {}).map(([k, v]) => `<tr><td>${esc(t.dirs[k] || k)}</td><td>${esc(v)}</td></tr>`).join('')}</tbody></table>
+<dl class="tmeta">${row(t.perception, esc(tr.perception))}${row(t.preserves, (tr.preserves || []).map(esc).join(' · '))}${row(t.challenges, (tr.challenges || []).map(esc).join(' · '))}${row(t.touchpoints, tr.touchpoints ? Object.entries(tr.touchpoints).map(([k, v]) => `<strong>${esc(k)}</strong> ${esc(v)}`).join('<br>') : '')}${row(t.risk, esc(tr.risk))}${row(t.toValidate, esc(tr.validate))}${row(t.openDecisions, (tr.open_decisions || []).map(esc).join(' · '))}${row(t.basedOn, `${fref(tr.finding_refs)} · ${esc(t.conf)} ${esc(t.confLevels[tr.confidence] || tr.confidence)}`)}</dl>
+${mood.length ? `<details><summary>${esc(t.moodSources)}</summary><ol class="msrc">${mood.slice(0, 10).map((m) => `<li>${esc(m.note)} <span class="note">${/^https?:/.test(m.source) ? `<a href="${safeUrl(m.source)}" rel="noreferrer">${esc(m.source.replace(/^https?:\/\//, '').slice(0, 60))}</a>` : esc(m.source)}</span></li>`).join('')}</ol></details>` : ''}</div></article>`;
+  }).join('') : `<p class="note">${esc(t.noSection)}</p>`]);
+
   // Method, limits, sources
   const lib = audit.library?.logosystem;
   S.push(['method', `<h3>${esc(t.quality)}</h3><ul class="list">${(audit.limits || []).map((l) => `<li>${esc(l)}</li>`).join('')}</ul><p class="note">${esc(t.provenance)}</p>
@@ -245,14 +281,15 @@ ${row(t.risk, `${esc(t.riskLevels[o.risk] || o.risk)}${o.risk_note ? '. ' + esc(
     lib?.n ? `<tr><td>Logosystem</td><td><a href="${safeUrl(lib.url)}" rel="noreferrer">${esc(lib.industry)}</a> · n = ${lib.n}</td><td>${esc(lib.fetched)}</td></tr>` : ''}</tbody></table></div><p class="note">${esc(t.internal)}</p>`]);
 
   const num = (i) => String(i + 1).padStart(2, '0');
-  const numbered = S.slice(0, 12), method = S[12];
+  const numbered = S.slice(0, -1), method = S[S.length - 1];
+  const secOf = (k) => t.sec[k] || (k === 'synthesis' ? t.synthesisSec : t.territoriesSec);
   const title = `${esc(t.title)} · ${esc(audit.framing?.title || audit.framing?.product || '')}`;
-  const html = `<header class="bar"><div class="wrap"><b>${esc(t.title)}</b><nav aria-label="${esc(t.contents)}">${numbered.map(([k], i) => `<a href="#${k}">${num(i)} ${esc(t.sec[k][0])}</a>`).join('')}</nav></div></header>
+  const html = `<header class="bar"><div class="wrap"><b>${esc(t.title)}</b><nav aria-label="${esc(t.contents)}">${numbered.map(([k], i) => `<a href="#${k}">${num(i)} ${esc(secOf(k)[0])}</a>`).join('')}</nav></div></header>
 <main class="wrap">
 <div class="cover"><p class="eyebrow">${esc(t.title)} · ${esc(audit.meta?.date || '')}</p><h1>${esc(audit.framing?.title || audit.framing?.product || '')}</h1><p class="deck">${esc(t.question)}</p>
 <div class="meta"><div><span>${esc(t.market)}</span>${esc(audit.framing?.market || '')}</div><div><span>${esc(t.mode)}</span>${esc(t[audit.meta?.mode] || audit.meta?.mode || '')}</div><div><span>${esc(t.nBrands)}</span>${panel.length}</div><div><span>${esc(t.base)}</span>${f.base ?? 0} ${esc(t.baseUnit)}</div><div><span>${esc(t.date)}</span>${esc(audit.meta?.date || '')}</div></div>
-<nav class="toc" aria-label="${esc(t.contents)}">${numbered.map(([k], i) => `<a href="#${k}"><span>${num(i)}</span>${esc(t.sec[k][0])}</a>`).join('')}</nav></div>
-${numbered.map(([k, body], i) => `<section class="s" id="${k}"><aside class="rail"><div class="n">${num(i)}</div><h2>${esc(t.sec[k][0])}</h2><p>${esc(t.sec[k][1])}</p></aside><div class="col">${body}</div></section>`).join('\n')}
+<nav class="toc" aria-label="${esc(t.contents)}">${numbered.map(([k], i) => `<a href="#${k}"><span>${num(i)}</span>${esc(secOf(k)[0])}</a>`).join('')}</nav></div>
+${numbered.map(([k, body], i) => `<section class="s" id="${k}"><aside class="rail"><div class="n">${num(i)}</div><h2>${esc(secOf(k)[0])}</h2><p>${esc(secOf(k)[1])}</p></aside><div class="col">${body}</div></section>`).join('\n')}
 <section class="s" id="method"><aside class="rail"><div class="n">—</div><h2>${esc(t.sec.method[0])}</h2><p>${esc(t.sec.method[1])}</p></aside><div class="col">${method[1]}</div></section>
 </main>`;
   return template.replace('<!--LANG-->', esc(localeOf(audit))).replace('<!--TITLE-->', () => title).replace('<!--BODY-->', () => html);

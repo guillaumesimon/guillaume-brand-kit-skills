@@ -8,9 +8,9 @@ const example = JSON.parse(readFileSync(new URL('../assets/audit.example.json', 
 test('the report has its twelve numbered sections, in French', () => {
   const html = renderLandscape(example, STRINGS.fr);
   for (const b of example.panel) assert.ok(html.includes(b.name), b.name);
-  for (const id of ['summary', 'scope', 'profiles', 'logos', 'architecture', 'colour', 'typography', 'symbols', 'visual_language', 'maps', 'codes', 'opportunities', 'method'])
+  for (const id of ['summary', 'scope', 'profiles', 'logos', 'architecture', 'colour', 'typography', 'symbols', 'visual_language', 'maps', 'codes', 'opportunities', 'synthesis', 'territories', 'method'])
     assert.ok(html.includes(`<section class="s" id="${id}">`), id);
-  for (const label of ['Préserver', 'Éviter', 'Remettre en question', 'Explorer', 'Valider', 'Codes de catégorie', 'Clichés de catégorie', 'Codes associés à un concurrent', 'Codes émergents', 'Ruptures risquées'])
+  for (const label of ['Préserver', 'Éviter', 'Remettre en question', 'Explorer', 'Valider', 'Exigences fonctionnelles', 'Signaux de catégorie', 'Clichés de catégorie', 'Codes associés à un concurrent', 'Codes émergents', 'Ruptures risquées'])
     assert.ok(html.includes(label), label);
   assert.ok(html.includes('6 sur 8'));
   assert.ok(html.includes('Teinte dominante : bleu'), 'vocabulary values are shown in French');
@@ -90,4 +90,13 @@ test('a brand profile is a moodboard: logo, icon, palette, headline, site, its o
   const first = prof.slice(0, prof.indexOf('</article>'));
   for (const cls of ['mt logo', 'mt icon', 'mt pal', 'mt type', 'mt site', 'mt media big', 'mt store']) assert.ok(first.includes(`class="${cls}"`), cls);
   assert.ok(first.includes('>Illustration</figcaption>') && first.includes('>From the site</figcaption>'));
+});
+test('territories show a moodboard, their directions, and decisions link to findings', () => {
+  const html = renderLandscape(example, STRINGS.en);
+  const terr = html.slice(html.indexOf('id="territories"'));
+  assert.equal((terr.match(/<article class="terr"/g) || []).length, 2);
+  assert.ok(terr.includes('class="tboard n6"') && terr.includes('>Creative direction<') && terr.includes('Left open for the designer'));
+  const syn = html.slice(html.indexOf('id="synthesis"'), html.indexOf('id="territories"'));
+  assert.ok(syn.includes('href="#F-COL-01"') && html.includes('id="F-COL-01"'));
+  assert.ok(syn.includes('>Required<') && syn.includes('>Avoid<') && syn.includes('>gate<'));
 });

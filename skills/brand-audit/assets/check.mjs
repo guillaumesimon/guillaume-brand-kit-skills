@@ -8,6 +8,7 @@ import { readFileSync, existsSync, readdirSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { validateAudit, SECTIONS } from './lib/schema.mjs';
+import { renderBrief } from './brief.mjs';
 
 const MAX_EVIDENCE_MB = 15;
 
@@ -64,6 +65,26 @@ export function checkAudit(auditDir) {
     if (!asp.some((b) => b.criterion === c)) errors.push(`aspirational brands: none chosen on ${c}; keep at least one per criterion`);
   if (!(audit.limits || []).length) errors.push('limits: say what this audit does not cover');
 
+  // The creative synthesis: thesis, decisions, two to four territories, each with a real moodboard.
+  const sy = audit.synthesis;
+  if (!sy) errors.push('synthesis: not written yet (thesis, decisions, territories)');
+  else {
+    if (!(sy.decisions || []).length) errors.push('synthesis.decisions: the decision matrix is empty');
+    const nt = (sy.territories || []).length;
+    if (nt < 2 || nt > 4) errors.push(`synthesis.territories: ${nt} territories; two to four that are genuinely different`);
+    for (const t of sy.territories || []) {
+      const mood = (t.moodboard || []).filter((m) => !missing(m.file));
+      if (mood.length < 6) errors.push(`territory "${t.id}": ${mood.length} moodboard images found; at least 6, run moodboard.mjs`);
+      for (const m of t.moodboard || []) if (missing(m.file)) errors.push(`territory "${t.id}": moodboard image not found: ${m.file}`);
+    }
+    for (const r of sy.references || []) cite('synthesis.references', [r.asset]);
+    if (!(sy.evaluation || []).some((c) => c.gate)) errors.push('synthesis.evaluation: name at least one gate that rejects a concept');
+    if (!sy.for_brand_kit) errors.push('synthesis.for_brand_kit: swap competitor, duel and Not list are missing');
+  }
+  for (const key of SECTIONS) if (audit.sections?.[key] && !audit.sections[key].implications) errors.push(`sections.${key}: implications block is missing`);
+  const noId = [...Object.values(audit.sections || {}).flatMap((x) => x.findings || []), ...(audit.conventions || [])].filter((x) => !x.id).length;
+  if (noId) errors.push(`${noId} finding(s) or convention(s) without an ID: run aggregate.mjs`);
+
   const md = join(auditDir, 'AUDIT.md');
   if (!existsSync(md)) errors.push('AUDIT.md: not found');
   else {
@@ -71,6 +92,7 @@ export function checkAudit(auditDir) {
     const cited = [...new Set([...text.matchAll(/`(evidence\/[^`\s]+)`/g)].map((m) => m[1]))];
     for (const p of cited) if (missing(p)) errors.push(`AUDIT.md: evidence not found: ${p}`);
     if (!cited.length) errors.push('AUDIT.md: cites no evidence path');
+    if (text !== renderBrief(audit)) errors.push('AUDIT.md: differs from what brief.mjs generates from audit.json; run brief.mjs again, do not edit it by hand');
     if (text.split('\n').length > 160) warnings.push(`AUDIT.md is ${text.split('\n').length} lines; agents read it whole, keep it under 120`);
   }
   if (!existsSync(join(auditDir, 'landscape.html'))) errors.push('landscape.html: not found, run render.mjs');

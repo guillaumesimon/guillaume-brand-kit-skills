@@ -167,6 +167,38 @@ td .sub{display:block;font-weight:400;font-size:12px;color:var(--muted)}
 .specimen p{padding:10px 12px;border-top:1px solid var(--line);font-size:12px;line-height:1.45}
 .specimen p span{display:block;color:var(--muted)}
 
+/* IDs, implications, synthesis, territories */
+.fid{font:500 10.5px/1 var(--mono);color:var(--muted);letter-spacing:.02em;text-decoration:none;white-space:nowrap}
+a.fid:hover{color:var(--ink)}
+.imp{background:var(--soft);border-radius:var(--r);padding:20px 22px;max-width:780px}
+.imp h4{margin-bottom:8px}.imp p{font-size:15px;max-width:66ch}
+.imp dl{display:grid;grid-template-columns:120px 1fr;gap:6px 16px;margin-top:12px;font-size:14px}
+.imp dt{font:500 11px/1.8 var(--mono);letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+.thesis{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:28px;border-top:1px solid var(--ink);padding-top:18px}
+.thesis h4{margin-bottom:8px}.thesis p{font-size:15px;line-height:1.5}
+table.matrix td{font-size:14px}table.matrix td:nth-child(2){min-width:200px}table.matrix .tag{margin-bottom:6px}
+.refrow{display:grid;grid-template-columns:160px 1fr;gap:20px;padding:16px 0;border-top:1px solid var(--line);max-width:860px}
+.refrow img{display:block;width:160px;height:110px;object-fit:cover;border-radius:8px;border:1px solid var(--line)}
+.refrow dl{display:grid;grid-template-columns:150px 1fr;gap:4px 14px;font-size:14px;line-height:1.45}
+.refrow dt{font:500 11px/1.8 var(--mono);letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+.terr{border:1px solid var(--line);border-radius:22px;overflow:hidden}
+.terr+.terr{margin-top:28px}
+.tboard{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));grid-auto-rows:150px;grid-auto-flow:dense;gap:4px;padding:16px 16px 0}
+.tboard figure{margin:0;overflow:hidden;background:var(--soft)}
+.tboard figure:first-child{grid-column:span 2;grid-row:span 2;border-top-left-radius:14px}
+.tboard figure:nth-child(4n+2){grid-row:span 2}
+.tboard img{display:block;width:100%;height:100%;object-fit:cover}
+.tbody{padding:24px 28px 28px}
+.tbody>*+*{margin-top:14px}
+.tbody h3{margin:0!important;font-size:32px;letter-spacing:-.025em;line-height:1.1}
+.tbody .idea{font-style:italic;color:var(--muted);font-size:17px}
+table.dirs{min-width:0;margin-top:20px}table.dirs td:first-child{width:200px}
+.tmeta{display:grid;grid-template-columns:190px 1fr;gap:0;border-top:1px solid var(--line);margin-top:20px}
+.tmeta dt,.tmeta dd{padding:10px 0;border-bottom:1px solid var(--line);font-size:14px;line-height:1.45}
+.tmeta dt{font:500 11px/1.9 var(--mono);letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+details summary{cursor:pointer;font:500 11px/1 var(--mono);letter-spacing:.05em;text-transform:uppercase;color:var(--muted);padding:6px 0}
+.msrc{padding-left:20px;font-size:13px;line-height:1.5}.msrc li{margin:4px 0}
+
 /* Conventions and opportunities */
 .group{margin-top:44px!important}
 .group>h3{margin-top:0!important}
@@ -201,6 +233,7 @@ footer{border-top:1px solid var(--line);padding:40px 0 80px;font-size:12px;color
   .decisions section{grid-template-columns:1fr;gap:10px}
   .wrap{padding:0 18px}.cover{padding:72px 0 48px}.bar b{display:none}
   .findings li{grid-template-columns:1fr;gap:6px}
+  .tboard{grid-template-columns:repeat(2,minmax(0,1fr));grid-auto-rows:120px}.tmeta,.imp dl,.refrow,.refrow dl{grid-template-columns:1fr}.tbody{padding:18px}
   .opp{padding:20px}.opp dl{grid-template-columns:1fr}.opp dt{border-bottom:0;padding-bottom:0}
   .pal{grid-template-columns:1fr}
 }

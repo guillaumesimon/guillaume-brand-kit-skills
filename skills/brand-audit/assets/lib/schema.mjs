@@ -27,7 +27,12 @@ export const VOCAB = {
 export const DIMENSIONS = [...Object.keys(VOCAB).slice(0, 2), 'symbol_subject', ...Object.keys(VOCAB).slice(2)];
 
 export const ROLES = ['direct', 'indirect', 'leader', 'aspirational', 'self'];
-export const CLASSES = ['legibility', 'cliche', 'risky', 'owned', 'emerging'];
+// requirement: the product cannot work without it. signal: how the category is recognised.
+// cliche: dominant and proven breakable. owned: tied to one competitor. emerging: appearing. risky: unbroken and uninformative.
+export const CLASSES = ['requirement', 'signal', 'cliche', 'risky', 'owned', 'emerging'];
+export const STATUSES = ['required', 'preferred', 'explore', 'deprioritise', 'avoid'];
+export const CONFIDENCE = ['high', 'medium', 'low'];
+export const DIRECTIONS = ['personality', 'logo', 'symbolism', 'colour', 'typography', 'photography', 'graphic_system', 'voice'];
 /** The written sections of the report, each by its own writer. */
 export const SECTIONS = ['logos', 'architecture', 'colour', 'typography', 'symbols', 'visual_language'];
 export const DECISIONS = ['preserve', 'avoid', 'challenge', 'explore', 'validate'];
@@ -133,6 +138,10 @@ export function validateAudit(audit) {
       if (!isObj(sec) || !isStr(sec.lead)) { e.push(`${p}.lead: required`); continue; }
       if (!Array.isArray(sec.paragraphs) || !sec.paragraphs.every(isStr)) e.push(`${p}.paragraphs: must be an array of strings`);
       if (!isStr(sec.takeaway)) e.push(`${p}.takeaway: required`);
+      if (sec.implications != null) {
+        const im = sec.implications;
+        if (!isObj(im) || !isStr(im.implication) || !CONFIDENCE.includes(im.confidence)) e.push(`${p}.implications: implication and confidence (high|medium|low) required`);
+      }
       if (!Array.isArray(sec.findings) || sec.findings.length === 0) e.push(`${p}.findings: at least one finding`);
       else sec.findings.forEach((f, i) => { if (!isStr(f.text)) e.push(`${p}.findings[${i}].text: required`); needEvidence(f, `${p}.findings[${i}]`, e); });
     }
@@ -146,6 +155,36 @@ export function validateAudit(audit) {
         if (!isObj(it) || !isStr(it.text)) e.push(`summary.${d}[${i}].text: required`);
         else if (d !== 'validate' && !(Array.isArray(it.evidence) && it.evidence.length && it.evidence.every(isStr))) e.push(`summary.${d}[${i}].evidence: at least one evidence path is required`);
       });
+    }
+  }
+  // The creative synthesis: thesis, decisions, territories. Every reference must resolve.
+  const sy = audit.synthesis;
+  if (sy != null) {
+    if (!isObj(sy)) e.push('synthesis: must be an object');
+    else {
+      for (const k of ['thesis', 'tension', 'uncertainty']) if (!isStr(sy[k])) e.push(`synthesis.${k}: required`);
+      const fids = new Set(Object.values(audit.sections || {}).flatMap((s) => (s.findings || []).map((f) => f.id)).concat((audit.conventions || []).map((c) => c.id)).filter(Boolean));
+      const oids = new Set((audit.opportunities || []).map((o) => o.id));
+      const refs = (list, p) => { if (!Array.isArray(list) || !list.length) e.push(`${p}: cite at least one finding`); else for (const r of list) if (!fids.has(r)) e.push(`${p}: "${r}" is not a finding or convention of this audit`); };
+      (sy.decisions || []).forEach((d, i) => {
+        const p = `synthesis.decisions[${i}]`;
+        for (const k of ['id', 'dimension', 'recommendation', 'rationale', 'tradeoff']) if (!isStr(d[k])) e.push(`${p}.${k}: required`);
+        if (!STATUSES.includes(d.status)) e.push(`${p}.status: must be one of ${STATUSES.join(', ')}`);
+        if (!CONFIDENCE.includes(d.confidence)) e.push(`${p}.confidence: high, medium or low`);
+        refs(d.finding_refs, `${p}.finding_refs`);
+      });
+      (sy.territories || []).forEach((t, i) => {
+        const p = `synthesis.territories[${i}]`;
+        for (const k of ['id', 'title', 'idea', 'description', 'perception', 'risk', 'validate']) if (!isStr(t[k])) e.push(`${p}.${k}: required`);
+        if (!CONFIDENCE.includes(t.confidence)) e.push(`${p}.confidence: high, medium or low`);
+        if (!isObj(t.directions) || !DIRECTIONS.every((k) => isStr(t.directions[k]))) e.push(`${p}.directions: needs ${DIRECTIONS.join(', ')}`);
+        refs(t.finding_refs, `${p}.finding_refs`);
+        for (const o of t.opportunity_refs || []) if (!oids.has(o)) e.push(`${p}.opportunity_refs: "${o}" is not an opportunity`);
+        if (!Array.isArray(t.open_decisions) || !t.open_decisions.length) e.push(`${p}.open_decisions: say what is left to the designer`);
+        (t.moodboard || []).forEach((m, j) => { if (!isStr(m.file) || !isStr(m.source) || !isStr(m.note)) e.push(`${p}.moodboard[${j}]: file, source and note required`); });
+      });
+      (sy.references || []).forEach((r, i) => { for (const k of ['asset', 'mechanism', 'reinterpret', 'do_not_copy']) if (!isStr(r[k])) e.push(`synthesis.references[${i}].${k}: required`); });
+      (sy.evaluation || []).forEach((c, i) => { if (!isStr(c.criterion) || !isStr(c.test) || typeof c.gate !== 'boolean') e.push(`synthesis.evaluation[${i}]: criterion, test and gate (true|false) required`); });
     }
   }
   (audit.panel || []).forEach((b, i) => {
