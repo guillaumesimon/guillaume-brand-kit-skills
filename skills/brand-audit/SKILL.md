@@ -1,6 +1,6 @@
 ---
 name: brand-audit
-description: Run the brand and competitive audit an art director does before designing an identity, and write a visual landscape audit of a sector. It builds a panel (direct and indirect competitors, category leaders, aspirational brands from outside the sector), visits their sites, measures their real colours and typefaces, collects logos, codes every brand on a fixed vocabulary (logo type, symbol, colour, typography, imagery, layout, headline), counts the sector's dominant codes, separates the codes a brand must keep to be understood from the clichés it can break, maps saturated and open visual territories, and proposes differentiation opportunities with their evidence. Two modes, flash (about ten minutes) and deep (about forty). Use this skill whenever someone asks for a brand audit, a competitive audit, a visual audit, a visual landscape, a competitor benchmark of logos or identities, the visual codes or clichés of a sector, where the white space is, how to stand out visually in a category, un audit de marque, un audit concurrentiel, un benchmark visuel, les codes graphiques d'un secteur, une cartographie des concurrents, des opportunités de différenciation. Also use it before brand-kit when there is time, and before a rebrand. Do not use it for positioning, messaging, pricing or SEO comparisons (that is a competitive brief), and do not use it to design the brand itself (that is brand-kit).
+description: Run the brand and competitive audit an art director does before designing an identity, and write a visual landscape audit of a sector. It builds a panel (direct and indirect competitors, category leaders, aspirational brands from outside the sector), visits their sites, measures their real colours and typefaces, collects logos, codes every brand on a fixed vocabulary (logo type, symbol, colour, typography, imagery, layout, headline), counts the sector's dominant codes, separates what a brand must keep to be understood from the clichés it can break, maps saturated and open visual territories, and ends with a creative synthesis: a decision matrix, two to four creative territories each with a sourced moodboard, and a brief for the designer or agent who comes next. It writes a black and white report for people and a generated brief for agents. Two modes, flash (about twenty minutes) and deep (about fifty). Use this skill whenever someone asks for a brand audit, a competitive audit, a visual audit, a visual landscape, a competitor benchmark of logos or identities, creative territories or moodboards grounded in a competitor study, the visual codes or clichés of a sector, where the white space is, how to stand out visually in a category, un audit de marque, un audit concurrentiel, un benchmark visuel, les codes graphiques d'un secteur, une cartographie des concurrents, des opportunités de différenciation. Also use it before brand-kit when there is time, and before a rebrand. Do not use it for positioning, messaging, pricing or SEO comparisons (that is a competitive brief), and do not use it to design the brand itself (that is brand-kit).
 ---
 
 # Audit a visual landscape
@@ -9,9 +9,9 @@ Produce `brand/audit/`: the evidence an art director pins on the wall before dra
 
 ```
 brand/audit/
-├── audit.json       the single source: panel, measures, codes, counts, classifications, opportunities
+├── audit.json       the single source: panel, measures, codes, counts, sections, classifications, synthesis
 ├── AUDIT.md         for agents: the creative brief, generated from audit.json
-├── landscape.html   for people: the report, twelve sections, black and white
+├── landscape.html   for people: the report, fourteen sections, black and white
 └── evidence/        screenshots, logos, contact sheets, one folder per brand
 ```
 
@@ -35,15 +35,15 @@ The scripts do the mechanical work so that your attention goes where it is neede
 
 | | Flash | Deep |
 |---|---|---|
-| Time | about 20 minutes (estimate) | about 50 minutes (estimate) |
+| Time | about 20 minutes | about 50 minutes (estimate: this mode has been exercised less) |
 | Panel | 8 direct, 3 indirect, 2 aspirational | 10 to 12 direct, 4 to 6 indirect, 3 to 4 leaders, 5 to 8 aspirational |
 | Questions to the user | framing if the context lacks it, then the aspirational brands | 2 at most, then one panel review, aspirational brands included |
 | Capture | the whole home page, 2 inner pages, the App Store listing | the same |
 | Library sample | Logosystem, one industry | Logosystem, Mobbin, and Logoinspo for references |
 | Coding | one pass | judgment fields coded twice, disagreements settled |
-| Synthesis | counts, classifications as hypotheses, 2 opportunities | map, 3 to 5 opportunities, counter-check, recent rebrands |
+| Conclusions | counts, classifications as hypotheses, 2 or 3 opportunities | maps, 3 to 5 opportunities, counter-check, recent rebrands |
 | Writing | 3 section writers, 2 profile writers | one writer per section, profile writers |
-| Synthesis | thesis, decisions, 2 to 4 territories, one moodboard scout each | the same, plus an independent critique pass |
+| Creative synthesis | thesis, decisions, 2 to 4 territories, one moodboard scout each | the same, plus an independent critique pass |
 | Subagents | about 14 | about 30, in parallel |
 
 Both capture each brand the same way; the difference is how many brands, how carefully they are coded, and how hard the conclusions are attacked.
@@ -56,7 +56,8 @@ Pick the mode before anything else. If the user or the calling skill named one, 
 
 - Paths below are relative to this skill's directory for scripts (`assets/…`) and to the project for outputs (`brand/audit/`). Write `AUDIT=brand/audit` once and reuse it.
 - If `brand/audit/audit.json` exists, this is a resume: read it, say what is there, and continue from the first step that is incomplete. A deep run on a flash audit keeps the panel and adds to it.
-- The scripts need Node 22 and Playwright with Chromium. If `node assets/capture.mjs --help` fails on the import, run `npm i playwright && npx playwright install chromium`.
+- The scripts need Node 22 or later and Playwright with Chromium, and nothing else: no API key, no other dependency. If `node assets/capture.mjs --help` fails on the import, run `npm i playwright && npx playwright install chromium`.
+- You need web search, a way to read images, and ideally subagents. Mobbin is optional. `AskUserQuestion` is used where it exists; otherwise ask in plain text.
 - Subagents make this fast. If you have no subagent tool, run the same steps in series and say so in `limits`.
 
 ## The eight steps
@@ -101,7 +102,7 @@ node assets/library.mjs $AUDIT --industry <slug>
 
 ### 5 · Code
 
-**Read `references/codebook.md`.** Dispatch coders, four or five brands each. A coder gets the screenshots, the measures and the codebook, looks, and returns one JSON object of codes per brand. Merge with:
+**Read `references/codebook.md`.** Dispatch coders, four or five brands each. A coder gets the screenshots, the measures and the codebook, looks, and writes one JSON object of codes per brand to a file. Merge with:
 
 ```bash
 node assets/code.mjs $AUDIT codes-1.json codes-2.json
@@ -125,7 +126,7 @@ node assets/aggregate.mjs $AUDIT
 
 It prints the counts, the conventions, who breaks each one and whether that brand is established, and two maps.
 
-Counts are not an audit. **Read `references/report.md`** and dispatch the section writers: each looks at the walls for its part (signs, colour and type, the visual system) and writes an analysis with a lead, paragraphs, findings tied to evidence, and a takeaway for a designer. Three writers in flash, one per section in deep. Dispatch the profile writers at the same time: three sentences per brand, ending on what it teaches. Paste what comes back into `audit.json` under `sections` and on each brand's `profile`, and read all of it: you are the editor, and a count nobody can find on the wall goes back to its writer.
+Counts are not an audit. **Read `references/report.md`** and dispatch the section writers: each looks at the walls for its part (signs, colour and type, the visual system) and writes an analysis with a lead, paragraphs, findings tied to evidence, and a takeaway for a designer. Three writers in flash, one per section in deep. Dispatch the profile writers at the same time: three sentences per brand, ending on what it teaches. Each writer saves a JSON file; merge them into `audit.json` under `sections` and on each brand's `profile`, and read all of it: you are the editor, and a count nobody can find on the wall goes back to its writer.
 
 ### 7 · Conclude
 
@@ -176,7 +177,7 @@ Tell the user, in this order and in their language:
 3. the strongest territory to explore, and its risk;
 4. what has to be validated with people, and what the audit does not cover.
 
-Do not read the whole board back. They have it.
+Do not read the whole report back. They have it.
 
 ## Be honest about what it is
 
@@ -208,9 +209,9 @@ Coded values stay in the vocabulary, in English, always. They are data.
 - `references/panel.md`: the roles, the counts per mode, `established`, the aspirational rule, the scout prompt, the `audit.json` skeleton
 - `references/capture.md`: what is captured and measured, how to read the notes, the fallback chain for blocked sites
 - `references/codebook.md`: the closed vocabulary, one line per value, the tie-break rules, the coder prompt, double coding
-- `references/report.md`: the twelve sections, what a written section is, the writer and profile prompts, the summary in five decisions, the eight quality questions
+- `references/report.md`: the fourteen sections, what a written section is, the writer and profile prompts, the summary in five decisions, the eight quality questions
 - `references/creative.md`: the creative synthesis: implications, thesis, decision matrix, territories, moodboards and their scout prompt, references, evaluation, the generated brief, the critique list
-- `references/synthesis.md`: thresholds, the exception test and the five classes, reading the maps, the opportunity form, the sceptic prompt, what goes into `AUDIT.md`
+- `references/synthesis.md`: thresholds, the exception test and the six classes, reading the maps, the opportunity form, the sceptic prompt
 - `references/sources.md`: Logosystem, Logoinspo, Mobbin: what to take from each, their bias, the low-volume rule
 - `assets/capture.mjs`: visits each brand, screenshots it, measures colours, typefaces and shapes, saves the logo
 - `assets/library.mjs`: samples one Logosystem industry with its tags

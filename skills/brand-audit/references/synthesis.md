@@ -161,7 +161,7 @@ Then:
 - **weakened**: keep it, raise the risk, and say who is nearby.
 - **held**: keep it.
 
-Record the result on the opportunity: `"challenged": { "searched": [...], "result": "held" | "weakened", "note": "…" }`. `check.mjs` requires it in deep mode. "Held" means held against those searches, and the board prints them.
+Record the result on the opportunity: `"challenged": { "searched": [...], "result": "held" | "weakened", "note": "…" }`. `check.mjs` requires it in deep mode. "Held" means held against those searches, and the report prints them.
 
 ## Recent rebrands (deep)
 

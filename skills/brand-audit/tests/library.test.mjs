@@ -8,7 +8,7 @@ const fx = (f) => readFileSync(new URL('./fixtures/' + f, import.meta.url), 'utf
 test('parseList reads slugs and images from an industry page', () => {
   const items = parseList(fx('logosystem-list.html'));
   assert.equal(items.length, 8); // only the first logos are rendered in the markup
-  assert.deepEqual(items[0], { slug: 'mindful-chef', name: 'Mindful Chef', image: 'https://cdn.logosystem.co/logos/mindful-7e3kr.webp' });
+  assert.deepEqual(items[0], { slug: 'northpace', name: 'Northpace', image: 'https://cdn.logosystem.co/logos/example-00.webp' });
   assert.equal(new Set(items.map((i) => i.slug)).size, items.length);
 });
 test('parseList of an unknown markup is empty, not an error', () => assert.deepEqual(parseList('<html></html>'), []));

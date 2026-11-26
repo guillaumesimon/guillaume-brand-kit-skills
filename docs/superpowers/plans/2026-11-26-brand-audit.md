@@ -1,5 +1,7 @@
 # brand-audit Implementation Plan
 
+> **Historical working document.** It records how `brand-audit` was first designed and planned. The skill has changed since (capture depth, written sections, creative synthesis, generated brief); `skills/brand-audit/SKILL.md` is the reference.
+
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Ship a `brand-audit` skill that produces an evidence-backed visual landscape audit of a sector, in flash and deep modes, and have `brand-kit` consume it.

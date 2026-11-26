@@ -8,17 +8,32 @@ Three Claude Code skills that look at a market, turn a 25-minute conversation in
 
 ## The audit
 
-`brand-audit` answers one question: which codes make a brand understood by this market, and which can be broken to stand apart from it. It builds a panel of competitors and aspirational brands, visits their sites with a headless browser, measures their real colours and typefaces, codes each brand on a fixed vocabulary (the seven logo types, symbol, colour, type, imagery, layout, headline), counts, and classifies every dominant code as a legibility code, a cliché or a risky break. Flash mode takes about ten minutes, deep about forty.
+`brand-audit` answers one question: which codes make a brand understood by its market, and which can be broken to stand apart from it. It does the work an art director does before drawing anything, and keeps three things apart all the way through: what was **measured** on the rendered page, what was **observed** on a capture, and what was **judged** from them.
+
+1. **Panel.** Direct competitors, indirect ones (what people use today instead), category leaders, and aspirational brands from outside the sector, which you validate.
+2. **Capture.** A headless browser visits every brand: the whole home page, inner pages, the largest pictures the site publishes, the App Store listing, the logo. It measures the real colours and typefaces.
+3. **Coding.** Subagents look at the captures and code each brand on a closed vocabulary (the seven logo types, symbol, colour, type, imagery, layout, headline), so that what they saw can be counted.
+4. **Analysis.** Counts, then six written analyses (logos, architecture, colour, typography, signs, visual language), a moodboard and a profile per brand, positioning maps, and every dominant code classified: functional requirement, category signal, cliché, owned by a competitor, emerging, or risky break.
+5. **Creative synthesis.** A thesis and its central tension, a decision matrix, two to four creative territories each with about ten real, sourced reference images, and the criteria to judge a concept.
 
 ```
 brand/audit/
-├── audit.json       the single source: panel, measures, codes, counts, classifications, opportunities
-├── AUDIT.md         agents read this: numbered rules, each with its count and its evidence
-├── landscape.html   the board, for people
-└── evidence/        screenshots, logos, contact sheets
+├── audit.json       the single source: panel, measures, codes, counts, sections, synthesis
+├── AUDIT.md         the creative brief for the next agent, generated from audit.json
+├── landscape.html   the report for people: fourteen sections, black and white
+└── evidence/        screenshots, logos, contact sheets, territory moodboards
 ```
 
-Its scripts need Node 22 and Playwright with Chromium. `node --test skills/brand-audit/tests/*.test.mjs` runs its tests.
+Two modes write the same files: **flash** (about twenty minutes, 13 brands, classifications as hypotheses) and **deep** (about fifty, a larger panel, double coding, and a counter-check on every opportunity). Flash has been run end to end; deep has been exercised less.
+
+What it needs: Node 22 or later and Playwright with Chromium (`npm i playwright && npx playwright install chromium`), web search, and ideally subagents. No API key. The Mobbin connector is optional. `node --test skills/brand-audit/tests/*.test.mjs` runs its tests.
+
+What to know before using it:
+
+- **The audit reads captures.** It does not measure how people perceive a brand, whether a sign is legally available, or whether a territory sells. It says so, and lists what to validate with people.
+- **A panel is a sample chosen by a search**, not a census, and a capture is one day.
+- **Other companies' logos and screenshots are working material for internal reference.** The report is not meant to be published, and the skill warns before captures are committed to a public repository.
+- **It visits sites as a person would**: a few pages per brand, once. A site that refuses automated visits is recorded as such and left out of the counts, never worked around.
 
 ## What it produces
 

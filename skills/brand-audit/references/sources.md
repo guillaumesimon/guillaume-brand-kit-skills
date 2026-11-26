@@ -10,7 +10,7 @@ Use them as a person would: a few requests, the source cited, the images kept fo
 node assets/library.mjs brand/audit --industry sports-and-fitness [--max 40]
 ```
 
-One page request returns the industry's logos with the site's own tags: type, colours, styles, subjects, moods, the studio and a link to the case study. The script writes them to `audit.json` under `library.logosystem`, with counts per facet, and saves up to `--max` images (60 at most) into `evidence/library/` for the board.
+One page request returns the industry's logos with the site's own tags: type, colours, styles, subjects, moods, the studio and a link to the case study. The script writes them to `audit.json` under `library.logosystem`, with counts per facet, and saves up to `--max` images (60 at most) into `evidence/library/` for the report.
 
 Industry slugs seen on 2026-11-26:
 

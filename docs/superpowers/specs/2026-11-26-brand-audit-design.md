@@ -1,5 +1,7 @@
 # Skill `brand-audit` : conception
 
+> **Historical working document.** It records how `brand-audit` was first designed and planned. The skill has changed since (capture depth, written sections, creative synthesis, generated brief); `skills/brand-audit/SKILL.md` is the reference.
+
 Date : 2026-11-26. Statut : validé.
 
 ## Intention
