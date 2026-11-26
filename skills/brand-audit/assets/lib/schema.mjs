@@ -17,13 +17,20 @@ export const VOCAB = {
   imagery: ['people_photo', 'product_ui', 'product_photo', 'illustration_flat', 'illustration_3d', 'abstract_graphic', 'video', 'none'],
   layout: ['centered_hero', 'split_hero', 'full_bleed_media', 'dense_grid', 'editorial'],
   headline_promise: ['benefit', 'mechanism', 'manifesto', 'proof', 'community'],
+  // Transversal traits of the logo, whatever its type.
+  logo_form: ['geometric', 'organic'],
+  logo_energy: ['static', 'dynamic'],
+  logo_detail: ['minimal', 'detailed'],
 };
 
 // Dimensions that enter the statistics. symbol_subject is free text.
 export const DIMENSIONS = [...Object.keys(VOCAB).slice(0, 2), 'symbol_subject', ...Object.keys(VOCAB).slice(2)];
 
 export const ROLES = ['direct', 'indirect', 'leader', 'aspirational', 'self'];
-export const CLASSES = ['legibility', 'cliche', 'risky'];
+export const CLASSES = ['legibility', 'cliche', 'risky', 'owned', 'emerging'];
+/** The written sections of the report, each by its own writer. */
+export const SECTIONS = ['logos', 'architecture', 'colour', 'typography', 'symbols', 'visual_language'];
+export const DECISIONS = ['preserve', 'avoid', 'challenge', 'explore', 'validate'];
 export const PROVENANCE = ['measured', 'observed', 'judged'];
 const CAPTURES = ['full', 'partial', 'none'];
 
@@ -114,6 +121,33 @@ export function validateAudit(audit) {
       e.push(`${p}.challenged: needs searched[] and result held|weakened`);
   });
 
+  if (audit.sections != null) {
+    if (!isObj(audit.sections)) e.push('sections: must be an object');
+    else for (const [key, sec] of Object.entries(audit.sections)) {
+      const p = `sections.${key}`;
+      if (!SECTIONS.includes(key)) { e.push(`${p}: unknown section, expected one of ${SECTIONS.join(', ')}`); continue; }
+      if (!isObj(sec) || !isStr(sec.lead)) { e.push(`${p}.lead: required`); continue; }
+      if (!Array.isArray(sec.paragraphs) || !sec.paragraphs.every(isStr)) e.push(`${p}.paragraphs: must be an array of strings`);
+      if (!isStr(sec.takeaway)) e.push(`${p}.takeaway: required`);
+      if (!Array.isArray(sec.findings) || sec.findings.length === 0) e.push(`${p}.findings: at least one finding`);
+      else sec.findings.forEach((f, i) => { if (!isStr(f.text)) e.push(`${p}.findings[${i}].text: required`); needEvidence(f, `${p}.findings[${i}]`, e); });
+    }
+  }
+  if (audit.summary != null) {
+    const sm = audit.summary;
+    if (!isObj(sm) || !isStr(sm.lead)) e.push('summary.lead: required');
+    else for (const d of DECISIONS) {
+      if (!Array.isArray(sm[d])) { e.push(`summary.${d}: must be an array`); continue; }
+      sm[d].forEach((it, i) => {
+        if (!isObj(it) || !isStr(it.text)) e.push(`summary.${d}[${i}].text: required`);
+        else if (d !== 'validate' && !(Array.isArray(it.evidence) && it.evidence.length && it.evidence.every(isStr))) e.push(`summary.${d}[${i}].evidence: at least one evidence path is required`);
+      });
+    }
+  }
+  (audit.panel || []).forEach((b, i) => {
+    if (b && b.profile != null && !(isObj(b.profile) && ['personality', 'strength', 'lesson'].every((k) => isStr(b.profile[k]))))
+      e.push(`panel[${i}].profile: needs personality, strength and lesson`);
+  });
   if (audit.limits != null && !(Array.isArray(audit.limits) && audit.limits.every(isStr))) e.push('limits: must be an array of strings');
   return e;
 }

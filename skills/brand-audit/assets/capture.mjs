@@ -30,7 +30,7 @@ function measureInPage(logoSelector) {
   const rootBg = [getComputedStyle(document.body).backgroundColor, getComputedStyle(document.documentElement).backgroundColor]
     .find((c) => c && !/rgba?\(0, 0, 0, 0\)|transparent/.test(c)) || 'rgb(255, 255, 255)';
   bg.push({ color: rootBg, weight: vw * 900 });
-  let headline = null;
+  let headline = null, headlineEl = null;
   for (const el of document.querySelectorAll('body *')) {
     const v = visible(el); if (!v) continue;
     const { r, cs } = v;
@@ -44,8 +44,8 @@ function measureInPage(logoSelector) {
       fonts[key] = (fonts[key] || 0) + own.length;
       const size = parseFloat(cs.fontSize);
       if (own.length >= 8 && r.top < 1200 && (!headline || size > headline.size_px) && !el.closest('[role="dialog"], [aria-modal="true"], [class*="cookie" i], [class*="consent" i], [id*="cookie" i], [id*="consent" i]'))
-        headline = { text: own.slice(0, 120), family: cs.fontFamily, size_px: size, weight: +cs.fontWeight || cs.fontWeight,
-          tracking_em: cs.letterSpacing === 'normal' ? 0 : +(parseFloat(cs.letterSpacing) / size).toFixed(3) };
+{ headlineEl = el; headline = { text: own.slice(0, 120), family: cs.fontFamily, size_px: size, weight: +cs.fontWeight || cs.fontWeight,
+          tracking_em: cs.letterSpacing === 'normal' ? 0 : +(parseFloat(cs.letterSpacing) / size).toFixed(3) }; }
     }
     if (el.matches('a, button, [role="button"], input[type="submit"]')) {
       accentBg[cs.backgroundColor] = (accentBg[cs.backgroundColor] || 0) + 1;
@@ -62,9 +62,11 @@ function measureInPage(logoSelector) {
   const h1Size = h1 && visible(h1) ? parseFloat(getComputedStyle(h1).fontSize) : 0;
   if (h1Size && h1.innerText.trim().length >= 4 && (!headline || h1Size >= headline.size_px * 0.6)) {
     const cs = getComputedStyle(h1), size = parseFloat(cs.fontSize);
+    headlineEl = h1;
     headline = { text: h1.innerText.trim().replace(/\s+/g, ' ').slice(0, 120), family: cs.fontFamily, size_px: size, weight: +cs.fontWeight || cs.fontWeight,
       tracking_em: cs.letterSpacing === 'normal' ? 0 : +(parseFloat(cs.letterSpacing) / size).toFixed(3) };
   }
+  if (headlineEl) headlineEl.setAttribute('data-brand-audit-headline', '1');
   // Logo: first candidate with a plausible box near the top. Marked so Node can screenshot it.
   let logo = null;
   for (const el of document.querySelectorAll(logoSelector)) {
@@ -204,6 +206,13 @@ export async function captureBrand(browser, brand, outDir, opts = {}) {
       logo_box: raw.logo && { tag: raw.logo.tag, width: raw.logo.width, height: raw.logo.height } }, null, 2));
     evidence.push(rel('measures.json'));
     await shot(page, 'desktop.webp');
+    // The headline as set on the page: the type specimen of this brand.
+    if (raw.headline) {
+      try {
+        const box = await page.evaluate(() => { const r = document.querySelector('[data-brand-audit-headline]')?.getBoundingClientRect(); return r && r.width > 40 && r.height > 12 && r.top >= 0 && r.bottom <= innerHeight ? { x: Math.max(0, r.x - 12), y: Math.max(0, r.y - 12), width: Math.min(innerWidth - Math.max(0, r.x - 12), r.width + 24), height: r.height + 24 } : null; });
+        if (box) await shot(page, 'headline.webp', { clip: box }, 1000, 500);
+      } catch { /* a specimen is a bonus */ }
+    }
 
     const logo = await saveLogo();
     if (!logo) notes.push('logo not found');

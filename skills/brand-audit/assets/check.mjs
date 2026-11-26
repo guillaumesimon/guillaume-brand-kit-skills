@@ -2,11 +2,12 @@
 // The gate. An audit does not go out while this fails.
 //   node check.mjs <audit-dir>
 // Fails on: schema errors, evidence that does not exist (in audit.json or cited in AUDIT.md),
-// a convention left unclassified, a deep-mode opportunity that was not challenged.
+// a convention left unclassified, a section or the summary not written, a brand without a profile,
+// an opportunity without its observation, alignment, benefit or validation, a deep-mode opportunity not challenged.
 import { readFileSync, existsSync, readdirSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 import { pathToFileURL } from 'node:url';
-import { validateAudit } from './lib/schema.mjs';
+import { validateAudit, SECTIONS } from './lib/schema.mjs';
 
 const MAX_EVIDENCE_MB = 15;
 
@@ -37,6 +38,21 @@ export function checkAudit(auditDir) {
     cite(`opportunity "${o.id}"`, o.evidence);
     if (audit.meta?.mode === 'deep' && !o.challenged) errors.push(`opportunity "${o.id}": deep mode requires the counter-check (challenged)`);
   });
+  // The written report: six sections, each by its writer, then the summary, written last.
+  for (const key of SECTIONS) {
+    const sec = audit.sections?.[key];
+    if (!sec) { errors.push(`sections.${key}: not written yet`); continue; }
+    (sec.findings || []).forEach((f, i) => cite(`sections.${key} finding ${i + 1}`, f.evidence));
+  }
+  if (!audit.summary) errors.push('summary: not written yet (preserve, avoid, challenge, explore, validate)');
+  else {
+    for (const d of ['preserve', 'avoid', 'challenge', 'explore']) (audit.summary[d] || []).forEach((it, i) => cite(`summary.${d}[${i}]`, it.evidence));
+    if (!(audit.summary.validate || []).length) errors.push('summary.validate: name at least one hypothesis that needs a person to check it');
+  }
+  const noProfile = (audit.panel || []).filter((b) => b.codes && !b.profile).map((b) => b.id);
+  if (noProfile.length) errors.push(`brands coded but without a profile: ${noProfile.join(', ')}`);
+  for (const o of audit.opportunities || []) for (const k of ['observation', 'alignment', 'benefit', 'validate'])
+    if (!o[k]) errors.push(`opportunity "${o.id}": ${k} is missing`);
   if (!audit.frequencies) errors.push('frequencies: missing, run aggregate.mjs');
   const full = (audit.panel || []).filter((b) => b.role === 'direct' && b.capture === 'full');
   const uncoded = full.filter((b) => !b.codes).map((b) => b.id);

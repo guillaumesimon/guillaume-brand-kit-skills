@@ -79,21 +79,33 @@ test('aggregate keeps an existing classification on re-run', () => {
   assert.deepEqual(out.conventions.filter((c) => !c.class).map((c) => c.dimension), ['logo_type']); // new candidates arrive unclassified
   assert.equal(JSON.parse(readFileSync(join(dir, 'audit.json'))).frequencies.base, 8);
 });
-test('the analyst can name the axes, and the choice survives a re-run', () => {
+test('the analyst can name the axes of several maps, and the choice survives a re-run', () => {
   const dir = mkdtempSync(join(tmpdir(), 'ba-axes-'));
   writeFileSync(join(dir, 'audit.json'), readFileSync(new URL('../assets/audit.example.json', import.meta.url)));
-  const m = aggregate(dir, ['name_style', 'layout']).map;
-  assert.deepEqual([m.x.dimension, m.y.dimension].sort(), ['layout', 'name_style']);
-  assert.deepEqual(aggregate(dir).map.forced, ['name_style', 'layout']);
+  const maps = aggregate(dir, [['name_style', 'layout'], ['saturation', 'name_case']]).maps;
+  assert.equal(maps.length, 2);
+  assert.deepEqual([maps[0].x.dimension, maps[0].y.dimension].sort(), ['layout', 'name_style']);
+  const again = aggregate(dir).maps;
+  assert.deepEqual(again.map((m) => m.forced), [['name_style', 'layout'], ['saturation', 'name_case']]);
+});
+test('without named axes, two maps on different dimensions are drawn', () => {
+  const dir = mkdtempSync(join(tmpdir(), 'ba-two-'));
+  const audit = JSON.parse(readFileSync(new URL('../assets/audit.example.json', import.meta.url)));
+  delete audit.maps; delete audit.map;
+  writeFileSync(join(dir, 'audit.json'), JSON.stringify(audit));
+  const maps = aggregate(dir).maps;
+  assert.equal(maps.length, 2);
+  const dims = maps.flatMap((m) => [m.x.dimension, m.y.dimension]);
+  assert.equal(new Set(dims).size, 4);
 });
 test('a convention written by the analyst survives a re-run', () => {
   const dir = mkdtempSync(join(tmpdir(), 'ba-man-'));
   const audit = JSON.parse(readFileSync(new URL('../assets/audit.example.json', import.meta.url)));
+  const before = audit.conventions.filter((c) => c.manual).length;
   audit.conventions.push({ manual: true, dimension: 'imagery', value: 'a screen or a shelf', count: 8, base: 8, share: 1, breakers: [], class: 'legibility', provenance: 'judged', reason: 'x', evidence: ['evidence/sheets/heroes.webp'] });
   writeFileSync(join(dir, 'audit.json'), JSON.stringify(audit));
-  const out = aggregate(dir);
-  assert.equal(out.conventions.filter((c) => c.manual).length, 1);
-  assert.equal(aggregate(dir).conventions.filter((c) => c.manual).length, 1);
+  assert.equal(aggregate(dir).conventions.filter((c) => c.manual).length, before + 1);
+  assert.equal(aggregate(dir).conventions.filter((c) => c.manual).length, before + 1);
 });
 test('classifications are not erased when the base drops under 4', () => {
   const dir = mkdtempSync(join(tmpdir(), 'ba-dip-'));

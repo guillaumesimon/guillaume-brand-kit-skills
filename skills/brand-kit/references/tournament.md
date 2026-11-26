@@ -107,7 +107,7 @@ Those three are concrete, they are about the user's own business, and in practic
 
 ## Category duels, when an audit exists
 
-If `brand/audit/AUDIT.md` exists, its section 5 names two images: the most typical home page of the category and the most deviant one, both from the user's real competitors.
+If `brand/audit/AUDIT.md` exists, its section 6 names two images: the most typical home page of the category and the most deviant one, both from the user's real competitors.
 
 This does not replace anything above. Competitors resemble each other by construction, which is exactly what makes them poor material for the main duels, where the two sides must differ on everything. The Mobbin duels stay as they are.
 

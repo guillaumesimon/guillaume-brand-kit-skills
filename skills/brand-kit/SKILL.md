@@ -44,7 +44,7 @@ Check whether `brand/tokens.json` already exists. If it does, this is not the ri
 **If `brand/audit/AUDIT.md` exists, read it before the first question**, in both modes. It is the output of the `brand-audit` skill: what this category looks like, counted on real captures. It changes four things, and nothing else:
 
 - **Framing.** Where its section 0 answers one of the two Act 1 questions, state the answer and move on (rule 3). Do not ask what the audit already knows.
-- **Tournament.** Add the category duel from its section 5. `references/tournament.md` → *Category duels, when an audit exists*.
+- **Tournament.** Add the category duel from its section 6. `references/tournament.md` → *Category duels, when an audit exists*.
 - **Swap test.** Use the competitor it names, rather than choosing one.
 - **The "Not" list.** Seed `BRAND.md` section 1 from its clichés, then let the session's refusals add to it.
 
@@ -111,7 +111,7 @@ The second is load-bearing. A platform with no sacrifice cannot generate decisio
 
 When an answer lands on the generic blocklist — *intégrité, innovation, premium, moderne, simple, tout le monde* — do not accept it. `references/discovery.md` has the refuse-the-first-answer loop, and the six tests your positioning has to pass before you are allowed to write it down: swap, reversal, Monday-morning, sacrifice, new-hire, wallpaper.
 
-Two tests you run silently and report, never delegate to the user: the **swap test** — put a competitor's name on the artefact and the positioning; if both still work you have elicited category conventions, not a brand. With an audit, the competitor is the one its section 5 names, and its *Break* list is what the artefact is checked against: an artefact that reproduces three of the category's clichés has failed whatever the swap looks like. And `references/taste.md` **as a gate**: counting typefaces, weights, hues, radius values, accent share, off-scale spacing, plus the five renders. A system that fails it does not go out.
+Two tests you run silently and report, never delegate to the user: the **swap test** — put a competitor's name on the artefact and the positioning; if both still work you have elicited category conventions, not a brand. With an audit, the competitor is the one its section 6 names, and its *Avoid* list is what the artefact is checked against: an artefact that reproduces three of the category's clichés has failed whatever the swap looks like. And `references/taste.md` **as a gate**: counting typefaces, weights, hues, radius values, accent share, off-scale spacing, plus the five renders. A system that fails it does not go out.
 
 ### Act 4 · Écrire
 

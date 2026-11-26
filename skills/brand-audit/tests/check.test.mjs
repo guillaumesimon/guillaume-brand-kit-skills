@@ -19,6 +19,8 @@ function fixture(mutate) {
   const paths = new Set([...md.matchAll(/`(evidence\/[^`\s]+)`/g)].map((m) => m[1]));
   for (const b of audit.panel) { b.evidence.forEach((p) => paths.add(p)); if (b.logo) paths.add(b.logo); }
   for (const c of [...audit.conventions, ...audit.opportunities]) c.evidence.forEach((p) => paths.add(p));
+  for (const sec of Object.values(audit.sections)) sec.findings.forEach((f) => f.evidence.forEach((p) => paths.add(p)));
+  for (const d of ['preserve', 'avoid', 'challenge', 'explore']) audit.summary[d].forEach((it) => it.evidence.forEach((p) => paths.add(p)));
   for (const p of paths) { mkdirSync(dirname(join(dir, p)), { recursive: true }); writeFileSync(join(dir, p), ''); }
   copyFileSync(join(assets, 'AUDIT.example.md'), join(dir, 'AUDIT.md'));
   writeFileSync(join(dir, 'landscape.html'), '<html></html>');
@@ -69,4 +71,15 @@ test('sheets label cells with name and role only, and skip missing images', () =
 test('an unsettled coding conflict fails', () => {
   const dir = fixture((a) => { a.panel[0].code_conflicts = { imagery: ['product_ui', 'people_photo'] }; });
   assert.ok(checkAudit(dir).errors.some((e) => /conflicts not settled: folio/.test(e)));
+});
+test('an unwritten section, a missing summary and a brand without profile each fail', () => {
+  const dir = fixture((a) => { delete a.sections.colour; delete a.summary; delete a.panel[0].profile; });
+  const errs = checkAudit(dir).errors.join('\n');
+  assert.match(errs, /sections\.colour: not written yet/);
+  assert.match(errs, /summary: not written yet/);
+  assert.match(errs, /without a profile: folio/);
+});
+test('an opportunity must say what it rests on and what to validate', () => {
+  const dir = fixture((a) => { delete a.opportunities[0].validate; });
+  assert.ok(checkAudit(dir).errors.some((e) => /the-order-book": validate is missing/.test(e)));
 });

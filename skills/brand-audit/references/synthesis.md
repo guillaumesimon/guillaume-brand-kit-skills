@@ -29,8 +29,17 @@ A convention at 60 % leaves up to 40 % of brands doing otherwise. So the questio
 | Situation | Class | Meaning |
 |---|---|---|
 | An **established** brand breaks it and is still read as part of the category | `cliche` | Breakable. The proof exists and you can name it |
-| No established brand breaks it, **and** it tells the buyer something they need | `legibility` | Keep. It is how the category is recognised |
+| No established brand breaks it, **and** it tells the buyer something they need | `legibility` | A category code. Keep it: it is how the category is recognised |
 | No established brand breaks it, and it tells the buyer nothing | `risky` | The best opening or a trap. Decide on purpose |
+
+Two more classes are not conventions and never come out of the counts. Write them by hand (`manual: true`) when you see them:
+
+| Situation | Class | Meaning |
+|---|---|---|
+| One brand holds a code so firmly that using it means being taken for that brand: a colour, a sign, a way of photographing | `owned` | Avoid. Not a cliché: a property. Name the brand and where it uses it |
+| A code that two or three recent or recently rebranded players share, absent from the older ones | `emerging` | Watch. It may be the next convention; entering it now is early, in two years it is late |
+
+For `owned`, the test is recognition without the logo: cover the name on the capture, and if the brand is still obvious because of that one element, it is theirs. For `emerging`, date it: say when each brand adopted it, from the rebrand search or the case studies.
 
 "Tells the buyer something they need" means one of: it identifies the type of product at a glance (a phone screen for an app, a map for navigation), it answers a trust requirement of the sector (a regulated look in finance or health), or it makes the thing usable (a light ground for long reading). Habit does not count. "Everyone does it" is the definition of a convention, not a reason to keep it.
 
@@ -71,9 +80,11 @@ Re-run `aggregate.mjs` afterwards: it keeps your classifications and refreshes t
 
 The script picks the two dimensions that split the direct panel most evenly and reduces each to its most frequent value against the rest. Every coded brand is plotted, direct or not.
 
+Two maps are drawn: the best pair, then the best pair among the remaining dimensions. One map flatters a single reading; two that agree are an argument, and two that disagree are a finding. Name your own with `--axes a,b --axes c,d`, one map per flag.
+
 The automatic pick is a start. If it gives an axis that says little (saturation against case), choose the two dimensions that carry the story you saw on the walls and re-run with `--axes imagery,ground`. The choice is kept on later runs. A dimension only works as an axis if at least two of its values each hold a fifth of the panel.
 
-Then write `map.reading` in `audit.json`, three or four sentences in plain words:
+Then write `reading` on each map of `maps` in `audit.json`, three or four sentences in plain words:
 
 - name the axes as a person would ("from showing the runner to showing the data", not "imagery");
 - say where the crowd is: that quadrant is the **saturated territory**;
@@ -91,8 +102,12 @@ Two in flash, three to five in deep. An opportunity is not "be different". It is
   "keep": ["imagery: product_ui"],
   "break": ["hue: orange", "headline_promise: community"],
   "import": [{ "from": "field-notes", "what": "a ruled, paper-toned page and a mono index" }],
-  "rationale": "Seven of ten sell belonging with a photograph of a group. Nobody addresses the runner alone with their numbers, which is what runners two or three times a week do. …",
-  "risk": "medium", "provenance": "judged",
+  "rationale": "Nobody addresses the runner alone with their numbers, which is what running two or three times a week is.",
+  "observation": "Seven of ten sell belonging with a photograph of a group.",
+  "alignment": "The audience runs alone, for its head.",
+  "benefit": "Recognised by the people it is for; unlike every competitor.",
+  "validate": "Whether a solitary image reads as calm or as lonely: show both to five runners.",
+  "risk": "medium", "risk_note": "No direct brand has tried it.", "provenance": "judged",
   "evidence": ["evidence/sheets/heroes.webp", "evidence/field-notes/desktop.webp"] }
 ```
 
@@ -103,7 +118,8 @@ Rules for writing them:
 3. **It borrows from a panel brand when it borrows.** `import.from` must be a brand id. The borrowing is what makes it concrete: a ground, a typographic manner, a way of showing the product.
 4. **It comes from the framing.** The strongest territories usually start from `framing.instead_of` or from the audience's own life, not from design fashion. Ask what this audience already recognises that no competitor uses.
 5. **It fails the any-sector test.** Read it with another sector's name. If it still works ("bold, human and simple"), it is not an opportunity for this one. Rewrite or drop it.
-6. **Its risk is stated**: `low` when an established brand already proves part of it, `high` when it rests on a risky break.
+6. **It names what it rests on and what it leaves unknown.** `observation` is the pattern in the panel, with its count. `alignment` ties it to the framing. `benefit` says what it would buy. `validate` says what only people can tell you. `check.mjs` requires all four.
+7. **Its risk is stated**: `low` when an established brand already proves part of it, `high` when it rests on a risky break.
 
 Rank them. The first is the one you would defend.
 
@@ -151,15 +167,16 @@ Copy `assets/AUDIT.example.md` and rewrite every line. It is for agents that wil
 
 - **Frontmatter**: sector, market, mode, date, base.
 - **0. Frame**: three lines from `framing`.
-- **1. Keep**: the `legibility` conventions, as rules.
-- **2. Break**: the `cliche` conventions, as rules, each naming the established brand that proves it. Add motif clichés here when a `symbol_subject` reaches a third of the panel, even under the convention threshold: four open books out of eight is a cliché a designer needs to know.
-- **3. Risky breaks**: the `risky` conventions, with what the neighbours did.
-- **4. Open territories**: the opportunities, ranked, one paragraph each.
-- **5. For brand-kit**: three things.
+- **1. Preserve**: the category codes, as rules.
+- **2. Avoid**: the clichés, each naming the established brand that proves it breakable, and the codes owned by a competitor, each naming its owner. Add motif clichés here when a `symbol_subject` reaches a third of the panel, even under the convention threshold: four open books out of eight is a cliché a designer needs to know.
+- **3. Challenge**: the risky breaks, with what the neighbours did, and the emerging codes, dated.
+- **4. Explore**: the opportunities, ranked, one paragraph each.
+- **5. Validate**: what must be checked with people before committing, and how.
+- **6. For brand-kit**: three things.
   - *Swap test competitor*: the most typical established brand, the one whose name you would put on a design to see if it still works.
   - *Category duel*: two image paths, the most typical home page against the most deviant one among the direct brands. Typical is the brand that matches the most conventions; deviant, the fewest.
   - *Seed for the Not list*: the clichés as a designer would say them ("orange on white, a group photo at golden hour, a phone tilted at 15 degrees").
-- **6. Limits**.
+- **7. Limits**.
 
 Every rule ends with its count and one or more `evidence/…` paths in backticks. `check.mjs` verifies that each path exists.
 

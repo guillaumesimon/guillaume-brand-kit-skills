@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // Count what the coders observed. Frequencies are computed, never estimated.
-//   node aggregate.mjs <audit-dir> [--axes imagery,ground]
+//   node aggregate.mjs <audit-dir> [--axes imagery,ground] [--axes hue,logo_type]   (one map per --axes)
 // Writes `frequencies`, the convention candidates (keeping classifications already made) and `map`.
 import { readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
@@ -69,12 +69,12 @@ function jitter(id, salt) {
  * Each axis is the most frequent value against everything else.
  * @returns {null | {x, y, points, clusters}}
  */
-export function mapAxes(panel, forced = []) {
+export function mapAxes(panel, forced = [], exclude = []) {
   const base = panel.filter(inBase);
   if (base.length < MIN_BASE) return null;
   const cands = [];
   for (const dim of DIMENSIONS) {
-    if (NOT_AN_AXIS.has(dim)) continue;
+    if (NOT_AN_AXIS.has(dim) || exclude.includes(dim)) continue;
     const counts = {};
     let n = 0;
     for (const b of base) { const v = norm(b.codes[dim]); if (v) { counts[v] = (counts[v] || 0) + 1; n++; } }
@@ -122,11 +122,22 @@ export function aggregate(auditDir, axes = []) {
     const old = previous.get(`${c.dimension}=${c.value}`);
     return old?.class ? { ...c, class: old.class, provenance: old.provenance, reason: old.reason, evidence: old.evidence } : c;
   }), ...manual];
-  const reading = audit.map?.reading;
-  const forced = axes.length ? axes : audit.map?.forced || [];
-  audit.map = audit.frequencies.insufficient ? null : mapAxes(audit.panel, forced);
-  if (audit.map && reading) audit.map.reading = reading;
-  if (audit.map && forced.length) audit.map.forced = forced;
+  // Several maps: the pairs the analyst named, else the best pair and the best of what is left.
+  const before = audit.maps || (audit.map ? [audit.map] : []);
+  const readingOf = (m) => before.find((o) => o.x?.dimension === m.x.dimension && o.y?.dimension === m.y.dimension)?.reading;
+  const pairs = axes.length ? axes : before.filter((m) => m.forced).map((m) => m.forced);
+  let maps = [];
+  if (!audit.frequencies.insufficient) {
+    if (pairs.length) maps = pairs.map((pair) => { const m = mapAxes(audit.panel, pair); if (m) m.forced = pair; return m; }).filter(Boolean);
+    else {
+      const first = mapAxes(audit.panel);
+      const second = first && mapAxes(audit.panel, [], [first.x.dimension, first.y.dimension]);
+      maps = [first, second].filter(Boolean);
+    }
+  }
+  for (const m of maps) { const r = readingOf(m); if (r) m.reading = r; }
+  audit.maps = maps;
+  audit.map = maps[0] || null;
   writeFileSync(file, JSON.stringify(audit, null, 2) + '\n');
   return audit;
 }
@@ -134,8 +145,8 @@ export function aggregate(auditDir, axes = []) {
 if (import.meta.url === pathToFileURL(process.argv[1] || '').href) {
   const dir = process.argv[2];
   if (!dir || dir.startsWith('--')) { console.log('usage: node aggregate.mjs <audit-dir> [--axes dimension,dimension]'); process.exit(dir === '--help' ? 0 : 1); }
-  const ax = process.argv.indexOf('--axes');
-  const axes = ax > 0 && process.argv[ax + 1] && !process.argv[ax + 1].startsWith('--') ? process.argv[ax + 1].split(',') : [];
+  const axes = [];
+  process.argv.forEach((v, i) => { const n = process.argv[i + 1]; if (v === '--axes' && n && !n.startsWith('--')) axes.push(n.split(',')); });
   const a = aggregate(dir, axes);
   const f = a.frequencies;
   if (f.insufficient) { console.log(f.reason); process.exit(0); }
@@ -146,8 +157,9 @@ if (import.meta.url === pathToFileURL(process.argv[1] || '').href) {
   for (const c of a.conventions)
     console.log(`  ${c.class ? c.class.padEnd(10) : 'TO CLASSIFY'} ${c.dimension}: ${c.value} (${c.count} of ${c.base}) · breakers: ${c.breakers.map((b) => b.id + (b.established ? '*' : '')).join(', ') || 'none'}`);
   console.log('  * = established brand');
-  if (a.map) {
-    console.log(`\nmap: ${a.map.x.dimension} [${a.map.x.poles.join(' | ')}] × ${a.map.y.dimension} [${a.map.y.poles.join(' | ')}]`);
-    for (const c of a.map.clusters) console.log(`  ${c.label}: ${c.ids.length}${c.saturated ? ' (saturated)' : c.ids.length === 0 ? ' (empty)' : ''}`);
-  } else console.log('\nmap: not enough spread in the codes to draw two axes');
+  if (!a.maps.length) console.log('\nmap: not enough spread in the codes to draw two axes');
+  for (const m of a.maps) {
+    console.log(`\nmap: ${m.x.dimension} [${m.x.poles.join(' | ')}] × ${m.y.dimension} [${m.y.poles.join(' | ')}]`);
+    for (const c of m.clusters) console.log(`  ${c.label}: ${c.ids.length}${c.saturated ? ' (saturated)' : c.ids.length === 0 ? ' (empty)' : ''}`);
+  }
 }

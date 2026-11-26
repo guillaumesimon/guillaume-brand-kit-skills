@@ -11,7 +11,7 @@ Produce `brand/audit/`: the evidence an art director pins on the wall before dra
 brand/audit/
 ├── audit.json       the single source: panel, measures, codes, counts, classifications, opportunities
 ├── AUDIT.md         for agents: short, numbered, every rule with its count and its evidence
-├── landscape.html   for people: the board
+├── landscape.html   for people: the report, twelve sections, black and white
 └── evidence/        screenshots, logos, contact sheets, one folder per brand
 ```
 
@@ -35,14 +35,15 @@ The scripts do the mechanical work so that your attention goes where it is neede
 
 | | Flash | Deep |
 |---|---|---|
-| Time | about 10 minutes (measured once: 10 brands, two scouts, two coders) | about 40 minutes (estimate, not yet measured) |
+| Time | about 20 minutes (estimate) | about 50 minutes (estimate) |
 | Panel | 8 direct, 3 indirect, 2 aspirational | 10 to 12 direct, 4 to 6 indirect, 3 to 4 leaders, 5 to 8 aspirational |
 | Questions to the user | none if the context is enough | 2 at most, then one panel review |
 | Capture | the whole home page, 2 inner pages, the App Store listing | the same |
 | Library sample | Logosystem, one industry | Logosystem, Mobbin, and Logoinspo for references |
 | Coding | one pass | judgment fields coded twice, disagreements settled |
 | Synthesis | counts, classifications as hypotheses, 2 opportunities | map, 3 to 5 opportunities, counter-check, recent rebrands |
-| Subagents | 3 scouts, 3 coders | about fifteen, in parallel |
+| Writing | 3 section writers, 2 profile writers | one writer per section, profile writers |
+| Subagents | about 11 | about 25, in parallel |
 
 Both capture each brand the same way; the difference is how many brands, how carefully they are coded, and how hard the conclusions are attacked.
 
@@ -57,7 +58,7 @@ Pick the mode before anything else. If the user or the calling skill named one, 
 - The scripts need Node 22 and Playwright with Chromium. If `node assets/capture.mjs --help` fails on the import, run `npm i playwright && npx playwright install chromium`.
 - Subagents make this fast. If you have no subagent tool, run the same steps in series and say so in `limits`.
 
-## The six steps
+## The seven steps
 
 ### 1 · Frame (0 to 2 questions)
 
@@ -113,20 +114,27 @@ node assets/sheets.mjs $AUDIT
 
 `evidence/sheets/logos.webp`, `heroes.webp`, `apps.webp` (icons and first store screenshots), `palettes.webp`, `type.webp`. A convention is only visible side by side, and this is the moment the audit stops being a table. Note what strikes you before you read any count.
 
-### 6 · Synthesise
+### 6 · Count, and write the six analyses
 
 ```bash
 node assets/aggregate.mjs $AUDIT
 ```
 
-It prints the counts, the conventions, who breaks each one and whether that brand is established, and a map. **Read `references/synthesis.md`** and then do the part no script does:
+It prints the counts, the conventions, who breaks each one and whether that brand is established, and two maps.
 
-1. **Classify every convention** as a legibility code, a cliché or a risky break, with the exception test, a reason and the captures that show it. Add by hand the patterns no single value catches (`manual: true`, see the reference): they are often the real findings.
-2. **Read the map.** Name its axes in plain words, say which quadrant is saturated and which is empty, and check each empty one: unexplored, or tried and abandoned.
-3. **Write the opportunities.** Each keeps the legibility codes, names the clichés it breaks, says what it borrows from which aspirational brand, and carries a risk.
+Counts are not an audit. **Read `references/report.md`** and dispatch the section writers: each looks at the walls for its part (signs, colour and type, the visual system) and writes an analysis with a lead, paragraphs, findings tied to evidence, and a takeaway for a designer. Three writers in flash, one per section in deep. Dispatch the profile writers at the same time: three sentences per brand, ending on what it teaches. Paste what comes back into `audit.json` under `sections` and on each brand's `profile`, and read all of it: you are the editor, and a count nobody can find on the wall goes back to its writer.
+
+### 7 · Conclude
+
+**Read `references/synthesis.md`.** This part is yours, not a subagent's, because it is where everything meets.
+
+1. **Classify every convention**: a category code, a cliché, a code owned by a competitor, an emerging code or a risky break, with the exception test, a reason and the captures that show it. Add by hand the patterns no single value catches (`manual: true`): they are often the real findings.
+2. **Read the maps.** Name the axes in plain words, say which quadrant is saturated and which is empty, where the indirect brands sit, and check each empty one: unexplored, or tried and abandoned. Pick better axes with `--axes` when the automatic ones say little.
+3. **Write the opportunities.** Each one states the observation it rests on, its link to the brief, the benefit, what it keeps and breaks, what it borrows from which brand, its risk, and what must be validated with people.
 4. **Deep only: have each opportunity attacked.** A sceptic subagent searches for the brand that already occupies it. What falls is removed; what holds records what was searched.
+5. **Write the summary last**: a lead and five decisions, *preserve, avoid, challenge, explore, validate* (`references/report.md`).
 
-Then write the two readers' files and pass the gate:
+Then write the agents' file and pass the gate:
 
 ```bash
 node assets/aggregate.mjs $AUDIT     # again, after classifying, to refresh counts
@@ -135,7 +143,7 @@ cp assets/AUDIT.example.md $AUDIT/AUDIT.md    # then rewrite every line
 node assets/check.mjs $AUDIT
 ```
 
-`AUDIT.example.md` is the quality bar: numbered rules, each with its count and an `evidence/…` path, under 120 lines, in English because agents read it. `check.mjs` fails when a claim has no evidence, a convention is unclassified, or a deep opportunity was not challenged. **An audit that fails the gate does not go out.**
+`AUDIT.example.md` is the quality bar: the five decisions as numbered rules, each with its count and an `evidence/…` path, under 120 lines, in English because agents read it. `check.mjs` fails when a claim has no evidence, a convention is unclassified, a section, the summary or a profile is missing, an opportunity lacks its fields, or a deep opportunity was not challenged. **An audit that fails the gate does not go out.**
 
 ## Showing it
 
@@ -143,10 +151,10 @@ Open `landscape.html` and look at it at desktop and phone width before the user 
 
 Tell the user, in this order and in their language:
 
-1. what to keep, in one sentence;
-2. what to break, in one sentence;
-3. the strongest open territory, and its risk;
-4. what the audit does not cover.
+1. what to preserve, in one sentence;
+2. what to avoid, in one sentence;
+3. the strongest territory to explore, and its risk;
+4. what has to be validated with people, and what the audit does not cover.
 
 Do not read the whole board back. They have it.
 
@@ -172,21 +180,22 @@ Coded values stay in the vocabulary, in English, always. They are data.
 
 ## With brand-kit
 
-`brand-kit` reads `brand/audit/AUDIT.md` when it exists: the framing saves its first questions, section 5 gives it a named competitor for the swap test and a category duel for the tournament, and the clichés seed the "Not" list. This skill never starts `brand-kit`; say that the audit is ready for it and stop.
+`brand-kit` reads `brand/audit/AUDIT.md` when it exists: the framing saves its first questions, section 6 gives it a named competitor for the swap test and a category duel for the tournament, and the clichés seed the "Not" list. This skill never starts `brand-kit`; say that the audit is ready for it and stop.
 
 ## Files in this skill
 
 - `references/panel.md`: the roles, the counts per mode, `established`, the aspirational rule, the scout prompt, the `audit.json` skeleton
 - `references/capture.md`: what is captured and measured, how to read the notes, the fallback chain for blocked sites
 - `references/codebook.md`: the closed vocabulary, one line per value, the tie-break rules, the coder prompt, double coding
-- `references/synthesis.md`: thresholds, the exception test, reading the map, the opportunity form, the sceptic prompt, what goes into `AUDIT.md`
+- `references/report.md`: the twelve sections, what a written section is, the writer and profile prompts, the summary in five decisions, the eight quality questions
+- `references/synthesis.md`: thresholds, the exception test and the five classes, reading the maps, the opportunity form, the sceptic prompt, what goes into `AUDIT.md`
 - `references/sources.md`: Logosystem, Logoinspo, Mobbin: what to take from each, their bias, the low-volume rule
 - `assets/capture.mjs`: visits each brand, screenshots it, measures colours, typefaces and shapes, saves the logo
 - `assets/library.mjs`: samples one Logosystem industry with its tags
 - `assets/code.mjs`: merges coder output into `audit.json`, refuses values outside the vocabulary, tracks disagreements
 - `assets/sheets.mjs`: builds the contact sheets
 - `assets/aggregate.mjs`: counts, convention candidates, map axes
-- `assets/render.mjs` and `assets/landscape.template.html`: the board
+- `assets/render.mjs` and `assets/landscape.template.html`: the report, in black and white
 - `assets/check.mjs`: the gate
 - `assets/audit.example.json`, `assets/AUDIT.example.md`: a worked example at the expected depth, on a fictional sector
 - `assets/lib/`: colour, schema and browser helpers

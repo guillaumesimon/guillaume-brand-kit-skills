@@ -88,12 +88,20 @@
         "text_class": "humanist_sans",
         "imagery": "product_ui",
         "layout": "split_hero",
-        "headline_promise": "benefit"
+        "headline_promise": "benefit",
+        "logo_form": "geometric",
+        "logo_energy": "static",
+        "logo_detail": "detailed"
       },
       "evidence": [
         "evidence/folio/desktop.webp",
         "evidence/folio/logo.webp"
-      ]
+      ],
+      "profile": {
+        "personality": "Reads as bookish and settled, in no hurry.",
+        "strength": "A compact sign that works at favicon size.",
+        "lesson": "Shows how little separates one brand from the next in this category."
+      }
     },
     {
       "id": "shelfline",
@@ -167,12 +175,20 @@
         "text_class": "geometric_sans",
         "imagery": "product_ui",
         "layout": "split_hero",
-        "headline_promise": "benefit"
+        "headline_promise": "benefit",
+        "logo_form": "geometric",
+        "logo_energy": "static",
+        "logo_detail": "detailed"
       },
       "evidence": [
         "evidence/shelfline/desktop.webp",
         "evidence/shelfline/logo.webp"
-      ]
+      ],
+      "profile": {
+        "personality": "Reads as efficient and neutral, eager to be noticed.",
+        "strength": "A compact sign that works at favicon size.",
+        "lesson": "Shows how little separates one brand from the next in this category."
+      }
     },
     {
       "id": "pagewise",
@@ -246,12 +262,20 @@
         "text_class": "geometric_sans",
         "imagery": "product_ui",
         "layout": "centered_hero",
-        "headline_promise": "benefit"
+        "headline_promise": "benefit",
+        "logo_form": "geometric",
+        "logo_energy": "static",
+        "logo_detail": "detailed"
       },
       "evidence": [
         "evidence/pagewise/desktop.webp",
         "evidence/pagewise/logo.webp"
-      ]
+      ],
+      "profile": {
+        "personality": "Reads as efficient and neutral, eager to be noticed.",
+        "strength": "A compact sign that works at favicon size.",
+        "lesson": "Shows how little separates one brand from the next in this category."
+      }
     },
     {
       "id": "bindery",
@@ -324,12 +348,20 @@
         "text_class": "serif",
         "imagery": "product_photo",
         "layout": "editorial",
-        "headline_promise": "manifesto"
+        "headline_promise": "manifesto",
+        "logo_form": "organic",
+        "logo_energy": "static",
+        "logo_detail": "minimal"
       },
       "evidence": [
         "evidence/bindery/desktop.webp",
         "evidence/bindery/logo.webp"
-      ]
+      ],
+      "profile": {
+        "personality": "Reads as bookish and settled, in no hurry.",
+        "strength": "The name carries the whole identity, with nothing to decode.",
+        "lesson": "Shows how little separates one brand from the next in this category."
+      }
     },
     {
       "id": "stacks",
@@ -403,12 +435,20 @@
         "text_class": "grotesque",
         "imagery": "product_ui",
         "layout": "centered_hero",
-        "headline_promise": "mechanism"
+        "headline_promise": "mechanism",
+        "logo_form": "geometric",
+        "logo_energy": "static",
+        "logo_detail": "minimal"
       },
       "evidence": [
         "evidence/stacks/desktop.webp",
         "evidence/stacks/logo.webp"
-      ]
+      ],
+      "profile": {
+        "personality": "Reads as efficient and neutral, eager to be noticed.",
+        "strength": "A compact sign that works at favicon size.",
+        "lesson": "Shows how little separates one brand from the next in this category."
+      }
     },
     {
       "id": "quire",
@@ -482,12 +522,20 @@
         "text_class": "humanist_sans",
         "imagery": "people_photo",
         "layout": "split_hero",
-        "headline_promise": "benefit"
+        "headline_promise": "benefit",
+        "logo_form": "geometric",
+        "logo_energy": "static",
+        "logo_detail": "detailed"
       },
       "evidence": [
         "evidence/quire/desktop.webp",
         "evidence/quire/logo.webp"
-      ]
+      ],
+      "profile": {
+        "personality": "Reads as efficient and neutral, in no hurry.",
+        "strength": "A compact sign that works at favicon size.",
+        "lesson": "Shows how little separates one brand from the next in this category."
+      }
     },
     {
       "id": "marque",
@@ -561,12 +609,20 @@
         "text_class": "geometric_sans",
         "imagery": "product_ui",
         "layout": "centered_hero",
-        "headline_promise": "benefit"
+        "headline_promise": "benefit",
+        "logo_form": "geometric",
+        "logo_energy": "static",
+        "logo_detail": "minimal"
       },
       "evidence": [
         "evidence/marque/desktop.webp",
         "evidence/marque/logo.webp"
-      ]
+      ],
+      "profile": {
+        "personality": "Reads as efficient and neutral, eager to be noticed.",
+        "strength": "A compact sign that works at favicon size.",
+        "lesson": "Shows how little separates one brand from the next in this category."
+      }
     },
     {
       "id": "libra",
@@ -640,12 +696,20 @@
         "text_class": "humanist_sans",
         "imagery": "product_ui",
         "layout": "split_hero",
-        "headline_promise": "proof"
+        "headline_promise": "proof",
+        "logo_form": "geometric",
+        "logo_energy": "static",
+        "logo_detail": "detailed"
       },
       "evidence": [
         "evidence/libra/desktop.webp",
         "evidence/libra/logo.webp"
-      ]
+      ],
+      "profile": {
+        "personality": "Reads as efficient and neutral, in no hurry.",
+        "strength": "A compact sign that works at favicon size.",
+        "lesson": "Shows how little separates one brand from the next in this category."
+      }
     },
     {
       "id": "atelier-paper",
@@ -714,12 +778,20 @@
         "text_class": "mono",
         "imagery": "product_photo",
         "layout": "editorial",
-        "headline_promise": "manifesto"
+        "headline_promise": "manifesto",
+        "logo_form": "organic",
+        "logo_energy": "static",
+        "logo_detail": "minimal"
       },
       "evidence": [
         "evidence/atelier-paper/desktop.webp",
         "evidence/atelier-paper/logo.webp"
-      ]
+      ],
+      "profile": {
+        "personality": "Reads as bookish and settled, in no hurry.",
+        "strength": "The name carries the whole identity, with nothing to decode.",
+        "lesson": "The same audience already reads these codes elsewhere."
+      }
     },
     {
       "id": "ledgerly",
@@ -788,12 +860,20 @@
         "text_class": "mono",
         "imagery": "none",
         "layout": "dense_grid",
-        "headline_promise": "mechanism"
+        "headline_promise": "mechanism",
+        "logo_form": "geometric",
+        "logo_energy": "static",
+        "logo_detail": "minimal"
       },
       "evidence": [
         "evidence/ledgerly/desktop.webp",
         "evidence/ledgerly/logo.webp"
-      ]
+      ],
+      "profile": {
+        "personality": "Reads as efficient and neutral, in no hurry.",
+        "strength": "A compact sign that works at favicon size.",
+        "lesson": "The same audience already reads these codes elsewhere."
+      }
     }
   ],
   "library": {
@@ -971,6 +1051,103 @@
         "evidence/bindery/desktop.webp",
         "evidence/libra/desktop.webp"
       ]
+    },
+    {
+      "dimension": "logo_form",
+      "value": "geometric",
+      "count": 7,
+      "base": 8,
+      "share": 0.875,
+      "breakers": [
+        {
+          "id": "bindery",
+          "established": true,
+          "value": "organic"
+        }
+      ],
+      "class": "cliche",
+      "provenance": "judged",
+      "reason": "Bindery draws its name in a serif with a pen behind it and is the category reference. Geometry is habit.",
+      "evidence": [
+        "evidence/sheets/logos.webp",
+        "evidence/bindery/logo.webp"
+      ]
+    },
+    {
+      "dimension": "logo_energy",
+      "value": "static",
+      "count": 8,
+      "base": 8,
+      "share": 1,
+      "breakers": [],
+      "class": "risky",
+      "provenance": "judged",
+      "reason": "Every mark sits still and upright. Nothing says a tool for retail must; nothing shows that movement would help either.",
+      "evidence": [
+        "evidence/sheets/logos.webp"
+      ]
+    },
+    {
+      "dimension": "logo_detail",
+      "value": "detailed",
+      "count": 5,
+      "base": 8,
+      "share": 0.625,
+      "breakers": [
+        {
+          "id": "bindery",
+          "established": true,
+          "value": "minimal"
+        },
+        {
+          "id": "stacks",
+          "established": false,
+          "value": "minimal"
+        },
+        {
+          "id": "marque",
+          "established": false,
+          "value": "minimal"
+        }
+      ],
+      "class": "cliche",
+      "provenance": "judged",
+      "reason": "The drawn pictograms are the detailed ones. Bindery does without any drawing.",
+      "evidence": [
+        "evidence/sheets/logos.webp"
+      ]
+    },
+    {
+      "manual": true,
+      "dimension": "hue",
+      "value": "royal blue with a white open book",
+      "count": 1,
+      "base": 8,
+      "share": 0.125,
+      "breakers": [],
+      "class": "owned",
+      "provenance": "judged",
+      "reason": "Folio has used this exact pairing since 2011 on every surface, and four competitors orbit it. A new brand in the same blue with the same book would be read as a Folio product.",
+      "evidence": [
+        "evidence/folio/desktop.webp",
+        "evidence/folio/logo.webp"
+      ]
+    },
+    {
+      "manual": true,
+      "dimension": "symbol_nature",
+      "value": "an abstract mark or a single letter",
+      "count": 2,
+      "base": 8,
+      "share": 0.25,
+      "breakers": [],
+      "class": "emerging",
+      "provenance": "judged",
+      "reason": "The two brands launched since 2022 that chose a symbol both left the pictogram: stacked bars for Stacks, a letter for Marque. Too few and too recent to call a code.",
+      "evidence": [
+        "evidence/stacks/logo.webp",
+        "evidence/marque/logo.webp"
+      ]
     }
   ],
   "opportunities": [
@@ -996,7 +1173,11 @@
       "evidence": [
         "evidence/sheets/logos.webp",
         "evidence/atelier-paper/desktop.webp"
-      ]
+      ],
+      "observation": "Six of eight brands are blue; four of eight symbols are an open book.",
+      "alignment": "Owners of one to three shops, who keep a paper order book today.",
+      "benefit": "Recognised at once by the people it is for, and unlike every competitor.",
+      "validate": "Whether \"paper\" reads as craft or as backwardness."
     },
     {
       "id": "the-back-office",
@@ -1021,7 +1202,11 @@
       "evidence": [
         "evidence/sheets/heroes.webp",
         "evidence/ledgerly/desktop.webp"
-      ]
+      ],
+      "observation": "Every competitor sells ease with a benefit headline.",
+      "alignment": "A tool used all day, by people who count stock.",
+      "benefit": "Reads as the serious option.",
+      "validate": "Whether density on the home page puts off first-time buyers."
     }
   ],
   "limits": [
@@ -1029,6 +1214,165 @@
     "No indirect competitors and no library sample were collected.",
     "A photograph dated 2026-11-26."
   ],
+  "sections": {
+    "logos": {
+      "lead": "Seven of eight marks are a book pictogram next to a name. Put side by side, they are hard to tell apart without colour.",
+      "paragraphs": [
+        "In black and white the wall loses most of its variety: five pictograms share one silhouette, an open book seen from the front. Only Bindery, a bare serif wordmark, keeps its character when colour is removed.",
+        "The symbols are drawn to be read as \"books\", not as a brand. None of them could be recognised without the name beside it."
+      ],
+      "findings": [
+        {
+          "text": "Seven of eight direct brands pair a symbol with their name.",
+          "provenance": "observed",
+          "evidence": [
+            "evidence/sheets/logos.webp"
+          ]
+        },
+        {
+          "text": "Bindery is the only brand recognisable in black and white without its name.",
+          "provenance": "judged",
+          "evidence": [
+            "evidence/bindery/logo.webp"
+          ]
+        }
+      ],
+      "takeaway": "The sign is where this category is most alike, and so where a new brand is most visible."
+    },
+    "architecture": {
+      "lead": "Combination marks are the rule; the wordmark is the exception, and the only established one.",
+      "paragraphs": [
+        "Among the seven combination marks, five symbols are pictorial. An abstract mark and a letter are each tried once, both by newcomers."
+      ],
+      "findings": [
+        {
+          "text": "Combination marks: 7 of 8. Wordmark: 1 of 8.",
+          "provenance": "observed",
+          "evidence": [
+            "evidence/sheets/logos.webp"
+          ]
+        }
+      ],
+      "takeaway": "A rare architecture is not an opportunity by itself: Bindery shows the wordmark works here, the lettermark is still unproven."
+    },
+    "colour": {
+      "lead": "Six of eight brands are blue, within a narrow band of the spectrum.",
+      "paragraphs": [
+        "The measured accents sit between a royal and a cobalt blue. One green and one black complete the panel. No warm hue appears anywhere."
+      ],
+      "findings": [
+        {
+          "text": "Six of eight accents fall between 217 and 226 degrees of hue.",
+          "provenance": "measured",
+          "evidence": [
+            "evidence/sheets/palettes.webp"
+          ]
+        },
+        {
+          "text": "No direct brand uses a warm accent.",
+          "provenance": "measured",
+          "evidence": [
+            "evidence/sheets/palettes.webp"
+          ]
+        }
+      ],
+      "takeaway": "Blue says \"software\" here, not \"bookshop\". The warm half of the spectrum is empty."
+    },
+    "typography": {
+      "lead": "Neutral sans-serifs set almost every headline; two brands use a serif.",
+      "paragraphs": [
+        "Inter appears on four sites. The two serif brands are the oldest academic player and a regional one."
+      ],
+      "findings": [
+        {
+          "text": "Four of eight sites set their text in Inter.",
+          "provenance": "measured",
+          "evidence": [
+            "evidence/sheets/type.webp"
+          ]
+        }
+      ],
+      "takeaway": "Type is an open field: nobody has a lettering signature."
+    },
+    "symbols": {
+      "lead": "One idea, repeated: the open book.",
+      "paragraphs": [
+        "Four symbols are an open book, one a bookmark. The category describes the product of its customer, not its own."
+      ],
+      "findings": [
+        {
+          "text": "Open book: 4 of 8 symbols.",
+          "provenance": "observed",
+          "evidence": [
+            "evidence/sheets/logos.webp"
+          ]
+        }
+      ],
+      "takeaway": "The book is the cliché to avoid. What the tool does, ordering and keeping count, is not pictured by anyone."
+    },
+    "visual_language": {
+      "lead": "A dashboard floating beside a benefit line: six of eight first screens.",
+      "paragraphs": [
+        "Product screens carry the pages. People appear on one site, physical books on one."
+      ],
+      "findings": [
+        {
+          "text": "Six of eight heroes show the product interface.",
+          "provenance": "observed",
+          "evidence": [
+            "evidence/sheets/heroes.webp"
+          ]
+        }
+      ],
+      "takeaway": "Showing the screen is how the category is recognised; how it is shown is where the sameness lies."
+    }
+  },
+  "summary": {
+    "lead": "A category of blue software brands with a book for a logo. Being recognised takes one thing, showing the product. Standing apart takes almost anything else.",
+    "preserve": [
+      {
+        "text": "Show the product screen in the first view.",
+        "evidence": [
+          "evidence/sheets/heroes.webp"
+        ]
+      }
+    ],
+    "avoid": [
+      {
+        "text": "Blue as the brand colour.",
+        "evidence": [
+          "evidence/sheets/palettes.webp"
+        ]
+      },
+      {
+        "text": "An open book as the symbol.",
+        "evidence": [
+          "evidence/sheets/logos.webp"
+        ]
+      }
+    ],
+    "challenge": [
+      {
+        "text": "The white page: nobody has tried anything else.",
+        "evidence": [
+          "evidence/sheets/heroes.webp"
+        ]
+      }
+    ],
+    "explore": [
+      {
+        "text": "The order book: a ruled, warm, typographic territory.",
+        "evidence": [
+          "evidence/atelier-paper/desktop.webp"
+        ]
+      }
+    ],
+    "validate": [
+      {
+        "text": "Do shop owners read a paper-toned brand as a serious tool or as a nostalgic one? Show both to five owners."
+      }
+    ]
+  },
   "frequencies": {
     "base": 8,
     "by_dimension": {
@@ -1566,21 +1910,233 @@
           ],
           "status": "rare"
         }
+      ],
+      "logo_form": [
+        {
+          "value": "geometric",
+          "count": 7,
+          "base": 8,
+          "share": 0.875,
+          "brands": [
+            "folio",
+            "shelfline",
+            "pagewise",
+            "stacks",
+            "quire",
+            "marque",
+            "libra"
+          ],
+          "status": "convention"
+        },
+        {
+          "value": "organic",
+          "count": 1,
+          "base": 8,
+          "share": 0.125,
+          "brands": [
+            "bindery"
+          ],
+          "status": "rare"
+        }
+      ],
+      "logo_energy": [
+        {
+          "value": "static",
+          "count": 8,
+          "base": 8,
+          "share": 1,
+          "brands": [
+            "folio",
+            "shelfline",
+            "pagewise",
+            "bindery",
+            "stacks",
+            "quire",
+            "marque",
+            "libra"
+          ],
+          "status": "convention"
+        }
+      ],
+      "logo_detail": [
+        {
+          "value": "detailed",
+          "count": 5,
+          "base": 8,
+          "share": 0.625,
+          "brands": [
+            "folio",
+            "shelfline",
+            "pagewise",
+            "quire",
+            "libra"
+          ],
+          "status": "convention"
+        },
+        {
+          "value": "minimal",
+          "count": 3,
+          "base": 8,
+          "share": 0.375,
+          "brands": [
+            "bindery",
+            "stacks",
+            "marque"
+          ],
+          "status": "common"
+        }
       ]
     }
   },
+  "maps": [
+    {
+      "x": {
+        "dimension": "saturation",
+        "poles": [
+          "vivid",
+          "other"
+        ]
+      },
+      "y": {
+        "dimension": "name_style",
+        "poles": [
+          "geometric_sans",
+          "other"
+        ]
+      },
+      "points": [
+        {
+          "id": "folio",
+          "role": "direct",
+          "x": 0.725,
+          "y": 0.459
+        },
+        {
+          "id": "shelfline",
+          "role": "direct",
+          "x": -0.59,
+          "y": -0.324
+        },
+        {
+          "id": "pagewise",
+          "role": "direct",
+          "x": -0.417,
+          "y": -0.684
+        },
+        {
+          "id": "bindery",
+          "role": "direct",
+          "x": 0.615,
+          "y": 0.348
+        },
+        {
+          "id": "stacks",
+          "role": "direct",
+          "x": -0.332,
+          "y": 0.401
+        },
+        {
+          "id": "quire",
+          "role": "direct",
+          "x": 0.464,
+          "y": 0.731
+        },
+        {
+          "id": "marque",
+          "role": "direct",
+          "x": -0.22,
+          "y": -0.487
+        },
+        {
+          "id": "libra",
+          "role": "direct",
+          "x": 0.567,
+          "y": 0.833
+        },
+        {
+          "id": "atelier-paper",
+          "role": "aspirational",
+          "x": 0.716,
+          "y": 0.449
+        },
+        {
+          "id": "ledgerly",
+          "role": "aspirational",
+          "x": 0.8,
+          "y": 0.367
+        }
+      ],
+      "clusters": [
+        {
+          "quadrant": [
+            -1,
+            -1
+          ],
+          "ids": [
+            "shelfline",
+            "pagewise",
+            "marque"
+          ],
+          "share": 0.375,
+          "saturated": false,
+          "label": "vivid × geometric_sans"
+        },
+        {
+          "quadrant": [
+            -1,
+            1
+          ],
+          "ids": [
+            "stacks"
+          ],
+          "share": 0.125,
+          "saturated": false,
+          "label": "vivid × other"
+        },
+        {
+          "quadrant": [
+            1,
+            -1
+          ],
+          "ids": [],
+          "share": 0,
+          "saturated": false,
+          "label": "other × geometric_sans"
+        },
+        {
+          "quadrant": [
+            1,
+            1
+          ],
+          "ids": [
+            "folio",
+            "bindery",
+            "quire",
+            "libra"
+          ],
+          "share": 0.5,
+          "saturated": true,
+          "label": "other × other"
+        }
+      ],
+      "forced": [
+        "name_style",
+        "saturation"
+      ]
+    }
+  ],
   "map": {
     "x": {
-      "dimension": "name_style",
+      "dimension": "saturation",
       "poles": [
-        "geometric_sans",
+        "vivid",
         "other"
       ]
     },
     "y": {
-      "dimension": "saturation",
+      "dimension": "name_style",
       "poles": [
-        "vivid",
+        "geometric_sans",
         "other"
       ]
     },
@@ -1612,8 +2168,8 @@
       {
         "id": "stacks",
         "role": "direct",
-        "x": 0.668,
-        "y": -0.599
+        "x": -0.332,
+        "y": 0.401
       },
       {
         "id": "quire",
@@ -1659,29 +2215,29 @@
         ],
         "share": 0.375,
         "saturated": false,
-        "label": "geometric_sans × vivid"
+        "label": "vivid × geometric_sans"
       },
       {
         "quadrant": [
           -1,
           1
         ],
-        "ids": [],
-        "share": 0,
+        "ids": [
+          "stacks"
+        ],
+        "share": 0.125,
         "saturated": false,
-        "label": "geometric_sans × other"
+        "label": "vivid × other"
       },
       {
         "quadrant": [
           1,
           -1
         ],
-        "ids": [
-          "stacks"
-        ],
-        "share": 0.125,
+        "ids": [],
+        "share": 0,
         "saturated": false,
-        "label": "other × vivid"
+        "label": "other × geometric_sans"
       },
       {
         "quadrant": [
@@ -1701,7 +2257,7 @@
     ],
     "forced": [
       "name_style",
-      "imagery"
+      "saturation"
     ]
   }
 }

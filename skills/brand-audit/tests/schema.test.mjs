@@ -13,8 +13,26 @@ test('logo type has exactly the seven standard values', () => {
   assert.ok(DIMENSIONS.includes('symbol_subject'));
 });
 test('example audit is valid', () => assert.deepEqual(validateAudit(example), []));
-test('example covers the three convention classes', () => {
-  assert.deepEqual([...new Set(example.conventions.map((c) => c.class))].sort(), ['cliche', 'legibility', 'risky']);
+test('example covers the five convention classes', () => {
+  assert.deepEqual([...new Set(example.conventions.map((c) => c.class))].sort(), ['cliche', 'emerging', 'legibility', 'owned', 'risky']);
+});
+test('example has the six written sections, a summary and a profile per brand', () => {
+  assert.deepEqual(Object.keys(example.sections).sort(), ['architecture', 'colour', 'logos', 'symbols', 'typography', 'visual_language']);
+  assert.ok(example.summary.validate.length && example.panel.every((b) => b.profile));
+});
+test('a section finding without evidence is rejected', () => {
+  const a = clone(); a.sections.colour.findings[0].evidence = [];
+  assert.match(validateAudit(a).join('\n'), /sections\.colour\.findings\[0\]\.evidence/);
+});
+test('a summary decision needs evidence, except what is still to validate', () => {
+  const a = clone(); delete a.summary.avoid[0].evidence; delete a.summary.validate[0].evidence;
+  const errs = validateAudit(a);
+  assert.equal(errs.length, 1);
+  assert.match(errs[0], /summary\.avoid\[0\]\.evidence/);
+});
+test('an unknown section name is rejected', () => {
+  const a = clone(); a.sections.vibes = a.sections.colour;
+  assert.match(validateAudit(a).join('\n'), /sections\.vibes: unknown section/);
 });
 test('rejects an unknown logo type', () => {
   const a = clone(); a.panel[0].codes.logo_type = 'logo';

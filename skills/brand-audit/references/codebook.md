@@ -47,6 +47,16 @@ What the symbol shows, in one to three lower-case words: `running figure`, `lett
 
 `true` when the brand also uses its symbol without the name (app icon, favicon, social avatar). Look at `icon.webp` and `app-icon.webp`. Not counted; it tells the designer whether the category expects a symbol that stands alone.
 
+### `logo_form`, `logo_energy`, `logo_detail`
+
+Three traits that cut across the types, coded on the whole mark.
+
+| Dimension | Values | Tell |
+|---|---|---|
+| `logo_form` | `geometric`, `organic` | Built from circles, straight lines and constant strokes, or drawn with a hand behind it: irregular curves, a pen, a brush |
+| `logo_energy` | `static`, `dynamic` | Upright and at rest, or leaning, slanted, cut, in motion |
+| `logo_detail` | `minimal`, `detailed` | Readable at 16 px with nothing lost, or carrying inner lines, shading, several elements |
+
 ### `name_case` and `name_style`
 
 How the name is written in the logo. `name_case`: `lower`, `upper`, `title`, `mixed`. `name_style` uses the type classes below. `custom` is for lettering drawn for the brand that fits no class.
@@ -149,6 +159,7 @@ Return JSON only:
   "<id>": {
     "logo_type": "…", "symbol_nature": "… (combination marks only)", "symbol_subject": "…",
     "symbol_used_alone": true|false,
+    "logo_form": "…", "logo_energy": "…", "logo_detail": "…",
     "name_case": "…", "name_style": "…",
     "hue": "…", "saturation": "…", "ground": "…", "hue_count": "…",
     "headline_class": "…", "text_class": "…",

@@ -36,7 +36,7 @@ test('measures a normal page', async () => {
   assert.match(r.measures.headline.family, /Georgia/);
   assert.equal(r.measures.headline.size_px, 64);
   assert.equal(r.measures.palette[0].hex, '#ffffff');
-  for (const f of ['desktop.webp', 'full.webp', 'mobile.webp', 'logo.svg', 'logo.webp', 'measures.json'])
+  for (const f of ['desktop.webp', 'headline.webp', 'full.webp', 'mobile.webp', 'logo.svg', 'logo.webp', 'measures.json'])
     assert.ok(existsSync(join(out, 'fix', f)), f);
   assert.equal(r.logo, 'evidence/fix/logo.webp');
   assert.equal(readFileSync(join(out, 'fix/desktop.webp')).subarray(8, 12).toString(), 'WEBP');
