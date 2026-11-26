@@ -48,7 +48,7 @@ Check whether `brand/tokens.json` already exists. If it does, this is not the ri
 - **Swap test.** Use the competitor it names, rather than choosing one.
 - **The "Not" list.** Seed `BRAND.md` section 1 from its clichés, then let the session's refusals add to it.
 
-Never launch the audit from here. If there is none and the user has ten minutes before starting, say once that `brand-audit` exists and what it would add, then carry on either way.
+Never launch the audit from here. If there is none and the user has twenty minutes before starting, say once that `brand-audit` exists and what it would add, then carry on either way.
 
 Create a scratch file for the session (in the scratchpad directory, not in the project) and keep three things in it as you go: **verbatim** (their exact words, never paraphrased), the **axis ledger** (six axes, each with a position −2…+2, a confidence 0–1, and whether it came from something they *said* or something they *chose*), and **provenance** (which facts are stated, inferred, or assumed).
 
@@ -131,7 +131,7 @@ Show the user the site. Then tell them plainly what it is and is not. Offer a Ve
 
 Say this in the kit rather than performing a confidence it has not earned. The 30-minute version is **a well-formed hypothesis**; a six-week engagement produces **a defended position**. What is missing: customer evidence (everything here is founder self-report, systematically optimistic and over-broad on audience), a category audit, so nobody has checked whether the difference is actually the category's wallpaper, and alignment, because half the value of a real process is that twelve people were interviewed and feel authorship.
 
-The category audit is the one of the three that can be had in an afternoon: when `brand/audit/audit.json` has `meta.mode: "deep"`, drop that caveat and cite the audit instead. A flash audit narrows it without removing it; say that the category was looked at on ten home pages.
+The category audit is the one of the three that can be had in an afternoon: when `brand/audit/audit.json` has `meta.mode: "deep"`, drop that caveat and cite the audit instead. A flash audit narrows it without removing it; say that the category was looked at in flash mode, on about thirteen brands.
 
 So every kit carries three things, on the home page, not buried:
 

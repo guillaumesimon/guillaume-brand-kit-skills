@@ -57,7 +57,7 @@ Write in the report language: English unless the user asked for another. Quotes 
 
 ## Dispatching the writers
 
-After coding and `aggregate.mjs`, and after `sheets.mjs`. In flash, three writers, each taking two sections. In deep, one writer per section.
+After coding and `aggregate.mjs`, and after `sheets.mjs`. In flash, three writers share the six sections as in the table below. In deep, one writer per section.
 
 | Writer | Sections | Looks at |
 |---|---|---|
@@ -93,7 +93,7 @@ Rules:
 - Say only what the images and counts show. If you state a count, it must be one given above
   or one you counted yourself on a sheet, brand by brand, and can name.
 - Compare: direct brands with each other, then against the indirect and aspirational ones, and
-  each brand's site against its store listing.
+  each brand's touchpoints against each other (site against store listing, when there is an app).
 - Name what is absent as well as what is present.
 - Every finding cites one or more evidence paths, relative, starting with "evidence/", that
   you opened.
@@ -139,7 +139,7 @@ Profile writers take six or seven brands each. They get the brand folders and th
 
 | Decision | Comes from | It is |
 |---|---|---|
-| `preserve` | conventions classed `legibility` | The codes to keep to be understood and believed |
+| `preserve` | conventions classed `requirement` and `signal` | What the product needs, and the signals worth keeping to be understood |
 | `avoid` | `cliche` and `owned` | The clichés, and what belongs to a competitor |
 | `challenge` | `risky`, and what the writers found unexamined | Conventions that could be questioned, on purpose |
 | `explore` | the opportunities, and `emerging` codes | Territories to open |

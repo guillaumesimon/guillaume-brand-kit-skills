@@ -122,7 +122,7 @@ Put the site's name under each, as always. Do not say that one is typical and th
 Reading it:
 
 - **The deviant side**: the user is ready to leave the category's look. The audit's open territories are live options, and its clichés and its Avoid decisions go straight into the refusals.
-- **The typical side**: they want to be recognised as one of the category first. Keep every legibility code, break one cliché rather than four, and prefer the audit's low-risk territory.
+- **The typical side**: they want to be recognised as one of the category first. Keep every requirement and category signal, break one cliché rather than four, and prefer the audit's low-risk territory.
 - **Neither**: the strongest signal. Neither the category nor its current dissident is theirs. Look at where the audit's aspirational brands sit.
 
 If the audit has a second pair worth showing (two direct competitors in different quadrants of its map), one more category duel is allowed. Never more than two: past that the session is comparing competitors, which is the audit's job and is already done.

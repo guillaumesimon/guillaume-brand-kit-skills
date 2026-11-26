@@ -8,21 +8,21 @@ Write this before dispatching anyone. Scripts add the rest.
 
 ```json
 {
-  "meta": { "mode": "flash", "date": "2026-11-26", "locale": "en", "market_country": "fr",
+  "meta": { "mode": "flash", "date": "2026-01-15", "locale": "en", "market_country": "gb", "market_locale": "en-GB",
             "thresholds": { "convention": 0.6, "rare": 0.15 } },
-  "framing": { "product": "…", "audience": "…", "market": "…", "instead_of": "…" },
+  "framing": { "title": "short name of the sector, for the report cover", "product": "…", "audience": "…", "market": "…", "instead_of": "…" },
   "panel": [
-    { "id": "strava", "name": "Strava", "url": "https://www.strava.com", "role": "direct",
+    { "id": "northpace", "name": "Northpace", "url": "https://www.northpace.example", "role": "direct",
       "why": "Same product, same runners", "confidence": 0.9,
       "established": { "value": true, "reason": "Category leader since 2009, over 100 million users" },
       "extra_urls": ["https://www.strava.com/features", "https://www.strava.com/pricing"],
-      "app_store_term": "Strava" }
+      "app_store_term": "Northpace" }
   ],
   "library": {}, "conventions": [], "opportunities": [], "limits": []
 }
 ```
 
-`id` is a lower-case slug and becomes the folder name in `evidence/`. `market_country` is a two-letter code used for the App Store lookup. `extra_urls` (two at most) and `app_store_term` are read in both modes: fill them whenever they exist.
+`id` is a lower-case slug and becomes the folder name in `evidence/`. `locale` is the language of the report (English unless the user asked otherwise). `market_country` is a two-letter code used for the App Store lookup, and `market_locale` (for example `fr-FR`) is the language the browser asks sites for, so that each brand is captured as its market sees it; it defaults to the country's. `extra_urls` (two at most) and `app_store_term` are read in both modes: fill them whenever they exist.
 
 ## The five roles
 
@@ -110,7 +110,7 @@ Do not describe how any brand looks. That is measured later, from captures. A de
 memory would contaminate the audit.
 ```
 
-The last paragraph is not a formality. A scout that returns "Strava: orange, bold, sporty" has just written the audit from memory, and the coders will see what they were told to see.
+The last paragraph is not a formality. A scout that returns "Northpace: orange, bold, sporty" has just written the audit from memory, and the coders will see what they were told to see.
 
 If Similarweb or Ahrefs connectors are available, a scout may use them to find competitors by shared audience or organic overlap. They are optional.
 
@@ -123,6 +123,8 @@ Then write the panel into `audit.json` and ask the user, in one turn, with `AskU
 - **Both modes: the aspirational candidates.** A table of five to eight: name, criterion, why, who recognises it. Ask which to keep, which to drop, and whether they would add one. Keep the number the mode asks for.
 - **Deep only: the rest of the panel.** A short table (name, role, one-line why) and one question:
 
-> "Voici le panel. Qui manque, et qui n'a rien à faire là ?"
+> "Here is the panel. Who is missing, and who has no business being there?"
+
+Ask it in the user's language.
 
 One round. Apply the corrections and capture.

@@ -2,7 +2,7 @@
 // node_modules), never vendored: `npm i playwright && npx playwright install chromium` if missing.
 import { createRequire } from 'node:module';
 import { writeFile, mkdir } from 'node:fs/promises';
-import { dirname } from 'node:path';
+import { dirname, join } from 'node:path';
 
 const require = createRequire(import.meta.url);
 
@@ -11,8 +11,11 @@ export const USER_AGENT =
 
 export async function launch() {
   let chromium;
-  try { ({ chromium } = require('playwright')); }
-  catch { throw new Error('playwright not found. Run: npm i playwright && npx playwright install chromium'); }
+  // Look where a user is likely to have installed it: beside the skill, in the project they run from, or on NODE_PATH.
+  for (const from of [require, createRequire(join(process.cwd(), 'noop.js'))]) {
+    try { ({ chromium } = from('playwright')); break; } catch { /* try the next place */ }
+  }
+  if (!chromium) throw new Error('playwright not found. In your project folder, run: npm i playwright && npx playwright install chromium');
   try { return await chromium.launch(); }
   catch (e) {
     try { return await chromium.launch({ executablePath: '/opt/pw-browsers/chromium', args: ['--no-sandbox'] }); }
@@ -40,4 +43,12 @@ export async function saveWebp(page, buffer, outPath, maxW = 1600, maxH = maxW) 
   }, { b64, maxW, maxH });
   await mkdir(dirname(outPath), { recursive: true });
   await writeFile(outPath, Buffer.from(out, 'base64'));
+}
+
+/** Launch Chromium once and say whether it works. Used by `capture.mjs --check`. */
+export async function probe() {
+  const b = await launch();
+  const v = b.version();
+  await b.close();
+  return v;
 }

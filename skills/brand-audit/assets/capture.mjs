@@ -7,7 +7,7 @@
 import { readFile, writeFile, mkdir, rm } from 'node:fs/promises';
 import { join } from 'node:path';
 import { pathToFileURL } from 'node:url';
-import { launch, saveWebp, USER_AGENT } from './lib/browser.mjs';
+import { launch, probe, saveWebp, USER_AGENT } from './lib/browser.mjs';
 import { palette, parseColor, classify, toHex } from './lib/color.mjs';
 
 const TILE = 1500; // height of one scroll tile, in page pixels
@@ -324,7 +324,7 @@ async function appStore(context, tool, brand, dir, country, evidence, notes, rel
   } catch (e) { notes.push(`app store lookup failed: ${String(e.message).slice(0, 80)}`); return null; }
 }
 
-const RESERVED = new Set(['sheets', 'library']);
+const RESERVED = new Set(['sheets', 'library', 'territories']);
 
 /**
  * Capture every brand of an audit directory that has not been captured yet.
@@ -335,7 +335,7 @@ export async function captureAll(auditDir, { only = null, concurrency = 4, settl
   const audit = JSON.parse(await readFile(file, 'utf8'));
   for (const b of audit.panel) {
     if (typeof b.id !== 'string' || !/^[a-z0-9][a-z0-9-]*$/.test(b.id) || RESERVED.has(b.id))
-      throw new Error(`brand id "${b.id}" is not usable: lower-case letters, digits and hyphens only, and not "sheets" or "library"`);
+      throw new Error(`brand id "${b.id}" is not usable: lower-case letters, digits and hyphens only, and not "sheets", "library" or "territories"`);
   }
   const todo = audit.panel.filter((b) => (only ? only.includes(b.id) : !b.capture));
   const workers = Math.max(1, Math.min(Number.isFinite(+concurrency) ? Math.floor(+concurrency) : 4, 8));
@@ -348,7 +348,7 @@ export async function captureAll(auditDir, { only = null, concurrency = 4, settl
     await Promise.all(Array.from({ length: Math.min(workers, queue.length) }, async () => {
       for (let b = queue.shift(); b; b = queue.shift()) {
         let r;
-        try { r = await _capture(browser, b, join(auditDir, 'evidence'), { settle, country: audit.meta?.market_country, locale: audit.meta?.locale }); }
+        try { r = await _capture(browser, b, join(auditDir, 'evidence'), { settle, country: audit.meta?.market_country, locale: audit.meta?.market_locale || (audit.meta?.market_country ? `${String(audit.meta.market_country).toLowerCase()}-${String(audit.meta.market_country).toUpperCase()}` : undefined) }); }
         catch (e) { r = { capture: 'none', measures: null, logo: null, evidence: [], notes: [`capture crashed: ${String(e.message).split('\n')[0].slice(0, 160)}`] }; }
         Object.assign(b, { capture: r.capture, measures: r.measures, logo: r.logo, capture_notes: r.notes,
           evidence: [...new Set([...(b.evidence || []).filter((p) => !p.startsWith(`evidence/${b.id}/`)), ...r.evidence])] });
@@ -365,8 +365,9 @@ export async function captureAll(auditDir, { only = null, concurrency = 4, settl
 
 if (import.meta.url === pathToFileURL(process.argv[1] || '').href) {
   const args = process.argv.slice(2);
+  if (args.includes('--check')) { try { console.log(`ok: Chromium ${await probe()}`); process.exit(0); } catch (e) { console.log(String(e.message).split('\n')[0]); process.exit(1); } }
   const dir = args.find((a) => !a.startsWith('--') && args[args.indexOf(a) - 1] !== '--only' && args[args.indexOf(a) - 1] !== '--concurrency');
-  if (!dir || dir.startsWith('--') || args.includes('--help')) { console.log('usage: node capture.mjs <audit-dir> [--only id,id] [--concurrency 4]'); process.exit(args.includes('--help') ? 0 : 1); }
+  if (!dir || dir.startsWith('--') || args.includes('--help')) { console.log('usage: node capture.mjs <audit-dir> [--only id,id] [--concurrency 4]\n       node capture.mjs --check     verify that Playwright and Chromium work'); process.exit(args.includes('--help') ? 0 : 1); }
   const opt = (k) => (args.includes(k) ? args[args.indexOf(k) + 1] : null);
   const res = await captureAll(dir, { only: opt('--only')?.split(','), concurrency: +(opt('--concurrency') || 4) });
   const n = (c) => res.filter((r) => r.capture === c).length;

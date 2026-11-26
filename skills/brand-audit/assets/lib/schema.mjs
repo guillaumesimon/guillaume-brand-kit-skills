@@ -183,6 +183,11 @@ export function validateAudit(audit) {
         if (!Array.isArray(t.open_decisions) || !t.open_decisions.length) e.push(`${p}.open_decisions: say what is left to the designer`);
         (t.moodboard || []).forEach((m, j) => { if (!isStr(m.file) || !isStr(m.source) || !isStr(m.note)) e.push(`${p}.moodboard[${j}]: file, source and note required`); });
       });
+      if (sy.for_brand_kit != null) {
+        const bk = sy.for_brand_kit;
+        if (!isObj(bk) || !isStr(bk.swap_competitor) || !isStr(bk.swap_evidence) || !(Array.isArray(bk.duel) && bk.duel.length === 2 && bk.duel.every(isStr)) || !(Array.isArray(bk.not_list) && bk.not_list.every(isStr)))
+          e.push('synthesis.for_brand_kit: needs swap_competitor, swap_evidence, duel [typical, deviant] and not_list');
+      }
       (sy.references || []).forEach((r, i) => { for (const k of ['asset', 'mechanism', 'reinterpret', 'do_not_copy']) if (!isStr(r[k])) e.push(`synthesis.references[${i}].${k}: required`); });
       (sy.evaluation || []).forEach((c, i) => { if (!isStr(c.criterion) || !isStr(c.test) || typeof c.gate !== 'boolean') e.push(`synthesis.evaluation[${i}]: criterion, test and gate (true|false) required`); });
     }

@@ -16,6 +16,9 @@ In `evidence/<id>/`:
 | `full.webp` | The whole home page as one reduced overview |
 | `scroll-2.webp` … `scroll-4.webp` | The next screens of the home page, as readable tiles of 1500 px each |
 | `mobile.webp` | The first screen at 390 × 844 |
+| `headline.webp` | The main headline as set on the page: the brand's type specimen |
+| `media-1.webp` … `media-8.webp` | The largest pictures the home page publishes, each alone: photographs, illustrations, product shots. Coders label them in `media_kinds` |
+| `blocked.webp` | What the site answered, when it refused the visit or served an error |
 | `page-1.webp`, `page-2.webp` | The first screen of each `extra_urls` page: product, features, pricing |
 | `app-icon.webp`, `app-1.webp` … `app-3.webp` | The App Store listing, when `app_store_term` is set |
 | `logo.webp` | A screenshot of the logo as it sits in the header |
@@ -58,7 +61,7 @@ A banner that was not dismissed and covers the hero is the most common defect. R
 
 Some sites answer a headless browser with a challenge page. The script detects it (an HTTP error, a title like "Just a moment", or a page with almost no text), keeps one screenshot as `blocked.webp`, and marks the brand `capture: "partial"` with `measures: null`.
 
-**Keep the brand.** A blocked leader is still the leader. Get a capture another way, in this order, and stop at the first that works:
+**Keep the brand, and do not try to defeat the block.** A site that refuses automated visits has said no: the script does not retry with tricks, and neither do you. A blocked leader is still the leader, so look for what the brand publishes elsewhere, in this order, and stop at the first that works:
 
 1. **Mobbin**, if its MCP server is connected: `search_sections` with the brand name and "hero section". Download the `image_url` into `evidence/<id>/desktop.webp`; cite the `mobbin_url` in the brand's `capture_notes`.
 2. **Another official page**: a country variant, the product subdomain, the press or brand page. Put that URL in the panel and re-run with `--only <id>`.
@@ -74,5 +77,5 @@ If nothing works, the brand stays in the panel table as not captured, and `limit
 - `--only id,id` re-captures those brands from scratch. **It deletes the brand's evidence folder first**, including any file you saved there by hand (a rescued capture, a Mobbin image). Save those again afterwards, or do not use `--only` on a brand you rescued.
 - Re-capturing does not touch `codes`. If the page changed, re-code the brand.
 - A later run captures only the brands added to the panel since.
-- Brand ids must be lower-case slugs, and `sheets` and `library` are reserved: the script refuses anything else before touching a file.
+- Brand ids must be lower-case slugs, and `sheets`, `library` and `territories` are reserved: the script refuses anything else before touching a file.
 - Captures are dated by `meta.date`. If the audit is resumed weeks later, re-capture rather than mix dates.

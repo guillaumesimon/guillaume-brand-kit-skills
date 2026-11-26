@@ -1,6 +1,6 @@
 ---
 name: brand-audit
-description: Run the brand and competitive audit an art director does before designing an identity, and write a visual landscape audit of a sector. It builds a panel (direct and indirect competitors, category leaders, aspirational brands from outside the sector), visits their sites, measures their real colours and typefaces, collects logos, codes every brand on a fixed vocabulary (logo type, symbol, colour, typography, imagery, layout, headline), counts the sector's dominant codes, separates what a brand must keep to be understood from the clichés it can break, maps saturated and open visual territories, and ends with a creative synthesis: a decision matrix, two to four creative territories each with a sourced moodboard, and a brief for the designer or agent who comes next. It writes a black and white report for people and a generated brief for agents. Two modes, flash (about twenty minutes) and deep (about fifty). Use this skill whenever someone asks for a brand audit, a competitive audit, a visual audit, a visual landscape, a competitor benchmark of logos or identities, creative territories or moodboards grounded in a competitor study, the visual codes or clichés of a sector, where the white space is, how to stand out visually in a category, un audit de marque, un audit concurrentiel, un benchmark visuel, les codes graphiques d'un secteur, une cartographie des concurrents, des opportunités de différenciation. Also use it before brand-kit when there is time, and before a rebrand. Do not use it for positioning, messaging, pricing or SEO comparisons (that is a competitive brief), and do not use it to design the brand itself (that is brand-kit).
+description: Run the brand and competitive audit an art director does before designing an identity. Builds a panel of direct, indirect and aspirational brands, captures their sites and store listings, measures real colours and typefaces, codes every brand on a fixed vocabulary, counts the sector's dominant visual codes, separates what must be kept to be understood from the clichés that can be broken, and ends with a creative synthesis: a decision matrix and two to four creative territories with sourced moodboards. Writes a report for people and a generated brief for agents. Two modes, flash and deep. Use it for a brand audit, competitive or visual audit, visual landscape, competitor benchmark of logos or identities, sector codes or clichés, white space, moodboards grounded in a competitor study, audit de marque, audit concurrentiel, benchmark visuel, codes graphiques d'un secteur, and before brand-kit or a rebrand. Not for positioning, pricing or SEO comparisons, and not to design the brand itself (that is brand-kit).
 ---
 
 # Audit a visual landscape
@@ -56,7 +56,7 @@ Pick the mode before anything else. If the user or the calling skill named one, 
 
 - Paths below are relative to this skill's directory for scripts (`assets/…`) and to the project for outputs (`brand/audit/`). Write `AUDIT=brand/audit` once and reuse it.
 - If `brand/audit/audit.json` exists, this is a resume: read it, say what is there, and continue from the first step that is incomplete. A deep run on a flash audit keeps the panel and adds to it.
-- The scripts need Node 22 or later and Playwright with Chromium, and nothing else: no API key, no other dependency. If `node assets/capture.mjs --help` fails on the import, run `npm i playwright && npx playwright install chromium`.
+- The scripts need Node 22 or later and Playwright with Chromium, and nothing else: no API key, no other dependency. Check with `node assets/capture.mjs --check`. If it says Playwright is missing, run `npm i playwright && npx playwright install chromium` in the project folder (or anywhere on `NODE_PATH`) and check again.
 - You need web search, a way to read images, and ideally subagents. Mobbin is optional. `AskUserQuestion` is used where it exists; otherwise ask in plain text.
 - Subagents make this fast. If you have no subagent tool, run the same steps in series and say so in `limits`.
 
@@ -88,7 +88,7 @@ Aspirational brands are never chosen by taste. Each one needs a sentence that sa
 node assets/capture.mjs $AUDIT
 ```
 
-One home page's first screen is a thin sample of a brand, so every brand is captured in depth, in both modes: the first screen, the whole home page as an overview and as readable tiles, the mobile view, up to two inner pages (`extra_urls`: a product or features page, a pricing page), and the App Store listing when `app_store_term` is set (icon, first screenshots, the description). For an app, the store listing and the product screens are most of what people ever see of the brand.
+One home page's first screen is a thin sample of a brand, so every brand is captured in depth, in both modes: the first screen, the whole home page as an overview and as readable tiles, the mobile view, up to two inner pages (`extra_urls`: a product or features page, a pricing page), and, when the product is an app and `app_store_term` is set, the App Store listing (icon, first screenshots, the description). For an app, the store listing and the product screens are most of what people ever see of the brand; for anything else, leave `app_store_term` out and the store parts of the report simply do not appear.
 
 **Read `references/capture.md`** for what is measured and for the fallback chain. A site that answers with a bot challenge comes back `partial`: keep the brand, get a capture another way, and leave it out of the colour and type counts. Then look at what came back. Open a few `desktop.webp` and every logo that looks wrong; a selector can pick a partner badge instead of the logo. To reject a captured logo, set the brand's `logo` to `null` in `audit.json`: the walls then fall back to its app icon.
 
@@ -98,7 +98,7 @@ One home page's first screen is a thin sample of a brand, so every brand is capt
 node assets/library.mjs $AUDIT --industry <slug>
 ```
 
-**Read `references/sources.md`.** The panel says what competitors do. A design library says what the sector looks like at its best, tagged by type, colour, style and subject. These samples are curated by designers, so they are reported apart and their counts are never added to the panel's.
+**Read `references/sources.md`.** Optional: if no industry of the library fits the sector, skip it and say so in `limits`. The panel says what competitors do. A design library says what the sector looks like at its best, tagged by type, colour, style and subject. These samples are curated by designers, so they are reported apart and their counts are never added to the panel's.
 
 ### 5 · Code
 

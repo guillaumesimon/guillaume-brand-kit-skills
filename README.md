@@ -26,14 +26,14 @@ brand/audit/
 
 Two modes write the same files: **flash** (about twenty minutes, 13 brands, classifications as hypotheses) and **deep** (about fifty, a larger panel, double coding, and a counter-check on every opportunity). Flash has been run end to end; deep has been exercised less.
 
-What it needs: Node 22 or later and Playwright with Chromium (`npm i playwright && npx playwright install chromium`), web search, and ideally subagents. No API key. The Mobbin connector is optional. `node --test skills/brand-audit/tests/*.test.mjs` runs its tests.
+What it needs: Node 22 or later and Playwright with Chromium (`npm i playwright && npx playwright install chromium` in your project; `node skills/brand-audit/assets/capture.mjs --check` verifies it), web search, and ideally subagents. No API key. The Mobbin connector is optional. `node --test skills/brand-audit/tests/*.test.mjs` runs its tests.
 
 What to know before using it:
 
 - **The audit reads captures.** It does not measure how people perceive a brand, whether a sign is legally available, or whether a territory sells. It says so, and lists what to validate with people.
 - **A panel is a sample chosen by a search**, not a census, and a capture is one day.
 - **Other companies' logos and screenshots are working material for internal reference.** The report is not meant to be published, and the skill warns before captures are committed to a public repository.
-- **It visits sites as a person would**: a few pages per brand, once. A site that refuses automated visits is recorded as such and left out of the counts, never worked around.
+- **It visits sites as a person would**: a few pages per brand, once, with a headless browser. A site that refuses the visit is recorded as such and left out of the counts; the skill then looks at what the brand publishes elsewhere (its store listing, its press kit) and does not try to defeat the block.
 
 ## What it produces
 

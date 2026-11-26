@@ -16,7 +16,7 @@ Industry slugs seen on 2026-11-26:
 
 `agency` · `ai` · `automotive` · `beauty` · `design-studio` · `e-commerce-and-dtc` · `education` · `fashion` · `fintech` · `food-and-drink` · `gaming` · `health-and-wellness` · `industrial` · `media-and-entertainment` · `non-profit` · `real-estate` · `saas` · `sports-and-fitness` · `tech` · `travel-and-hospitality` · `web3-and-crypto`
 
-Pick the closest one. If the product sits between two (a running app is `sports-and-fitness`, and also `health-and-wellness`), run the closest and mention the other in `limits`. A wrong slug returns nothing and the script says so.
+Pick the closest one. If none fits the sector, skip this step, write `"library": {}` and say so in `limits`: the audit works without it. If the product sits between two (a running app is `sports-and-fitness`, and also `health-and-wellness`), run the closest and mention the other in `limits`. A wrong slug returns nothing and the script says so.
 
 How to read it:
 
@@ -27,7 +27,7 @@ How to read it:
 
 The sample skews toward tech companies and recent work from studios. Say so when you cite it.
 
-The site's `robots.txt` allows use as reference and refuses training. Reference is what this is.
+When this was written, the site's `robots.txt` allowed use as reference and refused training. Check it again before relying on it: terms change, and the script reads a page payload that the site may restructure.
 
 ## Logoinspo: typologies, not sectors
 

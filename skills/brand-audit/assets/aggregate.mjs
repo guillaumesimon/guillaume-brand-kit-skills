@@ -141,9 +141,20 @@ export function aggregate(auditDir, axes = []) {
   const before = audit.maps || (audit.map ? [audit.map] : []);
   const readingOf = (m) => before.find((o) => o.x?.dimension === m.x.dimension && o.y?.dimension === m.y.dimension)?.reading;
   const pairs = axes.length ? axes : before.filter((m) => m.forced).map((m) => m.forced);
+  delete audit.map_warnings;
   let maps = [];
   if (!audit.frequencies.insufficient) {
-    if (pairs.length) maps = pairs.map((pair) => { const m = mapAxes(audit.panel, pair); if (m) m.forced = pair; return m; }).filter(Boolean);
+    if (pairs.length) {
+      for (const pair of pairs) {
+        const m = mapAxes(audit.panel, pair);
+        if (!m) continue;
+        const got = [m.x.dimension, m.y.dimension];
+        const unusable = pair.filter((d) => !got.includes(d));
+        if (unusable.length) (audit.map_warnings ||= []).push(`${unusable.join(', ')} cannot be an axis here (needs two values each held by a fifth of the direct brands; ${[...NOT_AN_AXIS].join(', ')} are never axes): drew ${got.join(' × ')} instead`);
+        m.forced = pair;
+        if (!maps.some((o) => [o.x.dimension, o.y.dimension].sort().join() === got.slice().sort().join())) maps.push(m);
+      }
+    }
     else {
       const first = mapAxes(audit.panel);
       const second = first && mapAxes(audit.panel, [], [first.x.dimension, first.y.dimension]);
@@ -173,6 +184,7 @@ if (import.meta.url === pathToFileURL(process.argv[1] || '').href) {
   for (const c of a.conventions)
     console.log(`  ${c.class ? c.class.padEnd(10) : 'TO CLASSIFY'} ${c.dimension}: ${c.value} (${c.count} of ${c.base}) · breakers: ${c.breakers.map((b) => b.id + (b.established ? '*' : '')).join(', ') || 'none'}`);
   console.log('  * = established brand');
+  for (const w of a.map_warnings || []) console.log('\nwarning: ' + w);
   if (!a.maps.length) console.log('\nmap: not enough spread in the codes to draw two axes');
   for (const m of a.maps) {
     console.log(`\nmap: ${m.x.dimension} [${m.x.poles.join(' | ')}] × ${m.y.dimension} [${m.y.poles.join(' | ')}]`);

@@ -158,7 +158,7 @@ Brands:
 Code only what the captures show. Do not use what you know about these brands from elsewhere.
 If a capture does not show a dimension, leave it out.
 
-Return JSON only:
+Write valid JSON to <absolute path>/codes-<n>.json, then reply with one line per brand:
 {
   "<id>": {
     "logo_type": "…", "symbol_nature": "… (combination marks only)", "symbol_subject": "…",

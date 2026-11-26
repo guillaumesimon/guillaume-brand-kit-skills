@@ -30,6 +30,8 @@ Rules that hold throughout:
 - **Do not ban a whole colour or a whole type of logo.** Name the crowded combination and why ("royal blue with a white pictogram is the leader's").
 - **Confidence belongs to a claim**: `high` when directly observed and well covered, `medium` when it leans on interpretation or thin coverage, `low` when it extrapolates. A high-confidence finding can carry a low-confidence recommendation.
 
+**Fit the touchpoints to the product.** For an app they are the icon, the store listing and the home page; for a shop, the sign, the bag and the site; for a service, the proposal and the invoice. Name the ones that matter in the territories and in the evaluation gates.
+
 ## 1 · Implications, section by section
 
 Each written section ends with a compact block. Write it yourself after reading the section, or have the section writer draft it and edit it:
@@ -102,7 +104,7 @@ First say, in the decision matrix, what every territory shares. Then, per territ
     "graphic_system": "the recurring device",
     "voice": "how it speaks"
   },
-  "touchpoints": { "App icon": "…", "Store listing": "…", "Home page": "…" },
+  "touchpoints": { "<the touchpoints that matter for this product>": "…", "Home page": "…" },
   "preserves": ["category signals kept"], "challenges": ["conventions broken"],
   "risk": "What could go wrong, and the credible counter-argument.",
   "confidence": "medium",
@@ -122,8 +124,8 @@ A territory is judged by eye. Each one gets about ten images, every one real, so
 
 Three sources, mixed:
 
-- **`panel`**: images already in `evidence/`, mostly from aspirational brands. `{ "asset": "evidence/on/media-2.webp", "note": "…" }`
-- **`library`**: logos and identities from the Logosystem catalogue, all industries, picked by tags. `{ "tags": ["serif", "calm"], "n": 2, "note": "…" }`. Tags come from its vocabulary: types (`wordmark`, `symbol`, `symbol-and-text`), styles (`serif`, `sans-serif`, `script`, `hand-drawn`, `geometric`, `monoline`, `lowercase`, `rounded`, `bold`, `minimal`, `vintage-and-retro`), moods (`calm`, `friendly`, `playful`, `elegant`, `energetic`, `premium`, `modern`), subjects (`abstract`, `letterform`, `nature-and-plant`, `human-and-face`, `wave`, `circle`), colours.
+- **`panel`**: images already in `evidence/`, mostly from aspirational brands. `{ "asset": "evidence/<brand-id>/media-2.webp", "note": "…" }`
+- **`library`**: logos and identities from the Logosystem catalogue, picked by tags across all its industries (any of its pages carries the whole catalogue). `{ "tags": ["serif", "calm"], "n": 2, "note": "…" }`. Tags come from its vocabulary: types (`wordmark`, `symbol`, `symbol-and-text`), styles (`serif`, `sans-serif`, `script`, `hand-drawn`, `geometric`, `monoline`, `lowercase`, `rounded`, `bold`, `minimal`, `vintage-and-retro`), moods (`calm`, `friendly`, `playful`, `elegant`, `energetic`, `premium`, `modern`), subjects (`abstract`, `letterform`, `nature-and-plant`, `human-and-face`, `wave`, `circle`), colours.
 - **`web`**: a page whose main image is the reference: an editorial cover, a studio case study, a photographer's series, a campaign. `{ "url": "https://…", "note": "…" }`. The script takes the page's social image, else its largest picture.
 
 Dispatch one **moodboard scout** per territory to find the `web` references and choose the `panel` ones:
@@ -165,19 +167,30 @@ Borrow the mechanism, not the look. The moodboard and the `references` list say 
 **References** are the few panel assets worth a designer's close study, across territories:
 
 ```json
-{ "asset": "evidence/calm/app-1.webp", "mechanism": "One ground and one handwritten word, unchanged from icon to every store image.",
+{ "asset": "evidence/<brand-id>/app-1.webp", "mechanism": "One ground and one handwritten word, unchanged from icon to every store image.",
   "reinterpret": "Find the one surface this brand can hold everywhere.", "do_not_copy": "The gradient, the script, the blue." }
 ```
 
 **Evaluation** is how a concept will be judged, derived from this brief, with gates kept apart from preferences:
 
 ```json
-{ "criterion": "Functional", "test": "The icon is recognisable at 60 px, in one colour, beside the nine competing icons.", "gate": true }
+{ "criterion": "Functional", "test": "The mark is recognisable at its smallest real size, in one colour, beside the competitors' marks.", "gate": true }
 ```
 
 A gate rejects a concept (a required size, a required contrast, category recognition). A preference weighs on it (differentiation, system potential). Using a common hue is never a gate. Looking unlike a competitor is not trademark clearance: flag legal review separately. An agent's prediction of how an audience will react is unvalidated, and says so.
 
-**For brand-kit**: `for_brand_kit` holds the swap-test competitor, the category duel pair and the seed of the Not list.
+**For brand-kit**: what the next skill needs, in four keys:
+
+```json
+"for_brand_kit": {
+  "swap_competitor": "The most typical established brand, and why.",
+  "swap_evidence": "evidence/<brand-id>/desktop.webp",
+  "duel": ["evidence/<most-typical>/desktop.webp", "evidence/<most-deviant>/desktop.webp"],
+  "not_list": ["the clichés as a designer would say them", "…"]
+}
+```
+
+Typical is the direct brand that matches the most conventions; deviant, the fewest.
 
 **The brief** is generated:
 

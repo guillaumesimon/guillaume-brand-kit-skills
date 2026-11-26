@@ -63,10 +63,10 @@ Some of the strongest patterns cross two values or belong to no dimension: every
 
 ```json
 { "manual": true, "dimension": "imagery", "value": "runners or the app screen", "count": 8, "base": 8, "share": 1,
-  "breakers": [], "class": "legibility", "provenance": "judged", "reason": "…", "evidence": ["evidence/sheets/heroes.webp"] }
+  "breakers": [], "class": "signal", "provenance": "judged", "confidence": "medium", "population": "8 direct home pages", "reason": "…", "evidence": ["evidence/sheets/heroes.webp"] }
 ```
 
-Count them honestly, brand by brand, on the wall, by looking at it yourself. Do not count from the coders' notes: a note says what struck one coder about one brand, not what is true of all of them. In the trial that shaped this skill, a count taken from notes named the wrong brand; the wall corrected it. A manual convention without a real count is an impression with a number attached.
+Count them honestly, brand by brand, on the wall, by looking at it yourself. Do not count from the coders' notes: a note says what struck one coder about one brand, not what is true of all of them. A manual convention without a real count is an impression with a number attached.
 
 If the base later drops under four brands, the classified conventions are kept and marked `stale` rather than erased; recount when the panel is back.
 
@@ -74,8 +74,8 @@ Write each classification into `audit.json` on the convention:
 
 ```json
 { "class": "cliche", "provenance": "judged",
-  "reason": "Strava, the category leader, uses no neon at all and is the most recognised brand in the panel.",
-  "evidence": ["evidence/sheets/palettes.webp", "evidence/strava/desktop.webp"] }
+  "reason": "Northpace, the category leader, uses no neon at all and is still read at once as a running app.",
+  "evidence": ["evidence/sheets/palettes.webp", "evidence/northpace/desktop.webp"] }
 ```
 
 The reason names the brand. The evidence shows it. In flash, start the reason with "Hypothesis." and mean it.
@@ -88,7 +88,7 @@ The script picks the two dimensions that split the direct panel most evenly and 
 
 Two maps are drawn: the best pair, then the best pair among the remaining dimensions. One map flatters a single reading; two that agree are an argument, and two that disagree are a finding. Name your own with `--axes a,b --axes c,d`, one map per flag.
 
-The automatic pick is a start. If it gives an axis that says little (saturation against case), choose the two dimensions that carry the story you saw on the walls and re-run with `--axes imagery,ground`. The choice is kept on later runs. A dimension only works as an axis if at least two of its values each hold a fifth of the panel.
+The automatic pick is a start. Some dimensions are never axes (`hue_count`, `name_case`, `symbol_nature`, `symbol_subject`), and a dimension only works when at least two of its values are each held by a fifth of the direct brands; when a dimension you name cannot be used, the script says so and draws the best alternative. If it gives an axis that says little (saturation against case), choose the two dimensions that carry the story you saw on the walls and re-run with `--axes imagery,ground`. The choice is kept on later runs. A dimension only works as an axis if at least two of its values each hold a fifth of the panel.
 
 Then write `reading` on each map of `maps` in `audit.json`, three or four sentences in plain words:
 
@@ -101,25 +101,25 @@ Where the aspirational brands sit matters as much as where the competitors sit. 
 
 ## Opportunities
 
-Two in flash, three to five in deep. An opportunity is not "be different". It is a territory, written so that a designer could start from it:
+Two or three in flash, three to five in deep. An opportunity is not "be different". It is a territory, written so that a designer could start from it:
 
 ```json
 { "id": "the-training-log", "title": "The training log",
   "keep": ["imagery: product_ui"],
   "break": ["hue: orange", "headline_promise: community"],
-  "import": [{ "from": "field-notes", "what": "a ruled, paper-toned page and a mono index" }],
+  "import": [{ "from": "an-aspirational-brand-id", "what": "a ruled, paper-toned page and a mono index" }],
   "rationale": "Nobody addresses the runner alone with their numbers, which is what running two or three times a week is.",
   "observation": "Seven of ten sell belonging with a photograph of a group.",
   "alignment": "The audience runs alone, for its head.",
   "benefit": "Recognised by the people it is for; unlike every competitor.",
   "validate": "Whether a solitary image reads as calm or as lonely: show both to five runners.",
   "risk": "medium", "risk_note": "No direct brand has tried it.", "provenance": "judged",
-  "evidence": ["evidence/sheets/heroes.webp", "evidence/field-notes/desktop.webp"] }
+  "evidence": ["evidence/sheets/heroes.webp", "evidence/an-aspirational-brand-id/desktop.webp"] }
 ```
 
 Rules for writing them:
 
-1. **It keeps every legibility code.** An opportunity that breaks one is a different product category, not a differentiation.
+1. **It keeps every functional requirement, and says so when it breaks a category signal.** Breaking a requirement is a different product; breaking a signal costs recognition and must be worth it.
 2. **It breaks at least one named cliché or risky convention.** Otherwise it is the category.
 3. **It borrows from a panel brand when it borrows.** `import.from` must be a brand id. The borrowing is what makes it concrete: a ground, a typographic manner, a way of showing the product.
 4. **It comes from the framing.** The strongest territories usually start from `framing.instead_of` or from the audience's own life, not from design fashion. Ask what this audience already recognises that no competitor uses.

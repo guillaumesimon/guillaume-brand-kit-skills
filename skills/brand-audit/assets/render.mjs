@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// audit.json -> landscape.html, the board a person reads.
+// audit.json -> landscape.html, the report a person reads.
 //   node render.mjs <audit-dir> [--inline]
 // Self-contained apart from the images, which are linked from evidence/ by relative path:
 // share the audit folder, not the file alone. No web font, no CDN, no script.
@@ -383,7 +383,7 @@ export { STRINGS };
 
 if (import.meta.url === pathToFileURL(process.argv[1] || '').href) {
   const dir = process.argv[2];
-  if (!dir || dir.startsWith('--')) { console.log('usage: node render.mjs <audit-dir>'); process.exit(dir === '--help' ? 0 : 1); }
+  if (!dir || dir.startsWith('--')) { console.log('usage: node render.mjs <audit-dir> [--inline]'); process.exit(dir === '--help' ? 0 : 1); }
   const audit = JSON.parse(readFileSync(join(dir, 'audit.json'), 'utf8'));
   const html = renderLandscape(audit, STRINGS[localeOf(audit)], (p) => existsSync(join(dir, p)));
   writeFileSync(join(dir, 'landscape.html'), html);

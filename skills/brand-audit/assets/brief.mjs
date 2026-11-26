@@ -70,7 +70,7 @@ export function renderBrief(audit) {
   const val = audit.summary?.validate || [];
   if (val.length) { L.push('## 7. To validate with people', '', 'The audit reads captures. It does not measure perception, demand or legal availability.', ''); for (const v of val) L.push(`- ${v.text}`); L.push(''); }
   const bk = sy.for_brand_kit;
-  if (bk) L.push('## 8. For brand-kit', '', `- **Swap test competitor:** ${bk.swap_competitor} \`${bk.swap_evidence}\``, `- **Category duel:** most typical \`${bk.duel[0]}\` against most deviant \`${bk.duel[1]}\`.`, `- **Seed for the Not list:** ${(bk.not_list || []).join(', ')}.`, '');
+  if (bk && Array.isArray(bk.duel)) L.push('## 8. For brand-kit', '', `- **Swap test competitor:** ${bk.swap_competitor || ''} \`${bk.swap_evidence || ''}\``, `- **Category duel:** most typical \`${bk.duel[0] || ''}\` against most deviant \`${bk.duel[1] || ''}\`.`, `- **Seed for the Not list:** ${(bk.not_list || []).join(', ')}.`, '');
   L.push('## 9. Limits', '', ...(audit.limits || []).map((l) => `- ${l}`), '');
   if (fr.base != null) L.push(`Statistics base: ${fr.base} direct brands captured in full and coded.`, '');
   return L.filter((x) => x !== undefined).join('\n').replace(/\n{3,}/g, '\n\n');
