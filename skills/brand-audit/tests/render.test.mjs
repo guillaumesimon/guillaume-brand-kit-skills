@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { renderLandscape, STRINGS } from '../assets/render.mjs';
+import { renderLandscape, inlineImages, STRINGS } from '../assets/render.mjs';
 
 const example = JSON.parse(readFileSync(new URL('../assets/audit.example.json', import.meta.url)));
 
@@ -32,4 +32,9 @@ test('text from the audit is escaped', () => {
 test('an audit with too few brands still renders', () => {
   const a = structuredClone(example); a.frequencies = { base: 2, insufficient: true, by_dimension: {} }; a.conventions = []; a.map = null; a.opportunities = [];
   assert.ok(renderLandscape(a, STRINGS.fr).includes('Pas assez de marques directes'));
+});
+test('--inline embeds every image and leaves no evidence path', () => {
+  const one = inlineImages(renderLandscape(example, STRINGS.en), () => Buffer.from('x'));
+  assert.ok(!one.includes('"evidence/'));
+  assert.ok(one.includes('src="data:image/webp;base64,eA=="'));
 });

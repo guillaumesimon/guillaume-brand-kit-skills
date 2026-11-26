@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // audit.json -> landscape.html, the board a person reads.
-//   node render.mjs <audit-dir>
+//   node render.mjs <audit-dir> [--inline]
 // Self-contained apart from the images, which are linked from evidence/ by relative path:
 // share the audit folder, not the file alone. No web font, no CDN, no script.
 import { readFileSync, writeFileSync, existsSync } from 'node:fs';
@@ -172,6 +172,17 @@ ${quad}<line x1="${W / 2}" y1="${pad}" x2="${W / 2}" y2="${Hh - pad}" stroke="#1
 ${pts}</svg></div><div class="legend">${roles.map((r) => `<span><span class="dot" style="background:${r === 'aspirational' ? 'none' : ROLE_COLOR[r]};border:2px solid ${ROLE_COLOR[r]};border-radius:${r === 'aspirational' ? 0 : 50}%"></span>${esc(t.roles[r] || r)}</span>`).join('')}</div>`;
 }
 
+const MIME = { webp: 'image/webp', png: 'image/png', jpg: 'image/jpeg', jpeg: 'image/jpeg', svg: 'image/svg+xml' };
+/** Embed every evidence image as a data URI, so the board travels as one file. Links to images are dropped. */
+export function inlineImages(html, read) {
+  const cache = new Map();
+  const uri = (p) => {
+    if (!cache.has(p)) cache.set(p, `data:${MIME[p.split('.').pop()] || 'application/octet-stream'};base64,${read(p).toString('base64')}`);
+    return cache.get(p);
+  };
+  return html.replace(/<a href="evidence\/[^"]+">([\s\S]*?)<\/a>/g, '$1').replace(/src="(evidence\/[^"]+)"/g, (m, p) => `src="${uri(p)}"`);
+}
+
 function localeOf(audit) { return String(audit.meta?.locale || 'en').slice(0, 2).toLowerCase() === 'fr' ? 'fr' : 'en'; }
 function defaultTemplate() { return readFileSync(new URL('./landscape.template.html', import.meta.url), 'utf8'); }
 export { STRINGS };
@@ -183,4 +194,9 @@ if (import.meta.url === pathToFileURL(process.argv[1] || '').href) {
   const html = renderLandscape(audit, STRINGS[localeOf(audit)], (p) => existsSync(join(dir, p)));
   writeFileSync(join(dir, 'landscape.html'), html);
   console.log(`landscape.html written (${Math.round(html.length / 1024)} KB, ${localeOf(audit)})`);
+  if (process.argv.includes('--inline')) {
+    const one = inlineImages(html, (p) => readFileSync(join(dir, p)));
+    writeFileSync(join(dir, 'landscape.single.html'), one);
+    console.log(`landscape.single.html written (${(one.length / 1048576).toFixed(1)} MB): one file, images embedded, to send to someone`);
+  }
 }
