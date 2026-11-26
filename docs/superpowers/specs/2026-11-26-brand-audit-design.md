@@ -1,6 +1,6 @@
 # Skill `brand-audit` : conception
 
-Date : 2026-11-26. Statut : à valider.
+Date : 2026-11-26. Statut : validé.
 
 ## Intention
 
@@ -227,7 +227,8 @@ Le schéma détaillé de `audit.json`, les valeurs complètes de la grille, les 
 8. Duels de catégorie ajoutés au tournoi, sans remplacer les duels Mobbin.
 9. `brand-kit` consomme l'audit et ne le lance pas.
 
-## Questions ouvertes
+## Décidé avec l'utilisateur
 
-1. `evidence/` est-il versionné dans le dépôt ? Proposition : oui, parce que les sessions cloud repartent d'un clone et que les duels en ont besoin, avec un avertissement si le dépôt est public.
-2. Secteur d'essai. Proposition : l'assurance santé, déjà sondée pendant la conception.
+1. `evidence/` est versionné dans le dépôt. La skill avertit si le dépôt est public.
+2. Secteur d'essai : les applications de running.
+3. Type de logo sur sept catégories, avec la nature du symbole pour les combination marks.
