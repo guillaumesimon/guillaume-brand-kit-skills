@@ -84,3 +84,12 @@ test('the analyst can name the axes, and the choice survives a re-run', () => {
   assert.deepEqual([m.x.dimension, m.y.dimension].sort(), ['layout', 'name_style']);
   assert.deepEqual(aggregate(dir).map.forced, ['name_style', 'layout']);
 });
+test('a convention written by the analyst survives a re-run', () => {
+  const dir = mkdtempSync(join(tmpdir(), 'ba-man-'));
+  const audit = JSON.parse(readFileSync(new URL('../assets/audit.example.json', import.meta.url)));
+  audit.conventions.push({ manual: true, dimension: 'imagery', value: 'a screen or a shelf', count: 8, base: 8, share: 1, breakers: [], class: 'legibility', provenance: 'judged', reason: 'x', evidence: ['evidence/sheets/heroes.webp'] });
+  writeFileSync(join(dir, 'audit.json'), JSON.stringify(audit));
+  const out = aggregate(dir);
+  assert.equal(out.conventions.filter((c) => c.manual).length, 1);
+  assert.equal(aggregate(dir).conventions.filter((c) => c.manual).length, 1);
+});

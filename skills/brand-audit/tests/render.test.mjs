@@ -10,6 +10,8 @@ test('the board names every brand and the three classes, in French', () => {
   for (const b of example.panel) assert.ok(html.includes(b.name), b.name);
   for (const label of ['Code de lisibilité', 'Cliché', 'Rupture risquée', 'Territoires à explorer']) assert.ok(html.includes(label), label);
   assert.ok(html.includes('6 sur 8'));
+  assert.ok(html.includes('Teinte dominante : bleu'), 'vocabulary values are shown in French');
+  assert.ok(html.includes('combination'), 'logo types keep their names');
   assert.ok(!html.includes('<!--'));
 });
 test('the board loads nothing from the network', () => {

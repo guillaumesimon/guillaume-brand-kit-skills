@@ -114,11 +114,13 @@ export function aggregate(auditDir, axes = []) {
   const audit = JSON.parse(readFileSync(file, 'utf8'));
   const thresholds = audit.meta?.thresholds || { convention: 0.6, rare: 0.15 };
   audit.frequencies = frequencies(audit.panel, thresholds, audit.meta?.mode);
-  const previous = new Map((audit.conventions || []).map((c) => [`${c.dimension}=${norm(c.value)}`, c]));
-  audit.conventions = audit.frequencies.insufficient ? [] : conventionCandidates(audit.frequencies, audit.panel).map((c) => {
+  const previous = new Map((audit.conventions || []).filter((c) => !c.manual).map((c) => [`${c.dimension}=${norm(c.value)}`, c]));
+  // A convention the analyst wrote by hand (`manual: true`, e.g. a pattern across two values) is kept as written.
+  const manual = (audit.conventions || []).filter((c) => c.manual);
+  audit.conventions = audit.frequencies.insufficient ? [] : [...conventionCandidates(audit.frequencies, audit.panel).map((c) => {
     const old = previous.get(`${c.dimension}=${c.value}`);
     return old?.class ? { ...c, class: old.class, provenance: old.provenance, reason: old.reason, evidence: old.evidence } : c;
-  });
+  }), ...manual];
   const reading = audit.map?.reading;
   const forced = axes.length ? axes : audit.map?.forced || [];
   audit.map = audit.frequencies.insufficient ? null : mapAxes(audit.panel, forced);

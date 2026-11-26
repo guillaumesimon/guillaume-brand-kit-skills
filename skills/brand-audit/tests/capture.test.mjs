@@ -63,6 +63,19 @@ test('a logo split in two graphics is captured whole, and a French consent banne
   const m = JSON.parse(readFileSync(join(out, 'split/measures.json')));
   assert.ok(m.logo_box.width >= 110, `logo is ${m.logo_box.width}px wide`);
 });
+test('a menu icon is not the logo, and a small h1 above a big line is not the headline', async () => {
+  const r = await captureBrand(browser, { id: 'eye', url: base + '/eyebrow.html' }, out, fast);
+  const m = JSON.parse(readFileSync(join(out, 'eye/measures.json')));
+  assert.equal(m.logo_box.width, 140);
+  assert.equal(m.headline.text, 'WELCOME HOME RUNNERS');
+  assert.equal(m.headline.size_px, 88);
+});
+test('an error page served with a 200 is partial', async () => {
+  const r = await captureBrand(browser, { id: 'err', url: base + '/errorpage.html' }, out, fast);
+  assert.equal(r.capture, 'partial');
+  assert.ok(r.notes.some((n) => /error page/.test(n)), r.notes.join('; '));
+  assert.equal(r.logo, 'evidence/err/logo.webp'); // the header is still there: keep the logo for the wall
+});
 test('an unreachable host is capture none', async () => {
   const r = await captureBrand(browser, { id: 'dead', url: 'http://127.0.0.1:1/' }, out, { ...fast, timeout: 5000 });
   assert.equal(r.capture, 'none');
@@ -85,4 +98,19 @@ test('captureAll skips brands already captured', async () => {
   assert.equal(audit.panel[0].capture, 'full');
   assert.equal(audit.panel[1].capture, 'partial');
   assert.ok(audit.panel[0].evidence.includes('evidence/a/desktop.webp'));
+});
+test('re-capturing a brand replaces its evidence instead of piling it up', async () => {
+  const dir = mkdtempSync(join(tmpdir(), 'ba-re-'));
+  const write = (url) => writeFileSync(join(dir, 'audit.json'), JSON.stringify({ meta: {}, panel: [{ id: 'a', url, evidence: ['evidence/a/desktop.webp', 'evidence/other/kept.webp'], logo: 'evidence/a/logo.webp' }] }));
+  write(base + '/index.html');
+  await captureAll(dir, { settle: 200, only: ['a'] });
+  const a = JSON.parse(readFileSync(join(dir, 'audit.json')));
+  a.panel[0].url = base + '/blocked.html';
+  writeFileSync(join(dir, 'audit.json'), JSON.stringify(a));
+  await captureAll(dir, { settle: 200, only: ['a'] });
+  const b = JSON.parse(readFileSync(join(dir, 'audit.json'))).panel[0];
+  assert.equal(b.capture, 'partial');
+  assert.deepEqual(b.evidence.sort(), ['evidence/a/blocked.webp', 'evidence/other/kept.webp']);
+  assert.equal(b.logo, null); // a challenge page has no header of the brand
+  assert.ok(!existsSync(join(dir, 'evidence/a/desktop.webp')));
 });

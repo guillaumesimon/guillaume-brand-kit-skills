@@ -94,6 +94,8 @@ Return JSON only, an array of:
   "app_store_term": "name to search in the App Store"                                // when there is an app
 }
 
+Write "why" and "established.reason" in <the user's language>: they are printed on the board.
+
 Do not describe how any brand looks. That is measured later, from captures. A description from
 memory would contaminate the audit.
 ```

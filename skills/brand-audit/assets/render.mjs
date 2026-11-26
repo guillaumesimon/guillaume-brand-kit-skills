@@ -44,12 +44,13 @@ const STRINGS = {
     method: 'Méthode et limites', provenance: 'Chaque constat est mesuré (lu sur la page rendue), observé (codé en regardant les captures) ou jugé (une conclusion, avec sa preuve).',
     internal: 'Les logos et captures de tiers sont un matériau de travail interne. Ne pas publier cette page.',
     dims: { logo_type: 'Type de logo', symbol_nature: 'Symbole des combination marks', symbol_subject: 'Sujet du symbole', name_case: 'Casse du nom', name_style: 'Dessin du nom', hue: 'Teinte dominante', saturation: 'Saturation', ground: 'Fond', hue_count: 'Nombre de teintes', headline_class: 'Caractère des titres', text_class: 'Caractère du texte', imagery: 'Imagerie', layout: 'Mise en page', headline_promise: 'Promesse du titre' },
-    facets: { type: 'Type', colour: 'Couleur', style: 'Style', subject: 'Sujet', mood: 'Ton' }, other: 'autre', insufficient: 'Pas assez de marques directes pour compter quoi que ce soit.',
+    facets: { type: 'Type', colour: 'Couleur', style: 'Style', subject: 'Sujet', mood: 'Ton' }, other: 'autre',
+    values: { light: 'clair', dark: 'sombre', coloured: 'coloré', one: 'une', two: 'deux', many: 'plusieurs', muted: 'sourde', medium: 'moyenne', vivid: 'vive', red: 'rouge', orange: 'orange', yellow: 'jaune', green: 'vert', teal: 'bleu-vert', blue: 'bleu', purple: 'violet', pink: 'rose', brown: 'brun', neutral: 'neutre', none: 'aucun', lower: 'bas de casse', upper: 'capitales', title: 'initiale capitale', mixed: 'mixte', geometric_sans: 'sans géométrique', grotesque: 'grotesque', humanist_sans: 'sans humaniste', serif: 'serif', slab: 'égyptienne', script: 'script', mono: 'mono', custom: 'dessin propre', people_photo: 'photo de personnes', product_ui: 'écran du produit', product_photo: 'photo de produit', illustration_flat: 'illustration à plat', illustration_3d: 'illustration 3D', abstract_graphic: 'graphisme abstrait', video: 'vidéo', centered_hero: 'héros centré', split_hero: 'héros scindé', full_bleed_media: 'image plein cadre', dense_grid: 'grille dense', editorial: 'éditorial', benefit: 'bénéfice', mechanism: 'mécanisme', manifesto: 'manifeste', proof: 'preuve', community: 'communauté' }, insufficient: 'Pas assez de marques directes pour compter quoi que ce soit.',
   },
 };
 
 const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
-const human = (v) => esc(String(v ?? '').replace(/^other:/, '').replace(/[_-]/g, ' '));
+const plain = (v) => esc(String(v ?? '').replace(/^other:/, '').replace(/[_-]/g, ' '));
 const CLASS_COLOR = { legibility: 'var(--keep)', cliche: 'var(--break)', risky: 'var(--risk)' };
 const ROLE_ORDER = ['self', 'direct', 'leader', 'indirect', 'aspirational'];
 const ROLE_COLOR = { self: '#b4451f', direct: '#16181d', leader: '#2f5fa8', indirect: '#6b7280', aspirational: '#1f6f4a' };
@@ -61,6 +62,8 @@ const ROLE_COLOR = { self: '#b4451f', direct: '#16181d', leader: '#2f5fa8', indi
  * @param {string} template the HTML shell
  */
 export function renderLandscape(audit, strings = STRINGS[localeOf(audit)], has = () => true, template = defaultTemplate()) {
+  // Vocabulary values are translated when the locale has a label; logo types keep their English names.
+  const human = (v) => (strings.values && strings.values[v] ? esc(strings.values[v]) : plain(v));
   const t = strings, byId = new Map(audit.panel.map((b) => [b.id, b]));
   const name = (id) => esc(byId.get(id)?.name || id);
   const img = (path, alt, cls = '') => (path && has(path) ? `<img${cls ? ` class="${cls}"` : ''} src="${esc(path)}" alt="${esc(alt)}" loading="lazy">` : '');
@@ -131,7 +134,7 @@ ${c.reason ? `<p>${esc(c.reason)}</p>` : ''}<p class="note">${esc(t.breakers)} :
   }
 
   // 8. Map.
-  if (audit.map) out.push(`<h2>${esc(t.map)}</h2><p class="note">${esc(t.mapNote)}</p>${audit.map.reading ? `<p>${esc(audit.map.reading)}</p>` : ''}${mapSvg(audit.map, byId, t)}`);
+  if (audit.map) out.push(`<h2>${esc(t.map)}</h2><p class="note">${esc(t.mapNote)}</p>${audit.map.reading ? `<p>${esc(audit.map.reading)}</p>` : ''}${mapSvg(audit.map, byId, t, human)}`);
 
   // 9. Library sample, set apart.
   const lib = audit.library?.logosystem;
@@ -147,7 +150,7 @@ ${c.reason ? `<p>${esc(c.reason)}</p>` : ''}<p class="note">${esc(t.breakers)} :
   return template.replace('<!--LANG-->', esc(localeOf(audit))).replace('<!--TITLE-->', `${esc(t.title)} · ${esc(audit.framing?.product || '')}`).replace('<!--BODY-->', () => out.join('\n'));
 }
 
-function mapSvg(map, byId, t) {
+function mapSvg(map, byId, t, human) {
   const W = 1000, Hh = 620, pad = 70, sx = (v) => pad + ((v + 1) / 2) * (W - 2 * pad), sy = (v) => pad + ((v + 1) / 2) * (Hh - 2 * pad);
   const axis = (a) => `${esc(t.dims[a.dimension] || a.dimension)}`;
   const pole = (p) => (p === 'other' ? esc(t.other) : human(p));

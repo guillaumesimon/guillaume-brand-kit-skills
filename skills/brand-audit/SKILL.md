@@ -160,7 +160,12 @@ Screenshots and logos of other companies are working material for internal refer
 
 ## Language
 
-Converse in the user's language and set `meta.locale` to it: `landscape.html` follows it (French and English strings ship with `render.mjs`). Write `AUDIT.md` and the prose inside `audit.json` in English unless the user asks otherwise, for the same reason `brand-kit` writes `BRAND.md` in English.
+Two readers, two languages.
+
+- **`audit.json` prose and `landscape.html`: the user's language.** Set `meta.locale` to it. Every sentence a person will read on the board comes from `audit.json`: the framing, each brand's `why`, the reasons, the map reading, the opportunities, the limits. Write them in the user's language, and tell the scouts to write `why` and `established.reason` in it. The board's own labels and the vocabulary values follow `meta.locale` (French and English ship with `render.mjs`); logo types keep their English names, as designers say them.
+- **`AUDIT.md`: English**, whatever the conversation language, for the same reason `brand-kit` writes `BRAND.md` in English: agents read it. It is written separately, so nothing is lost.
+
+Coded values stay in the vocabulary, in English, always. They are data.
 
 ## With brand-kit
 

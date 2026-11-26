@@ -56,7 +56,7 @@ export async function buildSheets(auditDir) {
   const browser = await launch();
   const written = [];
   try {
-    const context = await browser.newContext({ viewport: { width: 1548, height: 900 } });
+    const context = await browser.newContext({ viewport: { width: 1548, height: 200 } }); // short, so a sheet is as tall as its content
     const tool = await context.newPage(), page = await context.newPage();
     for (const [name, html] of Object.entries(pages)) {
       const tmp = join(dir, `_${name}.html`);
