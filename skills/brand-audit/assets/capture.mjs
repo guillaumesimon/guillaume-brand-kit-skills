@@ -12,7 +12,7 @@ import { palette, parseColor, classify, toHex } from './lib/color.mjs';
 
 const TILE = 1500; // height of one scroll tile, in page pixels
 const BLOCK_TITLE = /just a moment|attention required|access denied|are you a robot|verify you are human|pardon our interruption|hang tight|sit tight|waiting room|you are (now )?in (a )?(line|queue)|file d'attente/i;
-const ERROR_PAGE = /un probl[eè]me est survenu|something went wrong|page (introuvable|not found)|une erreur (est survenue|s'est produite)|404 not found|service unavailable|temporarily unavailable/i;
+const ERROR_PAGE = /we['’]re working on it|under maintenance|en (cours de )?maintenance|un probl[eè]me est survenu|something went wrong|page (introuvable|not found)|une erreur (est survenue|s'est produite)|404 not found|service unavailable|temporarily unavailable/i;
 const CONSENT = /^(tout |i |j')?(accept|autoris|allow|agree|ok$|got it|d'accord)/i;
 const LOGO_SELECTOR = 'header a[href="/"] svg, header a[href="/"] img, [class*="logo" i] svg, [class*="logo" i] img, header svg, header img';
 
@@ -240,17 +240,15 @@ export async function captureBrand(browser, brand, outDir, opts = {}) {
       const skip = (el) => bar(el) || el.closest('footer, [data-brand-audit-logo], [class*="logo" i], [role="dialog"], [aria-modal="true"], [class*="cookie" i], [id*="cookie" i]');
       const consider = (el, kind, key) => {
         const r = el.getBoundingClientRect();
-        if (r.width < 240 || r.height < 160 || r.width * r.height < 90000 || skip(el)) return;
+        if (r.width < 240 || r.height < 160 || r.width * r.height < 60000 || skip(el)) return;
         if (key && seen.has(key)) return;
         if (key) seen.add(key);
         const cs = getComputedStyle(el);
-        if (cs.visibility === 'hidden' || cs.display === 'none' || +cs.opacity < 0.2) return;
+        if (cs.visibility === 'hidden' || cs.display === 'none') return; // opacity 0 is often a fade-in waiting for the scroll: keep it
         out.push({ el, kind, area: Math.min(r.width, vw) * r.height, top: r.top + scrollY });
       };
-      for (const el of document.querySelectorAll('img, picture, video')) {
-        const target = el.tagName === 'IMG' && el.parentElement?.tagName === 'PICTURE' ? null : el;
-        if (target) consider(target, el.tagName === 'VIDEO' ? 'video' : 'img', el.currentSrc || el.src || el.poster || null);
-      }
+      // The <img> inside a <picture> carries the box; the <picture> itself is often an inline wrapper with no height.
+      for (const el of document.querySelectorAll('img, video')) consider(el, el.tagName === 'VIDEO' ? 'video' : 'img', el.currentSrc || el.src || el.poster || null);
       for (const el of document.querySelectorAll('svg')) if (!el.closest('svg svg') && el.querySelectorAll('*').length >= 2) consider(el, 'svg', null);
       for (const el of document.querySelectorAll('body *')) {
         const bg = getComputedStyle(el).backgroundImage;
@@ -272,7 +270,7 @@ export async function captureBrand(browser, brand, outDir, opts = {}) {
       try {
         const el = page.locator(`[data-brand-audit-media="${it.n}"]`).first();
         await el.scrollIntoViewIfNeeded({ timeout: 3000 });
-        await page.waitForTimeout(250);
+        await page.waitForTimeout(700); // let a fade-in finish
         await saveWebp(tool, await el.screenshot({ type: 'png', timeout: 6000 }), join(dir, `media-${mediaItems.length + 1}.webp`), 900, 900);
         evidence.push(rel(`media-${mediaItems.length + 1}.webp`));
         mediaItems.push({ file: `media-${mediaItems.length + 1}.webp`, kind: it.kind, width: it.width, height: it.height, top: it.top });
