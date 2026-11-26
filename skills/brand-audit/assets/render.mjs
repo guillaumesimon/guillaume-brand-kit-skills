@@ -140,7 +140,7 @@ export function renderLandscape(audit, strings = STRINGS[localeOf(audit)], has =
   // 01 Summary
   const sm = audit.summary;
   const decisions = sm ? `<div class="decisions">${['preserve', 'avoid', 'challenge', 'explore', 'validate'].map((d) =>
-    `<section><h4>${esc(t.decisions[d][1])}</h4><h3>${esc(t.decisions[d][0])}</h3><ul>${(sm[d] || []).map((it) => `<li>${esc(it.text)}</li>`).join('') || '<li class="note">&nbsp;</li>'}</ul></section>`).join('')}</div>` : '';
+    `<section><div><h3>${esc(t.decisions[d][0])}</h3><h4>${esc(t.decisions[d][1])}</h4></div><ul>${(sm[d] || []).map((it) => `<li>${esc(it.text)}</li>`).join('') || '<li class="note">&nbsp;</li>'}</ul></section>`).join('')}</div>` : '';
   S.push(['summary', `${sm ? `<p class="lead">${esc(sm.lead)}</p>` : `<p class="note">${esc(t.noSection)}</p>`}${decisions}`]);
 
   // 02 Scope
@@ -233,10 +233,10 @@ ${row(t.risk, `${esc(t.riskLevels[o.risk] || o.risk)}${o.risk_note ? '. ' + esc(
 
   const num = (i) => String(i + 1).padStart(2, '0');
   const numbered = S.slice(0, 12), method = S[12];
-  const title = `${esc(t.title)} · ${esc(audit.framing?.product || '')}`;
+  const title = `${esc(t.title)} · ${esc(audit.framing?.title || audit.framing?.product || '')}`;
   const html = `<header class="bar"><div class="wrap"><b>${esc(t.title)}</b><nav aria-label="${esc(t.contents)}">${numbered.map(([k], i) => `<a href="#${k}">${num(i)} ${esc(t.sec[k][0])}</a>`).join('')}</nav></div></header>
 <main class="wrap">
-<div class="cover"><p class="eyebrow">${esc(t.title)} · ${esc(audit.meta?.date || '')}</p><h1>${esc(audit.framing?.product || '')}</h1><p class="deck">${esc(t.question)}</p>
+<div class="cover"><p class="eyebrow">${esc(t.title)} · ${esc(audit.meta?.date || '')}</p><h1>${esc(audit.framing?.title || audit.framing?.product || '')}</h1><p class="deck">${esc(t.question)}</p>
 <div class="meta"><div><span>${esc(t.market)}</span>${esc(audit.framing?.market || '')}</div><div><span>${esc(t.mode)}</span>${esc(t[audit.meta?.mode] || audit.meta?.mode || '')}</div><div><span>${esc(t.nBrands)}</span>${panel.length}</div><div><span>${esc(t.base)}</span>${f.base ?? 0} ${esc(t.baseUnit)}</div><div><span>${esc(t.date)}</span>${esc(audit.meta?.date || '')}</div></div>
 <nav class="toc" aria-label="${esc(t.contents)}">${numbered.map(([k], i) => `<a href="#${k}"><span>${num(i)}</span>${esc(t.sec[k][0])}</a>`).join('')}</nav></div>
 ${numbered.map(([k, body], i) => `<section class="s" id="${k}"><aside class="rail"><div class="n">${num(i)}</div><h2>${esc(t.sec[k][0])}</h2><p>${esc(t.sec[k][1])}</p></aside><div class="col">${body}</div></section>`).join('\n')}
@@ -254,13 +254,22 @@ function mapSvg(map, byId, t, human) {
     const tag = c.saturated ? t.saturated : c.ids.length === 0 ? t.empty : '';
     return `<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${c.saturated ? '#f5f5f7' : 'none'}"${c.ids.length === 0 ? ' stroke="#a1a1a6" stroke-dasharray="3 5"' : ''}/>${tag ? `<text x="${x + 14}" y="${y + 24}" font-size="11" fill="#6e6e73" letter-spacing=".06em" style="text-transform:uppercase">${esc(tag)}</text>` : ''}`;
   }).join('');
-  const pts = map.points.map((p) => {
+  // Labels never overlap: a label that would sit on another moves down until it is clear.
+  const placed = [];
+  const labelY = (x, y, w) => {
+    let ly = y + 4.5;
+    for (let n = 0; n < 12 && placed.some((r) => x + 12 < r.x2 && x + 12 + w > r.x1 && Math.abs(ly - r.y) < 15); n++) ly += 15;
+    placed.push({ x1: x + 12, x2: x + 12 + w, y: ly });
+    return ly;
+  };
+  const pts = [...map.points].sort((p, q) => p.y - q.y || p.x - q.x).map((p) => {
     const b = byId.get(p.id), x = sx(p.x), y = sy(p.y);
     const mark = p.role === 'direct' ? `<circle cx="${x}" cy="${y}" r="6" fill="#0a0a0a"/>`
       : p.role === 'self' ? `<path d="M${x} ${y - 9}L${x + 9} ${y + 7}H${x - 9}Z" fill="#0a0a0a"/>`
       : p.role === 'aspirational' ? `<rect x="${x - 5.5}" y="${y - 5.5}" width="11" height="11" fill="#fff" stroke="#0a0a0a" stroke-width="2"/>`
       : `<circle cx="${x}" cy="${y}" r="5.5" fill="#fff" stroke="#0a0a0a" stroke-width="2"/>`;
-    return `${mark}<text x="${x + 12}" y="${y + 4.5}" font-size="13" fill="#1d1d1f">${esc(b?.name || p.id)}</text>`;
+    const label = b?.name || p.id, ly = labelY(x, y, label.length * 7.2);
+    return `${mark}${ly !== y + 4.5 ? `<line x1="${x + 6}" y1="${y}" x2="${x + 11}" y2="${ly - 4}" stroke="#a1a1a6"/>` : ''}<text x="${x + 12}" y="${ly}" font-size="13" fill="#1d1d1f">${esc(label)}</text>`;
   }).join('');
   const roles = [...new Set(map.points.map((p) => p.role))];
   const key = (r, i) => { const x = pad + i * 170, y = Hh - 18; const m = r === 'direct' ? `<circle cx="${x}" cy="${y - 4}" r="5" fill="#0a0a0a"/>` : r === 'aspirational' ? `<rect x="${x - 5}" y="${y - 9}" width="10" height="10" fill="#fff" stroke="#0a0a0a" stroke-width="2"/>` : r === 'self' ? `<path d="M${x} ${y - 11}L${x + 7} ${y + 1}H${x - 7}Z" fill="#0a0a0a"/>` : `<circle cx="${x}" cy="${y - 4}" r="5" fill="#fff" stroke="#0a0a0a" stroke-width="2"/>`; return `${m}<text x="${x + 12}" y="${y}" font-size="12" fill="#6e6e73">${esc(t.roles[r] || r)}</text>`; };
@@ -273,14 +282,47 @@ ${pts}${roles.map(key).join('')}</svg>`;
 }
 
 const MIME = { webp: 'image/webp', png: 'image/png', jpg: 'image/jpeg', jpeg: 'image/jpeg', svg: 'image/svg+xml' };
-/** Embed every evidence image as a data URI, so the board travels as one file. Links to images are dropped. */
+/** Width and height of a WebP or PNG from its header, or null. */
+export function imageSize(buf) {
+  if (buf.length > 30 && buf.toString('ascii', 0, 4) === 'RIFF' && buf.toString('ascii', 8, 12) === 'WEBP') {
+    const kind = buf.toString('ascii', 12, 16);
+    if (kind === 'VP8 ') return { w: buf.readUInt16LE(26) & 0x3fff, h: buf.readUInt16LE(28) & 0x3fff };
+    if (kind === 'VP8L') { const bits = buf.readUInt32LE(21); return { w: (bits & 0x3fff) + 1, h: ((bits >> 14) & 0x3fff) + 1 }; }
+    if (kind === 'VP8X') return { w: buf.readUIntLE(24, 3) + 1, h: buf.readUIntLE(27, 3) + 1 };
+  }
+  if (buf.length > 24 && buf.readUInt32BE(0) === 0x89504e47) return { w: buf.readUInt32BE(16), h: buf.readUInt32BE(20) };
+  return null;
+}
+
+/**
+ * Embed every evidence image, so the report travels as one file. Each image is stored once and
+ * drawn wherever it is cited through an SVG <use>, so an image cited ten times weighs once.
+ * Links to images are dropped.
+ */
 export function inlineImages(html, read) {
-  const cache = new Map();
-  const uri = (p) => {
-    if (!cache.has(p)) cache.set(p, `data:${MIME[p.split('.').pop()] || 'application/octet-stream'};base64,${read(p).toString('base64')}`);
-    return cache.get(p);
+  const ids = new Map(), defs = [];
+  const idOf = (p) => {
+    if (!ids.has(p)) {
+      const buf = read(p), size = imageSize(buf);
+      const uri = `data:${MIME[p.split('.').pop().toLowerCase()] || 'application/octet-stream'};base64,${buf.toString('base64')}`;
+      ids.set(p, { id: `i${ids.size}`, size, uri });
+      if (size) defs.push(`<image id="i${ids.size - 1}" width="${size.w}" height="${size.h}" href="${uri}"/>`);
+    }
+    return ids.get(p);
   };
-  return html.replace(/<a href="evidence\/[^"]+">([\s\S]*?)<\/a>/g, '$1').replace(/src="(evidence\/[^"]+)"/g, (m, p) => `src="${uri(p)}"`);
+  let out = html.replace(/<a href="evidence\/[^"]+">([\s\S]*?)<\/a>/g, '$1');
+  out = out.replace(/<img((?:\s+[a-z-]+="[^"]*")*)\s*>/g, (tag, attrs) => {
+    const src = /\ssrc="(evidence\/[^"]+)"/.exec(attrs);
+    if (!src) return tag;
+    const im = idOf(src[1]);
+    if (!im.size) return tag.replace(src[0], ` src="${im.uri}"`);
+    const cls = /\sclass="([^"]*)"/.exec(attrs)?.[1] || '';
+    const alt = /\salt="([^"]*)"/.exec(attrs)?.[1] || '';
+    return `<svg class="ri${cls ? ' ' + cls : ''}" viewBox="0 0 ${im.size.w} ${im.size.h}" width="${im.size.w}" height="${im.size.h}" role="img" aria-label="${alt}"><use href="#${im.id}"/></svg>`;
+  });
+  // Rules written for <img> apply to the drawn images too.
+  out = out.replace(/<style>([\s\S]*?)<\/style>/, (m, css) => `<style>${css.replace(/\bimg\b/g, ':is(img,svg.ri)')}\nsvg.ri{display:block;height:auto}\n</style>`);
+  return out.replace(/<body>/, () => `<body><svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>${defs.join('')}</defs></svg>`);
 }
 
 function localeOf(audit) { return String(audit.meta?.locale || 'en').slice(0, 2).toLowerCase() === 'fr' ? 'fr' : 'en'; }

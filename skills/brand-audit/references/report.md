@@ -95,13 +95,14 @@ Rules:
   you opened.
 - Write in <language>. Plain sentences. No word that would fit any sector.
 
-Return JSON only, one object per section key:
+Write your result as valid JSON to <absolute path>/sections-<writer>.json, one object per section key:
 { "<key>": { "lead": "…", "paragraphs": ["…", "…"],
              "findings": [{ "text": "…", "provenance": "measured|observed|judged", "evidence": ["evidence/…"] }],
              "takeaway": "…" } }
+Then reply with three lines: your main findings. Do not paste the JSON in your reply.
 ```
 
-Paste what comes back into `audit.json` under `sections`. Read every section yourself before keeping it: a writer that states a count you cannot find on the wall has to be sent back.
+**Have each writer save a file.** A section is several hundred words; returned in a message it has to be retyped to reach disk, which costs time and invites errors. A file is merged as it is. The same goes for coders and profile writers. Merge the files into `audit.json` under `sections`. Read every section yourself before keeping it: a writer that states a count you cannot find on the wall has to be sent back.
 
 ## Brand profiles
 
@@ -117,7 +118,7 @@ One per brand that has codes. A profile is three sentences, written from all the
 
 `lesson` is the one that matters. "Strong colour" is not a lesson. "A single saturated colour held across site, icon and store listing makes a retailer's sub-brand recognisable at icon size" is one.
 
-Profile writers take six or seven brands each. They get the brand folders and the coders' codes and notes, and return `{ "<id>": { "personality", "strength", "lesson" } }`. The coders can be asked for the profile in the same pass when the panel is small.
+Profile writers take six or seven brands each. They get the brand folders and the coders' codes and notes, and save `{ "<id>": { "personality", "strength", "lesson" } }` to a file. The coders can be asked for the profile in the same pass when the panel is small.
 
 ## The summary, written last
 

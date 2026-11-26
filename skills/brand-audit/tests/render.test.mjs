@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { renderLandscape, inlineImages, STRINGS } from '../assets/render.mjs';
+import { renderLandscape, inlineImages, imageSize, STRINGS } from '../assets/render.mjs';
 
 const example = JSON.parse(readFileSync(new URL('../assets/audit.example.json', import.meta.url)));
 
@@ -53,10 +53,21 @@ test('an audit with too few brands still renders', () => {
   const a = structuredClone(example); a.frequencies = { base: 2, insufficient: true, by_dimension: {} }; a.conventions = []; a.map = null; a.opportunities = [];
   assert.ok(renderLandscape(a, STRINGS.fr).includes('Pas assez de marques directes'));
 });
-test('--inline embeds every image and leaves no evidence path', () => {
-  const one = inlineImages(renderLandscape(example, STRINGS.en), () => Buffer.from('x'));
+test('--inline embeds every image once and leaves no evidence path', () => {
+  const png = (w, h) => { const b = Buffer.alloc(33); b.writeUInt32BE(0x89504e47, 0); b.writeUInt32BE(w, 16); b.writeUInt32BE(h, 20); return b; };
+  const html = renderLandscape(example, STRINGS.en);
+  const reads = new Map();
+  const one = inlineImages(html, (p) => { reads.set(p, (reads.get(p) || 0) + 1); return png(400, 300); });
   assert.ok(!one.includes('"evidence/'));
-  assert.ok(one.includes('src="data:image/webp;base64,eA=="'));
+  assert.ok([...reads.values()].every((n) => n === 1), 'each file is read once');
+  assert.equal((one.match(/<image id=/g) || []).length, reads.size, 'each image is stored once');
+  assert.ok((one.match(/<use href="#i/g) || []).length > reads.size, 'and drawn wherever it is cited');
+  assert.ok(one.includes(':is(img,svg.ri)'));
+});
+test('image sizes are read from WebP and PNG headers', () => {
+  const vp8x = Buffer.alloc(32); vp8x.write('RIFF', 0); vp8x.write('WEBP', 8); vp8x.write('VP8X', 12); vp8x.writeUIntLE(1439, 24, 3); vp8x.writeUIntLE(899, 27, 3);
+  assert.deepEqual(imageSize(vp8x), { w: 1440, h: 900 });
+  assert.equal(imageSize(Buffer.from('nothing')), null);
 });
 test('a logo the analyst rejected (logo: null) is not shown', () => {
   const a = structuredClone(example); const q = a.panel.find((b) => b.id === 'quire'); q.logo = null;

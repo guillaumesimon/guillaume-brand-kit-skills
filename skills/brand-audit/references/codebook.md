@@ -169,7 +169,7 @@ Return JSON only:
 }
 ```
 
-Save each coder's answer as a file and merge with `node assets/code.mjs brand/audit <files>`. A refused value is reported with the brand and the dimension: correct the file, or send that one brand back to a coder, and merge again.
+Have each coder write its JSON to a file (give the path in the prompt) rather than return it in its reply, and merge with `node assets/code.mjs brand/audit <files>`. A refused value is reported with the brand and the dimension: correct the file, or send that one brand back to a coder, and merge again.
 
 Code every brand with a capture, whatever its role. Aspirational brands and partial captures are coded too; only the direct, fully captured ones are counted.
 
