@@ -59,6 +59,9 @@ export function checkAudit(auditDir) {
   if (uncoded.length) errors.push(`direct brands captured but not coded: ${uncoded.join(', ')}`);
   const open = (audit.panel || []).filter((b) => b.code_conflicts && Object.keys(b.code_conflicts).length).map((b) => b.id);
   if (open.length) errors.push(`coding conflicts not settled: ${open.join(', ')}`);
+  const asp = (audit.panel || []).filter((b) => b.role === 'aspirational');
+  if (asp.length) for (const c of ['same_audience', 'same_tension'])
+    if (!asp.some((b) => b.criterion === c)) errors.push(`aspirational brands: none chosen on ${c}; keep at least one per criterion`);
   if (!(audit.limits || []).length) errors.push('limits: say what this audit does not cover');
 
   const md = join(auditDir, 'AUDIT.md');

@@ -83,3 +83,7 @@ test('an opportunity must say what it rests on and what to validate', () => {
   const dir = fixture((a) => { delete a.opportunities[0].validate; });
   assert.ok(checkAudit(dir).errors.some((e) => /the-order-book": validate is missing/.test(e)));
 });
+test('aspirational brands must cover both criteria', () => {
+  const dir = fixture((a) => { for (const b of a.panel) if (b.role === 'aspirational') b.criterion = 'same_tension'; });
+  assert.ok(checkAudit(dir).errors.some((e) => /none chosen on same_audience/.test(e)));
+});

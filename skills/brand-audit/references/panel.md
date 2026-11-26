@@ -66,7 +66,13 @@ These are the brands the result could borrow from, so they decide the opportunit
 
 A brand that fits neither comes out. Six design-forward startups everyone has on their moodboard are not an aspirational panel, they are a taste.
 
-Spread them: at least half from sectors with no relation to tech if the product is software.
+Three more rules, because this is the most subjective choice in the audit and the one that moves the recommendations most:
+
+- **Say who recognises it.** Each aspirational brand carries `recognition`: who in the audience knows this brand, and the fact that shows it (a public user count, a ranking, a presence in the shops or media this audience uses). A brand only designers know is a style reference, not an aspirational brand: it can inspire, it cannot prove that codes are legible to this audience. When nothing shows it, write that, and lower `confidence`.
+- **Both criteria are represented.** At least one brand per criterion. A panel that is all "same tension" is a moodboard; one that is all "same audience" has no idea to borrow.
+- **Spread them**: at least half from sectors with no relation to tech if the product is software.
+
+**The user validates them, in both modes.** The scout proposes five to eight candidates; you show them with their criterion and their recognition in one table, and ask once which to keep, drop or add. This is the one question flash mode asks about the panel: the user knows what their audience reads, and a search does not.
 
 ## The scout prompt
 
@@ -92,6 +98,8 @@ Return JSON only, an array of:
   "why": "one sentence, specific to this audit",
   "confidence": 0.0 to 1.0,
   "established": { "value": true|false, "reason": "one sentence with the fact" },   // direct and leader only
+  "criterion": "same_audience | same_tension",                                       // aspirational only
+  "recognition": "who in the audience knows it, and the fact that shows it",         // aspirational only
   "extra_urls": ["a product or features page", "a pricing page"],                   // when they exist
   "app_store_term": "name to search in the App Store"                                // when there is an app
 }
@@ -110,7 +118,10 @@ If Similarweb or Ahrefs connectors are available, a scout may use them to find c
 
 Deduplicate by domain. Cut to the counts of the mode, keeping the highest confidence and making sure the established players are in. If two scouts return the same brand under two roles, apply the buyer test above.
 
-Then write the panel into `audit.json`. In deep, show it to the user as a short table (name, role, one-line why) and ask one question:
+Then write the panel into `audit.json` and ask the user, in one turn, with `AskUserQuestion` where it fits:
+
+- **Both modes: the aspirational candidates.** A table of five to eight: name, criterion, why, who recognises it. Ask which to keep, which to drop, and whether they would add one. Keep the number the mode asks for.
+- **Deep only: the rest of the panel.** A short table (name, role, one-line why) and one question:
 
 > "Voici le panel. Qui manque, et qui n'a rien à faire là ?"
 

@@ -718,6 +718,8 @@
       "role": "aspirational",
       "why": "Serves the same independent shopkeepers, in stationery: trusted without looking institutional",
       "confidence": 0.8,
+      "criterion": "same_audience",
+      "recognition": "Stocked by a third of the independent bookshops in the panel's market, per its own retailer list.",
       "capture": "full",
       "logo": "evidence/atelier-paper/logo.webp",
       "measures": {
@@ -800,6 +802,8 @@
       "role": "aspirational",
       "why": "Solved the same tension in accounting: dense operational data that still feels calm",
       "confidence": 0.8,
+      "criterion": "same_tension",
+      "recognition": "Used by small retailers for their books; known to shop owners, not to the public.",
       "capture": "full",
       "logo": "evidence/ledgerly/logo.webp",
       "measures": {

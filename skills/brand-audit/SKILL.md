@@ -37,7 +37,7 @@ The scripts do the mechanical work so that your attention goes where it is neede
 |---|---|---|
 | Time | about 20 minutes (estimate) | about 50 minutes (estimate) |
 | Panel | 8 direct, 3 indirect, 2 aspirational | 10 to 12 direct, 4 to 6 indirect, 3 to 4 leaders, 5 to 8 aspirational |
-| Questions to the user | none if the context is enough | 2 at most, then one panel review |
+| Questions to the user | framing if the context lacks it, then the aspirational brands | 2 at most, then one panel review, aspirational brands included |
 | Capture | the whole home page, 2 inner pages, the App Store listing | the same |
 | Library sample | Logosystem, one industry | Logosystem, Mobbin, and Logoinspo for references |
 | Coding | one pass | judgment fields coded twice, disagreements settled |
@@ -74,9 +74,11 @@ Write `audit.json` with `meta` and `framing` now. `references/panel.md` has the 
 
 **Read `references/panel.md`.** Dispatch one scout per role, in parallel. Each returns brands with a URL, a reason for being there and a confidence. You merge, deduplicate, cut to the counts of the mode, and set `established` on every direct and leader brand: the exception test in step 6 depends on it.
 
-Aspirational brands are never chosen by taste. Each one needs a sentence that says which of two things it is: it serves the same audience in another category, or it has solved the same tension. A brand you cannot justify that way is decoration and comes out.
+Aspirational brands are never chosen by taste. Each one needs a sentence that says which of two things it is: it serves the same audience in another category, or it has solved the same tension, and a second that says who in the audience recognises it and how we know. At least one brand per criterion. A brand you cannot justify that way is decoration and comes out.
 
-**Deep only: show the panel to the user and take one round of corrections.** It is the only stop in the skill. People know competitors a search does not find, and a wrong panel poisons every count that follows. In flash, state the panel in one line and keep going.
+**Both modes: have the user validate the aspirational brands.** They decide what the opportunities borrow from, so they move the recommendations more than any other choice, and the user knows what their audience reads where a search does not. Show the candidates with their criterion and recognition, and take one round of keep, drop, add.
+
+**Deep only: show the rest of the panel too, in the same turn.** People know competitors a search does not find, and a wrong panel poisons every count that follows. In flash, state the direct and indirect brands in one line and keep going.
 
 ### 3 · Capture
 

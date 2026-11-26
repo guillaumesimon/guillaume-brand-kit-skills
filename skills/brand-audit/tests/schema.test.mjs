@@ -66,3 +66,10 @@ test('duplicate ids are rejected', () => {
   const a = clone(); a.panel[1].id = a.panel[0].id;
   assert.match(validateAudit(a).join('\n'), /duplicate/);
 });
+test('an aspirational brand says its criterion and who recognises it', () => {
+  const a = clone(); const i = a.panel.findIndex((b) => b.role === 'aspirational');
+  delete a.panel[i].criterion; delete a.panel[i].recognition;
+  const errs = validateAudit(a).join('\n');
+  assert.match(errs, new RegExp(`panel\\[${i}\\]\\.criterion`));
+  assert.match(errs, new RegExp(`panel\\[${i}\\]\\.recognition`));
+});

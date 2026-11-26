@@ -21,7 +21,7 @@ const STRINGS = {
     personality: 'Perceived personality', strength: 'Strength', lesson: 'What it teaches', notes: 'Coder\u2019s note', learn: 'What it shows', nBrands: 'Brands', source: 'Source', seen: 'Captured',
     roleLearn: { direct: 'The codes of the category and its baseline expectations.', indirect: 'The alternatives the audience already uses.', leader: 'Where the category is heading.', aspirational: 'A level of execution, and codes that could transfer.', self: 'The starting point.' },
     observation: 'Observation', alignment: 'Link to the brief', benefit: 'Expected benefit', risk: 'Risk', toValidate: 'To validate', mapCaveat: 'A map drawn from the captures is a reading of the identities, not a measure of how people perceive them. That takes a study with the audience.',
-    quality: 'Before using it', sources: 'Sources', noSection: 'This part has not been written yet.', contents: 'Contents',
+    quality: 'Before using it', recognition: 'Recognised by', sources: 'Sources', noSection: 'This part has not been written yet.', contents: 'Contents',
     title: 'Visual landscape audit', question: 'Which codes make a brand understood by this market, and which ones can be broken to stand apart from it?',
     mode: 'Mode', date: 'Date', market: 'Market', base: 'Statistics base', baseUnit: 'direct brands', flash: 'Flash: hypotheses', deep: 'Deep: checked positions',
     keep: 'Keep', keepSub: 'Legibility codes', brk: 'Break', brkSub: 'Clichés', risky: 'Weigh', riskySub: 'Risky breaks',
@@ -53,7 +53,7 @@ const STRINGS = {
     personality: 'Personnalité perçue', strength: 'Force', lesson: 'Enseignement', notes: 'Note du codeur', learn: 'Ce qu\u2019on y apprend', nBrands: 'Marques', source: 'Source', seen: 'Capture',
     roleLearn: { direct: 'Les codes de la catégorie et ses attentes de base.', indirect: 'Les alternatives que le public utilise déjà.', leader: 'Vers où la catégorie se déplace.', aspirational: 'Un niveau d\u2019exécution, et des codes transférables.', self: 'Le point de départ.' },
     observation: 'Constat', alignment: 'Lien avec le brief', benefit: 'Bénéfice attendu', risk: 'Risque', toValidate: 'À valider', mapCaveat: 'Une carte dessinée à partir des captures est une lecture des identités, pas une mesure de la perception du public. Celle-ci demande une étude auprès de l\u2019audience.',
-    quality: 'Avant de s\u2019en servir', sources: 'Sources', noSection: 'Cette partie n\u2019a pas encore été rédigée.', contents: 'Sommaire',
+    quality: 'Avant de s\u2019en servir', recognition: 'Reconnue par', sources: 'Sources', noSection: 'Cette partie n\u2019a pas encore été rédigée.', contents: 'Sommaire',
     title: 'Audit du paysage visuel', question: 'Quels codes faut-il garder pour être compris par ce marché, et lesquels peut-on rompre pour s’en distinguer ?',
     mode: 'Mode', date: 'Date', market: 'Marché', base: 'Base statistique', baseUnit: 'marques directes', flash: 'Flash : hypothèses', deep: 'Deep : positions vérifiées',
     keep: 'Garder', keepSub: 'Codes de lisibilité', brk: 'Rompre', brkSub: 'Clichés', risky: 'Peser', riskySub: 'Ruptures risquées',
@@ -150,7 +150,7 @@ export function renderLandscape(audit, strings = STRINGS[localeOf(audit)], has =
 <div class="scroll"><table><thead><tr><th>${esc(t.role)}</th><th>${esc(t.nBrands)}</th><th>${esc(t.learn)}</th></tr></thead><tbody>${roles.map((r) =>
     `<tr><td>${esc(t.roles[r])}</td><td>${panel.filter((b) => b.role === r).length}</td><td>${esc(t.roleLearn[r])}</td></tr>`).join('')}</tbody></table></div>
 <div class="scroll"><table><thead><tr><th>${esc(t.brand)}</th><th>${esc(t.role)}</th><th>${esc(t.why)}</th><th>${esc(t.seen)}</th></tr></thead><tbody>${panel.map((b) =>
-    `<tr><td><a href="${safeUrl(b.url)}" rel="noreferrer">${esc(b.name)}</a>${b.established?.value ? `<span class="sub">${esc(t.established)} · ${esc(b.established.reason)}</span>` : ''}</td><td>${role(b)}</td><td>${esc(b.why)}</td><td>${
+    `<tr><td><a href="${safeUrl(b.url)}" rel="noreferrer">${esc(b.name)}</a>${b.established?.value ? `<span class="sub">${esc(t.established)} · ${esc(b.established.reason)}</span>` : ''}</td><td>${role(b)}</td><td>${esc(b.why)}${b.recognition ? `<span class="sub">${esc(t.recognition)} : ${esc(b.recognition)}</span>` : ''}</td><td>${
       b.capture === 'full' ? esc(audit.meta?.date || '●') : b.capture === 'partial' ? esc(t.partial) : esc(t.none)}</td></tr>`).join('')}</tbody></table></div>`]);
 
   // 03 Profiles

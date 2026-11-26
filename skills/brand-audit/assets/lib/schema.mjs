@@ -94,6 +94,10 @@ export function validateAudit(audit) {
       if (!isObj(est) || typeof est.value !== 'boolean' || !isStr(est.reason))
         e.push(`${p}.established: {value, reason} required on ${b.role} brand "${b.name || b.id}"`);
     }
+    if (b.role === 'aspirational') {
+      if (!['same_audience', 'same_tension'].includes(b.criterion)) e.push(`${p}.criterion: same_audience or same_tension required on aspirational brand "${b.name || b.id}"`);
+      if (!isStr(b.recognition)) e.push(`${p}.recognition: say who in the audience knows "${b.name || b.id}", and how we know`);
+    }
     if (b.capture != null && !CAPTURES.includes(b.capture)) e.push(`${p}.capture: must be one of ${CAPTURES.join(', ')}`);
     if (b.codes != null) validateCodes(b.codes, `${p}.codes`, e);
     if (b.evidence != null && !(Array.isArray(b.evidence) && b.evidence.every(isStr))) e.push(`${p}.evidence: must be an array of paths`);
