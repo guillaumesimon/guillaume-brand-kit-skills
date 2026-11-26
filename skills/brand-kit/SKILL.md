@@ -111,7 +111,7 @@ The second is load-bearing. A platform with no sacrifice cannot generate decisio
 
 When an answer lands on the generic blocklist — *intégrité, innovation, premium, moderne, simple, tout le monde* — do not accept it. `references/discovery.md` has the refuse-the-first-answer loop, and the six tests your positioning has to pass before you are allowed to write it down: swap, reversal, Monday-morning, sacrifice, new-hire, wallpaper.
 
-Two tests you run silently and report, never delegate to the user: the **swap test** — put a competitor's name on the artefact and the positioning; if both still work you have elicited category conventions, not a brand. With an audit, the competitor is the one its section 6 names, and its *Avoid* list is what the artefact is checked against: an artefact that reproduces three of the category's clichés has failed whatever the swap looks like. And `references/taste.md` **as a gate**: counting typefaces, weights, hues, radius values, accent share, off-scale spacing, plus the five renders. A system that fails it does not go out.
+Two tests you run silently and report, never delegate to the user: the **swap test** — put a competitor's name on the artefact and the positioning; if both still work you have elicited category conventions, not a brand. With an audit, the competitor is the one its "For brand-kit" section names, and its clichés and Avoid decisions are is what the artefact is checked against: an artefact that reproduces three of the category's clichés has failed whatever the swap looks like. And `references/taste.md` **as a gate**: counting typefaces, weights, hues, radius values, accent share, off-scale spacing, plus the five renders. A system that fails it does not go out.
 
 ### Act 4 · Écrire
 
