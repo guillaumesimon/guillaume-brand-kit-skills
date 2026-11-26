@@ -28,6 +28,7 @@
         "reason": "Largest installed base, founded 2011, used by two national chains"
       },
       "capture": "full",
+      "logo": "evidence/folio/logo.webp",
       "measures": {
         "palette": [
           {
@@ -91,7 +92,7 @@
       },
       "evidence": [
         "evidence/folio/desktop.webp",
-        "evidence/folio/logo.svg"
+        "evidence/folio/logo.webp"
       ]
     },
     {
@@ -106,6 +107,7 @@
         "reason": "Second by market share, public pricing since 2015"
       },
       "capture": "full",
+      "logo": "evidence/shelfline/logo.webp",
       "measures": {
         "palette": [
           {
@@ -169,7 +171,7 @@
       },
       "evidence": [
         "evidence/shelfline/desktop.webp",
-        "evidence/shelfline/logo.svg"
+        "evidence/shelfline/logo.webp"
       ]
     },
     {
@@ -184,6 +186,7 @@
         "reason": "Launched 2023, seed stage"
       },
       "capture": "full",
+      "logo": "evidence/pagewise/logo.webp",
       "measures": {
         "palette": [
           {
@@ -247,7 +250,7 @@
       },
       "evidence": [
         "evidence/pagewise/desktop.webp",
-        "evidence/pagewise/logo.svg"
+        "evidence/pagewise/logo.webp"
       ]
     },
     {
@@ -262,6 +265,7 @@
         "reason": "Trade press names it the reference for academic shops"
       },
       "capture": "full",
+      "logo": "evidence/bindery/logo.webp",
       "measures": {
         "palette": [
           {
@@ -324,7 +328,7 @@
       },
       "evidence": [
         "evidence/bindery/desktop.webp",
-        "evidence/bindery/logo.svg"
+        "evidence/bindery/logo.webp"
       ]
     },
     {
@@ -339,6 +343,7 @@
         "reason": "Launched 2022"
       },
       "capture": "full",
+      "logo": "evidence/stacks/logo.webp",
       "measures": {
         "palette": [
           {
@@ -402,7 +407,7 @@
       },
       "evidence": [
         "evidence/stacks/desktop.webp",
-        "evidence/stacks/logo.svg"
+        "evidence/stacks/logo.webp"
       ]
     },
     {
@@ -417,6 +422,7 @@
         "reason": "Regional player, 300 shops"
       },
       "capture": "full",
+      "logo": "evidence/quire/logo.webp",
       "measures": {
         "palette": [
           {
@@ -480,7 +486,7 @@
       },
       "evidence": [
         "evidence/quire/desktop.webp",
-        "evidence/quire/logo.svg"
+        "evidence/quire/logo.webp"
       ]
     },
     {
@@ -495,6 +501,7 @@
         "reason": "Launched 2024"
       },
       "capture": "full",
+      "logo": "evidence/marque/logo.webp",
       "measures": {
         "palette": [
           {
@@ -558,7 +565,7 @@
       },
       "evidence": [
         "evidence/marque/desktop.webp",
-        "evidence/marque/logo.svg"
+        "evidence/marque/logo.webp"
       ]
     },
     {
@@ -573,6 +580,7 @@
         "reason": "Oldest in the category, founded 2004"
       },
       "capture": "full",
+      "logo": "evidence/libra/logo.webp",
       "measures": {
         "palette": [
           {
@@ -636,7 +644,7 @@
       },
       "evidence": [
         "evidence/libra/desktop.webp",
-        "evidence/libra/logo.svg"
+        "evidence/libra/logo.webp"
       ]
     },
     {
@@ -647,6 +655,7 @@
       "why": "Serves the same independent shopkeepers, in stationery: trusted without looking institutional",
       "confidence": 0.8,
       "capture": "full",
+      "logo": "evidence/atelier-paper/logo.webp",
       "measures": {
         "palette": [
           {
@@ -709,7 +718,7 @@
       },
       "evidence": [
         "evidence/atelier-paper/desktop.webp",
-        "evidence/atelier-paper/logo.svg"
+        "evidence/atelier-paper/logo.webp"
       ]
     },
     {
@@ -720,6 +729,7 @@
       "why": "Solved the same tension in accounting: dense operational data that still feels calm",
       "confidence": 0.8,
       "capture": "full",
+      "logo": "evidence/ledgerly/logo.webp",
       "measures": {
         "palette": [
           {
@@ -782,7 +792,7 @@
       },
       "evidence": [
         "evidence/ledgerly/desktop.webp",
-        "evidence/ledgerly/logo.svg"
+        "evidence/ledgerly/logo.webp"
       ]
     }
   ],
@@ -792,29 +802,49 @@
   },
   "conventions": [
     {
-      "dimension": "imagery",
-      "value": "product_ui",
-      "count": 6,
+      "dimension": "logo_type",
+      "value": "combination",
+      "count": 7,
       "base": 8,
-      "share": 0.75,
+      "share": 0.875,
       "breakers": [
         {
           "id": "bindery",
           "established": true,
-          "value": "product_photo"
-        },
-        {
-          "id": "quire",
-          "established": false,
-          "value": "people_photo"
+          "value": "wordmark"
         }
       ],
-      "class": "legibility",
+      "class": "cliche",
       "provenance": "judged",
-      "reason": "Hypothesis. Bindery breaks it but sells to a segment that already knows the product; for a shop owner comparing tools, the screen is how the category is recognised.",
+      "reason": "Bindery is established with a bare wordmark. A symbol next to the name is habit here, not a signal.",
       "evidence": [
-        "evidence/sheets/heroes.webp",
-        "evidence/bindery/desktop.webp"
+        "evidence/sheets/logos.webp",
+        "evidence/bindery/logo.webp"
+      ]
+    },
+    {
+      "dimension": "symbol_nature",
+      "value": "pictorial",
+      "count": 5,
+      "base": 7,
+      "share": 0.714,
+      "breakers": [
+        {
+          "id": "stacks",
+          "established": false,
+          "value": "abstract"
+        },
+        {
+          "id": "marque",
+          "established": false,
+          "value": "lettermark"
+        }
+      ],
+      "class": "risky",
+      "provenance": "judged",
+      "reason": "No established brand uses anything but a pictogram, four of them the same open book. Only two newcomers try something else, with no evidence yet that it reads.",
+      "evidence": [
+        "evidence/sheets/logos.webp"
       ]
     },
     {
@@ -856,6 +886,90 @@
       "evidence": [
         "evidence/sheets/heroes.webp",
         "evidence/atelier-paper/desktop.webp"
+      ]
+    },
+    {
+      "dimension": "hue_count",
+      "value": "one",
+      "count": 6,
+      "base": 8,
+      "share": 0.75,
+      "breakers": [
+        {
+          "id": "pagewise",
+          "established": false,
+          "value": "two"
+        },
+        {
+          "id": "libra",
+          "established": true,
+          "value": "two"
+        }
+      ],
+      "class": "cliche",
+      "provenance": "judged",
+      "reason": "Libra Order, the oldest brand, runs two hues. A single accent is a default, not a code.",
+      "evidence": [
+        "evidence/sheets/palettes.webp",
+        "evidence/libra/desktop.webp"
+      ]
+    },
+    {
+      "dimension": "imagery",
+      "value": "product_ui",
+      "count": 6,
+      "base": 8,
+      "share": 0.75,
+      "breakers": [
+        {
+          "id": "bindery",
+          "established": true,
+          "value": "product_photo"
+        },
+        {
+          "id": "quire",
+          "established": false,
+          "value": "people_photo"
+        }
+      ],
+      "class": "legibility",
+      "provenance": "judged",
+      "reason": "Hypothesis. Bindery breaks it but sells to a segment that already knows the product; for a shop owner comparing tools, the screen is how the category is recognised.",
+      "evidence": [
+        "evidence/sheets/heroes.webp",
+        "evidence/bindery/desktop.webp"
+      ]
+    },
+    {
+      "dimension": "headline_promise",
+      "value": "benefit",
+      "count": 5,
+      "base": 8,
+      "share": 0.625,
+      "breakers": [
+        {
+          "id": "bindery",
+          "established": true,
+          "value": "manifesto"
+        },
+        {
+          "id": "stacks",
+          "established": false,
+          "value": "mechanism"
+        },
+        {
+          "id": "libra",
+          "established": true,
+          "value": "proof"
+        }
+      ],
+      "class": "cliche",
+      "provenance": "judged",
+      "reason": "Two established brands open on something other than a benefit line and lose nothing.",
+      "evidence": [
+        "evidence/sheets/heroes.webp",
+        "evidence/bindery/desktop.webp",
+        "evidence/libra/desktop.webp"
       ]
     }
   ],
@@ -914,5 +1028,680 @@
     "Flash mode: 8 direct brands, home pages only. Every classification is a hypothesis.",
     "No indirect competitors and no library sample were collected.",
     "A photograph dated 2026-11-26."
-  ]
+  ],
+  "frequencies": {
+    "base": 8,
+    "by_dimension": {
+      "logo_type": [
+        {
+          "value": "combination",
+          "count": 7,
+          "base": 8,
+          "share": 0.875,
+          "brands": [
+            "folio",
+            "shelfline",
+            "pagewise",
+            "stacks",
+            "quire",
+            "marque",
+            "libra"
+          ],
+          "status": "convention"
+        },
+        {
+          "value": "wordmark",
+          "count": 1,
+          "base": 8,
+          "share": 0.125,
+          "brands": [
+            "bindery"
+          ],
+          "status": "rare"
+        }
+      ],
+      "symbol_nature": [
+        {
+          "value": "pictorial",
+          "count": 5,
+          "base": 7,
+          "share": 0.714,
+          "brands": [
+            "folio",
+            "shelfline",
+            "pagewise",
+            "quire",
+            "libra"
+          ],
+          "status": "convention"
+        },
+        {
+          "value": "abstract",
+          "count": 1,
+          "base": 7,
+          "share": 0.143,
+          "brands": [
+            "stacks"
+          ],
+          "status": "rare"
+        },
+        {
+          "value": "lettermark",
+          "count": 1,
+          "base": 7,
+          "share": 0.143,
+          "brands": [
+            "marque"
+          ],
+          "status": "rare"
+        }
+      ],
+      "symbol_subject": [
+        {
+          "value": "open book",
+          "count": 4,
+          "base": 8,
+          "share": 0.5,
+          "brands": [
+            "folio",
+            "shelfline",
+            "quire",
+            "libra"
+          ],
+          "status": "common"
+        },
+        {
+          "value": "bookmark",
+          "count": 1,
+          "base": 8,
+          "share": 0.125,
+          "brands": [
+            "pagewise"
+          ],
+          "status": "rare"
+        },
+        {
+          "value": "letter m",
+          "count": 1,
+          "base": 8,
+          "share": 0.125,
+          "brands": [
+            "marque"
+          ],
+          "status": "rare"
+        },
+        {
+          "value": "none",
+          "count": 1,
+          "base": 8,
+          "share": 0.125,
+          "brands": [
+            "bindery"
+          ],
+          "status": "rare"
+        },
+        {
+          "value": "stacked bars",
+          "count": 1,
+          "base": 8,
+          "share": 0.125,
+          "brands": [
+            "stacks"
+          ],
+          "status": "rare"
+        }
+      ],
+      "name_case": [
+        {
+          "value": "lower",
+          "count": 4,
+          "base": 8,
+          "share": 0.5,
+          "brands": [
+            "shelfline",
+            "pagewise",
+            "stacks",
+            "marque"
+          ],
+          "status": "common"
+        },
+        {
+          "value": "title",
+          "count": 3,
+          "base": 8,
+          "share": 0.375,
+          "brands": [
+            "folio",
+            "quire",
+            "libra"
+          ],
+          "status": "common"
+        },
+        {
+          "value": "upper",
+          "count": 1,
+          "base": 8,
+          "share": 0.125,
+          "brands": [
+            "bindery"
+          ],
+          "status": "rare"
+        }
+      ],
+      "name_style": [
+        {
+          "value": "geometric_sans",
+          "count": 3,
+          "base": 8,
+          "share": 0.375,
+          "brands": [
+            "shelfline",
+            "pagewise",
+            "marque"
+          ],
+          "status": "common"
+        },
+        {
+          "value": "humanist_sans",
+          "count": 2,
+          "base": 8,
+          "share": 0.25,
+          "brands": [
+            "quire",
+            "libra"
+          ],
+          "status": "common"
+        },
+        {
+          "value": "serif",
+          "count": 2,
+          "base": 8,
+          "share": 0.25,
+          "brands": [
+            "folio",
+            "bindery"
+          ],
+          "status": "common"
+        },
+        {
+          "value": "grotesque",
+          "count": 1,
+          "base": 8,
+          "share": 0.125,
+          "brands": [
+            "stacks"
+          ],
+          "status": "rare"
+        }
+      ],
+      "hue": [
+        {
+          "value": "blue",
+          "count": 6,
+          "base": 8,
+          "share": 0.75,
+          "brands": [
+            "folio",
+            "shelfline",
+            "pagewise",
+            "stacks",
+            "marque",
+            "libra"
+          ],
+          "status": "convention"
+        },
+        {
+          "value": "green",
+          "count": 1,
+          "base": 8,
+          "share": 0.125,
+          "brands": [
+            "quire"
+          ],
+          "status": "rare"
+        },
+        {
+          "value": "neutral",
+          "count": 1,
+          "base": 8,
+          "share": 0.125,
+          "brands": [
+            "bindery"
+          ],
+          "status": "rare"
+        }
+      ],
+      "saturation": [
+        {
+          "value": "vivid",
+          "count": 4,
+          "base": 8,
+          "share": 0.5,
+          "brands": [
+            "shelfline",
+            "pagewise",
+            "stacks",
+            "marque"
+          ],
+          "status": "common"
+        },
+        {
+          "value": "medium",
+          "count": 3,
+          "base": 8,
+          "share": 0.375,
+          "brands": [
+            "folio",
+            "quire",
+            "libra"
+          ],
+          "status": "common"
+        },
+        {
+          "value": "muted",
+          "count": 1,
+          "base": 8,
+          "share": 0.125,
+          "brands": [
+            "bindery"
+          ],
+          "status": "rare"
+        }
+      ],
+      "ground": [
+        {
+          "value": "light",
+          "count": 8,
+          "base": 8,
+          "share": 1,
+          "brands": [
+            "folio",
+            "shelfline",
+            "pagewise",
+            "bindery",
+            "stacks",
+            "quire",
+            "marque",
+            "libra"
+          ],
+          "status": "convention"
+        }
+      ],
+      "hue_count": [
+        {
+          "value": "one",
+          "count": 6,
+          "base": 8,
+          "share": 0.75,
+          "brands": [
+            "folio",
+            "shelfline",
+            "bindery",
+            "stacks",
+            "quire",
+            "marque"
+          ],
+          "status": "convention"
+        },
+        {
+          "value": "two",
+          "count": 2,
+          "base": 8,
+          "share": 0.25,
+          "brands": [
+            "pagewise",
+            "libra"
+          ],
+          "status": "common"
+        }
+      ],
+      "headline_class": [
+        {
+          "value": "geometric_sans",
+          "count": 3,
+          "base": 8,
+          "share": 0.375,
+          "brands": [
+            "shelfline",
+            "pagewise",
+            "marque"
+          ],
+          "status": "common"
+        },
+        {
+          "value": "humanist_sans",
+          "count": 2,
+          "base": 8,
+          "share": 0.25,
+          "brands": [
+            "quire",
+            "libra"
+          ],
+          "status": "common"
+        },
+        {
+          "value": "serif",
+          "count": 2,
+          "base": 8,
+          "share": 0.25,
+          "brands": [
+            "folio",
+            "bindery"
+          ],
+          "status": "common"
+        },
+        {
+          "value": "grotesque",
+          "count": 1,
+          "base": 8,
+          "share": 0.125,
+          "brands": [
+            "stacks"
+          ],
+          "status": "rare"
+        }
+      ],
+      "text_class": [
+        {
+          "value": "geometric_sans",
+          "count": 3,
+          "base": 8,
+          "share": 0.375,
+          "brands": [
+            "shelfline",
+            "pagewise",
+            "marque"
+          ],
+          "status": "common"
+        },
+        {
+          "value": "humanist_sans",
+          "count": 3,
+          "base": 8,
+          "share": 0.375,
+          "brands": [
+            "folio",
+            "quire",
+            "libra"
+          ],
+          "status": "common"
+        },
+        {
+          "value": "grotesque",
+          "count": 1,
+          "base": 8,
+          "share": 0.125,
+          "brands": [
+            "stacks"
+          ],
+          "status": "rare"
+        },
+        {
+          "value": "serif",
+          "count": 1,
+          "base": 8,
+          "share": 0.125,
+          "brands": [
+            "bindery"
+          ],
+          "status": "rare"
+        }
+      ],
+      "imagery": [
+        {
+          "value": "product_ui",
+          "count": 6,
+          "base": 8,
+          "share": 0.75,
+          "brands": [
+            "folio",
+            "shelfline",
+            "pagewise",
+            "stacks",
+            "marque",
+            "libra"
+          ],
+          "status": "convention"
+        },
+        {
+          "value": "people_photo",
+          "count": 1,
+          "base": 8,
+          "share": 0.125,
+          "brands": [
+            "quire"
+          ],
+          "status": "rare"
+        },
+        {
+          "value": "product_photo",
+          "count": 1,
+          "base": 8,
+          "share": 0.125,
+          "brands": [
+            "bindery"
+          ],
+          "status": "rare"
+        }
+      ],
+      "layout": [
+        {
+          "value": "split_hero",
+          "count": 4,
+          "base": 8,
+          "share": 0.5,
+          "brands": [
+            "folio",
+            "shelfline",
+            "quire",
+            "libra"
+          ],
+          "status": "common"
+        },
+        {
+          "value": "centered_hero",
+          "count": 3,
+          "base": 8,
+          "share": 0.375,
+          "brands": [
+            "pagewise",
+            "stacks",
+            "marque"
+          ],
+          "status": "common"
+        },
+        {
+          "value": "editorial",
+          "count": 1,
+          "base": 8,
+          "share": 0.125,
+          "brands": [
+            "bindery"
+          ],
+          "status": "rare"
+        }
+      ],
+      "headline_promise": [
+        {
+          "value": "benefit",
+          "count": 5,
+          "base": 8,
+          "share": 0.625,
+          "brands": [
+            "folio",
+            "shelfline",
+            "pagewise",
+            "quire",
+            "marque"
+          ],
+          "status": "convention"
+        },
+        {
+          "value": "manifesto",
+          "count": 1,
+          "base": 8,
+          "share": 0.125,
+          "brands": [
+            "bindery"
+          ],
+          "status": "rare"
+        },
+        {
+          "value": "mechanism",
+          "count": 1,
+          "base": 8,
+          "share": 0.125,
+          "brands": [
+            "stacks"
+          ],
+          "status": "rare"
+        },
+        {
+          "value": "proof",
+          "count": 1,
+          "base": 8,
+          "share": 0.125,
+          "brands": [
+            "libra"
+          ],
+          "status": "rare"
+        }
+      ]
+    }
+  },
+  "map": {
+    "x": {
+      "dimension": "name_style",
+      "poles": [
+        "geometric_sans",
+        "other"
+      ]
+    },
+    "y": {
+      "dimension": "saturation",
+      "poles": [
+        "vivid",
+        "other"
+      ]
+    },
+    "points": [
+      {
+        "id": "folio",
+        "role": "direct",
+        "x": 0.725,
+        "y": 0.459
+      },
+      {
+        "id": "shelfline",
+        "role": "direct",
+        "x": -0.59,
+        "y": -0.324
+      },
+      {
+        "id": "pagewise",
+        "role": "direct",
+        "x": -0.417,
+        "y": -0.684
+      },
+      {
+        "id": "bindery",
+        "role": "direct",
+        "x": 0.615,
+        "y": 0.348
+      },
+      {
+        "id": "stacks",
+        "role": "direct",
+        "x": 0.668,
+        "y": -0.599
+      },
+      {
+        "id": "quire",
+        "role": "direct",
+        "x": 0.464,
+        "y": 0.731
+      },
+      {
+        "id": "marque",
+        "role": "direct",
+        "x": -0.22,
+        "y": -0.487
+      },
+      {
+        "id": "libra",
+        "role": "direct",
+        "x": 0.567,
+        "y": 0.833
+      },
+      {
+        "id": "atelier-paper",
+        "role": "aspirational",
+        "x": 0.716,
+        "y": 0.449
+      },
+      {
+        "id": "ledgerly",
+        "role": "aspirational",
+        "x": 0.8,
+        "y": 0.367
+      }
+    ],
+    "clusters": [
+      {
+        "quadrant": [
+          -1,
+          -1
+        ],
+        "ids": [
+          "shelfline",
+          "pagewise",
+          "marque"
+        ],
+        "share": 0.375,
+        "saturated": false,
+        "label": "geometric_sans × vivid"
+      },
+      {
+        "quadrant": [
+          -1,
+          1
+        ],
+        "ids": [],
+        "share": 0,
+        "saturated": false,
+        "label": "geometric_sans × other"
+      },
+      {
+        "quadrant": [
+          1,
+          -1
+        ],
+        "ids": [
+          "stacks"
+        ],
+        "share": 0.125,
+        "saturated": false,
+        "label": "other × vivid"
+      },
+      {
+        "quadrant": [
+          1,
+          1
+        ],
+        "ids": [
+          "folio",
+          "bindery",
+          "quire",
+          "libra"
+        ],
+        "share": 0.5,
+        "saturated": true,
+        "label": "other × other"
+      }
+    ],
+    "forced": [
+      "name_style",
+      "imagery"
+    ]
+  }
 }
