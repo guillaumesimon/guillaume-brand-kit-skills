@@ -51,7 +51,7 @@ Some of the strongest patterns cross two values or belong to no dimension: every
   "breakers": [], "class": "legibility", "provenance": "judged", "reason": "…", "evidence": ["evidence/sheets/heroes.webp"] }
 ```
 
-Count them honestly, brand by brand, on the wall. A manual convention without a real count is an impression with a number attached.
+Count them honestly, brand by brand, on the wall, by looking at it yourself. Do not count from the coders' notes: a note says what struck one coder about one brand, not what is true of all of them. In the trial that shaped this skill, a count taken from notes named the wrong brand; the wall corrected it. A manual convention without a real count is an impression with a number attached.
 
 If the base later drops under four brands, the classified conventions are kept and marked `stale` rather than erased; recount when the panel is back.
 

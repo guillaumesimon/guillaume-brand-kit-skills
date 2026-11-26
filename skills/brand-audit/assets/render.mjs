@@ -15,7 +15,7 @@ const STRINGS = {
     classes: { legibility: 'Legibility code', cliche: 'Cliché', risky: 'Risky break' }, unclassified: 'Not classified yet',
     panel: 'The panel', roles: { direct: 'Direct', indirect: 'Indirect', leader: 'Category leader', aspirational: 'Aspirational', self: 'The brand itself' },
     brand: 'Brand', role: 'Role', why: 'Why it is here', capture: 'Capture', established: 'established', partial: 'partial: not measured', none: 'not captured',
-    logos: 'Logos', logoTypes: 'Logo types', heroes: 'Home pages', colour: 'Colour', palette: 'Palette', accent: 'Accent', type: 'Typography', headline: 'Headline', text: 'Text',
+    stores: 'App Store listings', storesNote: 'The icon and the first screenshot of each listing. For an app this is often the first thing a buyer sees of the brand, and it does not always look like the site.', logos: 'Logos', logoTypes: 'Logo types', heroes: 'Home pages', colour: 'Colour', palette: 'Palette', accent: 'Accent', type: 'Typography', headline: 'Headline', text: 'Text',
     freq: 'What the panel does', freqNote: 'Share of each observed value among the direct brands. A filled bar in colour is a convention.',
     conventions: 'Conventions, classified', breakers: 'Who does otherwise', nobody: 'nobody', of: 'of',
     map: 'Map', mapNote: 'Two axes taken from the data. Dense quadrants are saturated territories, empty ones are candidates.', saturated: 'saturated', empty: 'empty',
@@ -34,7 +34,7 @@ const STRINGS = {
     classes: { legibility: 'Code de lisibilité', cliche: 'Cliché', risky: 'Rupture risquée' }, unclassified: 'Pas encore classé',
     panel: 'Le panel', roles: { direct: 'Direct', indirect: 'Indirect', leader: 'Leader de catégorie', aspirational: 'Aspirationnelle', self: 'La marque elle-même' },
     brand: 'Marque', role: 'Rôle', why: 'Pourquoi elle est là', capture: 'Capture', established: 'installée', partial: 'partielle : non mesurée', none: 'non capturée',
-    logos: 'Logos', logoTypes: 'Types de logos', heroes: 'Pages d’accueil', colour: 'Couleur', palette: 'Palette', accent: 'Accent', type: 'Typographie', headline: 'Titre', text: 'Texte',
+    stores: 'Fiches App Store', storesNote: 'L\u2019icône et la première capture de chaque fiche. Pour une application, c\u2019est souvent la première chose qu\u2019un acheteur voit de la marque, et elle ne ressemble pas toujours au site.', logos: 'Logos', logoTypes: 'Types de logos', heroes: 'Pages d’accueil', colour: 'Couleur', palette: 'Palette', accent: 'Accent', type: 'Typographie', headline: 'Titre', text: 'Texte',
     freq: 'Ce que fait le panel', freqNote: 'Part de chaque valeur observée parmi les marques directes. Une barre en couleur est une convention.',
     conventions: 'Les conventions, classées', breakers: 'Qui fait autrement', nobody: 'personne', of: 'sur',
     map: 'Cartographie', mapNote: 'Deux axes tirés des données. Les quadrants denses sont les territoires saturés, les vides sont des candidats.', saturated: 'saturé', empty: 'vide',
@@ -113,6 +113,9 @@ ${(o.import || []).length ? `<dt>${esc(t.oimport)}</dt><dd>${o.import.map((i) =>
   // 4. Walls.
   out.push(`<h2>${esc(t.logos)}</h2><div class="grid g-logos">${panel.map((b) => `<figure><div class="box">${img(logoOf(b), b.name) || `<span class="missing">${esc(b.name)}</span>`}</div><figcaption><span>${esc(b.name)}</span><small>${b.codes?.logo_type ? human(b.codes.logo_type) : ''}</small></figcaption></figure>`).join('')}</div>`);
   out.push(`<h2>${esc(t.heroes)}</h2><div class="grid g-heroes">${panel.filter((b) => ev(b, 'desktop.webp') && has(ev(b, 'desktop.webp'))).map((b) => `<figure><a href="${esc(ev(b, 'full.webp') || ev(b, 'desktop.webp'))}">${img(ev(b, 'desktop.webp'), b.name)}</a><figcaption><span>${esc(b.name)}</span><small>${esc(t.roles[b.role] || b.role)}</small></figcaption></figure>`).join('')}</div>`);
+
+  const stores = panel.filter((b) => (ev(b, 'app-icon.webp') && has(ev(b, 'app-icon.webp'))) || (ev(b, 'app-1.webp') && has(ev(b, 'app-1.webp'))));
+  if (stores.length) out.push(`<h2>${esc(t.stores)}</h2><p class="note">${esc(t.storesNote)}</p><div class="grid g-apps">${stores.map((b) => `<figure><div class="box">${img(ev(b, 'app-icon.webp'), b.name, 'appicon')}</div>${img(ev(b, 'app-1.webp'), b.name)}<figcaption><span>${esc(b.name)}</span><small>${esc(t.roles[b.role] || b.role)}</small></figcaption></figure>`).join('')}</div>`);
 
   // 5. Colour and type, from the measures.
   const measured = panel.filter((b) => b.measures);

@@ -171,7 +171,15 @@ export async function captureBrand(browser, brand, outDir, opts = {}) {
       if (!raw.logo) return null;
       try {
         const el = page.locator('[data-brand-audit-logo]').first();
-        await saveWebp(tool, await el.screenshot({ type: 'png', timeout: 5000 }), join(dir, 'logo.webp'), 800, 800);
+        // A header that animates or re-renders can make the first attempt time out: try twice, then clip the page.
+        const png = await el.screenshot({ type: 'png', timeout: 5000 })
+          .catch(() => page.waitForTimeout(1000).then(() => el.screenshot({ type: 'png', timeout: 8000 })))
+          .catch(async () => {
+            const box = await page.evaluate(() => { const r = document.querySelector('[data-brand-audit-logo]')?.getBoundingClientRect(); return r && { x: r.x, y: r.y, width: r.width, height: r.height }; });
+            if (!box || box.width < 8) throw new Error('logo element is gone');
+            return page.screenshot({ type: 'png', clip: box });
+          });
+        await saveWebp(tool, png, join(dir, 'logo.webp'), 800, 800);
         evidence.push(rel('logo.webp'));
         if (raw.logo.svg) { await writeFile(join(dir, 'logo.svg'), raw.logo.svg); evidence.push(rel('logo.svg')); }
         return rel('logo.webp');

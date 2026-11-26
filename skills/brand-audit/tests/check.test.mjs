@@ -60,7 +60,7 @@ test('the CLI exits 1 on failure and 0 on success', () => {
 test('sheets label cells with name and role only, and skip missing images', () => {
   const a = example();
   const pages = sheetPages(a, '/tmp/x', (p) => !p.includes('folio'));
-  assert.deepEqual(Object.keys(pages), ['logos', 'heroes', 'palettes', 'type']);
+  assert.deepEqual(Object.keys(pages).sort(), ['apps', 'heroes', 'logos', 'palettes', 'type']);
   assert.ok(pages.logos.includes('no logo captured'));
   assert.ok(!pages.heroes.includes('folio/desktop.webp'));
   assert.ok(pages.heroes.includes('bindery/desktop.webp'));

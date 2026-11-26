@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // Pin the evidence side by side: a convention is only visible on a wall.
 //   node sheets.mjs <audit-dir>
-// Writes evidence/sheets/{logos,heroes,palettes,type}.webp. Cells carry the brand name and role, nothing else.
+// Writes evidence/sheets/{logos,heroes,apps,palettes,type}.webp. Cells carry the brand name and role, nothing else.
 import { readFile, writeFile, mkdir, rm } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import { join, resolve } from 'node:path';
@@ -40,7 +40,10 @@ export function sheetPages(audit, auditDir, has = (p) => existsSync(join(auditDi
     (b.measures.palette || []).map((p) => `<div style="background:${esc(p.hex)};flex:${Math.max(0.06, Math.sqrt(p.share)).toFixed(2)}"></div>`).join('')}</div><div class="sw" style="background:${esc(b.measures.accent || '#fff')}"></div></div>`).join('');
   const type = `<table><tr><th>Brand</th><th>Headline family</th><th>Weight</th><th>Size</th><th>Tracking</th><th>Text family</th><th>Headline</th></tr>${
     measured.map((b) => { const h = b.measures.headline || {}; return `<tr><td>${esc(b.name)}</td><td>${esc(String(h.family || '').split(',')[0].replace(/["']/g, ''))}</td><td>${esc(h.weight ?? '')}</td><td>${h.size_px ? Math.round(h.size_px) + 'px' : ''}</td><td>${h.tracking_em ?? ''}</td><td>${esc((b.measures.fonts || [])[0]?.family || '')}</td><td>${esc(String(h.text || '').slice(0, 70))}</td></tr>`; }).join('')}</table>`;
+  const withApp = panel.filter((b) => ev(b, 'app-icon.webp') || ev(b, 'app-1.webp'));
+  const apps = withApp.map((b) => `<div class="c"><div class="i" style="height:150px;padding:14px">${ev(b, 'app-icon.webp') ? `<img src="${url(ev(b, 'app-icon.webp'))}" style="max-height:120px;border-radius:22%">` : ''}</div><div class="i" style="border-top:1px solid #dcdad3">${ev(b, 'app-1.webp') ? `<img src="${url(ev(b, 'app-1.webp'))}">` : ''}</div>${cap(b)}</div>`).join('');
   return {
+    apps: page('App Store: icon and first screenshot', `<div class="g" style="grid-template-columns:repeat(7,1fr)">${apps}</div>`),
     logos: page('Logos', `<div class="g" style="grid-template-columns:repeat(6,1fr)">${logos}</div>`),
     heroes: page('Home pages', `<div class="g" style="grid-template-columns:repeat(3,1fr)">${heroes}</div>`),
     palettes: page('Palettes, by accent hue (right: accent)', palettes),

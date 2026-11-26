@@ -111,7 +111,7 @@ Then build the walls and **look at them yourself**:
 node assets/sheets.mjs $AUDIT
 ```
 
-`evidence/sheets/logos.webp`, `heroes.webp`, `palettes.webp`, `type.webp`. A convention is only visible side by side, and this is the moment the audit stops being a table. Note what strikes you before you read any count.
+`evidence/sheets/logos.webp`, `heroes.webp`, `apps.webp` (icons and first store screenshots), `palettes.webp`, `type.webp`. A convention is only visible side by side, and this is the moment the audit stops being a table. Note what strikes you before you read any count.
 
 ### 6 · Synthesise
 
