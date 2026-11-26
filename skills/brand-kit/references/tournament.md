@@ -104,3 +104,26 @@ The tournament settles the *universe*. It cannot settle meaning, and meaning is 
 - what the nearest thing does *better*, and what will have to be given up
 
 Those three are concrete, they are about the user's own business, and in practice people answer them fast and well. Keep them. Everything that asked the user to describe a feeling, rank an adjective or pick a personality is gone.
+
+## Category duels, when an audit exists
+
+If `brand/audit/AUDIT.md` exists, its section 5 names two images: the most typical home page of the category and the most deviant one, both from the user's real competitors.
+
+This does not replace anything above. Competitors resemble each other by construction, which is exactly what makes them poor material for the main duels, where the two sides must differ on everything. The Mobbin duels stay as they are.
+
+The category duel measures one thing the others cannot: **whether the user wants to stand inside their category or beside it.** Run it once, after the third or fourth ordinary duel, on the same board and with the same line:
+
+> "Celui-ci ou celui-là ?"
+
+Put the site's name under each, as always. Do not say that one is typical and the other is not; that is the answer.
+
+Reading it:
+
+- **The deviant side**: the user is ready to leave the category's look. The audit's open territories are live options, and the clichés in its section 2 go straight into the refusals.
+- **The typical side**: they want to be recognised as one of the category first. Keep every legibility code, break one cliché rather than four, and prefer the audit's low-risk territory.
+- **Neither**: the strongest signal. Neither the category nor its current dissident is theirs. Look at where the audit's aspirational brands sit.
+
+If the audit has a second pair worth showing (two direct competitors in different quadrants of its map), one more category duel is allowed. Never more than two: past that the session is comparing competitors, which is the audit's job and is already done.
+
+A category duel moves the ledger like any other, and it is recorded as *chosen*, not *said*.
+

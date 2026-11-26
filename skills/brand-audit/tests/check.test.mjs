@@ -66,3 +66,7 @@ test('sheets label cells with name and role only, and skip missing images', () =
   assert.ok(pages.heroes.includes('bindery/desktop.webp'));
   assert.ok(!/wordmark|combination|cliche/.test(pages.logos));
 });
+test('an unsettled coding conflict fails', () => {
+  const dir = fixture((a) => { a.panel[0].code_conflicts = { imagery: ['product_ui', 'people_photo'] }; });
+  assert.ok(checkAudit(dir).errors.some((e) => /conflicts not settled: folio/.test(e)));
+});

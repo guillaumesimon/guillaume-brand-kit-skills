@@ -4,6 +4,8 @@ The same method as the full session, cut to what a founder can decide in four mi
 
 A quick kit is a **first hypothesis that agents can build from today**: real tokens, a short `BRAND.md`, a `theme.css`. No site, no generated imagery, no logo work. It is honest about that, and it is built so the full session can pick it up later without redoing anything.
 
+**If `brand/audit/AUDIT.md` exists, read it first.** Its frame can replace the opening question, its section 5 names the competitor for the swap test, and its *Break* list is what the asserted system must not reproduce. Quick mode has no room for a category duel; the audit informs what you assert, and you say so in one clause ("pas d'orange : six de tes huit concurrents en ont").
+
 ## Budget
 
 **Five user decisions. Hard stop at six. About four minutes of the user's time.**

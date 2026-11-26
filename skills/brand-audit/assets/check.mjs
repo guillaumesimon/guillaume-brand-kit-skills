@@ -41,6 +41,8 @@ export function checkAudit(auditDir) {
   const full = (audit.panel || []).filter((b) => b.role === 'direct' && b.capture === 'full');
   const uncoded = full.filter((b) => !b.codes).map((b) => b.id);
   if (uncoded.length) errors.push(`direct brands captured but not coded: ${uncoded.join(', ')}`);
+  const open = (audit.panel || []).filter((b) => b.code_conflicts && Object.keys(b.code_conflicts).length).map((b) => b.id);
+  if (open.length) errors.push(`coding conflicts not settled: ${open.join(', ')}`);
   if (!(audit.limits || []).length) errors.push('limits: say what this audit does not cover');
 
   const md = join(auditDir, 'AUDIT.md');

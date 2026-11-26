@@ -249,7 +249,7 @@ export async function captureAll(auditDir, { deep = false, only = null, concurre
 if (import.meta.url === pathToFileURL(process.argv[1] || '').href) {
   const args = process.argv.slice(2);
   const dir = args.find((a) => !a.startsWith('--') && args[args.indexOf(a) - 1] !== '--only' && args[args.indexOf(a) - 1] !== '--concurrency');
-  if (!dir || args.includes('--help')) { console.log('usage: node capture.mjs <audit-dir> [--deep] [--only id,id] [--concurrency 4]'); process.exit(dir ? 0 : 1); }
+  if (!dir || dir.startsWith('--') || args.includes('--help')) { console.log('usage: node capture.mjs <audit-dir> [--deep] [--only id,id] [--concurrency 4]'); process.exit(args.includes('--help') ? 0 : 1); }
   const opt = (k) => (args.includes(k) ? args[args.indexOf(k) + 1] : null);
   const res = await captureAll(dir, { deep: args.includes('--deep'), only: opt('--only')?.split(','), concurrency: +(opt('--concurrency') || 4) });
   const n = (c) => res.filter((r) => r.capture === c).length;

@@ -1,9 +1,24 @@
 # Brand kit skills
 
-Two Claude Code skills that turn a 25-minute conversation into a brand universe, and keep it true afterwards.
+Three Claude Code skills that look at a market, turn a 25-minute conversation into a brand universe, and keep it true afterwards.
 
+- **`brand-audit`** looks first: the competitive and visual audit an art director runs before designing. Optional, and `brand-kit` reads it when it is there.
 - **`brand-kit`** — runs the session and writes the kit.
 - **`brand-kit-update`** — keeps the kit honest, versions the brand, and turns every agent mistake into a rule.
+
+## The audit
+
+`brand-audit` answers one question: which codes make a brand understood by this market, and which can be broken to stand apart from it. It builds a panel of competitors and aspirational brands, visits their sites with a headless browser, measures their real colours and typefaces, codes each brand on a fixed vocabulary (the seven logo types, symbol, colour, type, imagery, layout, headline), counts, and classifies every dominant code as a legibility code, a cliché or a risky break. Flash mode takes about ten minutes, deep about forty.
+
+```
+brand/audit/
+├── audit.json       the single source: panel, measures, codes, counts, classifications, opportunities
+├── AUDIT.md         agents read this: numbered rules, each with its count and its evidence
+├── landscape.html   the board, for people
+└── evidence/        screenshots, logos, contact sheets
+```
+
+Its scripts need Node 22 and Playwright with Chromium. `node --test skills/brand-audit/tests/*.test.mjs` runs its tests.
 
 ## What it produces
 
@@ -27,9 +42,10 @@ So the skill shows rather than asks, asks about consequences rather than mechani
 
 ## Install
 
-Clone the repo, then symlink both skills into `~/.claude/skills` so edits here are live everywhere:
+Clone the repo, then symlink the skills into `~/.claude/skills` so edits here are live everywhere:
 
 ```bash
+ln -s "$PWD/skills/brand-audit" ~/.claude/skills/brand-audit
 ln -s "$PWD/skills/brand-kit" ~/.claude/skills/brand-kit
 ln -s "$PWD/skills/brand-kit-update" ~/.claude/skills/brand-kit-update
 ```

@@ -39,7 +39,16 @@ Pick the mode before the first question. If the user or the calling skill named 
 
 ## Before you start
 
-Check whether `brand/` already exists. If it does, this is not the right skill — use `brand-kit-update`. One exception: a kit whose `tokens.json` has `meta.mode: "quick"`, when the user wants the full identity. That is this skill in normal mode, resumed - `references/quick.md` → *Resuming in normal mode*.
+Check whether `brand/tokens.json` already exists. If it does, this is not the right skill — use `brand-kit-update`. One exception: a kit whose `tokens.json` has `meta.mode: "quick"`, when the user wants the full identity. That is this skill in normal mode, resumed - `references/quick.md` → *Resuming in normal mode*. A `brand/` directory that holds only `audit/` is not a kit: it is the audit described next.
+
+**If `brand/audit/AUDIT.md` exists, read it before the first question**, in both modes. It is the output of the `brand-audit` skill: what this category looks like, counted on real captures. It changes four things, and nothing else:
+
+- **Framing.** Where its section 0 answers one of the two Act 1 questions, state the answer and move on (rule 3). Do not ask what the audit already knows.
+- **Tournament.** Add the category duel from its section 5. `references/tournament.md` → *Category duels, when an audit exists*.
+- **Swap test.** Use the competitor it names, rather than choosing one.
+- **The "Not" list.** Seed `BRAND.md` section 1 from its clichés, then let the session's refusals add to it.
+
+Never launch the audit from here. If there is none and the user has ten minutes before starting, say once that `brand-audit` exists and what it would add, then carry on either way.
 
 Create a scratch file for the session (in the scratchpad directory, not in the project) and keep three things in it as you go: **verbatim** (their exact words, never paraphrased), the **axis ledger** (six axes, each with a position −2…+2, a confidence 0–1, and whether it came from something they *said* or something they *chose*), and **provenance** (which facts are stated, inferred, or assumed).
 
@@ -102,7 +111,7 @@ The second is load-bearing. A platform with no sacrifice cannot generate decisio
 
 When an answer lands on the generic blocklist — *intégrité, innovation, premium, moderne, simple, tout le monde* — do not accept it. `references/discovery.md` has the refuse-the-first-answer loop, and the six tests your positioning has to pass before you are allowed to write it down: swap, reversal, Monday-morning, sacrifice, new-hire, wallpaper.
 
-Two tests you run silently and report, never delegate to the user: the **swap test** — put a competitor's name on the artefact and the positioning; if both still work you have elicited category conventions, not a brand. And `references/taste.md` **as a gate**: counting typefaces, weights, hues, radius values, accent share, off-scale spacing, plus the five renders. A system that fails it does not go out.
+Two tests you run silently and report, never delegate to the user: the **swap test** — put a competitor's name on the artefact and the positioning; if both still work you have elicited category conventions, not a brand. With an audit, the competitor is the one its section 5 names, and its *Break* list is what the artefact is checked against: an artefact that reproduces three of the category's clichés has failed whatever the swap looks like. And `references/taste.md` **as a gate**: counting typefaces, weights, hues, radius values, accent share, off-scale spacing, plus the five renders. A system that fails it does not go out.
 
 ### Act 4 · Écrire
 
@@ -121,6 +130,8 @@ Show the user the site. Then tell them plainly what it is and is not. Offer a Ve
 ## Be honest about what a session produces
 
 Say this in the kit rather than performing a confidence it has not earned. The 30-minute version is **a well-formed hypothesis**; a six-week engagement produces **a defended position**. What is missing: customer evidence (everything here is founder self-report, systematically optimistic and over-broad on audience), a category audit, so nobody has checked whether the difference is actually the category's wallpaper, and alignment, because half the value of a real process is that twelve people were interviewed and feel authorship.
+
+The category audit is the one of the three that can be had in an afternoon: when `brand/audit/audit.json` has `meta.mode: "deep"`, drop that caveat and cite the audit instead. A flash audit narrows it without removing it; say that the category was looked at on ten home pages.
 
 So every kit carries three things, on the home page, not buried:
 
