@@ -44,7 +44,7 @@ Check whether `brand/tokens.json` already exists. If it does, this is not the ri
 **If `brand/audit/AUDIT.md` exists, read it before the first question**, in both modes. It is the output of the `brand-audit` skill: what this category looks like, counted on real captures. It changes four things, and nothing else:
 
 - **Framing.** Where its section 0 answers one of the two Act 1 questions, state the answer and move on (rule 3). Do not ask what the audit already knows.
-- **Tournament.** Add the category duel from its section 6. `references/tournament.md` → *Category duels, when an audit exists*.
+- **Tournament.** Add the category duel from its "For brand-kit" section. `references/tournament.md` → *Category duels, when an audit exists*.
 - **Swap test.** Use the competitor it names, rather than choosing one.
 - **The "Not" list.** Seed `BRAND.md` section 1 from its clichés, then let the session's refusals add to it.
 

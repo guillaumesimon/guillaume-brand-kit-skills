@@ -28,9 +28,14 @@ A convention at 60 % leaves up to 40 % of brands doing otherwise. So the questio
 
 | Situation | Class | Meaning |
 |---|---|---|
+| The product does not work without it, whatever anyone else does | `requirement` | Functional. Keep it. Rare: an icon that reads small, a contrast that passes, a legal mention |
 | An **established** brand breaks it and is still read as part of the category | `cliche` | Breakable. The proof exists and you can name it |
-| No established brand breaks it, **and** it tells the buyer something they need | `legibility` | A category code. Keep it: it is how the category is recognised |
+| No established brand breaks it, **and** it is how the category is recognised | `signal` | A category signal. Probably needed to be understood; frequency alone does not prove it |
 | No established brand breaks it, and it tells the buyer nothing | `risky` | The best opening or a trap. Decide on purpose |
+
+`requirement` and `signal` are not the same thing and the designer treats them differently: a requirement cannot be broken, a signal can be, at a cost in recognition. Ask of each one: what stops working without it? If the answer is "nothing, but people may not recognise the category", it is a signal.
+
+Give each classification a `confidence` (`high`, `medium`, `low`), and each hand-written convention a `population` that says what was counted ("9 direct app icons", "12 icons, direct and indirect").
 
 Two more classes are not conventions and never come out of the counts. Write them by hand (`manual: true`) when you see them:
 
@@ -45,6 +50,7 @@ For `owned`, the test is recognition without the logo: cover the name on the cap
 
 Three cautions.
 
+- **A convention is evidence of habit, not of need.** That eight brands of eight do something says what the category does; whether the audience needs it is a hypothesis.
 - **"Still read as part of the category"** is a real condition. An established brand that broke a code and moved to another category (a running app that became a lifestyle brand) proves nothing about the code.
 - **One established breaker is enough** for `cliche`, but say how many there are. One of six leaders breaking it is a weaker proof than three.
 - **A newcomer breaking a code is not proof.** It is a bet in progress. Mention it in the reason; it does not change the class.
@@ -161,24 +167,11 @@ Record the result on the opportunity: `"challenged": { "searched": [...], "resul
 
 One search pass: which brands of this sector changed identity in the last two years, and toward what. A territory three leaders just moved into is about to be saturated, whatever today's counts say. Put what you find in `limits` or in the rationale of the opportunity it affects, with the source.
 
-## Writing `AUDIT.md`
+## The brief
 
-Copy `assets/AUDIT.example.md` and rewrite every line. It is for agents that will design from it, so it is short, imperative and checkable.
+`AUDIT.md` is no longer written by hand. It is generated from `audit.json` by `brief.mjs`, after the creative synthesis: see `references/creative.md`. What you write here, the classifications, the map readings, the opportunities, is what it is generated from.
 
-- **Frontmatter**: sector, market, mode, date, base.
-- **0. Frame**: three lines from `framing`.
-- **1. Preserve**: the category codes, as rules.
-- **2. Avoid**: the clichés, each naming the established brand that proves it breakable, and the codes owned by a competitor, each naming its owner. Add motif clichés here when a `symbol_subject` reaches a third of the panel, even under the convention threshold: four open books out of eight is a cliché a designer needs to know.
-- **3. Challenge**: the risky breaks, with what the neighbours did, and the emerging codes, dated.
-- **4. Explore**: the opportunities, ranked, one paragraph each.
-- **5. Validate**: what must be checked with people before committing, and how.
-- **6. For brand-kit**: three things.
-  - *Swap test competitor*: the most typical established brand, the one whose name you would put on a design to see if it still works.
-  - *Category duel*: two image paths, the most typical home page against the most deviant one among the direct brands. Typical is the brand that matches the most conventions; deviant, the fewest.
-  - *Seed for the Not list*: the clichés as a designer would say them ("orange on white, a group photo at golden hour, a phone tilted at 15 degrees").
-- **7. Limits**.
-
-Every rule ends with its count and one or more `evidence/…` paths in backticks. `check.mjs` verifies that each path exists.
+Add motif clichés as hand-written conventions when a `symbol_subject` reaches a third of the panel, even under the convention threshold: four open books out of eight is a cliché a designer needs to know.
 
 ## The limits section
 

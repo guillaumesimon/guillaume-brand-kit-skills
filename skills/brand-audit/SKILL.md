@@ -10,7 +10,7 @@ Produce `brand/audit/`: the evidence an art director pins on the wall before dra
 ```
 brand/audit/
 ├── audit.json       the single source: panel, measures, codes, counts, classifications, opportunities
-├── AUDIT.md         for agents: short, numbered, every rule with its count and its evidence
+├── AUDIT.md         for agents: the creative brief, generated from audit.json
 ├── landscape.html   for people: the report, twelve sections, black and white
 └── evidence/        screenshots, logos, contact sheets, one folder per brand
 ```
@@ -43,7 +43,8 @@ The scripts do the mechanical work so that your attention goes where it is neede
 | Coding | one pass | judgment fields coded twice, disagreements settled |
 | Synthesis | counts, classifications as hypotheses, 2 opportunities | map, 3 to 5 opportunities, counter-check, recent rebrands |
 | Writing | 3 section writers, 2 profile writers | one writer per section, profile writers |
-| Subagents | about 11 | about 25, in parallel |
+| Synthesis | thesis, decisions, 2 to 4 territories, one moodboard scout each | the same, plus an independent critique pass |
+| Subagents | about 14 | about 30, in parallel |
 
 Both capture each brand the same way; the difference is how many brands, how carefully they are coded, and how hard the conclusions are attacked.
 
@@ -58,7 +59,7 @@ Pick the mode before anything else. If the user or the calling skill named one, 
 - The scripts need Node 22 and Playwright with Chromium. If `node assets/capture.mjs --help` fails on the import, run `npm i playwright && npx playwright install chromium`.
 - Subagents make this fast. If you have no subagent tool, run the same steps in series and say so in `limits`.
 
-## The seven steps
+## The eight steps
 
 ### 1 · Frame (0 to 2 questions)
 
@@ -130,22 +131,39 @@ Counts are not an audit. **Read `references/report.md`** and dispatch the sectio
 
 **Read `references/synthesis.md`.** This part is yours, not a subagent's, because it is where everything meets.
 
-1. **Classify every convention**: a category code, a cliché, a code owned by a competitor, an emerging code or a risky break, with the exception test, a reason and the captures that show it. Add by hand the patterns no single value catches (`manual: true`): they are often the real findings.
+1. **Classify every convention**: a functional requirement, a category signal, a cliché, a code owned by a competitor, an emerging code or a risky break, with the exception test, a reason, a confidence and the captures that show it. Add by hand the patterns no single value catches (`manual: true`, with the population counted): they are often the real findings.
 2. **Read the maps.** Name the axes in plain words, say which quadrant is saturated and which is empty, where the indirect brands sit, and check each empty one: unexplored, or tried and abandoned. Pick better axes with `--axes` when the automatic ones say little.
-3. **Write the opportunities.** Each one states the observation it rests on, its link to the brief, the benefit, what it keeps and breaks, what it borrows from which brand, its risk, and what must be validated with people.
+3. **Write the opportunities.** Each one states the observation it rests on, its link to the brief, the benefit, what it keeps and breaks, what it borrows from which brand, its risk, and what must be validated with people. An empty space in a small panel is an observation; that filling it has value is a hypothesis, and is written as one.
 4. **Deep only: have each opportunity attacked.** A sceptic subagent searches for the brand that already occupies it. What falls is removed; what holds records what was searched.
-5. **Write the summary last**: a lead and five decisions, *preserve, avoid, challenge, explore, validate* (`references/report.md`).
 
-Then write the agents' file and pass the gate:
+### 8 · Synthesise for the designer
+
+**Read `references/creative.md`.** The research says what the category looks like; this step says what it means for the brand to be designed, and hands it over.
+
+1. **Implications**: a compact block at the end of each written section.
+2. **Thesis, central tension, most consequential uncertainty.**
+3. **The decision matrix**: per dimension, what is required, preferred, to explore, to deprioritise, to avoid, each citing finding IDs, with its trade-off and confidence. `required` is for real constraints only.
+4. **Two to four creative territories.** Opportunities combine; territories are the alternatives. Each gives eight directions (personality, logo, symbolism, colour, typography, photography, graphic system, voice) as principles, never as hex values or font names, and says what it leaves open.
+5. **A moodboard per territory**: about ten real, sourced images, each there for one mechanism. One scout per territory finds the references; then
 
 ```bash
-node assets/aggregate.mjs $AUDIT     # again, after classifying, to refresh counts
+node assets/aggregate.mjs $AUDIT     # refreshes counts and gives every finding its ID
+node assets/moodboard.mjs $AUDIT     # fetches and assembles the moodboards
+```
+
+   Look at each one; replace what does not show its mechanism.
+6. **References, evaluation criteria (gates apart from preferences), the block for brand-kit.**
+7. **Write the summary last**, from the finished synthesis: a lead and five decisions, *preserve, avoid, challenge, explore, validate* (`references/report.md`).
+
+Then generate the report and the brief, and pass the gate:
+
+```bash
 node assets/render.mjs $AUDIT --inline     # --inline also writes landscape.single.html, one file to send
-cp assets/AUDIT.example.md $AUDIT/AUDIT.md    # then rewrite every line
+node assets/brief.mjs $AUDIT               # writes AUDIT.md from the data; never edit it by hand
 node assets/check.mjs $AUDIT
 ```
 
-`AUDIT.example.md` is the quality bar: the five decisions as numbered rules, each with its count and an `evidence/…` path, under 120 lines, in English because agents read it. `check.mjs` fails when a claim has no evidence, a convention is unclassified, a section, the summary or a profile is missing, an opportunity lacks its fields, or a deep opportunity was not challenged. **An audit that fails the gate does not go out.**
+`check.mjs` fails when a claim has no evidence, a convention is unclassified, a section, its implications, the summary or a profile is missing, a decision cites a finding that does not exist, there are fewer than two or more than four territories, a moodboard has under six images, `AUDIT.md` differs from what the data generates, or a deep opportunity was not challenged. **An audit that fails the gate does not go out.**
 
 ## Showing it
 
@@ -183,7 +201,7 @@ Coded values stay in the vocabulary, in English, always. They are data.
 
 ## With brand-kit
 
-`brand-kit` reads `brand/audit/AUDIT.md` when it exists: the framing saves its first questions, section 6 gives it a named competitor for the swap test and a category duel for the tournament, and the clichés seed the "Not" list. This skill never starts `brand-kit`; say that the audit is ready for it and stop.
+`brand-kit` reads `brand/audit/AUDIT.md` when it exists: the brief saves its first questions, the section "For brand-kit" gives it a named competitor for the swap test, a category duel for the tournament and the seed of the "Not" list, and the territories are candidates the session can test. This skill never starts `brand-kit`; say that the audit is ready for it and stop.
 
 ## Files in this skill
 
@@ -191,6 +209,7 @@ Coded values stay in the vocabulary, in English, always. They are data.
 - `references/capture.md`: what is captured and measured, how to read the notes, the fallback chain for blocked sites
 - `references/codebook.md`: the closed vocabulary, one line per value, the tie-break rules, the coder prompt, double coding
 - `references/report.md`: the twelve sections, what a written section is, the writer and profile prompts, the summary in five decisions, the eight quality questions
+- `references/creative.md`: the creative synthesis: implications, thesis, decision matrix, territories, moodboards and their scout prompt, references, evaluation, the generated brief, the critique list
 - `references/synthesis.md`: thresholds, the exception test and the five classes, reading the maps, the opportunity form, the sceptic prompt, what goes into `AUDIT.md`
 - `references/sources.md`: Logosystem, Logoinspo, Mobbin: what to take from each, their bias, the low-volume rule
 - `assets/capture.mjs`: visits each brand, screenshots it, measures colours, typefaces and shapes, saves the logo
@@ -199,6 +218,8 @@ Coded values stay in the vocabulary, in English, always. They are data.
 - `assets/sheets.mjs`: builds the contact sheets
 - `assets/aggregate.mjs`: counts, convention candidates, map axes
 - `assets/render.mjs` and `assets/landscape.template.html`: the report, in black and white
+- `assets/moodboard.mjs`: assembles each territory's moodboard from panel images, the Logosystem catalogue and web references
+- `assets/brief.mjs`: generates `AUDIT.md`, the creative brief for the next agent
 - `assets/check.mjs`: the gate
 - `assets/audit.example.json`, `assets/AUDIT.example.md`: a worked example at the expected depth, on a fictional sector
 - `assets/lib/`: colour, schema and browser helpers

@@ -107,7 +107,7 @@ Those three are concrete, they are about the user's own business, and in practic
 
 ## Category duels, when an audit exists
 
-If `brand/audit/AUDIT.md` exists, its section 6 names two images: the most typical home page of the category and the most deviant one, both from the user's real competitors.
+If `brand/audit/AUDIT.md` exists, its section "For brand-kit" names two images: the most typical home page of the category and the most deviant one, both from the user's real competitors.
 
 This does not replace anything above. Competitors resemble each other by construction, which is exactly what makes them poor material for the main duels, where the two sides must differ on everything. The Mobbin duels stay as they are.
 
@@ -121,7 +121,7 @@ Put the site's name under each, as always. Do not say that one is typical and th
 
 Reading it:
 
-- **The deviant side**: the user is ready to leave the category's look. The audit's open territories are live options, and the clichés in its section 2 go straight into the refusals.
+- **The deviant side**: the user is ready to leave the category's look. The audit's open territories are live options, and its clichés and its Avoid decisions go straight into the refusals.
 - **The typical side**: they want to be recognised as one of the category first. Keep every legibility code, break one cliché rather than four, and prefer the audit's low-risk territory.
 - **Neither**: the strongest signal. Neither the category nor its current dissident is theirs. Look at where the audit's aspirational brands sit.
 

@@ -4,7 +4,7 @@ Counts and walls are not an audit. An audit says what they mean. A report that l
 
 So the report is written, section by section, each part by a writer who looks at the evidence for that part and nothing else. Then the analyst writes the conclusions, and the summary last.
 
-## The twelve sections
+## The fourteen sections
 
 | # | Section | Written by | What it must deliver |
 |---|---|---|---|
@@ -19,7 +19,9 @@ So the report is written, section by section, each part by a writer who looks at
 | 09 | Visual language and touchpoints | a writer | What makes a brand recognisable without its logo, across site and store |
 | 10 | Positioning maps | the analyst | Two or three maps, each read in plain words |
 | 11 | Codes and conventions | the analyst | Every convention classified, with its proof |
-| 12 | White space and opportunities | the analyst | Territories a designer could start from |
+| 12 | White space and opportunities | the analyst | Observed absences, weighed as hypotheses |
+| 13 | Creative synthesis | the analyst | Thesis, tension, the decision matrix, references, how to judge a concept |
+| 14 | Creative territories | the analyst, with moodboard scouts | Two to four alternative answers, each with its directions and a moodboard |
 
 `render.mjs` lays these out. Sections 04 to 09 come from `audit.json` `sections`, 03 from each brand's `profile`, 01 from `summary`.
 
@@ -46,6 +48,8 @@ What separates analysis from description:
 - **Absences are findings.** What no brand does is often worth more than what most do. Name what is missing.
 - **Site and store are compared.** A brand that is black and white on its site and acid yellow in its app icon has told you something.
 - **Indirect and aspirational brands are read against the direct ones.** They are in the panel to be contrasted, not listed.
+- **What people think is never observed.** Write "the mark leans" as a finding; "so it feels competitive" is your reading, and is marked `judged`.
+- **Counts carry their base**: "5 of 9 icons", naming the brands when there are few, and saying which brands were left out and why.
 - **Three to six findings**, each one checkable on the evidence it cites, each labelled `measured`, `observed` or `judged`.
 - **The takeaway is for a designer**, in the imperative or close to it. Not a recap.
 
