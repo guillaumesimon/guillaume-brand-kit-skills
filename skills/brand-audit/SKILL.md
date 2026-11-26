@@ -66,6 +66,8 @@ Pick the mode before anything else. If the user or the calling skill named one, 
 
 You need four things: what the product does in one sentence, who buys it, in which market (country and language), and what people use today instead. In a repository, read it first. If a `brand/` kit or a README answers, do not ask.
 
+**If `brand/brief/BRIEF.md` exists, read it first.** It is the output of the `brand-brief` skill, and its sections 1 and 2 answer all four: state the framing in one line and ask nothing. Its section "For brand-audit" names the competitors and the admired brands the founder cited, and what they believe about the category. The competitors join the scouts' candidates; the admired brands are candidates for the aspirational role and still need their criterion and recognition like any other; the beliefs are hypotheses the counts will confirm or contradict, and the synthesis says which.
+
 Ask only what is missing, one question per turn. The fourth one matters more than it looks: the thing people use instead (paper, a spreadsheet, a free tool from a giant) is an indirect competitor and often the source of the most recognisable open territory.
 
 If a brand already exists (a rebrand, or `brand/tokens.json` is there), it joins the panel with the role `self`.
@@ -200,7 +202,9 @@ Quotes from a site stay in the language they were written in: a French headline 
 
 Coded values stay in the vocabulary, in English, always. They are data.
 
-## With brand-kit
+## With brand-brief and brand-kit
+
+`brand-brief` comes before this skill and is optional: when `brand/brief/BRIEF.md` is there, the framing and the founder's own references come from it (step 1). The audit never rewrites the brief; where the captures contradict what the founder believes, say so in the synthesis.
 
 `brand-kit` reads `brand/audit/AUDIT.md` when it exists: the brief saves its first questions, the section "For brand-kit" gives it a named competitor for the swap test, a category duel for the tournament and the seed of the "Not" list, and the territories are candidates the session can test. This skill never starts `brand-kit`; say that the audit is ready for it and stop.
 

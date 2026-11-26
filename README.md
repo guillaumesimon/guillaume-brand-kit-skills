@@ -1,10 +1,42 @@
 # Brand kit skills
 
-Three Claude Code skills that look at a market, turn a 25-minute conversation into a brand universe, and keep it true afterwards.
+Four Claude Code skills that follow an art director's process: understand the company, look at its market, turn a 25-minute conversation into a brand universe, and keep it true afterwards.
 
-- **`brand-audit`** looks first: the competitive and visual audit an art director runs before designing. Optional, and `brand-kit` reads it when it is there.
+- **`brand-brief`** comes first: the discovery interview, and the brand brief. Optional, and the two skills after it read the brief when it is there.
+- **`brand-audit`** looks at the market: the competitive and visual audit an art director runs before designing. Optional, and `brand-kit` reads it when it is there.
 - **`brand-kit`** — runs the session and writes the kit.
 - **`brand-kit-update`** — keeps the kit honest, versions the brand, and turns every agent mistake into a rule.
+
+## The brief
+
+`brand-brief` answers one question: what must this brand say, to whom, and what must it never become. It is the conversation an art director has with a founder before any talk of aesthetics, built on one observation: people cannot describe the brand they want, and can say in a second what they like and what they refuse.
+
+1. **Context.** It reads the project first, then asks only what is missing: short questions, mostly closed, whose options are hypotheses written for this project and anchored in brands the founder knows.
+2. **Reference landscape.** Scouts gather about fifteen real brands in four circles (direct competitors, adjacent categories, analogous industries, aspirational brands), plus every brand the founder names. A script fetches one clean image of each: consent banners closed, blocked and broken pages set aside.
+3. **Positioning.** Three or four territories in plain words: the closest, the one that goes, what is kept from a second.
+4. **Visual discovery.** Clickable boards. Swipe a brand (speaks to me; I like it, not for us; not at all; I don't know it), duel two, then tick what you keep or what bothers you. Votes come back to the agent without anything to type.
+5. **Refinement.** Each answer changes the next question: the skill keeps, per dimension, an orientation, a confidence and its evidence, and goes where it matters most and is known least.
+6. **Synthesis.** Read back in plain words, corrected, validated.
+
+```
+brand/brief/
+├── brief.json       the single source: answers, verbatim, provenance, references, votes
+├── BRIEF.md         the brief for the next agent, generated from brief.json
+├── brief.html       the brief for people, with the three walls of references
+├── rounds/          the visual rounds shown, and their votes
+└── evidence/        one image per reference
+```
+
+Every line of the brief says where it comes from: read in the project, stated, chosen on a board, inferred, or assumed. A gate refuses a brief with a value that has no instance, a wallpaper word in its summary, a conclusion drawn from one signal, or no refusal at all.
+
+What it needs: Node 22 or later, web search, and Playwright with Chromium to capture pages (`node skills/brand-brief/assets/fetch.mjs --check`). No API key. The Mobbin connector is optional. `node --test skills/brand-brief/tests/*.test.mjs` runs its tests.
+
+What to know before using it:
+
+- **It is the founder's account.** No customer is interviewed, and it says so.
+- **The references show taste, not the market.** The market is the audit.
+- **It fixes no colour, typeface or logo.** It records intentions, taste and refusals for the skills that follow.
+- **The board works two ways.** Served locally, the votes reach the agent on the last click. Sent as one file (a cloud session), it ends on a short code to paste back.
 
 ## The audit
 
@@ -60,6 +92,7 @@ So the skill shows rather than asks, asks about consequences rather than mechani
 Clone the repo, then symlink the skills into `~/.claude/skills` so edits here are live everywhere:
 
 ```bash
+ln -s "$PWD/skills/brand-brief" ~/.claude/skills/brand-brief
 ln -s "$PWD/skills/brand-audit" ~/.claude/skills/brand-audit
 ln -s "$PWD/skills/brand-kit" ~/.claude/skills/brand-kit
 ln -s "$PWD/skills/brand-kit-update" ~/.claude/skills/brand-kit-update

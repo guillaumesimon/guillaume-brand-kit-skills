@@ -1,6 +1,6 @@
 # Skill `brand-brief` : conception
 
-Date : 2026-11-26. Statut : à valider.
+Date : 2026-11-26. Statut : révisé après le retour de Guillaume et la lecture de sa note « Adaptive Brand Discovery ». La section « Révision » en fin de document prime sur ce qui précède quand les deux diffèrent ; `skills/brand-brief/SKILL.md` est la référence une fois la skill écrite.
 
 ## Intention
 
@@ -174,3 +174,28 @@ Node 22, aucune dépendance obligatoire. Playwright sert seulement à capturer u
 - Le détail visuel de la planche et du rapport, dans la ligne noir et blanc de `landscape.html`.
 - Le nombre exact de paires et d'images par manche, dans les fourchettes données.
 - Les paires de départ de `anchors.md`.
+
+## Révision : ce qui a changé après le retour de Guillaume
+
+Deux demandes directes : du swipe « à la Tinder » pour trier, et pas de capture où un bandeau de cookies cache la marque. Plus une note de cadrage, « Adaptive Brand Discovery », dont voici ce qui est repris.
+
+**Repris**
+
+- **Le swipe remplace le mur.** Une carte à la fois, quatre réponses : ça me parle ; j'aime, pas pour nous ; pas du tout ; je ne connais pas. Neutre, inconnu et rejet ne sont jamais confondus.
+- **L'extraction d'attributs.** Une carte ou un duel peut porter une liste d'attributs écrits par l'agent ; après la réponse, la planche demande ce qu'on en garde ou ce qui gêne, en pastilles à cocher. Le duel accepte aussi « les deux ».
+- **Les territoires stratégiques.** Avant tout logo, trois ou quatre territoires écrits pour ce projet, en langage simple : le plus proche, celui qu'on élimine, ce qu'on garde d'un second. Dans le chat.
+- **Les quatre cercles de références** (concurrents directs, catégories adjacentes, industries analogues, marques aspirationnelles) et une fiche par référence : source, date, raison, hypothèse testée, limites.
+- **La boucle adaptative.** `brief.json` tient un état par dimension : orientation, importance, confiance (`unknown`, `low`, `medium`, `high`), preuves, limite, contradictions. Le prochain exercice est choisi selon l'importance, l'incertitude, la contradiction et l'effort demandé. Les sept temps du déroulé sont des repères, pas un tunnel ; la durée visée est de 15 à 25 minutes et la session se reprend.
+- **Les couches séparées** : stratégie, perception voulue, personnalité, préférences créatives. Quand un goût du fondateur va contre son audience, le risque est dit et l'arbitrage lui revient.
+- **Les tensions** en « X sans être Y », avec le signe qui dit que la limite est franchie.
+- **Le brief** gagne : promesse, principes créatifs, critères d'évaluation, et quatre niveaux (indispensable, préférence, piste, interdit).
+- **Le test de qualité** : donner `BRIEF.md` seul à un agent créatif et lui demander trois directions distinctes.
+
+**Laissé de côté**
+
+- Une application à composants avec étape de build : un gabarit HTML piloté par JSON fait le même travail.
+- Des curseurs d'axes que l'utilisateur ajuste : `brand-kit` les a essayés et retirés. Le profil est relu en mots, avec annulation libre.
+- Un score numérique par dimension, et une arborescence en cinq dossiers.
+- Un fichier d'état séparé : `brief.json` reste la source unique, écrite au fil de la session, ce qui donne la reprise.
+
+**Captures.** `fetch.mjs` ferme les bandeaux de consentement, masque ce qui reste collé à l'écran, reconnaît les pages anti-robot et de maintenance et les marque comme telles, puis assemble une planche-contact. L'agent la regarde avant qu'une planche parte, et retire ou remplace toute image où la marque ne se voit pas.

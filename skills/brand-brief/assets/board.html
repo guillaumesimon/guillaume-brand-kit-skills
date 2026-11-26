@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Planche</title>
+<style>
+/* Almost no chrome: every pixel here competes with the images being judged.
+   Black and white, so that no colour of ours sits beside a colour of theirs. */
+:root{--bg:#fff;--ink:#111;--muted:#6b6b6b;--line:#e4e4e4;--soft:#f4f4f4}
+@media (prefers-color-scheme:dark){:root{--bg:#0d0d0d;--ink:#f2f2f2;--muted:#9a9a9a;--line:#2a2a2a;--soft:#181818}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
+.top{display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding:16px 24px 0;font-size:13px;color:var(--muted)}
+.top b{color:var(--ink);font-weight:600}
+.back{text-decoration:underline;text-underline-offset:3px}
+[hidden]{display:none!important}
+.screen{max-width:1400px;margin:0 auto;padding-bottom:40px}
+h1{font-size:22px;line-height:1.25;font-weight:600;letter-spacing:-.015em;margin:12px 24px 4px}
+.sub{margin:0 24px 16px;color:var(--muted);max-width:64ch}
+.pill{border:1px solid var(--line);border-radius:999px;padding:9px 18px;font-size:14px}
+.pill:hover{border-color:var(--ink)}
+.pill kbd{font:inherit;color:var(--muted);margin-left:6px;font-size:12px}
+.primary{background:var(--ink);color:var(--bg);border-radius:999px;padding:11px 24px;font-weight:600}
+.row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;padding:18px 24px 0}
+.name{font-size:13px;font-weight:500;margin-top:8px}
+img{display:block;background:var(--soft)}
+
+/* swipe */
+.deck{display:flex;flex-direction:column;align-items:center;padding:0 24px}
+.card{position:relative;width:min(100%,calc(58vh * 1.6),960px);touch-action:none;user-select:none;cursor:grab;transition:transform .18s ease,opacity .18s ease}
+.card.drag{transition:none;cursor:grabbing}
+.card img{width:100%;aspect-ratio:16/10;object-fit:contain;border-radius:10px;outline:1px solid var(--line);pointer-events:none}
+.stamp{position:absolute;top:42%;left:50%;transform:translate(-50%,-50%);white-space:nowrap;padding:10px 18px;border-radius:8px;background:var(--ink);color:var(--bg);font-weight:600;font-size:16px;opacity:0;pointer-events:none}
+.y{font-weight:600}
+
+/* duel */
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:16px;padding:0 24px}
+.side{display:block;width:100%;text-align:left}
+.side img{width:100%;aspect-ratio:16/10;object-fit:contain;border-radius:10px;outline:1px solid var(--line);transition:transform .12s ease}
+.side:hover img,.side:focus-visible img{outline:3px solid var(--ink);transform:translateY(-2px)}
+
+/* attributes */
+.why{display:grid;grid-template-columns:minmax(0,360px) 1fr;gap:28px;padding:0 24px;align-items:start}
+.why img{width:100%;height:auto;max-height:46vh;object-fit:contain;border-radius:10px;outline:1px solid var(--line)}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin:4px 0 18px}
+.chips button{border:1px solid var(--line);border-radius:999px;padding:8px 14px;font-size:14px}
+.chips button:hover{border-color:var(--ink)}
+.chips button[aria-pressed=true]{background:var(--ink);border-color:var(--ink);color:var(--bg)}
+.why h2{font-size:18px;font-weight:600;margin:0 0 10px;letter-spacing:-.01em}
+
+/* end */
+.end{max-width:560px;margin:10vh auto 0;padding:0 24px}
+.end h1{margin-left:0}
+.end p,.end label{color:var(--muted)}
+.end label{display:block;font-size:13px;margin:18px 0 6px}
+.end input,.code{width:100%;font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:10px 12px}
+.code{display:block;margin:16px 0 12px;background:var(--soft);font:13px/1.5 ui-monospace,Menlo,monospace;word-break:break-all;resize:none}
+.end .primary{margin-top:18px}
+@media (max-width:720px){.pair{grid-template-columns:1fr}.why{grid-template-columns:1fr}}
+@media (hover:none){kbd{display:none}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="top"><span id="where"></span><button class="back" id="back" hidden></button></div>
+<main class="screen" id="screen"></main>
+
+<!-- Filled by board.mjs. Never edit this file per round: write a round JSON and let the script inject it.
+     The page receives presentation fields only (image, name, attribute labels). The objective of an
+     exercise and the dimension it tests are stripped before injection, and must never appear here. -->
+<script id="round" type="application/json">__ROUND__</script>
+<script>
+(function(){
+  var R=JSON.parse(document.getElementById('round').textContent);
+  var L={ // the only words on the board
+    fr:{swipe:'Ça te parle ?',swipeSub:'Une image à la fois. Glisse, clique ou utilise les flèches.',
+      y:'Ça me parle',l:'J’aime, pas pour nous',x:'Pas du tout',u:'Je ne connais pas',
+      duel:'Laquelle des deux ?',duelSub:'Rien à lire. Clique sur celle qui serait la plus juste pour ta marque.',
+      both:'Les deux',neither:'Aucune des deux',space:'espace',
+      keep:'Qu’est-ce que tu en gardes ?',bother:'Qu’est-ce qui te gêne ?',pick:'Pourquoi celle-ci ?',several:'Plusieurs réponses possibles. Aucune, c’est une réponse aussi.',
+      next:'Continuer',back:'Revenir en arrière',note:'Un mot à ajouter ? (facultatif)',done:'Terminé',
+      sent:'C’est noté.',sentSub:'Tu peux revenir à la conversation.',
+      copyTitle:'Dernière étape',copySub:'Copie ce code et colle-le dans la conversation.',copy:'Copier',copied:'Copié'},
+    en:{swipe:'Does this speak to you?',swipeSub:'One image at a time. Drag, click or use the arrow keys.',
+      y:'Speaks to me',l:'I like it, not for us',x:'Not at all',u:'I don’t know it',
+      duel:'Which of the two?',duelSub:'Nothing to read. Click the one that would be more right for your brand.',
+      both:'Both',neither:'Neither',space:'space',
+      keep:'What would you keep from it?',bother:'What bothers you?',pick:'Why this one?',several:'Several answers allowed. None is an answer too.',
+      next:'Continue',back:'Go back',note:'Anything to add? (optional)',done:'Done',
+      sent:'Noted.',sentSub:'You can go back to the conversation.',
+      copyTitle:'Last step',copySub:'Copy this code and paste it into the conversation.',copy:'Copy',copied:'Copied'}
+  };
+  var T=L[R.locale]||L.fr; document.documentElement.lang=L[R.locale]?R.locale:'fr';
+  var screens=[];
+  (R.steps||[]).forEach(function(s){
+    if(s.type==='swipe') s.items.forEach(function(it){screens.push({kind:'swipe',step:s,item:it});});
+    else if(s.type==='duel') s.pairs.forEach(function(p){screens.push({kind:'duel',step:s,pair:p});});
+  });
+  var A=screens.map(function(){return null;}), note='', i=0, asking=false;
+  var el=document.getElementById('screen'), back=document.getElementById('back'), where=document.getElementById('where');
+  back.textContent=T.back;
+  function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]});}
+  function attrsOf(sc,c){
+    if(sc.kind==='swipe') return (c==='y'||c==='l'||c==='x')?(sc.item.attributes||[]):[];
+    return (c==='a'||c==='b')?((sc.pair[c].attributes)||sc.pair.attributes||[]):[];
+  }
+
+  function show(){
+    asking=false; back.hidden=i===0; window.scrollTo(0,0);
+    if(i>=screens.length) return finish();
+    where.innerHTML='<b>'+(i+1)+'</b> / '+screens.length;
+    var sc=screens[i];
+    if(sc.kind==='swipe'){
+      el.innerHTML='<h1>'+esc(sc.step.title||T.swipe)+'</h1><p class="sub">'+esc(sc.step.sub||T.swipeSub)+'</p>'+
+        '<div class="deck"><div class="card" id="card"><img src="'+esc(sc.item.src)+'" alt="'+esc(sc.item.name)+'"><span class="stamp" id="stamp"></span><div class="name">'+esc(sc.item.name)+'</div></div></div>'+
+        '<div class="row"><button class="pill" data-c="x">'+T.x+'<kbd>←</kbd></button><button class="pill" data-c="l">'+T.l+'<kbd>↑</kbd></button><button class="pill y" data-c="y">'+T.y+'<kbd>→</kbd></button></div>'+
+        '<div class="row" style="padding-top:10px"><button class="pill" data-c="u" style="border-color:transparent;color:var(--muted)">'+T.u+'<kbd>↓</kbd></button></div>';
+      drag(document.getElementById('card'));
+    } else {
+      var p=sc.pair;
+      el.innerHTML='<h1>'+esc(sc.step.title||T.duel)+'</h1><p class="sub">'+esc(sc.step.sub||T.duelSub)+'</p>'+
+        '<div class="pair">'+['a','b'].map(function(k){return '<button class="side" data-c="'+k+'"><img src="'+esc(p[k].src)+'" alt="'+esc(p[k].name)+'"><div class="name">'+esc(p[k].name)+'</div></button>';}).join('')+'</div>'+
+        '<div class="row"><button class="pill" data-c="2">'+T.both+'</button><button class="pill" data-c="n">'+T.neither+'<kbd>'+T.space+'</kbd></button>'+(sc.step.known?'<button class="pill" data-c="u">'+T.u+'</button>':'')+'</div>';
+    }
+    el.querySelectorAll('[data-c]').forEach(function(b){b.onclick=function(){choose(b.dataset.c);};});
+  }
+
+  function choose(c){
+    var sc=screens[i], attrs=attrsOf(sc,c);
+    A[i]={c:c,a:[]};
+    if(!attrs.length){ i++; return show(); }
+    asking=true; window.scrollTo(0,0);
+    var it=sc.kind==='swipe'?sc.item:sc.pair[c];
+    var q=sc.kind==='duel'?T.pick:(c==='x'?T.bother:T.keep);
+    el.innerHTML='<h1>'+esc(it.name)+'</h1><p class="sub">'+T.several+'</p><div class="why"><img src="'+esc(it.src)+'" alt="'+esc(it.name)+'"><div><h2>'+q+'</h2>'+
+      '<div class="chips">'+attrs.map(function(t,k){return '<button data-k="'+k+'" aria-pressed="false">'+esc(t)+'</button>';}).join('')+'</div>'+
+      '<button class="primary" id="go">'+T.next+'</button></div></div>';
+    el.querySelectorAll('.chips button').forEach(function(b){b.onclick=function(){
+      var k=+b.dataset.k, at=A[i].a.indexOf(k); if(at<0) A[i].a.push(k); else A[i].a.splice(at,1);
+      b.setAttribute('aria-pressed',at<0);};});
+    document.getElementById('go').onclick=function(){ A[i].a.sort(function(x,y){return x-y;}); i++; show(); };
+  }
+
+  function drag(card){
+    var sx=0,sy=0,dx=0,dy=0,on=false,stamp=document.getElementById('stamp');
+    function verdict(){ return dx>90?'y':dx<-90?'x':dy<-90?'l':dy>110?'u':''; }
+    card.onpointerdown=function(e){on=true;sx=e.clientX;sy=e.clientY;dx=dy=0;card.classList.add('drag');card.setPointerCapture(e.pointerId);};
+    card.onpointermove=function(e){ if(!on) return; dx=e.clientX-sx; dy=e.clientY-sy;
+      card.style.transform='translate('+dx+'px,'+dy+'px) rotate('+(dx/28)+'deg)'; var v=verdict(); stamp.textContent=v?T[v]:''; stamp.style.opacity=v?1:0; };
+    card.onpointerup=card.onpointercancel=function(){ if(!on) return; on=false; card.classList.remove('drag'); var v=verdict();
+      if(v){ card.style.opacity=0; setTimeout(function(){choose(v);},140); } else { card.style.transform=''; stamp.style.opacity=0; } };
+  }
+
+  back.onclick=function(){ if(asking){ A[i]=null; return show(); } if(i>0){ i--; A[i]=null; show(); } };
+  document.addEventListener('keydown',function(e){
+    var sc=screens[i]; if(!sc||asking||e.target.tagName==='INPUT'||e.target.tagName==='TEXTAREA') return;
+    var k=e.key, c=sc.kind==='swipe'?{ArrowRight:'y',ArrowLeft:'x',ArrowUp:'l',ArrowDown:'u'}[k]:{ArrowLeft:'a',ArrowRight:'b',' ':'n'}[k];
+    if(c){ e.preventDefault(); choose(c); }
+  });
+
+  // bb1.<round id>.<one token per screen: answer letter then attribute indexes in base 36>.<note, base64url>
+  function code(){
+    var toks=A.map(function(a){return a?a.c+a.a.map(function(k){return k.toString(36);}).join(''):'_';}).join(',');
+    var n=note?btoa(unescape(encodeURIComponent(note))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,''):'';
+    return ['bb1',R.id,toks,n].join('.');
+  }
+  function finish(){
+    where.textContent='';
+    el.innerHTML='<div class="end"><h1>'+T.done+'</h1><label for="note">'+T.note+'</label><input id="note" maxlength="200"><button class="primary" id="send">'+T.done+'</button></div>';
+    document.getElementById('note').oninput=function(e){note=e.target.value;};
+    document.getElementById('send').onclick=function(){
+      var c=code(); back.hidden=true;
+      function sent(){ el.innerHTML='<div class="end"><h1>'+T.sent+'</h1><p>'+T.sentSub+'</p></div>'; }
+      function paste(){
+        el.innerHTML='<div class="end"><h1>'+T.copyTitle+'</h1><p>'+T.copySub+'</p><textarea class="code" id="code" rows="3" readonly>'+esc(c)+'</textarea><button class="primary" id="cp">'+T.copy+'</button></div>';
+        var ta=document.getElementById('code'); ta.onclick=function(){ta.select();};
+        document.getElementById('cp').onclick=function(){ ta.select(); var b=this;
+          var p=navigator.clipboard&&navigator.clipboard.writeText?navigator.clipboard.writeText(c):Promise.reject();
+          p.catch(function(){document.execCommand('copy');}).then(function(){b.textContent=T.copied;}); };
+      }
+      if(R.post&&/^http/.test(location.protocol)) fetch(R.post,{method:'POST',headers:{'content-type':'text/plain'},body:c}).then(function(r){r.ok?sent():paste();}).catch(paste);
+      else paste();
+    };
+  }
+  show();
+})();
+</script>
+</body>
+</html>
