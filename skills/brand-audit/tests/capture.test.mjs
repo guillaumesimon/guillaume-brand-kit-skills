@@ -143,3 +143,11 @@ test('the whole home page, inner pages and a later run: tiles and pages are kept
   assert.equal((await captureAll(dir, { settle: 200 })).length, 0);
   assert.ok(existsSync(join(dir, 'evidence/a/by-hand.webp')));
 });
+test('the largest pictures of the page are kept for the moodboard, small ones and the logo are not', async () => {
+  const r = await captureBrand(browser, { id: 'media', url: base + '/long.html' }, out, fast);
+  const media = r.evidence.filter((p) => /\/media-\d+\.webp$/.test(p));
+  assert.equal(media.length, 3, media.join(', '));
+  assert.ok(media.every((p) => existsSync(join(out, p.replace(/^evidence\//, '')))));
+  const m = JSON.parse(readFileSync(join(out, 'media/measures.json')));
+  assert.deepEqual(m.media_items.map((x) => x.kind).sort(), ['background', 'img', 'svg']);
+});

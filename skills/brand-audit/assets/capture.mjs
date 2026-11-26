@@ -231,6 +231,58 @@ export async function captureBrand(browser, brand, outDir, opts = {}) {
       return document.documentElement.scrollHeight;
     }).catch(() => 900);
     await shot(page, 'full.webp', { fullPage: true }, 720, 3600).catch(() => notes.push('full-page screenshot failed'));
+    // The pictures the brand publishes: photographs, illustrations, product shots. The largest ones,
+    // spread down the page, each saved alone for the moodboard.
+    const items = await page.evaluate(({ max }) => {
+      const out = [], seen = new Set(), vw = innerWidth;
+      const skip = (el) => el.closest('header, nav, footer, [data-brand-audit-logo], [class*="logo" i], [role="dialog"], [aria-modal="true"], [class*="cookie" i], [id*="cookie" i]');
+      const consider = (el, kind, key) => {
+        const r = el.getBoundingClientRect();
+        if (r.width < 240 || r.height < 160 || r.width * r.height < 90000 || skip(el)) return;
+        if (key && seen.has(key)) return;
+        if (key) seen.add(key);
+        const cs = getComputedStyle(el);
+        if (cs.visibility === 'hidden' || cs.display === 'none' || +cs.opacity < 0.2) return;
+        out.push({ el, kind, area: Math.min(r.width, vw) * r.height, top: r.top + scrollY });
+      };
+      for (const el of document.querySelectorAll('img, picture, video')) {
+        const target = el.tagName === 'IMG' && el.parentElement?.tagName === 'PICTURE' ? null : el;
+        if (target) consider(target, el.tagName === 'VIDEO' ? 'video' : 'img', el.currentSrc || el.src || el.poster || null);
+      }
+      for (const el of document.querySelectorAll('svg')) if (!el.closest('svg svg') && el.querySelectorAll('*').length >= 2) consider(el, 'svg', null);
+      for (const el of document.querySelectorAll('body *')) {
+        const bg = getComputedStyle(el).backgroundImage;
+        if (bg && bg.startsWith('url(') && !el.querySelector('img, video')) consider(el, 'background', bg);
+      }
+      // Largest first, but no two from the same stretch of page, so the moodboard is not one hero cut four ways.
+      out.sort((a, b) => b.area - a.area);
+      const kept = [];
+      for (const it of out) {
+        if (kept.length >= max) break;
+        if (kept.some((k) => Math.abs(k.top - it.top) < 120 && k.kind === it.kind)) continue;
+        kept.push(it);
+      }
+      document.querySelectorAll('[data-brand-audit-media]').forEach((e) => e.removeAttribute('data-brand-audit-media'));
+      return kept.map((it, i) => { it.el.setAttribute('data-brand-audit-media', String(i + 1)); const r = it.el.getBoundingClientRect(); return { n: i + 1, kind: it.kind, width: Math.round(r.width), height: Math.round(r.height), top: Math.round(it.top) }; });
+    }, { max: opts.maxMedia ?? 8 }).catch(() => []);
+    const mediaItems = [];
+    for (const it of items) {
+      try {
+        const el = page.locator(`[data-brand-audit-media="${it.n}"]`).first();
+        await el.scrollIntoViewIfNeeded({ timeout: 3000 });
+        await page.waitForTimeout(250);
+        await saveWebp(tool, await el.screenshot({ type: 'png', timeout: 6000 }), join(dir, `media-${mediaItems.length + 1}.webp`), 900, 900);
+        evidence.push(rel(`media-${mediaItems.length + 1}.webp`));
+        mediaItems.push({ file: `media-${mediaItems.length + 1}.webp`, kind: it.kind, width: it.width, height: it.height, top: it.top });
+      } catch { /* an element that moved or vanished */ }
+    }
+    await page.evaluate(() => scrollTo(0, 0)).catch(() => {});
+    if (mediaItems.length) {
+      const mf = join(dir, 'measures.json');
+      const mj = JSON.parse(await readFile(mf, 'utf8'));
+      mj.media_items = mediaItems;
+      await writeFile(mf, JSON.stringify(mj, null, 2));
+    }
     for (let k = 1; k <= 3 && k * TILE < height - 200; k++) {
       await shot(page, `scroll-${k + 1}.webp`, { fullPage: true, clip: { x: 0, y: k * TILE, width: 1440, height: Math.min(TILE, height - k * TILE) } }, 1100, 1100)
         .catch(() => notes.push(`scroll tile ${k + 1} failed`));
