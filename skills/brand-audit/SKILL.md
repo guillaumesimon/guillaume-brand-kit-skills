@@ -35,7 +35,7 @@ The scripts do the mechanical work so that your attention goes where it is neede
 
 | | Flash | Deep |
 |---|---|---|
-| Time | about 10 minutes | about 40 minutes |
+| Time | about 10 minutes (measured once: 10 brands, two scouts, two coders) | about 40 minutes (estimate, not yet measured) |
 | Panel | 8 direct, 2 aspirational | 10 to 12 direct, 4 to 6 indirect, 3 to 4 leaders, 5 to 8 aspirational |
 | Questions to the user | none if the context is enough | 2 at most, then one panel review |
 | Capture | home page | home page, 2 inner pages, App Store listing |
