@@ -60,3 +60,9 @@ test('resolving a combination mark to another type drops its symbol_nature', () 
   assert.deepEqual(mergeCodes(p, { a: { logo_type: 'wordmark' } }, { resolve: true }).errors, []);
   assert.equal(p[0].codes.symbol_nature, undefined);
 });
+test('media kinds label the moodboard and stay out of the codes', () => {
+  const p = panel();
+  mergeCodes(p, { a: { ...ok, media_kinds: { 'media-1': 'photo' } } });
+  assert.deepEqual(p[0].media_kinds, { 'media-1': 'photo' });
+  assert.equal(p[0].codes.media_kinds, undefined);
+});

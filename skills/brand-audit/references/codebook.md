@@ -128,6 +128,10 @@ What the main headline does. `measures.headline.text` has it; check it against t
 | `proof` | leads with a number or an authority | "Trusted by 2 million runners" |
 | `community` | invites you into a group | "Together, we run" |
 
+## The pictures of the site
+
+`capture.mjs` saves the largest pictures of each home page as `media-1.webp`, `media-2.webp` and so on. Coders say what each one is in `media_kinds`: `photo` (a photograph), `illustration` (drawn, painted or rendered), `product` (the product itself: a screen, a device, an object), `graphic` (shapes, patterns, type as image), `video` (a still of a video). The kinds label the brand's moodboard in the report; they are not counted.
+
 ## The coder prompt
 
 Four or five brands per coder: each brand is about ten images. Give the absolute paths; the coder must open the images.
@@ -164,7 +168,8 @@ Return JSON only:
     "hue": "…", "saturation": "…", "ground": "…", "hue_count": "…",
     "headline_class": "…", "text_class": "…",
     "imagery": "…", "layout": "…", "headline_promise": "…",
-    "notes": "one or two sentences: what sets this brand apart on the capture"
+    "notes": "one or two sentences: what sets this brand apart on the capture",
+    "media_kinds": { "media-1": "photo | illustration | product | graphic | video", "…": "…" }
   }
 }
 ```

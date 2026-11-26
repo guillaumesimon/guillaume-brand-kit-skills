@@ -17,7 +17,10 @@ export function mergeCodes(panel, codesById, { resolve = false } = {}) {
   for (const [id, raw] of Object.entries(codesById)) {
     const brand = panel.find((b) => b.id === id);
     if (!brand) { errors.push(`${id}: not in the panel`); continue; }
-    const codes = Object.fromEntries(Object.entries(raw).map(([k, v]) => [k, k in VOCAB || k === 'symbol_subject' ? norm(v) : v]));
+    // What each saved picture is goes on the brand, not in the codes: it labels the moodboard, it is not counted.
+    const { media_kinds: kinds, ...rest } = raw;
+    if (kinds && typeof kinds === 'object') brand.media_kinds = { ...brand.media_kinds, ...kinds };
+    const codes = Object.fromEntries(Object.entries(rest).map(([k, v]) => [k, k in VOCAB || k === 'symbol_subject' ? norm(v) : v]));
     if (resolve) {
       const next = { ...brand.codes, ...codes };
       if (next.logo_type && next.logo_type !== 'combination' && !('symbol_nature' in codes)) delete next.symbol_nature;

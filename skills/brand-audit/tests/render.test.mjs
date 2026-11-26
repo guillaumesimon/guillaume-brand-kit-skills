@@ -81,3 +81,13 @@ test('a javascript: url is not linked, and a $ in the product name does not mang
   assert.ok(!/href="javascript:/i.test(html));
   assert.ok(html.includes('<title>Visual landscape audit · Pay $&amp; go</title>'));
 });
+test('a brand profile is a moodboard: logo, icon, palette, headline, site, its own pictures and store screens', () => {
+  const a = structuredClone(example); const b = a.panel[0];
+  b.evidence.push('evidence/folio/media-1.webp', 'evidence/folio/media-2.webp', 'evidence/folio/app-1.webp', 'evidence/folio/headline.webp', 'evidence/folio/app-icon.webp');
+  b.media_kinds = { 'media-1': 'illustration' };
+  const html = renderLandscape(a, STRINGS.en);
+  const prof = html.slice(html.indexOf('<section class="s" id="profiles">'), html.indexOf('<section class="s" id="logos">'));
+  const first = prof.slice(0, prof.indexOf('</article>'));
+  for (const cls of ['mt logo', 'mt icon', 'mt pal', 'mt type', 'mt site', 'mt media big', 'mt store']) assert.ok(first.includes(`class="${cls}"`), cls);
+  assert.ok(first.includes('>Illustration</figcaption>') && first.includes('>From the site</figcaption>'));
+});
