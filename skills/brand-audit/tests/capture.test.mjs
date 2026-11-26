@@ -151,3 +151,11 @@ test('the largest pictures of the page are kept for the moodboard, small ones an
   const m = JSON.parse(readFileSync(join(out, 'media/measures.json')));
   assert.deepEqual(m.media_items.map((x) => x.kind).sort(), ['background', 'img', 'svg']);
 });
+test('a queue or waiting-room page is partial', async () => {
+  const r = await captureBrand(browser, { id: 'q', url: base + '/queue.html' }, out, fast);
+  assert.equal(r.capture, 'partial');
+});
+test('a hero placed in a tall <header> is still a picture of the page', async () => {
+  const r = await captureBrand(browser, { id: 'hh', url: base + '/herohead.html' }, out, fast);
+  assert.ok(r.evidence.filter((p) => /media-\d/.test(p)).length >= 4, r.evidence.join(', '));
+});

@@ -11,7 +11,7 @@ import { launch, saveWebp, USER_AGENT } from './lib/browser.mjs';
 import { palette, parseColor, classify, toHex } from './lib/color.mjs';
 
 const TILE = 1500; // height of one scroll tile, in page pixels
-const BLOCK_TITLE = /just a moment|attention required|access denied|are you a robot|verify you are human|pardon our interruption/i;
+const BLOCK_TITLE = /just a moment|attention required|access denied|are you a robot|verify you are human|pardon our interruption|hang tight|sit tight|waiting room|you are (now )?in (a )?(line|queue)|file d'attente/i;
 const ERROR_PAGE = /un probl[eè]me est survenu|something went wrong|page (introuvable|not found)|une erreur (est survenue|s'est produite)|404 not found|service unavailable|temporarily unavailable/i;
 const CONSENT = /^(tout |i |j')?(accept|autoris|allow|agree|ok$|got it|d'accord)/i;
 const LOGO_SELECTOR = 'header a[href="/"] svg, header a[href="/"] img, [class*="logo" i] svg, [class*="logo" i] img, header svg, header img';
@@ -235,7 +235,9 @@ export async function captureBrand(browser, brand, outDir, opts = {}) {
     // spread down the page, each saved alone for the moodboard.
     const items = await page.evaluate(({ max }) => {
       const out = [], seen = new Set(), vw = innerWidth;
-      const skip = (el) => el.closest('header, nav, footer, [data-brand-audit-logo], [class*="logo" i], [role="dialog"], [aria-modal="true"], [class*="cookie" i], [id*="cookie" i]');
+      // The site's own bar (a short header or nav) and footer are not pictures; a tall <header> holding the hero is.
+      const bar = (el) => { const h = el.closest('header, nav, [role="banner"]'); return h && h.getBoundingClientRect().height < 220; };
+      const skip = (el) => bar(el) || el.closest('footer, [data-brand-audit-logo], [class*="logo" i], [role="dialog"], [aria-modal="true"], [class*="cookie" i], [id*="cookie" i]');
       const consider = (el, kind, key) => {
         const r = el.getBoundingClientRect();
         if (r.width < 240 || r.height < 160 || r.width * r.height < 90000 || skip(el)) return;
