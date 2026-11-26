@@ -49,7 +49,7 @@ What separates analysis from description:
 - **Three to six findings**, each one checkable on the evidence it cites, each labelled `measured`, `observed` or `judged`.
 - **The takeaway is for a designer**, in the imperative or close to it. Not a recap.
 
-Write in the user's language. No adjectives that would fit any sector: "modern", "dynamic", "clean" describe nothing.
+Write in the report language: English unless the user asked for another. Quotes from a site stay in their own language. No adjectives that would fit any sector: "modern", "dynamic", "clean" describe nothing.
 
 ## Dispatching the writers
 
@@ -93,7 +93,7 @@ Rules:
 - Name what is absent as well as what is present.
 - Every finding cites one or more evidence paths, relative, starting with "evidence/", that
   you opened.
-- Write in <language>. Plain sentences. No word that would fit any sector.
+- Write in <the report language, English by default>. Quote headlines in their own language. Plain sentences. No word that would fit any sector.
 
 Write your result as valid JSON to <absolute path>/sections-<writer>.json, one object per section key:
 { "<key>": { "lead": "…", "paragraphs": ["…", "…"],

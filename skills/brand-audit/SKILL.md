@@ -173,10 +173,11 @@ Screenshots and logos of other companies are working material for internal refer
 
 ## Language
 
-Two readers, two languages.
+**The report is in English by default**, whatever language the conversation is in: `landscape.html`, every sentence of `audit.json` a person will read (the framing, each brand's `why`, `established.reason` and `recognition`, the sections, the profiles, the reasons, the map readings, the opportunities, the summary, the limits), and `AUDIT.md`. Keep `meta.locale` at `"en"` and write the scouts', coders' and writers' prompts so that they answer in English.
 
-- **`audit.json` prose and `landscape.html`: the user's language.** Set `meta.locale` to it. Every sentence a person will read on the board comes from `audit.json`: the framing, each brand's `why`, the reasons, the map reading, the opportunities, the limits. Write them in the user's language, and tell the scouts to write `why` and `established.reason` in it. The board's own labels and the vocabulary values follow `meta.locale` (French and English ship with `render.mjs`); logo types keep their English names, as designers say them.
-- **`AUDIT.md`: English**, whatever the conversation language, for the same reason `brand-kit` writes `BRAND.md` in English: agents read it. It is written separately, so nothing is lost.
+Converse with the user in their own language. Only when the user asks for the report in another language, set `meta.locale` to it and have every writer write in it; French and English labels ship with `render.mjs`. `AUDIT.md` stays in English in every case: agents read it, for the same reason `brand-kit` writes `BRAND.md` in English.
+
+Quotes from a site stay in the language they were written in: a French headline is quoted in French inside an English sentence.
 
 Coded values stay in the vocabulary, in English, always. They are data.
 

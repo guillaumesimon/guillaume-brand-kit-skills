@@ -8,7 +8,7 @@ Write this before dispatching anyone. Scripts add the rest.
 
 ```json
 {
-  "meta": { "mode": "flash", "date": "2026-11-26", "locale": "fr", "market_country": "fr",
+  "meta": { "mode": "flash", "date": "2026-11-26", "locale": "en", "market_country": "fr",
             "thresholds": { "convention": 0.6, "rare": 0.15 } },
   "framing": { "product": "…", "audience": "…", "market": "…", "instead_of": "…" },
   "panel": [
@@ -104,7 +104,7 @@ Return JSON only, an array of:
   "app_store_term": "name to search in the App Store"                                // when there is an app
 }
 
-Write "why" and "established.reason" in <the user's language>: they are printed on the board.
+Write "why", "established.reason" and "recognition" in <the report language, English unless the user asked otherwise>: they are printed on the report.
 
 Do not describe how any brand looks. That is measured later, from captures. A description from
 memory would contaminate the audit.
