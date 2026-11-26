@@ -42,6 +42,19 @@ Three cautions.
 
 For a `risky` convention, look outside the panel before writing it up: what did the aspirational brands and the leaders abroad do with it? A code nobody breaks here and that is broken freely in the neighbouring category is the most promising kind.
 
+### Conventions the counts cannot see
+
+Some of the strongest patterns cross two values or belong to no dimension: every brand shows either runners or the app; five names are in heavy slanted capitals; every app screenshot is in dark mode. You see them on the walls, not in the table. Write them into `conventions` by hand, with `"manual": true`, your own count and base, the breakers you observed, and a class, reason and evidence like any other. `aggregate.mjs` keeps them as written.
+
+```json
+{ "manual": true, "dimension": "imagery", "value": "runners or the app screen", "count": 8, "base": 8, "share": 1,
+  "breakers": [], "class": "legibility", "provenance": "judged", "reason": "…", "evidence": ["evidence/sheets/heroes.webp"] }
+```
+
+Count them honestly, brand by brand, on the wall. A manual convention without a real count is an impression with a number attached.
+
+If the base later drops under four brands, the classified conventions are kept and marked `stale` rather than erased; recount when the panel is back.
+
 Write each classification into `audit.json` on the convention:
 
 ```json
@@ -64,6 +77,7 @@ Then write `map.reading` in `audit.json`, three or four sentences in plain words
 
 - name the axes as a person would ("from showing the runner to showing the data", not "imagery");
 - say where the crowd is: that quadrant is the **saturated territory**;
+- say where the **indirect** competitors sit. What people use today sets what they expect; if the substitutes all sit in one corner and the direct competitors in another, the direct competitors are talking to each other, not to the buyer;
 - say which quadrant is empty, and check it. Empty because nobody thought of it, or because it was tried? Look at the leaders and the aspirational brands plotted there, and search for a brand that tried and left.
 
 Where the aspirational brands sit matters as much as where the competitors sit. An empty quadrant that holds two aspirational brands is a territory that works elsewhere and has not arrived here.

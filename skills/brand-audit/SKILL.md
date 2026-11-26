@@ -36,15 +36,17 @@ The scripts do the mechanical work so that your attention goes where it is neede
 | | Flash | Deep |
 |---|---|---|
 | Time | about 10 minutes (measured once: 10 brands, two scouts, two coders) | about 40 minutes (estimate, not yet measured) |
-| Panel | 8 direct, 2 aspirational | 10 to 12 direct, 4 to 6 indirect, 3 to 4 leaders, 5 to 8 aspirational |
+| Panel | 8 direct, 3 indirect, 2 aspirational | 10 to 12 direct, 4 to 6 indirect, 3 to 4 leaders, 5 to 8 aspirational |
 | Questions to the user | none if the context is enough | 2 at most, then one panel review |
-| Capture | home page | home page, 2 inner pages, App Store listing |
+| Capture | the whole home page, 2 inner pages, the App Store listing | the same |
 | Library sample | Logosystem, one industry | Logosystem, Mobbin, and Logoinspo for references |
 | Coding | one pass | judgment fields coded twice, disagreements settled |
 | Synthesis | counts, classifications as hypotheses, 2 opportunities | map, 3 to 5 opportunities, counter-check, recent rebrands |
-| Subagents | 2 or 3 | about ten, in parallel |
+| Subagents | 3 scouts, 3 coders | about fifteen, in parallel |
 
-Both write the same files in the same schema. A flash audit is deepened later, never redone: `capture.mjs` skips what is already captured.
+Both capture each brand the same way; the difference is how many brands, how carefully they are coded, and how hard the conclusions are attacked.
+
+Both write the same files in the same schema. A flash audit is deepened later, never redone: set `meta.mode` to `"deep"`, add the missing brands to the panel, and `capture.mjs` captures only those. From then on `check.mjs` asks for the counter-check on every opportunity.
 
 Pick the mode before anything else. If the user or the calling skill named one, use it. If the user is about to start a `brand-kit` session and wants to move, it is flash. Otherwise ask once with `AskUserQuestion`, giving the time each costs.
 
@@ -78,11 +80,12 @@ Aspirational brands are never chosen by taste. Each one needs a sentence that sa
 ### 3 · Capture
 
 ```bash
-node assets/capture.mjs $AUDIT            # flash
-node assets/capture.mjs $AUDIT --deep     # deep: inner pages and App Store too
+node assets/capture.mjs $AUDIT
 ```
 
-**Read `references/capture.md`** for what is measured and for the fallback chain. A site that answers with a bot challenge comes back `partial`: keep the brand, get a capture another way, and leave it out of the colour and type counts. Then look at what came back. Open a few `desktop.webp` and every logo that looks wrong; a selector can pick a partner badge instead of the logo.
+One home page's first screen is a thin sample of a brand, so every brand is captured in depth, in both modes: the first screen, the whole home page as an overview and as readable tiles, the mobile view, up to two inner pages (`extra_urls`: a product or features page, a pricing page), and the App Store listing when `app_store_term` is set (icon, first screenshots, the description). For an app, the store listing and the product screens are most of what people ever see of the brand.
+
+**Read `references/capture.md`** for what is measured and for the fallback chain. A site that answers with a bot challenge comes back `partial`: keep the brand, get a capture another way, and leave it out of the colour and type counts. Then look at what came back. Open a few `desktop.webp` and every logo that looks wrong; a selector can pick a partner badge instead of the logo. To reject a captured logo, set the brand's `logo` to `null` in `audit.json`: the walls then fall back to its app icon.
 
 ### 4 · Widen with the libraries
 
@@ -118,7 +121,7 @@ node assets/aggregate.mjs $AUDIT
 
 It prints the counts, the conventions, who breaks each one and whether that brand is established, and a map. **Read `references/synthesis.md`** and then do the part no script does:
 
-1. **Classify every convention** as a legibility code, a cliché or a risky break, with the exception test, a reason and the captures that show it.
+1. **Classify every convention** as a legibility code, a cliché or a risky break, with the exception test, a reason and the captures that show it. Add by hand the patterns no single value catches (`manual: true`, see the reference): they are often the real findings.
 2. **Read the map.** Name its axes in plain words, say which quadrant is saturated and which is empty, and check each empty one: unexplored, or tried and abandoned.
 3. **Write the opportunities.** Each keeps the legibility codes, names the clichés it breaks, says what it borrows from which aspirational brand, and carries a risk.
 4. **Deep only: have each opportunity attacked.** A sceptic subagent searches for the brand that already occupies it. What falls is removed; what holds records what was searched.
@@ -127,7 +130,7 @@ Then write the two readers' files and pass the gate:
 
 ```bash
 node assets/aggregate.mjs $AUDIT     # again, after classifying, to refresh counts
-node assets/render.mjs $AUDIT
+node assets/render.mjs $AUDIT --inline     # --inline also writes landscape.single.html, one file to send
 cp assets/AUDIT.example.md $AUDIT/AUDIT.md    # then rewrite every line
 node assets/check.mjs $AUDIT
 ```
@@ -136,7 +139,7 @@ node assets/check.mjs $AUDIT
 
 ## Showing it
 
-Open `landscape.html` and look at it at desktop and phone width before the user does. Then put it in front of them by the first of these that works: serve `brand/audit/` and open it in the browser pane, or send the file. It links its images from `evidence/`, so it is the folder that travels, not the file alone.
+Open `landscape.html` and look at it at desktop and phone width before the user does. Then put it in front of them by the first of these that works: serve `brand/audit/` and open it in the browser pane, or send the file. It links its images from `evidence/`, so it is the folder that travels. To send it to someone, send `landscape.single.html`, which embeds them.
 
 Tell the user, in this order and in their language:
 
@@ -149,7 +152,7 @@ Do not read the whole board back. They have it.
 
 ## Be honest about what it is
 
-- A flash audit is ten home pages. Write its classifications as hypotheses, and say so in `limits`.
+- A flash audit is thirteen brands coded once. Write its classifications as hypotheses, and say so in `limits`.
 - The panel is a sample chosen by a search, not a census. In deep the sceptic's searches are the defence against a competitor nobody found; in flash there is none.
 - A capture is one day. Date it. Sites change, and a category can move in a year.
 - "Nobody does this" is the weakest sentence in the audit. It means nobody in the panel does it. Write it that way.

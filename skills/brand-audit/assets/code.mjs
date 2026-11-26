@@ -20,10 +20,13 @@ export function mergeCodes(panel, codesById, { resolve = false } = {}) {
     const codes = Object.fromEntries(Object.entries(raw).map(([k, v]) => [k, k in VOCAB || k === 'symbol_subject' ? norm(v) : v]));
     if (resolve) {
       const next = { ...brand.codes, ...codes };
+      if (next.logo_type && next.logo_type !== 'combination' && !('symbol_nature' in codes)) delete next.symbol_nature;
+      if (next.symbol_nature == null) delete next.symbol_nature;
       const errs = validateCodes(next, id);
       if (errs.length) { errors.push(...errs); continue; }
       brand.codes = next;
       for (const k of Object.keys(codes)) delete brand.code_conflicts?.[k];
+      if ('logo_type' in codes) delete brand.code_conflicts?.symbol_nature;
       if (brand.code_conflicts && !Object.keys(brand.code_conflicts).length) delete brand.code_conflicts;
       merged.push(id);
       continue;
@@ -34,6 +37,8 @@ export function mergeCodes(panel, codesById, { resolve = false } = {}) {
     for (const [k, v] of Object.entries(codes)) {
       if (k === 'notes' || k === 'symbol_used_alone') continue;
       const first = brand.codes[k];
+      // symbol_nature only means something once the two coders agree the mark is a combination.
+      if (k === 'symbol_nature' && norm(brand.codes.logo_type) !== norm(codes.logo_type)) continue;
       if (first == null) brand.codes[k] = v;
       else if (norm(first) !== norm(v)) {
         brand.code_conflicts = { ...brand.code_conflicts, [k]: [first, v] };

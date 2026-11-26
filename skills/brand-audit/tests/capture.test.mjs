@@ -7,6 +7,8 @@ import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { launch } from '../assets/lib/browser.mjs';
 import { captureBrand, captureAll, summarise } from '../assets/capture.mjs';
+const audit = (dir) => JSON.parse(readFileSync(join(dir, 'audit.json')));
+const seed = (panel, meta = {}) => { const dir = mkdtempSync(join(tmpdir(), 'ba-x-')); writeFileSync(join(dir, 'audit.json'), JSON.stringify({ meta, panel })); return dir; };
 
 const site = fileURLToPath(new URL('./fixtures/site/', import.meta.url));
 let server, base, browser;
@@ -113,4 +115,31 @@ test('re-capturing a brand replaces its evidence instead of piling it up', async
   assert.deepEqual(b.evidence.sort(), ['evidence/a/blocked.webp', 'evidence/other/kept.webp']);
   assert.equal(b.logo, null); // a challenge page has no header of the brand
   assert.ok(!existsSync(join(dir, 'evidence/a/desktop.webp')));
+});
+test('a brand id that is not a slug is refused before anything is deleted', async () => {
+  for (const id of ['..', 'sheets', 'library', 'a/b', 'Strava']) {
+    const dir = seed([{ id, url: base + '/index.html' }]);
+    writeFileSync(join(dir, 'AUDIT.md'), 'keep me');
+    await assert.rejects(() => captureAll(dir, { settle: 200 }), /brand id/);
+    assert.ok(existsSync(join(dir, 'AUDIT.md')), id);
+  }
+});
+test('a brand that throws does not lose the others, and each result is saved as it lands', async () => {
+  const dir = seed([{ id: 'good', url: base + '/index.html' }, { id: 'bad', url: base + '/index.html' }]);
+  const res = await captureAll(dir, { settle: 200, concurrency: 1, _capture: async (browser, b, out, o) => { if (b.id === 'bad') throw new Error('page.screenshot: Timeout'); return captureBrand(browser, b, out, o); } });
+  assert.equal(res.find((r) => r.id === 'bad').capture, 'none');
+  const a = audit(dir);
+  assert.equal(a.panel[0].capture, 'full');
+  assert.equal(a.panel[1].capture, 'none');
+  assert.match(a.panel[1].capture_notes[0], /Timeout/);
+});
+test('the whole home page, inner pages and a later run: tiles and pages are kept, nothing is re-fetched', async () => {
+  const dir = seed([{ id: 'a', url: base + '/long.html', extra_urls: [base + '/nologo.html', base + '/missing.html'] }]);
+  await captureAll(dir, { settle: 200 });
+  const b = audit(dir).panel[0];
+  for (const f of ['desktop.webp', 'full.webp', 'scroll-2.webp', 'scroll-3.webp', 'mobile.webp', 'page-1.webp', 'page-2.webp'])
+    assert.ok(b.evidence.includes('evidence/a/' + f), f);
+  writeFileSync(join(dir, 'evidence/a/by-hand.webp'), 'x');
+  assert.equal((await captureAll(dir, { settle: 200 })).length, 0);
+  assert.ok(existsSync(join(dir, 'evidence/a/by-hand.webp')));
 });

@@ -111,6 +111,8 @@ If `brand/audit/AUDIT.md` exists, its section 5 names two images: the most typic
 
 This does not replace anything above. Competitors resemble each other by construction, which is exactly what makes them poor material for the main duels, where the two sides must differ on everything. The Mobbin duels stay as they are.
 
+It is one or two duels on top of the usual six, so seven or eight in all.
+
 The category duel measures one thing the others cannot: **whether the user wants to stand inside their category or beside it.** Run it once, after the third or fourth ordinary duel, on the same board and with the same line:
 
 > "Celui-ci ou celui-là ?"

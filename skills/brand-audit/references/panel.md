@@ -22,7 +22,7 @@ Write this before dispatching anyone. Scripts add the rest.
 }
 ```
 
-`id` is a lower-case slug and becomes the folder name in `evidence/`. `market_country` is a two-letter code used for the App Store lookup. `extra_urls` and `app_store_term` are read in deep mode only.
+`id` is a lower-case slug and becomes the folder name in `evidence/`. `market_country` is a two-letter code used for the App Store lookup. `extra_urls` (two at most) and `app_store_term` are read in both modes: fill them whenever they exist.
 
 ## The five roles
 
@@ -34,13 +34,15 @@ Write this before dispatching anyone. Scripts add the rest.
 | `aspirational` | Outside the sector | See the rule below |
 | `self` | The brand being audited, when one exists | A rebrand |
 
+**Indirect competitors are in the panel in both modes.** What people use today is what the new brand has to be chosen over, and it is rarely one of the direct competitors: it is the app that came with the watch, the spreadsheet, the notebook. They also show which codes the audience already reads without effort.
+
 **The statistics base is the `direct` brands only.** The other roles are there to be compared against it. So a brand that could be direct or indirect is direct if a buyer would hesitate between it and the product; otherwise indirect.
 
 ## Counts
 
 | | direct | indirect | leader | aspirational |
 |---|---|---|---|---|
-| Flash | 8 | 0 | 0 | 2 |
+| Flash | 8 | 3 | 0 | 2 |
 | Deep | 10 to 12 | 4 to 6 | 3 to 4 | 5 to 8 |
 
 Fewer than 4 direct brands captured in full and nothing can be counted: `aggregate.mjs` says so and stops. If the market truly has four players, say that in `limits` and lean on the leaders and the library sample.

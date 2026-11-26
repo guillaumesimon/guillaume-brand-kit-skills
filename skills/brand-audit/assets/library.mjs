@@ -55,7 +55,7 @@ const FACETS = { type: 'type', colors: 'colour', styles: 'style', subjects: 'sub
 
 /** Catalogue entries of one industry, normalised. `industry` is the URL slug. */
 export function selectIndustry(logos, industry) {
-  return logos.filter((l) => (l.industries || []).some((i) => slugify(i) === industry)).map((l) => ({
+  return logos.filter((l) => /^[a-z0-9][a-z0-9-]*$/.test(String(l.slug)) && (l.industries || []).some((i) => slugify(i) === industry)).map((l) => ({
     slug: l.slug, name: l.name, url: `${ORIGIN}/logo/${l.slug}`, remote_image: l.image, image: null,
     studio: l.author || null, source: l.source_link || null,
     type: l.type ? slugify(l.type) : null,

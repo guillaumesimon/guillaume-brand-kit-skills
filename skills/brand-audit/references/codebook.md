@@ -7,6 +7,7 @@ The lists live in `assets/lib/schema.mjs` and `code.mjs` enforces them. This fil
 ## Rules that apply to every dimension
 
 - **One value per dimension.** The dominant one. If two are truly equal, take the one in the hero.
+- **Code the brand across all its captures**, home page, inner pages and store listing, not its first screen alone. The hero says what the brand wants to be this month; the rest says what it is.
 - **Code what is on the capture**, not what you know about the brand. If the capture shows a campaign page, that is what is coded, and `notes` says so.
 - **`other:<two or three words>`** when nothing fits. Do not stretch a value to avoid it. Several brands with the same `other:` is a finding: a code that belongs to this sector.
 - **Leave a dimension out** rather than guess, when the capture does not show it. A missing value is not counted; a guessed one is.
@@ -119,7 +120,7 @@ What the main headline does. `measures.headline.text` has it; check it against t
 
 ## The coder prompt
 
-Four or five brands per coder. Give the absolute paths; the coder must open the images.
+Four or five brands per coder: each brand is about ten images. Give the absolute paths; the coder must open the images.
 
 ```
 You are coding brands for a visual audit. You look at captures and return codes from a closed
@@ -127,8 +128,12 @@ vocabulary. You do not judge, compare or recommend.
 
 Read the codebook first: <absolute path to this file>
 
-For each brand below, open and look at: desktop.webp, logo.webp (if present), icon.webp or
-app-icon.webp (if present), and full.webp. Read measures.json: it holds colours and typefaces
+For each brand below, list its folder and open every image in it: desktop.webp (the first
+screen), scroll-2 to scroll-4.webp (the rest of the home page), page-1 and page-2.webp (inner
+pages), app-icon.webp and app-1 to app-3.webp (the App Store listing), logo.webp, icon.webp,
+mobile.webp. full.webp is a small overview; the tiles are the readable version. A brand is more
+than its first screen: code what dominates across everything you see, and when the first screen
+and the rest disagree, code the whole and say it in notes. Read measures.json: it holds colours and typefaces
 measured on the page, to start from, not to copy. When a measure and the image disagree, the
 image wins and you say so in notes.
 

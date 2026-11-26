@@ -32,7 +32,7 @@ export function sheetPages(audit, auditDir, has = (p) => existsSync(join(auditDi
   const ev = (b, f) => (b.evidence || []).find((p) => p.endsWith('/' + f) && has(p));
   const cap = (b) => `<p><span>${esc(b.name)}</span><small>${esc(b.role)}</small></p>`;
   const page = (title, body) => `<!doctype html><meta charset="utf-8"><style>${CSS}</style><h1>${esc(title)} · ${panel.length} brands</h1>${body}`;
-  const logos = panel.map((b) => { const p = (b.logo && has(b.logo) && b.logo) || ev(b, 'logo.webp') || ev(b, 'app-icon.webp') || ev(b, 'icon.webp');
+  const logos = panel.map((b) => { const p = (b.logo && has(b.logo) && b.logo) || (b.logo === null ? null : ev(b, 'logo.webp')) || ev(b, 'app-icon.webp') || ev(b, 'icon.webp');
     return `<div class="c"><div class="i" style="height:130px;padding:16px">${p ? `<img src="${url(p)}" style="max-height:98px">` : '<small>no logo captured</small>'}</div>${cap(b)}</div>`; }).join('');
   const heroes = panel.filter((b) => ev(b, 'desktop.webp')).map((b) => `<div class="c"><div class="i"><img src="${url(ev(b, 'desktop.webp'))}"></div>${cap(b)}</div>`).join('');
   const measured = panel.filter((b) => b.measures).sort((a, b) => hueKey(a.measures.accent) - hueKey(b.measures.accent));

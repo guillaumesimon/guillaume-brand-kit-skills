@@ -1,10 +1,10 @@
 # Capture
 
 ```bash
-node assets/capture.mjs brand/audit [--deep] [--only id,id] [--concurrency 4]
+node assets/capture.mjs brand/audit [--only id,id] [--concurrency 4]
 ```
 
-Reads the panel from `audit.json`, visits every brand that has no `capture` value yet, and writes back. Four brands take about fifteen seconds.
+Reads the panel from `audit.json`, visits every brand that has no `capture` value yet, and writes back after each brand, so a crash on one loses nothing. Ten brands take about a minute. The capture is the same in flash and in deep.
 
 ## What comes back, per brand
 
@@ -12,17 +12,22 @@ In `evidence/<id>/`:
 
 | File | What |
 |---|---|
-| `desktop.webp` | The top of the home page at 1440 × 900 |
-| `full.webp` | The whole page, reduced |
-| `mobile.webp` | The top of the page at 390 × 844 |
+| `desktop.webp` | The first screen of the home page at 1440 × 900 |
+| `full.webp` | The whole home page as one reduced overview |
+| `scroll-2.webp` … `scroll-4.webp` | The next screens of the home page, as readable tiles of 1500 px each |
+| `mobile.webp` | The first screen at 390 × 844 |
+| `page-1.webp`, `page-2.webp` | The first screen of each `extra_urls` page: product, features, pricing |
+| `app-icon.webp`, `app-1.webp` … `app-3.webp` | The App Store listing, when `app_store_term` is set |
 | `logo.webp` | A screenshot of the logo as it sits in the header |
 | `logo.svg` | The vector, when the logo is inline SVG |
 | `icon.webp` | The touch icon or favicon |
-| `measures.json` | Everything below |
-| `page-1.webp`, `page-2.webp` | Deep: the `extra_urls` |
-| `app-icon.webp`, `app-1.webp`, `app-2.webp` | Deep: the App Store listing, when `app_store_term` is set |
+| `measures.json` | Everything in the next section |
 
-In `audit.json`, on the brand: `capture`, `measures`, `logo`, `evidence`, `capture_notes`.
+The page is scrolled once before the overview is taken, so that lazy-loaded sections are there.
+
+The App Store listing comes from Apple's public search API, in the country of `meta.market_country`. Its text goes to `app_store` on the brand: name, genre, rating and the first 400 characters of the description, which is the brand describing itself in its own words. There is no Play Store capture: in almost every case the listing shows the same icon and the same screens, and Google offers no public API for it. If a brand is Android-only, save its Play Store icon and screenshots by hand into the brand's folder and add the paths to its `evidence`.
+
+In `audit.json`, on the brand: `capture`, `measures`, `logo`, `evidence`, `capture_notes`, `app_store`.
 
 ## What is measured, and how far to trust it
 
@@ -58,7 +63,7 @@ Some sites answer a headless browser with a challenge page. The script detects i
 1. **Mobbin**, if its MCP server is connected: `search_sections` with the brand name and "hero section". Download the `image_url` into `evidence/<id>/desktop.webp`; cite the `mobbin_url` in the brand's `capture_notes`.
 2. **Another official page**: a country variant, the product subdomain, the press or brand page. Put that URL in the panel and re-run with `--only <id>`.
 3. **A press kit or a recent screenshot** found by web search, from the brand's own domain or a reputable source. Save it and note the source and its date.
-4. **The App Store listing** (deep mode does this by itself when `app_store_term` is set).
+4. **The App Store listing.** The script fetches it even for a blocked brand when `app_store_term` is set: an app's icon and screens are often enough to code it.
 
 Whatever the route, the brand stays `partial`: it is coded by eye from what you got, it appears on the walls, and it is **left out of the counts**, because its measures are missing and its capture is not comparable. Add the file you saved to the brand's `evidence` list and say which route was used.
 
@@ -66,6 +71,8 @@ If nothing works, the brand stays in the panel table as not captured, and `limit
 
 ## Re-running
 
-- `--only id,id` re-captures those brands whatever their state.
-- A deep run after a flash run captures only the brands added since. To add inner pages to brands captured in flash, name them with `--only … --deep`.
+- `--only id,id` re-captures those brands from scratch. **It deletes the brand's evidence folder first**, including any file you saved there by hand (a rescued capture, a Mobbin image). Save those again afterwards, or do not use `--only` on a brand you rescued.
+- Re-capturing does not touch `codes`. If the page changed, re-code the brand.
+- A later run captures only the brands added to the panel since.
+- Brand ids must be lower-case slugs, and `sheets` and `library` are reserved: the script refuses anything else before touching a file.
 - Captures are dated by `meta.date`. If the audit is resumed weeks later, re-capture rather than mix dates.

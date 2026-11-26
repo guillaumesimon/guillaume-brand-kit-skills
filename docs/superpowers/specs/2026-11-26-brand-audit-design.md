@@ -232,3 +232,14 @@ Le schéma détaillé de `audit.json`, les valeurs complètes de la grille, les 
 1. `evidence/` est versionné dans le dépôt. La skill avertit si le dépôt est public.
 2. Secteur d'essai : les applications de running.
 3. Type de logo sur sept catégories, avec la nature du symbole pour les combination marks.
+4. La capture ne s'arrête pas au premier écran : page d'accueil entière en tranches lisibles, deux pages intérieures et fiche App Store, dans les deux modes. Le tableau des modes ci-dessus est dépassé sur ce point.
+5. Les concurrents indirects font partie du panel dans les deux modes (3 en flash).
+
+## Écarts constatés à la construction
+
+- Le flash prend une dizaine de minutes, pas cinq.
+- Logosystem livre son catalogue étiqueté en une requête : pas de requête par logo.
+- Scripts ajoutés : `code.mjs` (fusion du codage, vocabulaire imposé, désaccords), export `--inline` de la planche.
+- L'analyste peut écrire des conventions à la main et choisir les axes de la cartographie.
+- Le texte de `audit.json` suit la langue de l'utilisateur ; `AUDIT.md` reste en anglais.
+- Pas de capture Play Store : pas d'API publique, et la fiche reprend presque toujours l'icône et les écrans de l'App Store.

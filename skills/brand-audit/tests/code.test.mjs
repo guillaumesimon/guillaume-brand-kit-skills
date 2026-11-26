@@ -42,3 +42,21 @@ test('--resolve style: an explicit resolution replaces the value and clears the 
   assert.equal(p[0].code_conflicts, undefined);
   assert.equal(p[0].codes.logo_type, 'wordmark');
 });
+test('a wordmark / combination disagreement does not leak symbol_nature, and resolves either way', () => {
+  const p = panel();
+  mergeCodes(p, { a: { logo_type: 'wordmark' } });
+  mergeCodes(p, { a: { logo_type: 'combination', symbol_nature: 'abstract' } });
+  assert.equal(p[0].codes.symbol_nature, undefined);
+  assert.deepEqual(p[0].code_conflicts.logo_type, ['wordmark', 'combination']);
+  const q = structuredClone(p);
+  assert.deepEqual(mergeCodes(p, { a: { logo_type: 'wordmark' } }, { resolve: true }).errors, []);
+  assert.equal(p[0].code_conflicts, undefined);
+  assert.deepEqual(mergeCodes(q, { a: { logo_type: 'combination', symbol_nature: 'abstract' } }, { resolve: true }).errors, []);
+  assert.equal(q[0].codes.symbol_nature, 'abstract');
+});
+test('resolving a combination mark to another type drops its symbol_nature', () => {
+  const p = panel();
+  mergeCodes(p, { a: { logo_type: 'combination', symbol_nature: 'abstract' } });
+  assert.deepEqual(mergeCodes(p, { a: { logo_type: 'wordmark' } }, { resolve: true }).errors, []);
+  assert.equal(p[0].codes.symbol_nature, undefined);
+});

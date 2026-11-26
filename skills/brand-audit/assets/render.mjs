@@ -69,6 +69,9 @@ export function renderLandscape(audit, strings = STRINGS[localeOf(audit)], has =
   const img = (path, alt, cls = '') => (path && has(path) ? `<img${cls ? ` class="${cls}"` : ''} src="${esc(path)}" alt="${esc(alt)}" loading="lazy">` : '');
   const panel = [...audit.panel].sort((a, b) => ROLE_ORDER.indexOf(a.role) - ROLE_ORDER.indexOf(b.role));
   const ev = (b, file) => (b.evidence || []).find((p) => p.endsWith('/' + file));
+  // `logo: null` is the analyst (or the script) saying the captured image is not the logo: fall back to an icon, never to it.
+  const logoOf = (b) => b.logo || (b.logo === null ? null : ev(b, 'logo.webp')) || ev(b, 'app-icon.webp') || ev(b, 'icon.webp');
+  const safeUrl = (u) => (/^https?:\/\//i.test(String(u || '')) ? esc(u) : '#');
   const label = (dim, value) => `${esc(t.dims[dim] || dim)} : ${human(value)}`;
   const convs = audit.conventions || [];
   const out = [];
@@ -104,11 +107,11 @@ ${(o.import || []).length ? `<dt>${esc(t.oimport)}</dt><dd>${o.import.map((i) =>
 
   // 3. Panel.
   out.push(`<h2>${esc(t.panel)}</h2><div class="scroll"><table><thead><tr><th>${esc(t.brand)}</th><th>${esc(t.role)}</th><th>${esc(t.why)}</th><th>${esc(t.capture)}</th></tr></thead><tbody>${
-    panel.map((b) => `<tr><td><a href="${esc(b.url)}" rel="noreferrer">${esc(b.name)}</a>${b.established?.value ? ` <span class="note">(${esc(t.established)})</span>` : ''}</td><td>${esc(t.roles[b.role] || b.role)}</td><td>${esc(b.why)}</td><td>${
+    panel.map((b) => `<tr><td><a href="${safeUrl(b.url)}" rel="noreferrer">${esc(b.name)}</a>${b.established?.value ? ` <span class="note">(${esc(t.established)})</span>` : ''}</td><td>${esc(t.roles[b.role] || b.role)}</td><td>${esc(b.why)}</td><td>${
       b.capture === 'full' ? '●' : b.capture === 'partial' ? esc(t.partial) : esc(t.none)}</td></tr>`).join('')}</tbody></table></div>`);
 
   // 4. Walls.
-  out.push(`<h2>${esc(t.logos)}</h2><div class="grid g-logos">${panel.map((b) => `<figure><div class="box">${img(b.logo || ev(b, 'logo.webp') || ev(b, 'icon.webp'), b.name) || `<span class="missing">${esc(b.name)}</span>`}</div><figcaption><span>${esc(b.name)}</span><small>${b.codes?.logo_type ? human(b.codes.logo_type) : ''}</small></figcaption></figure>`).join('')}</div>`);
+  out.push(`<h2>${esc(t.logos)}</h2><div class="grid g-logos">${panel.map((b) => `<figure><div class="box">${img(logoOf(b), b.name) || `<span class="missing">${esc(b.name)}</span>`}</div><figcaption><span>${esc(b.name)}</span><small>${b.codes?.logo_type ? human(b.codes.logo_type) : ''}</small></figcaption></figure>`).join('')}</div>`);
   out.push(`<h2>${esc(t.heroes)}</h2><div class="grid g-heroes">${panel.filter((b) => ev(b, 'desktop.webp') && has(ev(b, 'desktop.webp'))).map((b) => `<figure><a href="${esc(ev(b, 'full.webp') || ev(b, 'desktop.webp'))}">${img(ev(b, 'desktop.webp'), b.name)}</a><figcaption><span>${esc(b.name)}</span><small>${esc(t.roles[b.role] || b.role)}</small></figcaption></figure>`).join('')}</div>`);
 
   // 5. Colour and type, from the measures.
@@ -147,7 +150,7 @@ ${c.reason ? `<p>${esc(c.reason)}</p>` : ''}<p class="note">${esc(t.breakers)} :
   // 10. Method.
   out.push(`<h2>${esc(t.method)}</h2><ul>${(audit.limits || []).map((l) => `<li>${esc(l)}</li>`).join('')}</ul><p class="note">${esc(t.provenance)}</p><p class="note">${esc(t.internal)}</p>`);
 
-  return template.replace('<!--LANG-->', esc(localeOf(audit))).replace('<!--TITLE-->', `${esc(t.title)} · ${esc(audit.framing?.product || '')}`).replace('<!--BODY-->', () => out.join('\n'));
+  return template.replace('<!--LANG-->', esc(localeOf(audit))).replace('<!--TITLE-->', () => `${esc(t.title)} · ${esc(audit.framing?.product || '')}`).replace('<!--BODY-->', () => out.join('\n'));
 }
 
 function mapSvg(map, byId, t, human) {

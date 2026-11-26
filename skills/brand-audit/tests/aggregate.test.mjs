@@ -3,6 +3,8 @@ import assert from 'node:assert/strict';
 import { readFileSync, mkdtempSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { execFileSync } from 'node:child_process';
 import { frequencies, conventionCandidates, mapAxes, aggregate } from '../assets/aggregate.mjs';
 
 const T = { convention: 0.6, rare: 0.15 };
@@ -92,4 +94,19 @@ test('a convention written by the analyst survives a re-run', () => {
   const out = aggregate(dir);
   assert.equal(out.conventions.filter((c) => c.manual).length, 1);
   assert.equal(aggregate(dir).conventions.filter((c) => c.manual).length, 1);
+});
+test('classifications are not erased when the base drops under 4', () => {
+  const dir = mkdtempSync(join(tmpdir(), 'ba-dip-'));
+  const audit = JSON.parse(readFileSync(new URL('../assets/audit.example.json', import.meta.url)));
+  audit.panel.slice(0, 6).forEach((b) => { b.capture = 'partial'; });
+  writeFileSync(join(dir, 'audit.json'), JSON.stringify(audit));
+  const out = aggregate(dir);
+  assert.equal(out.frequencies.insufficient, true);
+  assert.equal(out.conventions.length, audit.conventions.length);
+  assert.ok(out.conventions.every((c) => c.stale === true && c.reason));
+});
+test('--axes without a value is ignored, not a crash', () => {
+  const dir = mkdtempSync(join(tmpdir(), 'ba-ax-'));
+  writeFileSync(join(dir, 'audit.json'), readFileSync(new URL('../assets/audit.example.json', import.meta.url)));
+  assert.match(execFileSync('node', [fileURLToPath(new URL('../assets/aggregate.mjs', import.meta.url)), dir, '--axes'], { encoding: 'utf8' }), /base: 8/);
 });

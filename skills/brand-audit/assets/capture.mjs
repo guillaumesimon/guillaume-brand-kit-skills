@@ -1,14 +1,16 @@
 #!/usr/bin/env node
 // Visit every brand of the panel, screenshot it and measure what is really rendered.
-//   node capture.mjs <audit-dir> [--deep] [--only id,id] [--concurrency 4]
+//   node capture.mjs <audit-dir> [--only id,id] [--concurrency 4]
 // Reads <audit-dir>/audit.json, writes evidence/<id>/… and updates audit.json in place.
 // Brands that already have a `capture` value are skipped unless named with --only.
+// --only re-captures from scratch: that brand's evidence folder is deleted first, files added by hand included.
 import { readFile, writeFile, mkdir, rm } from 'node:fs/promises';
 import { join } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { launch, saveWebp, USER_AGENT } from './lib/browser.mjs';
 import { palette, parseColor, classify, toHex } from './lib/color.mjs';
 
+const TILE = 1500; // height of one scroll tile, in page pixels
 const BLOCK_TITLE = /just a moment|attention required|access denied|are you a robot|verify you are human|pardon our interruption/i;
 const ERROR_PAGE = /un probl[eè]me est survenu|something went wrong|page (introuvable|not found)|une erreur (est survenue|s'est produite)|404 not found|service unavailable|temporarily unavailable/i;
 const CONSENT = /^(tout |i |j')?(accept|autoris|allow|agree|ok$|got it|d'accord)/i;
@@ -184,7 +186,9 @@ export async function captureBrand(browser, brand, outDir, opts = {}) {
       await shot(page, 'blocked.webp');
       // An error page often still carries the real header: keep the logo for the wall.
       const logo = status < 400 && !BLOCK_TITLE.test(raw.title) ? await saveLogo() : null;
-      return { capture: 'partial', measures: null, evidence, logo, notes };
+      // The site would not show itself; its App Store listing still can.
+      const app = await appStore(context, tool, brand, dir, opts.country || 'us', evidence, notes, rel);
+      return { capture: 'partial', measures: null, evidence, logo, notes, app_store: app };
     }
 
     const measures = summarise(raw);
@@ -201,71 +205,101 @@ export async function captureBrand(browser, brand, outDir, opts = {}) {
       catch { notes.push('icon could not be decoded'); }
     }
 
-    await shot(page, 'full.webp', { fullPage: true, clip: undefined }, 720, 3600).catch(() => notes.push('full-page screenshot failed'));
+    // The whole home page, not only its first screen: scroll once so lazy content loads, then
+    // keep an overview and the next screens as readable tiles.
+    const height = await page.evaluate(async () => {
+      const step = innerHeight, max = Math.min(document.documentElement.scrollHeight, 12000);
+      for (let y = 0; y < max; y += step) { scrollTo(0, y); await new Promise((r) => setTimeout(r, 120)); }
+      scrollTo(0, 0); await new Promise((r) => setTimeout(r, 300));
+      return document.documentElement.scrollHeight;
+    }).catch(() => 900);
+    await shot(page, 'full.webp', { fullPage: true }, 720, 3600).catch(() => notes.push('full-page screenshot failed'));
+    for (let k = 1; k <= 3 && k * TILE < height - 200; k++) {
+      await shot(page, `scroll-${k + 1}.webp`, { fullPage: true, clip: { x: 0, y: k * TILE, width: 1440, height: Math.min(TILE, height - k * TILE) } }, 1100, 1100)
+        .catch(() => notes.push(`scroll tile ${k + 1} failed`));
+    }
     await page.setViewportSize({ width: 390, height: 844 });
     await page.waitForTimeout(800);
-    await shot(page, 'mobile.webp', {}, 780, 1688);
+    await shot(page, 'mobile.webp', {}, 780, 1688).catch(() => notes.push('mobile screenshot failed'));
 
-    if (opts.deep) {
-      await page.setViewportSize({ width: 1440, height: 900 });
-      let n = 0;
-      for (const url of (opts.extraUrls || brand.extra_urls || []).slice(0, 2)) {
-        n++;
-        try { await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 30000 }); await page.waitForTimeout(2500); await shot(page, `page-${n}.webp`); }
-        catch { notes.push(`extra page ${n} failed: ${url}`); }
-      }
-      if (brand.app_store_term) await appStore(context, tool, brand, dir, opts.country || 'us', evidence, notes, rel);
+    // Inner pages: the home page alone is a thin sample of a brand.
+    await page.setViewportSize({ width: 1440, height: 900 });
+    let n = 0;
+    for (const url of (opts.extraUrls || brand.extra_urls || []).slice(0, 2)) {
+      n++;
+      try { await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 30000 }); await page.waitForTimeout(opts.settle ?? 2500); await shot(page, `page-${n}.webp`); }
+      catch { notes.push(`inner page ${n} failed: ${url}`); }
     }
-    return { capture: 'full', measures, evidence, logo, notes };
+    const app = await appStore(context, tool, brand, dir, opts.country || 'us', evidence, notes, rel);
+    return { capture: 'full', measures, evidence, logo, notes, app_store: app };
   } finally {
     await context.close();
   }
 }
 
+/** The App Store listing: icon, first screenshots and the words the brand uses about itself. */
 async function appStore(context, tool, brand, dir, country, evidence, notes, rel) {
+  if (!brand.app_store_term) return null;
   const url = `https://itunes.apple.com/search?entity=software&limit=1&country=${encodeURIComponent(country)}&term=${encodeURIComponent(brand.app_store_term)}`;
   try {
     const buf = await fetchBuffer(context, url);
     const app = buf && JSON.parse(buf.toString()).results?.[0];
-    if (!app) { notes.push('app store: no result'); return; }
-    const files = [[app.artworkUrl512, 'app-icon.webp', 512], ...(app.screenshotUrls || []).slice(0, 2).map((u, i) => [u, `app-${i + 1}.webp`, 900])];
+    if (!app) { notes.push('app store: no result'); return null; }
+    const files = [[app.artworkUrl512, 'app-icon.webp', 512], ...(app.screenshotUrls || []).slice(0, 3).map((u, i) => [u, `app-${i + 1}.webp`, 900])];
     for (const [u, file, max] of files) {
       const img = u && await fetchBuffer(context, u);
-      if (img) { await saveWebp(tool, img, join(dir, file), max, max * 2); evidence.push(rel(file)); }
+      try { if (img) { await saveWebp(tool, img, join(dir, file), max, max * 2); evidence.push(rel(file)); } } catch { /* an image that does not decode */ }
     }
-    notes.push(`app store: ${app.trackName}`);
-  } catch (e) { notes.push(`app store lookup failed: ${String(e.message).slice(0, 80)}`); }
+    return { name: app.trackName, url: app.trackViewUrl, genre: app.primaryGenreName, rating: app.averageUserRating ? +app.averageUserRating.toFixed(1) : null,
+      ratings: app.userRatingCount || null, description: String(app.description || '').replace(/\s+/g, ' ').slice(0, 400) };
+  } catch (e) { notes.push(`app store lookup failed: ${String(e.message).slice(0, 80)}`); return null; }
 }
 
-/** Capture every brand of an audit directory that has not been captured yet. */
-export async function captureAll(auditDir, { deep = false, only = null, concurrency = 4, settle } = {}) {
+const RESERVED = new Set(['sheets', 'library']);
+
+/**
+ * Capture every brand of an audit directory that has not been captured yet.
+ * One brand failing never loses the others: audit.json is saved after each brand.
+ */
+export async function captureAll(auditDir, { only = null, concurrency = 4, settle, _capture = captureBrand } = {}) {
   const file = join(auditDir, 'audit.json');
   const audit = JSON.parse(await readFile(file, 'utf8'));
+  for (const b of audit.panel) {
+    if (typeof b.id !== 'string' || !/^[a-z0-9][a-z0-9-]*$/.test(b.id) || RESERVED.has(b.id))
+      throw new Error(`brand id "${b.id}" is not usable: lower-case letters, digits and hyphens only, and not "sheets" or "library"`);
+  }
   const todo = audit.panel.filter((b) => (only ? only.includes(b.id) : !b.capture));
+  const workers = Math.max(1, Math.min(Number.isFinite(+concurrency) ? Math.floor(+concurrency) : 4, 8));
   const browser = await launch();
   const results = [];
+  let saving = Promise.resolve();
+  const save = () => (saving = saving.then(() => writeFile(file, JSON.stringify(audit, null, 2) + '\n')));
   try {
     const queue = [...todo];
-    await Promise.all(Array.from({ length: Math.min(concurrency, queue.length) }, async () => {
+    await Promise.all(Array.from({ length: Math.min(workers, queue.length) }, async () => {
       for (let b = queue.shift(); b; b = queue.shift()) {
-        const r = await captureBrand(browser, b, join(auditDir, 'evidence'), { deep, settle, country: audit.meta?.market_country, locale: audit.meta?.locale });
+        let r;
+        try { r = await _capture(browser, b, join(auditDir, 'evidence'), { settle, country: audit.meta?.market_country, locale: audit.meta?.locale }); }
+        catch (e) { r = { capture: 'none', measures: null, logo: null, evidence: [], notes: [`capture crashed: ${String(e.message).split('\n')[0].slice(0, 160)}`] }; }
         Object.assign(b, { capture: r.capture, measures: r.measures, logo: r.logo, capture_notes: r.notes,
           evidence: [...new Set([...(b.evidence || []).filter((p) => !p.startsWith(`evidence/${b.id}/`)), ...r.evidence])] });
+        if (r.app_store) b.app_store = r.app_store;
         results.push({ id: b.id, capture: r.capture, notes: r.notes });
         console.log(`${r.capture.padEnd(7)} ${b.id}${r.notes.length ? '  (' + r.notes.join('; ') + ')' : ''}`);
+        await save();
       }
     }));
   } finally { await browser.close(); }
-  await writeFile(file, JSON.stringify(audit, null, 2) + '\n');
+  await save();
   return results;
 }
 
 if (import.meta.url === pathToFileURL(process.argv[1] || '').href) {
   const args = process.argv.slice(2);
   const dir = args.find((a) => !a.startsWith('--') && args[args.indexOf(a) - 1] !== '--only' && args[args.indexOf(a) - 1] !== '--concurrency');
-  if (!dir || dir.startsWith('--') || args.includes('--help')) { console.log('usage: node capture.mjs <audit-dir> [--deep] [--only id,id] [--concurrency 4]'); process.exit(args.includes('--help') ? 0 : 1); }
+  if (!dir || dir.startsWith('--') || args.includes('--help')) { console.log('usage: node capture.mjs <audit-dir> [--only id,id] [--concurrency 4]'); process.exit(args.includes('--help') ? 0 : 1); }
   const opt = (k) => (args.includes(k) ? args[args.indexOf(k) + 1] : null);
-  const res = await captureAll(dir, { deep: args.includes('--deep'), only: opt('--only')?.split(','), concurrency: +(opt('--concurrency') || 4) });
+  const res = await captureAll(dir, { only: opt('--only')?.split(','), concurrency: +(opt('--concurrency') || 4) });
   const n = (c) => res.filter((r) => r.capture === c).length;
   console.log(`\n${res.length} captured: ${n('full')} full, ${n('partial')} partial, ${n('none')} failed`);
 }

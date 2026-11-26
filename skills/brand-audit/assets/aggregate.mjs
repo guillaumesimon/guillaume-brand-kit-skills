@@ -117,7 +117,8 @@ export function aggregate(auditDir, axes = []) {
   const previous = new Map((audit.conventions || []).filter((c) => !c.manual).map((c) => [`${c.dimension}=${norm(c.value)}`, c]));
   // A convention the analyst wrote by hand (`manual: true`, e.g. a pattern across two values) is kept as written.
   const manual = (audit.conventions || []).filter((c) => c.manual);
-  audit.conventions = audit.frequencies.insufficient ? [] : [...conventionCandidates(audit.frequencies, audit.panel).map((c) => {
+  // Too few brands to count: keep what was judged, marked stale, rather than erase the analyst's work.
+  audit.conventions = audit.frequencies.insufficient ? (audit.conventions || []).map((c) => ({ ...c, stale: true })) : [...conventionCandidates(audit.frequencies, audit.panel).map((c) => {
     const old = previous.get(`${c.dimension}=${c.value}`);
     return old?.class ? { ...c, class: old.class, provenance: old.provenance, reason: old.reason, evidence: old.evidence } : c;
   }), ...manual];
@@ -134,7 +135,8 @@ if (import.meta.url === pathToFileURL(process.argv[1] || '').href) {
   const dir = process.argv[2];
   if (!dir || dir.startsWith('--')) { console.log('usage: node aggregate.mjs <audit-dir> [--axes dimension,dimension]'); process.exit(dir === '--help' ? 0 : 1); }
   const ax = process.argv.indexOf('--axes');
-  const a = aggregate(dir, ax > 0 ? process.argv[ax + 1].split(',') : []);
+  const axes = ax > 0 && process.argv[ax + 1] && !process.argv[ax + 1].startsWith('--') ? process.argv[ax + 1].split(',') : [];
+  const a = aggregate(dir, axes);
   const f = a.frequencies;
   if (f.insufficient) { console.log(f.reason); process.exit(0); }
   console.log(`base: ${f.base} direct brands captured in full and coded (${a.meta?.mode || 'deep'} mode)\n`);

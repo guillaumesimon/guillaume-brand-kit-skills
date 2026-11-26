@@ -40,3 +40,15 @@ test('--inline embeds every image and leaves no evidence path', () => {
   assert.ok(!one.includes('"evidence/'));
   assert.ok(one.includes('src="data:image/webp;base64,eA=="'));
 });
+test('a logo the analyst rejected (logo: null) is not shown', () => {
+  const a = structuredClone(example); a.panel[0].logo = null;
+  const html = renderLandscape(a, STRINGS.en);
+  assert.ok(!html.includes('evidence/folio/logo.webp'));
+  assert.ok(html.includes('evidence/shelfline/logo.webp'));
+});
+test('a javascript: url is not linked, and a $ in the product name does not mangle the title', () => {
+  const a = structuredClone(example); a.panel[0].url = 'javascript:alert(1)'; a.framing.product = 'Pay $& go';
+  const html = renderLandscape(a, STRINGS.en);
+  assert.ok(!html.includes('javascript:'));
+  assert.ok(html.includes('<title>Visual landscape audit · Pay $&amp; go</title>'));
+});
