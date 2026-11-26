@@ -171,6 +171,7 @@ Decisions the tests do not fix:
 - Accent: the most frequent non-neutral background colour among visible `a`, `button`, `[role=button]`; if none, the most frequent non-neutral text colour of the same set.
 - Logo: first match in `header a[href="/"] svg, header a[href="/"] img, [class*="logo" i] svg, [class*="logo" i] img, header svg, header img`, kept only if its box is between 16 and 400px wide and in the top 200px. Otherwise `logo: null` and note `logo not found`. Also save `icon.webp` from `link[rel="apple-touch-icon"]` or the largest `link[rel~="icon"]`.
 - `--deep`: also captures `extraUrls` (the scout supplies product and pricing URLs) as `page-1.webp`, `page-2.webp`, desktop only, no measures.
+- App Store (deep, only when the panel entry has `app_store_term`): query `https://itunes.apple.com/search?entity=software&limit=1&country=<meta.market_country>&term=…`, save `artworkUrl512` as `app-icon.webp` and the first two `screenshotUrls` as `app-1.webp`, `app-2.webp`. A failed lookup is a note, not an error.
 - Timeouts: 45 s navigation, then 3 s settle. A thrown navigation error is `capture: "none"` with the message in notes.
 
 - [ ] **Step 1: Write the fixtures and failing tests.** `index.html`: white page, `#1F5D45` button with 8px radius, an inline SVG logo 120px wide inside `header a[href="/"]`, `h1` in Georgia 64px. Tests start `http.createServer` on a random port serving the fixture directory.
