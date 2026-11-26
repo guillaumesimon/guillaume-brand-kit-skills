@@ -156,7 +156,7 @@ Then:
 node assets/moodboard.mjs brand/audit
 ```
 
-It fetches, saves under `evidence/territories/<id>/`, and reports what it missed. Nothing is generated or substituted: a page that blocks the visit is reported and left out. **Look at every moodboard.** Remove an image that does not show its mechanism, replace what was missed, and re-run with `--only <territory-id>`. `check.mjs` asks for at least six images per territory.
+It fetches, saves under `evidence/territories/<id>/`, and reports what it missed. Nothing is generated or substituted: a page that blocks the visit is reported and left out. **Look at every moodboard, then curate it.** The script keeps everything it found; you keep ten. In `audit.json`, reorder each territory's `moodboard` and cut it to ten images: the first is shown large, so lead with the image that best carries the territory, and mix photography, type, sign and system rather than grouping them. Library picks are the most hit-and-miss: drop the ones that only match their tags. Remove an image that does not show its mechanism, replace what was missed, and re-run with `--only <territory-id>`. `check.mjs` asks for at least six images per territory.
 
 Borrow the mechanism, not the look. The moodboard and the `references` list say what to study in each image and what must not be copied. These are third-party images, for internal reference: the report is not published.
 

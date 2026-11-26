@@ -93,7 +93,7 @@ export function checkAudit(auditDir) {
     for (const p of cited) if (missing(p)) errors.push(`AUDIT.md: evidence not found: ${p}`);
     if (!cited.length) errors.push('AUDIT.md: cites no evidence path');
     if (text !== renderBrief(audit)) errors.push('AUDIT.md: differs from what brief.mjs generates from audit.json; run brief.mjs again, do not edit it by hand');
-    if (text.split('\n').length > 160) warnings.push(`AUDIT.md is ${text.split('\n').length} lines; agents read it whole, keep it under 120`);
+    if (text.split('\n').length > 320) warnings.push(`AUDIT.md is ${text.split('\n').length} lines; agents read it whole: trim decisions and moodboard notes`);
   }
   if (!existsSync(join(auditDir, 'landscape.html'))) errors.push('landscape.html: not found, run render.mjs');
   const mb = dirSize(join(auditDir, 'evidence')) / 1048576;

@@ -266,7 +266,7 @@ ${(sy.evaluation || []).length ? `<h3>${esc(t.evalTitle)}</h3><div class="scroll
   S.push(['territories', sy && (sy.territories || []).length ? `<p class="note">${esc(t.territoryNote)}</p>` + sy.territories.map((tr, i) => {
     const mood = (tr.moodboard || []).filter((m) => has(m.file));
     const row = (k, v) => (v ? `<dt>${esc(k)}</dt><dd>${v}</dd>` : '');
-    return `<article class="terr" id="${esc(tr.id)}"><div class="tboard n${Math.min(mood.length, 10)}">${mood.slice(0, 10).map((m) => `<figure>${img(m.file, m.note, 'fill')}</figure>`).join('')}</div>
+    return `<article class="terr" id="${esc(tr.id)}"><div class="tboard n${Math.min(mood.length, 10)}">${mood.slice(0, 10).map((m) => `<figure>${img(m.file, m.note, 'fill mid')}</figure>`).join('')}</div>
 <div class="tbody"><h3>${i + 1}. ${esc(tr.title)}</h3><p class="idea">${esc(tr.idea)}</p><p>${esc(tr.description)}</p>
 <table class="dirs"><thead><tr><th>${esc(t.dimension)}</th><th>${esc(t.direction)}</th></tr></thead><tbody>${Object.entries(tr.directions || {}).map(([k, v]) => `<tr><td>${esc(t.dirs[k] || k)}</td><td>${esc(v)}</td></tr>`).join('')}</tbody></table>
 <dl class="tmeta">${row(t.perception, esc(tr.perception))}${row(t.preserves, (tr.preserves || []).map(esc).join(' · '))}${row(t.challenges, (tr.challenges || []).map(esc).join(' · '))}${row(t.touchpoints, tr.touchpoints ? Object.entries(tr.touchpoints).map(([k, v]) => `<strong>${esc(k)}</strong> ${esc(v)}`).join('<br>') : '')}${row(t.risk, esc(tr.risk))}${row(t.toValidate, esc(tr.validate))}${row(t.openDecisions, (tr.open_decisions || []).map(esc).join(' · '))}${row(t.basedOn, `${fref(tr.finding_refs)} · ${esc(t.conf)} ${esc(t.confLevels[tr.confidence] || tr.confidence)}`)}</dl>
@@ -369,7 +369,7 @@ export function inlineImages(html, read) {
     const cls = /\sclass="([^"]*)"/.exec(attrs)?.[1] || '';
     const alt = /\salt="([^"]*)"/.exec(attrs)?.[1] || '';
     // An image that fills its tile is cropped from the top, like object-fit: cover; the others are fitted whole.
-    const fit = /\bfill\b/.test(cls) ? ' preserveAspectRatio="xMidYMin slice"' : '';
+    const fit = /\bfill\b/.test(cls) ? ` preserveAspectRatio="xMidY${/\bmid\b/.test(cls) ? 'Mid' : 'Min'} slice"` : '';
     return `<svg class="ri${cls ? ' ' + cls : ''}" viewBox="0 0 ${im.size.w} ${im.size.h}" width="${im.size.w}" height="${im.size.h}"${fit} role="img" aria-label="${alt}"><use href="#${im.id}"/></svg>`;
   });
   // Rules written for <img> apply to the drawn images too.
