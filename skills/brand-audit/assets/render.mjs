@@ -21,7 +21,7 @@ const STRINGS = {
     personality: 'Perceived personality', strength: 'Strength', lesson: 'What it teaches', notes: 'Coder\u2019s note', learn: 'What it shows', nBrands: 'Brands', source: 'Source', seen: 'Captured',
     roleLearn: { direct: 'The codes of the category and its baseline expectations.', indirect: 'The alternatives the audience already uses.', leader: 'Where the category is heading.', aspirational: 'A level of execution, and codes that could transfer.', self: 'The starting point.' },
     observation: 'Observation', alignment: 'Link to the brief', benefit: 'Expected benefit', risk: 'Risk', toValidate: 'To validate', mapCaveat: 'A map drawn from the captures is a reading of the identities, not a measure of how people perceive them. That takes a study with the audience.',
-    quality: 'Before using it', recognition: 'Recognised by', mbLogo: 'Logo', mbIcon: 'Icon', mbSite: 'Home page', mbStore: 'App Store', fromSite: 'From the site', mediaKinds: { photo: 'Photography', illustration: 'Illustration', product: 'Product', graphic: 'Graphic', video: 'Video' }, sources: 'Sources', noSection: 'This part has not been written yet.', contents: 'Contents',
+    quality: 'Before using it', recognition: 'Recognised by', mbLogo: 'Logo', mbIcon: 'Icon', mbSite: 'Home page', mbBlocked: 'What the site answered', mbStore: 'App Store', fromSite: 'From the site', mediaKinds: { photo: 'Photography', illustration: 'Illustration', product: 'Product', graphic: 'Graphic', video: 'Video' }, sources: 'Sources', noSection: 'This part has not been written yet.', contents: 'Contents',
     title: 'Visual landscape audit', question: 'Which codes make a brand understood by this market, and which ones can be broken to stand apart from it?',
     mode: 'Mode', date: 'Date', market: 'Market', base: 'Statistics base', baseUnit: 'direct brands', flash: 'Flash: hypotheses', deep: 'Deep: checked positions',
     keep: 'Keep', keepSub: 'Legibility codes', brk: 'Break', brkSub: 'Clichés', risky: 'Weigh', riskySub: 'Risky breaks',
@@ -53,7 +53,7 @@ const STRINGS = {
     personality: 'Personnalité perçue', strength: 'Force', lesson: 'Enseignement', notes: 'Note du codeur', learn: 'Ce qu\u2019on y apprend', nBrands: 'Marques', source: 'Source', seen: 'Capture',
     roleLearn: { direct: 'Les codes de la catégorie et ses attentes de base.', indirect: 'Les alternatives que le public utilise déjà.', leader: 'Vers où la catégorie se déplace.', aspirational: 'Un niveau d\u2019exécution, et des codes transférables.', self: 'Le point de départ.' },
     observation: 'Constat', alignment: 'Lien avec le brief', benefit: 'Bénéfice attendu', risk: 'Risque', toValidate: 'À valider', mapCaveat: 'Une carte dessinée à partir des captures est une lecture des identités, pas une mesure de la perception du public. Celle-ci demande une étude auprès de l\u2019audience.',
-    quality: 'Avant de s\u2019en servir', recognition: 'Reconnue par', mbLogo: 'Logo', mbIcon: 'Icône', mbSite: 'Page d\u2019accueil', mbStore: 'App Store', fromSite: 'Du site', mediaKinds: { photo: 'Photographie', illustration: 'Illustration', product: 'Produit', graphic: 'Graphisme', video: 'Vidéo' }, sources: 'Sources', noSection: 'Cette partie n\u2019a pas encore été rédigée.', contents: 'Sommaire',
+    quality: 'Avant de s\u2019en servir', recognition: 'Reconnue par', mbLogo: 'Logo', mbIcon: 'Icône', mbSite: 'Page d\u2019accueil', mbBlocked: 'Ce que le site a répondu', mbStore: 'App Store', fromSite: 'Du site', mediaKinds: { photo: 'Photographie', illustration: 'Illustration', product: 'Produit', graphic: 'Graphisme', video: 'Vidéo' }, sources: 'Sources', noSection: 'Cette partie n\u2019a pas encore été rédigée.', contents: 'Sommaire',
     title: 'Audit du paysage visuel', question: 'Quels codes faut-il garder pour être compris par ce marché, et lesquels peut-on rompre pour s’en distinguer ?',
     mode: 'Mode', date: 'Date', market: 'Marché', base: 'Base statistique', baseUnit: 'marques directes', flash: 'Flash : hypothèses', deep: 'Deep : positions vérifiées',
     keep: 'Garder', keepSub: 'Codes de lisibilité', brk: 'Rompre', brkSub: 'Clichés', risky: 'Peser', riskySub: 'Ruptures risquées',
@@ -167,12 +167,12 @@ export function renderLandscape(audit, strings = STRINGS[localeOf(audit)], has =
     const swatches = m?.palette?.length ? `<div class="sw">${[...m.palette.slice(0, 5), ...(m.accent && !m.palette.some((p) => p.hex === m.accent) ? [{ hex: m.accent }] : [])].map((p) => `<span style="background:${esc(p.hex)}"><em>${esc(p.hex)}</em></span>`).join('')}</div>` : '';
     const board = [
       tile('logo', t.mbLogo, logoOf(b) && `<div class="pad">${img(logoOf(b), b.name)}</div>`),
-      tile('icon', t.mbIcon, (ev(b, 'app-icon.webp') || ev(b, 'icon.webp')) && `<div class="pad">${img(ev(b, 'app-icon.webp') || ev(b, 'icon.webp'), b.name)}</div>`),
+      tile('icon', t.mbIcon, (ev(b, 'app-icon.webp') || ev(b, 'icon.webp')) !== logoOf(b) && (ev(b, 'app-icon.webp') || ev(b, 'icon.webp')) && `<div class="pad">${img(ev(b, 'app-icon.webp') || ev(b, 'icon.webp'), b.name)}</div>`),
       tile('pal', t.palette, swatches),
       tile('type', h ? `${String(h.family).split(',')[0].replace(/["']/g, '')} ${h.weight}` : t.headline, ev(b, 'headline.webp') && `<div class="pad">${img(ev(b, 'headline.webp'), b.name)}</div>`),
-      tile('site', t.mbSite, img(ev(b, 'desktop.webp') || ev(b, 'blocked.webp'), b.name)),
-      ...mediaOf(b).map((p, i) => tile(i === 0 ? 'media big' : 'media', kindOf(b, p), img(p, b.name))),
-      ...['app-1.webp', 'app-2.webp', 'app-3.webp'].map((f) => tile('store', t.mbStore, img(ev(b, f), b.name))),
+      tile('site', ev(b, 'desktop.webp') ? t.mbSite : t.mbBlocked, img(ev(b, 'desktop.webp') || ev(b, 'blocked.webp'), b.name, 'fill')),
+      ...mediaOf(b).map((p, i) => tile(i === 0 ? 'media big' : 'media', kindOf(b, p), img(p, b.name, 'fill'))),
+      ...['app-1.webp', 'app-2.webp', 'app-3.webp'].map((f) => tile('store', t.mbStore, img(ev(b, f), b.name, 'fill'))),
     ].join('');
     return `<article class="profile"><header><div class="lg">${img(logoOf(b), b.name) || `<span class="missing">${esc(b.name)}</span>`}</div><div><h3>${esc(b.name)}</h3><p>${esc(b.why)}</p></div><span class="tag${b.role === 'direct' ? ' on' : ''}">${role(b)}</span></header>
 <div class="mood">${board}</div>
@@ -331,7 +331,9 @@ export function inlineImages(html, read) {
     if (!im.size) return tag.replace(src[0], ` src="${im.uri}"`);
     const cls = /\sclass="([^"]*)"/.exec(attrs)?.[1] || '';
     const alt = /\salt="([^"]*)"/.exec(attrs)?.[1] || '';
-    return `<svg class="ri${cls ? ' ' + cls : ''}" viewBox="0 0 ${im.size.w} ${im.size.h}" width="${im.size.w}" height="${im.size.h}" role="img" aria-label="${alt}"><use href="#${im.id}"/></svg>`;
+    // An image that fills its tile is cropped from the top, like object-fit: cover; the others are fitted whole.
+    const fit = /\bfill\b/.test(cls) ? ' preserveAspectRatio="xMidYMin slice"' : '';
+    return `<svg class="ri${cls ? ' ' + cls : ''}" viewBox="0 0 ${im.size.w} ${im.size.h}" width="${im.size.w}" height="${im.size.h}"${fit} role="img" aria-label="${alt}"><use href="#${im.id}"/></svg>`;
   });
   // Rules written for <img> apply to the drawn images too.
   out = out.replace(/<style>([\s\S]*?)<\/style>/, (m, css) => `<style>${css.replace(/\bimg\b/g, ':is(img,svg.ri)')}\nsvg.ri{display:block;height:auto}\n</style>`);
